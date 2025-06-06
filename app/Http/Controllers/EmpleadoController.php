@@ -1,0 +1,125 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Empleado;
+use App\Models\Pais;
+use App\Models\Profesion;
+use App\Models\Provincia;
+use Illuminate\Http\Request;
+
+class EmpleadoController extends Controller
+{
+    //Muestra todos los datos
+    public function index() //Pagina inicial
+    {
+        //$empleados = Tarea::all(); //Hace un select all a la tabla
+        //Llama a la funcion get_categoria del modelo tarea.php
+        $empleados = Empleado::with('get_profesion')->get();
+        //dd($empleados);
+        return view('empleados.index', compact('empleados')); //Llama a la vista y le pasa las empleados obtenidas
+    }
+
+    public function show(Empleado $empleado)
+    {
+        return view('empleados.show', compact('empleado'));
+    }
+    public function create()
+    {
+        $profesiones = Profesion::all();
+        $paises = Pais::all();
+        //$provincias = Provincia::all();
+        return view('empleados.create', compact('profesiones', 'paises'));
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([ //Si el titulo esta vacion no hace nada 
+            'dni' => 'required',
+            'nombre' => 'required',
+            'apellido' => 'required',
+            'fecha_nacimiento' => 'required',
+            'pais_id' => 'required|exists:paises,id',
+            'provincia_id' => 'required|exists:provincias,id',
+            'cod_postal_id' => 'required|exists:codigo_postal,id',
+            'profesion_id' => 'required|exists:profesions,id',
+        ]);
+
+        $empleado = new Empleado();
+        //Datos del POST se obtiene en request
+        $empleado->dni = $request->input('dni');
+        $empleado->nombre = $request->input('nombre');
+        $empleado->apellido = $request->input('apellido');
+        $empleado->fecha_nacimiento = $request->input('fecha_nacimiento');
+        $empleado->telefono = $request->input('telefono');
+        $empleado->pais_id = $request->input('pais_id');
+        $empleado->provincia_id = $request->input('provincia_id');
+        $empleado->cod_postal_id = $request->input('cod_postal_id');
+        $empleado->direccion = $request->input('direccion');
+        $empleado->profesion_id = $request->input('profesion_id');
+        $empleado->save(); //Guarda en la BD, si existe lo actualiza, sino crea
+
+        return redirect()->route('empleados.index');
+    }
+
+    public function edit(Empleado $empleado)
+    {
+        $profesiones = Profesion::all();
+        $paises = Pais::all();
+        return view('empleados.edit', compact('empleado', 'profesiones', 'paises'));
+    }
+
+    public function update(Request $request, Empleado $empleado)
+    {
+        $request->validate([ //Si el titulo esta vacion no hace nada 
+            'dni' => 'required',
+            'nombre' => 'required',
+            'apellido' => 'required',
+            'fecha_nacimiento' => 'required',
+            'pais_id' => 'required|exists:paises,id',
+            'provincia_id' => 'required|exists:provincias,id',
+            'cod_postal_id' => 'required|exists:codigo_postal,id',
+            'profesion_id' => 'required|exists:profesions,id',
+        ]);
+        
+        if ($request->input('dni') != null) {
+            $empleado->dni = $request->input('dni');
+        }
+        if ($request->input('nombre') != null) {
+            $empleado->nombre = $request->input('nombre');
+        }
+        if ($request->input('apellido') != null) {
+            $empleado->apellido = $request->input('apellido');
+        }
+        if ($request->input('fecha_nacimiento') != null) {
+            $empleado->fecha_nacimiento = $request->input('fecha_nacimiento');
+        }
+
+        $empleado->telefono = $request->input('telefono');
+
+        if ($request->input('pais_id') != null) {
+            $empleado->pais_id = $request->input('pais_id');
+        }
+        if ($request->input('provincia_id') != null) {
+            $empleado->provincia_id = $request->input('provincia_id');
+        }
+        if ($request->input('cod_postal_id') != null) {
+            $empleado->cod_postal_id = $request->input('cod_postal_id');
+        }
+
+        $empleado->direccion = $request->input('direccion');
+
+        if ($request->input('profesion_id') != null) {
+            $empleado->profesion_id = $request->input('profesion_id');
+        }
+
+        $empleado->save();
+        return redirect()->route('empleados.index');
+    }
+
+    public function destroy(Empleado $empleado)
+    {
+        $empleado->delete();
+        return redirect()->route('empleados.index');
+    }
+}

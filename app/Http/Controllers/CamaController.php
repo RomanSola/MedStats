@@ -1,0 +1,67 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Cama;
+use App\Models\Habitacion;
+use Illuminate\Http\Request;
+
+class CamaController extends Controller
+{
+    //Muestra todos los datos
+    public function index() //Pagina inicial
+    {
+        //Llama a la funcion get_categoria del modelo tarea.php
+        $camas = Cama::with('get_habitacion')->get();
+        return view('camas.index', compact('camas')); //Llama a la vista
+    }
+
+    public function create()
+    {
+        $habitaciones = Habitacion::all();
+        return view('camas.create', compact('habitaciones'));
+    }
+
+    public function store(Request $request)
+    {   
+        $request->validate([
+            'codigo' => 'required',
+            'habitacion_id' => 'required|exists:habitacions,id',
+        ]);
+
+        $cama = new Cama();
+        $cama->codigo = $request->input('codigo'); //Datos del POST se obtiene en request
+        $cama->habitacion_id = $request->input('habitacion_id'); //Datos del POST se obtiene en request
+        $cama->save(); //Guarda en la BD, si existe lo actualiza, sino crea
+
+        return redirect()->route('camas.index');
+    }
+
+    public function edit(Cama $cama)
+    {
+        $habitaciones = Habitacion::all();
+        //dd($salas);
+        return view('camas.edit', compact('cama', 'habitaciones'));
+    }
+
+    public function update(Request $request, Cama $cama)
+    {
+        $request->validate([
+            'codigo' => 'required',
+            'habitacion_id' => 'required|exists:habitacions,id',
+        ]);
+        
+        if ($request->input('codigo') != null) {
+            $cama->codigo = $request->input('codigo');
+        }
+        $cama->habitacion_id = $request->input('habitacion_id');
+        $cama->save();
+        return redirect()->route('camas.index');
+    }
+
+    public function destroy(Cama $cama)
+    {
+        $cama->delete();
+        return redirect()->route('camas.index');
+    }
+}
