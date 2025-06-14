@@ -1,0 +1,147 @@
+/* CSS de prueba */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #e6f4ea;
+    color: #073b3a;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+header {
+    background-color: #c9dfcf;
+    padding: 30px;
+    margin-bottom: 10px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    font-size: 1.4rem;
+    color: #073b3a;
+}
+
+.logo::before {
+    content: "+";
+    font-size: 2rem;
+    color: #065f46;
+    margin-right: 0.5rem;
+}
+
+nav a {
+    margin-left: 2rem;
+    text-decoration: none;
+    color: #073b3a;
+    font-weight: 500;
+}
+
+nav a.active,
+nav a:hover {
+    text-decoration: underline;
+}
+
+
+/* Títulos y subtítulos */
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.2rem;
+}
+
+.subtitle {
+    font-size: 1rem;
+    color: #256c5e;
+    margin-bottom: 1.5rem;
+}
+
+/* Buscador */
+.search-box {
+    display: flex;
+    margin-bottom: 2rem;
+}
+
+.search-box input {
+    padding: 0.8rem 1rem;
+    border-radius: 10px;
+    border: none;
+    width: 100%;
+    max-width: 400px;
+    font-size: 1rem;
+    background-color: #d1fae5;
+}
+
+/* Tabla de pedidos */
+.orders-section {
+    margin-top: 2rem;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+th {
+    background-color: #065f46;
+    color: white;
+    text-align: left;
+    padding: 1rem;
+}
+
+td {
+    padding: 1rem;
+    border-top: 1px solid #e0f2f1;
+}
+
+/* Estado */
+.status {
+    display: inline-block;
+    padding: 0.3rem 0.7rem;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.in-stock {
+    background-color: #d1fae5;
+    color: #065f46;
+}
+
+.low-stock {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+.out-stock {
+    background-color: #fddede;
+    color: #991b1b;
+}
+
+/* Usuario */
+
+.btn{
+    background-color: #065f46;
+    border-color: #065f46;
+    color: #fff;
+}
+
+.btn:hover{
+    background-color: #044a38;
+    border-color: #044a38;
+    color: #fff;
+}
+
+.btn:focus{
+    box-shadow: 0 0 0 0.2rem rgba(6,95,70,0.5);
+}

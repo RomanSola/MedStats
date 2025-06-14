@@ -29,6 +29,10 @@ Route::get('/', function () {
     return view('index');
 });
 
+Route::get('/prueba', function (){
+    return view('prueba');
+});
+
 //Usuario perfiles
 Route::get('/perfiles', [UsuarioPerfilController::class, 'index'])->name('UsuarioPerfil.index');
 Route::get('/perfiles/create', [UsuarioPerfilController::class, 'create'])->name('UsuarioPerfil.create');
