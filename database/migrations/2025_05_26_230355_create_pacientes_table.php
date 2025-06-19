@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('telefono', 20)->nullable();
             $table->unsignedBigInteger('pais_id')->nullable();
             $table->unsignedBigInteger('provincia_id')->nullable();
-            $table->unsignedBigInteger('cod_postal_id')->nullable()->after('provincia_id');
+            $table->unsignedBigInteger('cod_postal_id')->nullable();
             $table->text('direccion')->nullable();
             $table->unsignedBigInteger('creado_por');
             $table->unsignedBigInteger('modificado_por');
