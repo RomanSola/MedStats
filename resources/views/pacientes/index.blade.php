@@ -1,40 +1,53 @@
 @extends('layouts.app')
-@section('titulo', 'Lista de Pacientes')
+
+@section('titulo', 'Gestión de Pacientes')
+
 @section('contenido')
-<h1 class="mb-4">Gestor de Pacientes</h1>
-<a href="{{ route('pacientes.create') }}" class="btn btn-primary mb-3">Ingresar Nuevo Paciente</a>
-<table class="table">
-    <thead>
-        <tr>
-            <th>DNI</th>
-            <th>Nombre</th>
-            <th>Apellido</th>
-            <th>Teléfono</th>
-            <th>Género</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach($pacientes as $paciente)
-        <tr>
-            <td>{{ $paciente->dni }}</td>
-            <td>{{ $paciente->nombre }}</td>
-            <td>{{ $paciente->apellido }}</td>
-            <td>{{ $paciente->telefono }}</td>
-            <td>{{ $paciente->genero }}</td>
-            <td>
-                <!-- Botón Mostrar -->
-                <a href="{{ route('pacientes.show', $paciente) }}" class="btn btn-primary btn-sm mr-1">Ver</a>
-                <!-- Botón Editar -->
-                <a href="{{ route('pacientes.edit', $paciente) }}" class="btn btn-secondary btn-sm mr-1">Editar</a>
-                <form action="{{ route('pacientes.destroy', $paciente) }}" method="POST" class="d-inline">
-                    @csrf
-                    @method('DELETE')
-                    <button class="btn btn-danger btn-sm">Eliminar</button>
-                </form>
-            </td>
-        </tr>
-        @endforeach
-    </tbody>
-</table>
+<div class="max-w-7xl mx-auto px-4 py-8">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-semibold text-gray-800">Pacientes Registrados</h1>
+        <a href="{{ route('pacientes.create') }}"
+           class="bg-neutral-700 hover:bg-neutral-800 text-white font-medium py-2 px-6 rounded-full shadow">
+            + Ingresar Nuevo Paciente
+        </a>
+    </div>
+
+    <div class="bg-white shadow rounded-lg border border-gray-200 overflow-auto">
+        <table class="min-w-full text-sm text-gray-800 table-auto">
+            <thead class="bg-gray-100 text-gray-700 font-semibold">
+                <tr>
+                    <th class="px-4 py-2 border">DNI</th>
+                    <th class="px-4 py-2 border">Nombre</th>
+                    <th class="px-4 py-2 border">Apellido</th>
+                    <th class="px-4 py-2 border">Teléfono</th>
+                    <th class="px-4 py-2 border">Género</th>
+                    <th class="px-4 py-2 border text-center">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($pacientes as $paciente)
+                <tr class="hover:bg-gray-50">
+                    <td class="px-4 py-2 border">{{ $paciente->dni }}</td>
+                    <td class="px-4 py-2 border">{{ $paciente->nombre }}</td>
+                    <td class="px-4 py-2 border">{{ $paciente->apellido }}</td>
+                    <td class="px-4 py-2 border">{{ $paciente->telefono }}</td>
+                    <td class="px-4 py-2 border">{{ $paciente->genero }}</td>
+                    <td class="px-4 py-2 border text-center space-x-2">
+                        <a href="{{ route('pacientes.show', $paciente) }}" class="text-neutral-700 hover:underline font-medium">Ver</a>
+                        <a href="{{ route('pacientes.edit', $paciente) }}" class="text-neutral-700 hover:underline font-medium">Editar</a>
+                        <form action="{{ route('pacientes.destroy', $paciente) }}" method="POST" class="inline-block">
+                            @csrf @method('DELETE')
+                            <button type="submit" class="text-red-600 hover:underline font-medium">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="6" class="px-4 py-2 text-center text-gray-500">No hay pacientes registrados.</td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+</div>
 @endsection

@@ -1,17 +1,30 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace Database\Seeders;
 
-use App\Models\Codigo_postal;
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
-class CodigoPostalController extends Controller
+class CodigoPostalSeeder extends Seeder
 {
-    public function porPaisProvincia($pais_id, $provincia_id)
+    public function run()
     {
-        return Codigo_postal::where('pais_id', $pais_id)
-                           ->where('provincia_id', $provincia_id)
-                           ->get();
+        $json = Storage::get('data/postal_codes.json');
+        $codigos = json_decode($json, true);
+
+        foreach ($codigos as $cp) {
+            DB::table('codigo_postals')->updateOrInsert(
+                ['id' => $cp['id']],
+                [
+                    'codigo' => $cp['codigo'],
+                    'localidad' => $cp['localidad'],
+                    'pais_id' => $cp['pais_id'],
+                    'provincia_id' => $cp['provincia_id'],
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ]
+            );
+        }
     }
 }

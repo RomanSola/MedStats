@@ -13,6 +13,7 @@ use App\Http\Controllers\UsuarioPerfilController;
 use App\Http\Controllers\SalaController;
 use App\Http\Controllers\StockController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BusquedaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,7 +28,21 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('index');
-});
+})->name('inicio');
+
+
+
+
+
+
+Route::get('/buscar', [BusquedaController::class, 'buscar'])->name('buscar');
+
+
+// configuracion
+Route::view('/ajustes', 'ajustes')->name('ajustes');
+
+//vista estadistica
+Route::view('/estadisticas', 'estadisticas')->name('estadisticas');
 
 Route::get('/prueba', function (){
     return view('prueba');

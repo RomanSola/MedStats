@@ -48,7 +48,8 @@ class StockController extends Controller
             'paciente_id' => null,
             //'creado_por' => auth()->id(),
         ]);
-        return redirect()->route('stocks.index');
+        return redirect()->route('stocks.index')->with('success', 'Medicamento cargado con éxito');
+
     }
 
     public function show(Stock $stock)

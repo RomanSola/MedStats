@@ -6,28 +6,24 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::create('codigo_postals', function (Blueprint $table) {
+        Schema::create('codigos_postal', function (Blueprint $table) {
             $table->id();
             $table->string('codigo', 10);
             $table->string('localidad', 50);
             $table->unsignedBigInteger('pais_id')->nullable();
             $table->unsignedBigInteger('provincia_id')->nullable();
-            $table->foreign('pais_id')->references('id')->on('pais')->onDelete('cascade');;
+
+            $table->foreign('pais_id')->references('id')->on('pais')->onDelete('cascade');
             $table->foreign('provincia_id')->references('id')->on('provincias')->onDelete('cascade');
+
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('codigo_postals');
+        Schema::dropIfExists('codigos_postales');
     }
 };

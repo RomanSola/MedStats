@@ -8,8 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Codigo_postal extends Model
 {
     use HasFactory;
-
-
+   
     protected $fillable = [
         'codigo',
         'localidad',
@@ -17,12 +16,12 @@ class Codigo_postal extends Model
         'provincia_id'
     ];
 
-    public function get_pais()
+    public function pais()
     {
         return $this->belongsTo(Pais::class);
     }
 
-    public function get_provincia()
+    public function provincia()
     {
         return $this->belongsTo(Provincia::class);
     }

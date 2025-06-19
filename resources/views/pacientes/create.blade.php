@@ -1,113 +1,149 @@
 @extends('layouts.app')
+
 @section('titulo', 'Ingresar Paciente')
+
 @section('contenido')
-    <h1 class="mb-4">Ingresar Nuevo Paciente</h1>
-    <form action="{{ route('pacientes.store') }}" method="POST">
+<div class="max-w-4xl mx-auto px-4 py-8">
+
+    <h1 class="text-2xl font-bold text-blue-800 mb-6">Registrar Nuevo Paciente</h1>
+
+    <form action="{{ route('pacientes.store') }}" method="POST" class="bg-white shadow rounded-lg p-6 border border-gray-200 space-y-6">
         @csrf
-        <div class="mb-3">
-            <label for="dni" class="form-label">DNI</label>
-            <input type="text" name="dni" id="dni" class="form-control" required>
-            <label for="nombre" class="form-label">Nombre</label>
-            <input type="text" name="nombre" id="nombre" class="form-control" required>
-            <label for="apellido" class="form-label">Apellido</label>
-            <input type="text" name="apellido" id="apellido" class="form-control" required>
-            <label for="fecha_nacimiento" class="form-label">Fecha de nacimiento</label>
-            <input type="date" name="fecha_nacimiento" id="fecha_nacimiento" class="form-control" required>
-            <label for="telefono" class="form-label">Teléfono</label>
-            <input type="text" name="telefono" id="telefono" class="form-control">
-            <!-- ComboBox Género-->
-            <label for="genero" class="form-label">Género</label>
-            <select name="genero" id="genero" class="form-control">
-                <option value="">Seleccione el Género</option>
-                <option value="Masculino">Masculino</option>
-                <option value="Femenino">Femenino</option>
-            </select>
-        </div>
-        <!-- ComboBox País-->
-        <div class="mb-3">
-            <label for="pais" class="form-label">País</label>
-            <select name="pais_id" id="pais" class="form-control">
-                <option value="">Seleccione un País</option>
-                @foreach ($paises as $pais)
-                    <option value="{{ $pais->id }}" {{ old('pais_id') == $pais->id ? 'selected' : '' }}>
-                        {{ $pais->nombre }}
-                    </option>
-                @endforeach
-            </select>
-            @error('pais_id')
-                <small class="text-danger"> {{ $message }} </small>
-            @enderror
-        </div>
 
-        <!-- ComboBox Provincias-->
-        <div class="mb-3">
-            <label for="provincia" class="form-label">Provincia</label>
-            <select name="provincia_id" id="provincia" class="form-control">
-            </select>
+        <!-- Datos personales -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <label for="dni" class="block text-sm font-semibold text-gray-700 mb-1">DNI</label>
+                <input type="text" name="dni" id="dni"
+                       class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500"
+                       value="{{ old('dni') }}" required>
+            </div>
 
-            <!-- Scrip para ComboBox dinamico de Provinicias -->
-            <!-- JS para el CB dinamico -->
-            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-            <script>
-                document.getElementById('pais').addEventListener('change', function() {
-                    let paisId = this.value;
+            <div>
+                <label for="fecha_nacimiento" class="block text-sm font-semibold text-gray-700 mb-1">Fecha de Nacimiento</label>
+                <input type="date" name="fecha_nacimiento" id="fecha_nacimiento"
+                       class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500"
+                       value="{{ old('fecha_nacimiento') }}" required>
+            </div>
 
-                    fetch('/api/provincias/' + paisId)
-                        .then(res => res.json())
-                        .then(data => {
-                            const provinciaSelect = document.getElementById('provincia');
-                            provinciaSelect.innerHTML = '<option value="">Seleccione una provincia</option>';
+            <div>
+                <label for="nombre" class="block text-sm font-semibold text-gray-700 mb-1">Nombre</label>
+                <input type="text" name="nombre" id="nombre"
+                       class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500"
+                       value="{{ old('nombre') }}" required>
+            </div>
 
-                            data.forEach(prov => {
-                                provinciaSelect.innerHTML +=
-                                    `<option value="${prov.id}">${prov.nombre}</option>`;
-                            });
-                        });
-                });
-            </script>
+            <div>
+                <label for="apellido" class="block text-sm font-semibold text-gray-700 mb-1">Apellido</label>
+                <input type="text" name="apellido" id="apellido"
+                       class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500"
+                       value="{{ old('apellido') }}" required>
+            </div>
 
-            @error('provincia_id')
-                <small class="text-danger"> {{ $message }} </small>
-            @enderror
+            <div>
+                <label for="telefono" class="block text-sm font-semibold text-gray-700 mb-1">Teléfono</label>
+                <input type="text" name="telefono" id="telefono"
+                       class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500"
+                       value="{{ old('telefono') }}">
+            </div>
 
-        </div>
-        <!-- ComboBox Codigo postal-->
-        <div class="mb-3">
-            <label for="codigo_postal" class="form-label">Código Postal</label>
-            <select name="cod_postal_id" id="codigo_postal" class="form-control">
-            </select>
-
-            <script>
-                document.getElementById('provincia').addEventListener('change', function() {
-                    const paisId = document.getElementById('pais').value;
-                    const provinciaId = this.value;
-
-                    fetch(`/api/cod_postal/${paisId}/${provinciaId}`)
-                        .then(res => res.json())
-                        .then(data => {
-                            const codigoPostalSelect = document.getElementById('codigo_postal');
-                            codigoPostalSelect.innerHTML = '<option value="">Seleccione un código postal</option>';
-
-                            data.forEach(cod => {
-                                const nombre = cod.codigo + (cod.localidad ? ' - ' + cod.localidad : '');
-                                codigoPostalSelect.innerHTML += `<option value="${cod.id}">${nombre}</option>`;
-                            });
-                        });
-                });
-            </script>
-
-            @error('cod_postal_id')
-                <small class="text-danger"> {{ $message }} </small>
-            @enderror
+            <div>
+                <label for="genero" class="block text-sm font-semibold text-gray-700 mb-1">Género</label>
+                <select name="genero" id="genero"
+                        class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500">
+                    <option value="">Seleccione un género</option>
+                    <option value="Masculino" {{ old('genero') == 'Masculino' ? 'selected' : '' }}>Masculino</option>
+                    <option value="Femenino" {{ old('genero') == 'Femenino' ? 'selected' : '' }}>Femenino</option>
+                </select>
+            </div>
         </div>
 
-        <div class="mb-3">
-            <label for="direccion" class="form-label">Dirección</label>
-            <input type="text" name="direccion" id="direccion" class="form-control">
+        <!-- Ubicación -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <label for="pais" class="block text-sm font-semibold text-gray-700 mb-1">País</label>
+                <select name="pais_id" id="pais"
+                        class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500">
+                    <option value="">Seleccione un país</option>
+                    @foreach ($paises as $pais)
+                        <option value="{{ $pais->id }}" {{ old('pais_id') == $pais->id ? 'selected' : '' }}>
+                            {{ $pais->nombre }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('pais_id')
+                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div>
+                <label for="provincia" class="block text-sm font-semibold text-gray-700 mb-1">Provincia</label>
+                <select name="provincia_id" id="provincia"
+                        class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500">
+                </select>
+                @error('provincia_id')
+                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
+           <!-- <div>
+                <label for="codigo_postal" class="block text-sm font-semibold text-gray-700 mb-1">Código Postal</label>
+                <select name="cod_postal_id" id="codigo_postal"
+                        class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500">
+                </select>
+                @error('cod_postal_id')
+                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>-->
+
+            <div>
+                <label for="direccion" class="block text-sm font-semibold text-gray-700 mb-1">Dirección</label>
+                <input type="text" name="direccion" id="direccion"
+                       class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500"
+                       value="{{ old('direccion') }}">
+            </div>
         </div>
-        
-        <div class="mb-3">
-        <button class="btn btn-primary">Agregar</button>
+
+        <!-- Botón -->
+        <div class="flex justify-between pt-4">
+            <a href="{{ route('pacientes.index') }}" class="text-blue-700 hover:text-blue-900 font-medium">← Cancelar</a>
+            <button type="submit"
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-full shadow transition">
+                💾 Registrar Paciente
+            </button>
         </div>
     </form>
+</div>
+
+<!-- Scripts para combos dinámicos -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $('#pais').on('change', function () {
+        let paisId = $(this).val();
+        fetch(`/api/provincias/${paisId}`)
+            .then(res => res.json())
+            .then(data => {
+                let provincia = $('#provincia');
+                provincia.html('<option value="">Seleccione una provincia</option>');
+                data.forEach(p => {
+                    provincia.append(`<option value="${p.id}">${p.nombre}</option>`);
+                });
+            });
+    });
+
+    $('#provincia').on('change', function () {
+        let paisId = $('#pais').val();
+        let provinciaId = $(this).val();
+        fetch(`/api/cod_postal/${paisId}/${provinciaId}`)
+            .then(res => res.json())
+            .then(data => {
+                let codigos = $('#codigo_postal');
+                codigos.html('<option value="">Seleccione un código postal</option>');
+                data.forEach(c => {
+                    let texto = `${c.codigo}${c.localidad ? ' - ' + c.localidad : ''}`;
+                    codigos.append(`<option value="${c.id}">${texto}</option>`);
+                });
+            });
+    });
+</script>
 @endsection

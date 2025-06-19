@@ -1,32 +1,51 @@
 @extends('layouts.app')
-@section('titulo', 'Lista de Habitaciones')
+
+@section('titulo', 'Gestión de Camas')
+
 @section('contenido')
-<h1 class="mb-4">Gestor de Habitaciones</h1>
-<a href="{{ route('camas.create') }}" class="btn btn-primary mb-3">Agregar Nueva Habitación</a>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Cama</th>
-            <th>Habitación</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach($camas as $cama)
-        <tr>
-            <td>{{ $cama->codigo }}</td>
-            <td>{{ $cama->get_habitacion->numero }}</td>
-            <td>
-                <!-- Botón Editar -->
-                <a href="{{ route('camas.edit', $cama) }}" class="btn btn-secondary btn-sm mr-1">Editar</a>
-                <form action="{{ route('camas.destroy', $cama) }}" method="POST" class="d-inline">
-                    @csrf
-                    @method('DELETE')
-                    <button class="btn btn-danger btn-sm">Eliminar</button>
-                </form>
-            </td>
-        </tr>
-        @endforeach
-    </tbody>
-</table>
+<div class="max-w-6xl mx-auto px-4 py-8">
+    <h1 class="text-2xl font-bold text-green-800 mb-6">Listado de Camas</h1>
+
+    <div class="flex justify-end mb-4">
+        <a href="{{ route('camas.create') }}"
+           class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-full shadow transition">
+            + Agregar Nueva Cama
+        </a>
+    </div>
+
+    <div class="bg-white shadow-md rounded-lg overflow-auto border border-gray-200">
+        <table class="min-w-full table-auto text-sm text-gray-800">
+            <thead class="bg-green-100 text-green-800 font-semibold">
+                <tr>
+                    <th class="px-4 py-2 border">Código</th>
+                    <th class="px-4 py-2 border">Habitación</th>
+                    <th class="px-4 py-2 border text-center">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($camas as $cama)
+                <tr class="hover:bg-green-50">
+                    <td class="px-4 py-2 border">{{ $cama->codigo }}</td>
+                    <td class="px-4 py-2 border">{{ $cama->get_habitacion->numero }}</td>
+                    <td class="px-4 py-2 border text-center space-x-2">
+                        <a href="{{ route('camas.edit', $cama) }}"
+                           class="text-blue-600 hover:underline font-semibold">Editar</a>
+                        <form action="{{ route('camas.destroy', $cama) }}" method="POST" class="inline-block">
+                            @csrf
+                            @method('DELETE')
+                            <button class="text-red-600 hover:underline font-semibold" type="submit">
+                                Eliminar
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="3" class="px-4 py-2 text-center text-gray-500">No hay camas registradas.</td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+</div>
 @endsection

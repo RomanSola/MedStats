@@ -2,49 +2,84 @@
 @section('titulo','inicio')
 @section('contenido')
 
-  <main class="max-w-7xl mx-auto px-6 py-8">
-    <!-- Buscador -->
-    <div class="mb-8 flex justify-center">
-      <input
-        type="text"
-        placeholder="Buscar paciente"
-        class="w-full md:w-1/2 border border-green-300 rounded-full py-2 px-4 shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
-      />
+
+<div class="w-full flex justify-center mt-6">
+  <form action="{{ route('buscar') }}" method="GET"
+        class="flex items-center justify-center gap-2 w-full max-w-5xl px-6">
+    <input
+      type="text"
+      name="query"
+      placeholder="Buscar paciente, insumo, cama..."
+      class="flex-grow border border-[#B4DCE2] rounded-md px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-[#1B7D8F]"
+    >
+    <button
+      type="submit"
+      class="bg-[#1B7D8F] hover:bg-[#176d7b] text-white text-base px-5 py-3 rounded-md shadow transition whitespace-nowrap"
+    >
+      🔍 Buscar
+    </button>
+  </form>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-8 bg-gray-100 min-h-screen">
+
+
+  <!-- CARD 1: Insumos -->
+  <a href="{{ route('stocks.index') }}" class="flex h-52 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition duration-300 bg-white">
+    <div class="w-1/2 p-6 flex flex-col justify-between">
+      <div>
+        <h2 class="text-2xl font-bold text-gray-800">Insumos</h2>
+        <p class="text-gray-500 mt-2 text-sm">Gestión de insumos médicos y material hospitalario.</p>
+      </div>
+      <span class="text-blue-600 font-semibold mt-4">Ver más →</span>
     </div>
-
-    <!-- Tarjetas -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-      <a href="libro_paciente.php"
-         class="bg-white rounded-xl shadow-md p-6 max-w-xs mx-auto transform transition hover:scale-105 duration-300">
-        <img src="{{ asset ('assets/img/card_pacientes.jpg') }}" alt="Libro Pacientes" class="rounded-md mb-4 w-full h-40 object-cover" />
-        <h2 class="text-xl font-semibold text-green-800 text-center">LIBRO PACIENTES</h2>
-      </a>
-
-      <a href="#"
-         class="bg-white rounded-xl shadow-md p-6 max-w-xs mx-auto transform transition hover:scale-105 duration-300">
-        <img src="{{ asset ('assets/img/card_insumos.jpg') }}" alt="Insumos Médicos" class="rounded-md mb-4 w-full h-40 object-cover" />
-        <h2 class="text-xl font-semibold text-green-800 text-center">INSUMOS MÉDICOS</h2>
-      </a>
-
-            <a href="gestion_cama.php"
-         class="bg-white rounded-xl shadow-md p-6 max-w-xs mx-auto transform transition hover:scale-105 duration-300">
-        <img src="{{ asset ('assets/img/gestion_camas.jpg') }}" alt="Gestion Camas" class="rounded-md mb-4 w-full h-40 object-cover" />
-        <h2 class="text-xl font-semibold text-green-800 text-center">GESTIÓN CAMAS</h2>
-      </a>
-
-      <a href="#"
-         class="bg-white rounded-xl shadow-md p-6 max-w-xs mx-auto transform transition hover:scale-105 duration-300">
-        <img src="{{ asset ('assets/img/card_estadisticas.jpg') }}" alt="Estadísticas" class="rounded-md mb-4 w-full h-40 object-cover" />
-        <h2 class="text-xl font-semibold text-green-800 text-center">ESTADÍSTICAS</h2>
-      </a>
+    <div class="w-1/2 h-full">
+      <img src="{{ asset('assets/img/card_insumos.jpg') }}" alt="Insumos" class="w-full h-full object-cover">
     </div>
-  </main>
+  </a>
 
+  <!-- CARD 2: Estadísticas -->
+  <a href="/estadisticas" class="flex h-52 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition duration-300 bg-white">
+    <div class="w-1/2 p-6 flex flex-col justify-between">
+      <div>
+        <h2 class="text-2xl font-bold text-gray-800">Estadísticas</h2>
+        <p class="text-gray-500 mt-2 text-sm">Informes visuales y análisis de datos médicos.</p>
+      </div>
+      <span class="text-blue-600 font-semibold mt-4">Ver más →</span>
+    </div>
+    <div class="w-1/2 h-full">
+      <img src="{{ asset('assets/img/card_estadisticas.jpg') }}" alt="Estadísticas" class="w-full h-full object-cover">
+    </div>
+  </a>
 
+  <!-- CARD 3: Pacientes -->
+  <a href="/pacientes" class="flex h-52 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition duration-300 bg-white">
+    <div class="w-1/2 p-6 flex flex-col justify-between">
+      <div>
+        <h2 class="text-2xl font-bold text-gray-800">Pacientes</h2>
+        <p class="text-gray-500 mt-2 text-sm">Registro, historial clínico y seguimiento.</p>
+      </div>
+      <span class="text-blue-600 font-semibold mt-4">Ver más →</span>
+    </div>
+    <div class="w-1/2 h-full">
+      <img src="{{ asset('assets/img/card_pacientes.jpg') }}" alt="Pacientes" class="w-full h-full object-cover">
+    </div>
+  </a>
 
+  <!-- CARD 4: Camas -->
+  <a href="/camas" class="flex h-52 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition duration-300 bg-white">
+    <div class="w-1/2 p-6 flex flex-col justify-between">
+      <div>
+        <h2 class="text-2xl font-bold text-gray-800">Camas</h2>
+        <p class="text-gray-500 mt-2 text-sm">Asignación, estado y control de camas.</p>
+      </div>
+      <span class="text-blue-600 font-semibold mt-4">Ver más →</span>
+    </div>
+    <div class="w-1/2 h-full">
+      <img src="{{ asset('assets/img/gestion_camas.jpg') }}" alt="Camas" class="w-full h-full object-cover">
+    </div>
+  </a>
 
-
-
+</div>
 
 @endsection
-

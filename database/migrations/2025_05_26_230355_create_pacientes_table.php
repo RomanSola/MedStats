@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('telefono', 20)->nullable();
             $table->unsignedBigInteger('pais_id')->nullable();
             $table->unsignedBigInteger('provincia_id')->nullable();
-            $table->unsignedBigInteger('cod_postal_id')->nullable();
+            $table->unsignedBigInteger('cod_postal_id')->nullable()->after('provincia_id');
             $table->text('direccion')->nullable();
             $table->unsignedBigInteger('creado_por');
             $table->unsignedBigInteger('modificado_por');
@@ -29,7 +29,7 @@ return new class extends Migration
             //Claves foraneas
             $table->foreign('pais_id')->references('id')->on('pais')->onDelete('cascade');;
             $table->foreign('provincia_id')->references('id')->on('provincias')->onDelete('cascade');
-            $table->foreign('cod_postal_id')->references('id')->on('codigo_postals')->onDelete('cascade');
+            $table->foreign('cod_postal_id')->references('id')->on('codigo_postals')->onDelete('set null');
             //Agregar clave foranea a la tabla de usuarios
             //$table->foreign('creado_por')->references('id')->on('')->onDelete('set null');
             //$table->foreign('modificado_por')->references('id')->on('')->onDelete('set null');

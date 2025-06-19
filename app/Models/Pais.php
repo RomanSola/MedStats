@@ -7,19 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Pais extends Model
 {
-    use HasFactory;
-    
-    protected $fillable =  [
-        'nombre',
-        ];
-    
-    public function get_provincias()
+    protected $table = 'pais'; 
+
+    public function provincias()
     {
         return $this->hasMany(Provincia::class);
-    }
-
-    public function get_codigos_postales()
-    {
-        return $this->hasMany(Codigo_postal::class);
     }
 }
