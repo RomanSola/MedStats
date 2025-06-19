@@ -25,10 +25,14 @@ class PacienteController extends Controller
     }
     public function create()
     {
-       
-    $paises = Pais::all();
-    $provincias = Provincia::all();
-    $codigosPostales = Codigo_postal::all();
+        /*
+        $paises = Pais::all();
+        $provincias = Provincia::all();
+        $codigosPostales = Codigo_postal::all();
+        */
+        
+        $paises = Pais::all();
+        return view('pacientes.create', compact('paises'));
     }
 
     public function store(Request $request)
@@ -41,7 +45,7 @@ class PacienteController extends Controller
             'genero' => 'required',
             'pais_id' => 'required|exists:pais,id',
             'provincia_id' => 'required|exists:provincias,id',
-           // 'cod_postal_id' => 'required|exists:codigo_postals,id',
+            'cod_postal_id' => 'required|exists:codigo_postals,id',
         ]);
 
         $paciente = new paciente();
@@ -54,7 +58,7 @@ class PacienteController extends Controller
         $paciente->telefono = $request->input('telefono');
         $paciente->pais_id = $request->input('pais_id');
         $paciente->provincia_id = $request->input('provincia_id');
-       // $paciente->cod_postal_id = $request->input('cod_postal_id');
+        // $paciente->cod_postal_id = $request->input('cod_postal_id');
         $paciente->direccion = $request->input('direccion');
         //COMPLETAR CON EL USUARIO:
         $paciente->creado_por = '1';
@@ -81,7 +85,7 @@ class PacienteController extends Controller
             'genero' => 'required',
             'pais_id' => 'required|exists:pais,id',
             'provincia_id' => 'required|exists:provincias,id',
-            //'cod_postal_id' => 'required|exists:codigo_postals,id',
+            'cod_postal_id' => 'required|exists:codigo_postals,id',
         ]);
 
         if ($request->input('dni') != null) {

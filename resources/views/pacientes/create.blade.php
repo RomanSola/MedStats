@@ -86,7 +86,7 @@
                 @enderror
             </div>
 
-           <!-- <div>
+            <div>
                 <label for="codigo_postal" class="block text-sm font-semibold text-gray-700 mb-1">Código Postal</label>
                 <select name="cod_postal_id" id="codigo_postal"
                         class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500">
@@ -94,7 +94,7 @@
                 @error('cod_postal_id')
                 <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                 @enderror
-            </div>-->
+            </div>
 
             <div>
                 <label for="direccion" class="block text-sm font-semibold text-gray-700 mb-1">Dirección</label>

@@ -97,9 +97,11 @@
 <script>
     document.getElementById('pais').addEventListener('change', function() {
         let paisId = this.value;
+        console.log('Pais id:', paisId);
         fetch('/api/provincias/' + paisId)
             .then(res => res.json())
             .then(data => {
+                console.log('Datos recibidos:', data);
                 const provinciaSelect = document.getElementById('provincia');
                 provinciaSelect.innerHTML = '<option value="">Seleccione una provincia</option>';
                 data.forEach(prov => {
