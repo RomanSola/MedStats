@@ -35,13 +35,14 @@ class EmpleadoController extends Controller
     public function store(Request $request)
     {
         $request->validate([ //Si el titulo esta vacion no hace nada 
-            'dni' => 'required',
+            'dni' => 'required|int',
             'nombre' => 'required',
             'apellido' => 'required',
             'fecha_nacimiento' => 'required',
-            'pais_id' => 'required|exists:paises,id',
+            'telefono' => 'int',
+            'pais_id' => 'required|exists:pais,id',
             'provincia_id' => 'required|exists:provincias,id',
-            'cod_postal_id' => 'required|exists:codigo_postal,id',
+            'cod_postal_id' => 'required|exists:codigo_postals,id',
             'profesion_id' => 'required|exists:profesions,id',
         ]);
 
@@ -72,13 +73,14 @@ class EmpleadoController extends Controller
     public function update(Request $request, Empleado $empleado)
     {
         $request->validate([ //Si el titulo esta vacion no hace nada 
-            'dni' => 'required',
+            'dni' => 'required|int',
             'nombre' => 'required',
             'apellido' => 'required',
             'fecha_nacimiento' => 'required',
-            'pais_id' => 'required|exists:paises,id',
+            'telefono' => 'int',
+            'pais_id' => 'required|exists:pais,id',
             'provincia_id' => 'required|exists:provincias,id',
-            'cod_postal_id' => 'required|exists:codigo_postal,id',
+            'cod_postal_id' => 'required|exists:codigo_postals,id',
             'profesion_id' => 'required|exists:profesions,id',
         ]);
         

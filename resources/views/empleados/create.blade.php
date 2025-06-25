@@ -16,14 +16,23 @@
                         <label for="dni" class="form-label">DNI</label>
                         <input type="text" name="dni" id="dni" class="form-control" required>
                     </div>
+                    @error('dni')
+                        <small class="text-danger"> {{ $message }} </small>
+                    @enderror
                     <div class="col-md-4">
                         <label for="nombre" class="form-label">Nombre</label>
                         <input type="text" name="nombre" id="nombre" class="form-control" required>
                     </div>
+                    @error('nombre')
+                        <small class="text-danger"> {{ $message }} </small>
+                    @enderror
                     <div class="col-md-4">
                         <label for="apellido" class="form-label">Apellido</label>
                         <input type="text" name="apellido" id="apellido" class="form-control" required>
                     </div>
+                    @error('apellido')
+                        <small class="text-danger"> {{ $message }} </small>
+                    @enderror
                 </div>
 
                 <div class="row mb-3">
@@ -35,6 +44,9 @@
                         <label for="telefono" class="form-label">Teléfono</label>
                         <input type="text" name="telefono" id="telefono" class="form-control">
                     </div>
+                    @error('telefono')
+                        <small class="text-danger"> {{ $message }} </small>
+                    @enderror
                     <div class="col-md-4">
                         <label for="direccion" class="form-label">Dirección</label>
                         <input type="text" name="direccion" id="direccion" class="form-control">
@@ -60,6 +72,9 @@
                     <div class="col-md-4">
                         <label for="provincia" class="form-label">Provincia</label>
                         <select name="provincia_id" id="provincia" class="form-control"></select>
+                    @error('provincia_id')
+                        <small class="text-danger"> {{ $message }} </small>
+                    @enderror
                     </div>
 
                     <div class="col-md-4">
