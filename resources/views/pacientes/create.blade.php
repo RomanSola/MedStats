@@ -17,6 +17,9 @@
                 <input type="text" name="dni" id="dni"
                        class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500"
                        value="{{ old('dni') }}" required>
+                @error('dni')
+                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                @enderror
             </div>
 
             <div>
@@ -24,6 +27,9 @@
                 <input type="date" name="fecha_nacimiento" id="fecha_nacimiento"
                        class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500"
                        value="{{ old('fecha_nacimiento') }}" required>
+                @error('fecha_nacimiento')
+                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                @enderror
             </div>
 
             <div>
@@ -31,6 +37,9 @@
                 <input type="text" name="nombre" id="nombre"
                        class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500"
                        value="{{ old('nombre') }}" required>
+                @error('apellido')
+                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                @enderror
             </div>
 
             <div>
@@ -38,6 +47,9 @@
                 <input type="text" name="apellido" id="apellido"
                        class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500"
                        value="{{ old('apellido') }}" required>
+                @error('apellido')
+                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                @enderror
             </div>
 
             <div>
@@ -45,6 +57,9 @@
                 <input type="text" name="telefono" id="telefono"
                        class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500"
                        value="{{ old('telefono') }}">
+                @error('telefono')
+                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                @enderror
             </div>
 
             <div>

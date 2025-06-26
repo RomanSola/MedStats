@@ -38,11 +38,12 @@ class PacienteController extends Controller
     public function store(Request $request)
     {
         $request->validate([ //Si el titulo esta vacion no hace nada 
-            'dni' => 'required',
+            'dni' => 'required|int',
             'nombre' => 'required',
             'apellido' => 'required',
             'fecha_nacimiento' => 'required',
             'genero' => 'required',
+            'telefono' => 'int',
             'pais_id' => 'required|exists:pais,id',
             'provincia_id' => 'required|exists:provincias,id',
             'cod_postal_id' => 'required|exists:codigo_postals,id',
