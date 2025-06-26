@@ -3,6 +3,7 @@
 @section('titulo', 'Gestión de Camas')
 
 @section('contenido')
+
 <div class="max-w-6xl mx-auto px-4 py-8">
     <h1 class="text-2xl font-bold text-green-800 mb-6">Listado de Camas</h1>
 
@@ -24,27 +25,34 @@
                                 <h5 class="card-title"><b>Cama {{ $cama->codigo }}</b></h5>
                             </div>
                             <div class="col-4">
-                                <div style="text-align: center; border-radius: 4px; background-color: #cacfd2;">{{ $cama->estado }}</div>
+                                <div style="text-align: center; border-radius: 4px; background-color: #cacfd2;">
+                                    {{ $cama->estado }}
+                                </div>
                             </div>
                         </div>
+
                         @if ($cama->estado === 'ocupado' && $cama->ocupacionActual && $cama->ocupacionActual->get_paciente)
                             <p><strong>Paciente:</strong> {{ $cama->ocupacionActual->get_paciente->nombre }} {{ $cama->ocupacionActual->get_paciente->apellido }}</p>
                         @endif
+
                         <h4 class="mb-2">{{ $cama->estado == 'ocupado' ? 'OCUPADO' : 'LIBRE' }}</h4>
-                            @if ($cama->estado == 'ocupado')
-                                <a href="{{ route('ocupacionCamas.darAlta', ['oc_cama' => $cama->ocupacionActual->id ?? 0]) }}"
-                                class="btn btn-danger mb-2">Dar de Alta</a>
-                                <a href="{{ route('ocupacionCamas.edit', ['oc_cama' => $cama->ocupacionActual->id ?? 0]) }}"
-                                class="btn btn-warning">Editar</a>
-                            @else
-                                <a href="{{ url('/pacientes?habitacion=' . ($cama->habitacion->id ?? 0) . '&cama=' . $cama->id) }}"
-                                class="btn" style="background-color: lightgreen">Asignar paciente</a>
-                            @endif
+
+                        @if ($cama->estado == 'ocupado')
+                            <a href="{{ route('ocupacionCamas.darAlta', ['oc_cama' => $cama->ocupacionActual->id ?? 0]) }}"
+                               class="btn btn-danger mb-2">Dar de Alta</a>
+                        @else
+                            <a href="{{ url('/pacientes?habitacion=' . ($cama->habitacion->id ?? 0) . '&cama=' . $cama->id) }}"
+                               class="btn" style="background-color: lightgreen">Asignar paciente</a>
+                        @endif
+
+                        <a href="{{ route('camas.edit', ['cama' => $cama->id]) }}"
+                           class="btn btn-secondary mt-2">Editar cama</a>
                     </div>
                 </div>
             </div>
         @endforeach
     </div>
+</div>
         {{-- <table class="min-w-full table-auto text-sm text-gray-800">
             <thead class="bg-green-100 text-green-800 font-semibold">
                 <tr>
@@ -77,6 +85,4 @@
                 @endforelse
             </tbody>
         </table> --}}
-    </div>
-</div>
 @endsection
