@@ -28,6 +28,37 @@
         </div>
 
         <div class="col-md-6 mb-3">
+            <div class="card border-secondary">
+                <div class="card-body">
+                    <h5 class="card-title">Habitaciones</h5>
+                    <p class="card-text">Agregar habitaciones nuevas para asignación de camas.</p>
+                    <a href="{{ route('habitaciones.index') }}" class="btn btn-secondary">Gestionar Habitación</a>
+                </div>
+            </div>
+        </div>
+
+                <div class="col-md-6 mb-3">
+            <div class="card border-secondary">
+                <div class="card-body">
+                    <h5 class="card-title">Camas</h5>
+                    <p class="card-text">Agregar camas nuevas para las habitaciones.</p>
+                    <a href="{{ route('camas.index') }}" class="btn btn-secondary">Gestionar Habitación</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <div class="card border-info">
+                <div class="card-body">
+                    <h5 class="card-title">Salas</h5>
+                    <p class="card-text">Definir salas del establecimiento y su capacidad.</p>
+                    <a href="{{ route('salas.index') }}" class="btn btn-dark">Gestionar Salas</a>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-6 mb-3">
             <div class="card border-warning">
                 <div class="card-body">
                     <h5 class="card-title">Empleados</h5>

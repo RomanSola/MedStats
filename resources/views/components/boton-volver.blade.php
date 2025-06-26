@@ -17,6 +17,9 @@
             case 'empleados.index':
             case 'medicamentos.index':
             case 'cirugias.index':
+            case 'salas.index':
+            case 'habitaciones.index':
+            
                 $rutaAnterior = 'ajustes';
                 break;
 
