@@ -17,7 +17,7 @@
     <div class="row" style="width: 100%">
         @foreach ($camas as $cama)
             <div class="container col-3 shadow" style="background-color: #fff; border-radius: 22px; border: solid 1px lightgreen; padding: 10px; margin: 2%; text-align: center;">
-                <h3>Habitación {{ $cama->habitacion->codigo ?? 'Sin asignar' }}</h3>
+                <h3>Habitación {{ $cama->get_habitacion->numero ?? 'Sin asignar' }}</h3>
                 <div class="card" style="width: 18rem; border-radius: 12px; background-color: #e7e7e7; margin-bottom: 12px;">
                     <div class="card-body">
                         <div class="row mb-2">
