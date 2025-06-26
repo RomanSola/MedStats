@@ -23,4 +23,9 @@ class Cama extends Model
     {
         return $this->hasMany(Ocupacion_cama::class);
     }
+    public function ocupacionActual()
+{
+    return $this->hasOne(\App\Models\Ocupacion_cama::class)->latestOfMany();
+}
+
 }
