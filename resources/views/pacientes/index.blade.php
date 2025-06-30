@@ -21,6 +21,8 @@
                     <th class="px-4 py-2 border">Apellido</th>
                     <th class="px-4 py-2 border">Teléfono</th>
                     <th class="px-4 py-2 border">Género</th>
+                    <th class="px-4 py-2 border">Habitación</th>
+                    <th class="px-4 py-2 border">Cama</th>
                     <th class="px-4 py-2 border text-center">Acciones</th>
                 </tr>
             </thead>
@@ -32,9 +34,23 @@
                     <td class="px-4 py-2 border">{{ $paciente->apellido }}</td>
                     <td class="px-4 py-2 border">{{ $paciente->telefono }}</td>
                     <td class="px-4 py-2 border">{{ $paciente->genero }}</td>
+                    <td class="px-4 py-2 border">
+                        {{ $paciente->habitacion?->numero ?? '—' }}
+                    </td>
+                    <td class="px-4 py-2 border">
+                        {{ $paciente->cama?->codigo ?? '—' }}
+                    </td>
                     <td class="px-4 py-2 border text-center space-x-2">
                         <a href="{{ route('pacientes.show', $paciente) }}" class="text-neutral-700 hover:underline font-medium">Ver</a>
                         <a href="{{ route('pacientes.edit', $paciente) }}" class="text-neutral-700 hover:underline font-medium">Editar</a>
+                        @if($paciente->cama_id)
+                        <form action="{{ route('pacientes.darDeAlta', $paciente) }}" method="POST" class="inline-block">
+                            @csrf
+                            <button type="submit" class="text-green-600 hover:underline font-medium">Dar de alta</button>
+                        </form>
+                        @else
+                            <a href="{{ route('pacientes.asignar', $paciente) }}" class="text-blue-700 hover:underline font-medium">Asignar</a>
+                        @endif
                         <form action="{{ route('pacientes.destroy', $paciente) }}" method="POST" class="inline-block">
                             @csrf @method('DELETE')
                             <button type="submit" class="text-red-600 hover:underline font-medium">Eliminar</button>

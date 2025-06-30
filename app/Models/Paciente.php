@@ -23,7 +23,15 @@ class Paciente extends Model
         'creado_por', 
         'modificado_por'
     ];
+    public function habitacion()
+    {
+        return $this->belongsTo(Habitacion::class);
+    }
 
+    public function cama()
+    {
+        return $this->belongsTo(Cama::class);
+    }
     public function get_pais()
     {
         return $this->belongsTo(Pais::class, 'pais_id', 'id');

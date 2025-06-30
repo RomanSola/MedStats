@@ -1,13 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Cama;
 use App\Models\Paciente;
 use App\Models\Pais;
 use App\Models\Provincia;
 use App\Models\Codigo_postal;
 use Illuminate\Http\Request;
-
+use App\Models\Habitacion;
 class PacienteController extends Controller
 {
 
@@ -128,4 +128,44 @@ class PacienteController extends Controller
         $paciente->delete();
         return redirect()->route('pacientes.index');
     }
+public function asignar(Paciente $paciente)
+{
+    $habitaciones = Habitacion::with(['camas' => function ($query) {
+    $query->where('ocupada', false);
+    }])->get();
+    return view('pacientes.asignar', compact('paciente', 'habitaciones'));
+}
+
+public function guardarAsignacion(Request $request, Paciente $paciente)
+{
+    $request->validate([
+        'habitacion_id' => 'required|exists:habitacions,id',
+        'cama_id' => 'required|exists:camas,id',
+    ]);
+
+    $paciente->habitacion_id = $request->habitacion_id;
+    $paciente->cama_id = $request->cama_id;
+    $paciente->save();
+    $cama = Cama::find($request->cama_id);
+    $cama->ocupada = true;
+    $cama->save();
+
+
+
+    return redirect()->route('pacientes.index')->with('success', 'Paciente asignado correctamente.');
+}
+public function darDeAlta(Paciente $paciente)
+{
+    // Opción: marcar la cama como disponible (si tenés ese campo)
+    if ($paciente->cama) {
+        $paciente->cama->ocupada = false;
+        $paciente->cama->save();
+    }
+
+    $paciente->cama_id = null;
+    $paciente->habitacion_id = null;
+    $paciente->save();
+
+    return redirect()->route('pacientes.index')->with('success', 'Paciente dado de alta y cama liberada.');
+}
 }

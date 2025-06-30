@@ -84,7 +84,9 @@ Route::get('/pacientes/{paciente}/edit', [PacienteController::class, 'edit'])->n
 Route::get('/pacientes/{paciente}', [PacienteController::class, 'show'])->name('pacientes.show');
 Route::put('/pacientes/{paciente}', [PacienteController::class, 'update'])->name('pacientes.update');
 Route::delete('/pacientes/{paciente}', [PacienteController::class, 'destroy'])->name('pacientes.destroy');
-
+Route::get('/pacientes/{paciente}/asignar', [PacienteController::class, 'asignar'])->name('pacientes.asignar');
+Route::post('/pacientes/{paciente}/asignar', [PacienteController::class, 'guardarAsignacion'])->name('pacientes.asignar.guardar');
+Route::post('/pacientes/{paciente}/alta', [PacienteController::class, 'darDeAlta'])->name('pacientes.darDeAlta');
 //Procedimientos
 Route::get('/procedimientos', [ProcedimientoController::class, 'index'])->name('procedimientos.index');
 Route::get('/procedimientos/create', [ProcedimientoController::class, 'create'])->name('procedimientos.create');

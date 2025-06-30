@@ -25,21 +25,19 @@
                                 <h5 class="card-title"><b>Cama {{ $cama->codigo }}</b></h5>
                             </div>
                             <div class="col-4">
-                                <div style="text-align: center; border-radius: 4px; background-color: #cacfd2;">
-                                    {{ $cama->estado }}
-                                </div>
                             </div>
                         </div>
 
-                        @if ($cama->estado === 'ocupado' && $cama->ocupacionActual && $cama->ocupacionActual->get_paciente)
-                            <p><strong>Paciente:</strong> {{ $cama->ocupacionActual->get_paciente->nombre }} {{ $cama->ocupacionActual->get_paciente->apellido }}</p>
-                        @endif
+                   @if ($cama->ocupada && $cama->paciente)
+                        <p><strong>Paciente:</strong> {{ $cama->paciente->nombre }} {{ $cama->paciente->apellido }}</p>
+                    @endif
 
-                        <h4 class="mb-2">{{ $cama->estado == 'ocupado' ? 'OCUPADO' : 'LIBRE' }}</h4>
-
-                        @if ($cama->estado == 'ocupado')
-                            <a href="{{ route('ocupacionCamas.darAlta', ['oc_cama' => $cama->ocupacionActual->id ?? 0]) }}"
-                               class="btn btn-danger mb-2">Dar de Alta</a>
+                        <h4 class="mb-2">{{ $cama->ocupada == 'ocupada' ? 'OCUPADA' : 'LIBRE' }}</h4>
+                        @if ($cama->ocupada && $cama->paciente)
+                            <form action="{{ route('pacientes.darDeAlta', $cama->paciente) }}" method="POST" class="mb-2">
+                                @csrf
+                                <button type="submit" class="btn btn-danger">Dar de Alta</button>
+                            </form>
                         @else
                             <a href="{{ url('/pacientes?habitacion=' . ($cama->habitacion->id ?? 0) . '&cama=' . $cama->id) }}"
                                class="btn" style="background-color: lightgreen">Asignar paciente</a>
