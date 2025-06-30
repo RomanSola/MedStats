@@ -8,7 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Ocupacion_cama extends Model
 {
     use HasFactory;
-    
+    protected $casts = [
+    'fecha_ingreso' => 'datetime',
+    'fecha_egreso' => 'datetime',
+];
+
     protected $fillable = [
         'cama_id', 
         'paciente_id', 

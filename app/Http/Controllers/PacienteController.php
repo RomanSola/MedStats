@@ -8,6 +8,7 @@ use App\Models\Provincia;
 use App\Models\Codigo_postal;
 use Illuminate\Http\Request;
 use App\Models\Habitacion;
+use App\Models\Ocupacion_cama;
 class PacienteController extends Controller
 {
 
@@ -149,6 +150,12 @@ public function guardarAsignacion(Request $request, Paciente $paciente)
     $cama = Cama::find($request->cama_id);
     $cama->ocupada = true;
     $cama->save();
+    Ocupacion_cama::create([
+    'paciente_id' => $paciente->id,
+    'cama_id' => $request->cama_id,
+    'fecha_ingreso' => now()
+]);
+
 
 
 
@@ -161,6 +168,15 @@ public function darDeAlta(Paciente $paciente)
         $paciente->cama->ocupada = false;
         $paciente->cama->save();
     }
+    $ocupacion = Ocupacion_cama::where('paciente_id', $paciente->id)
+    ->whereNull('fecha_egreso')
+    ->latest('fecha_ingreso')
+    ->first();
+
+if ($ocupacion) {
+    $ocupacion->fecha_egreso = now();
+    $ocupacion->save();
+}
 
     $paciente->cama_id = null;
     $paciente->habitacion_id = null;
