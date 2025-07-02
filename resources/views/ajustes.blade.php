@@ -46,6 +46,26 @@
                 </div>
             </div>
         </div>
+
+        <div class="col-md-6 mb-3">
+            <div class="card border-warning">
+                <div class="card-body">
+                    <h5 class="card-title">Salas</h5>
+                    <p class="card-text">Agregar salas y su descripcion.</p>
+                    <a href="{{ route('salas.index') }}" class="btn btn-warning">Ir a agregar salas</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <div class="card border-info">
+                <div class="card-body">
+                    <h5 class="card-title">Habitaciones</h5>
+                    <p class="card-text">Ver o agregar habitaciones.</p>
+                    <a href="{{ route('habitaciones.index') }}" class="btn btn-info">Ir a agregar habitaciones</a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 @endsection
