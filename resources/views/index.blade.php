@@ -90,7 +90,7 @@
       <span class="text-blue-600 font-semibold mt-4">Ver más →</span>
     </div>
     <div class="w-1/2 h-full">
-      <img src="{{ asset('assets/img/libro_cirugias.jpg') }}" alt="Camas" class="w-full h-full object-cover">
+      <img src="{{ asset('assets/img/libro_cirugias.jpeg') }}" alt="Cirugias" class="w-full h-full object-cover">
     </div>
   </a>
 
