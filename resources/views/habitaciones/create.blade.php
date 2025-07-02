@@ -11,7 +11,7 @@
     <div class="mb-3">
         <label for="sala_id" class="form-label">Sala</label>
         <select name="sala_id" id="sala_id" class="form-control">
-            <option value="">Seleccione una habitación</option>
+            <option value="">Seleccione una Sala</option>
             @foreach($salas as $sala)
             <option value="{{ $sala->id }}"
                 {{ old('sala_id') == $sala->id ? 'selected' : '' }}>
