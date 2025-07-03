@@ -60,7 +60,7 @@ class PacienteController extends Controller
         $paciente->telefono = $request->input('telefono');
         $paciente->pais_id = $request->input('pais_id');
         $paciente->provincia_id = $request->input('provincia_id');
-        // $paciente->cod_postal_id = $request->input('cod_postal_id');
+         $paciente->cod_postal_id = $request->input('cod_postal_id');
         $paciente->direccion = $request->input('direccion');
         //COMPLETAR CON EL USUARIO:
         $paciente->creado_por = '1';
