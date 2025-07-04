@@ -42,7 +42,7 @@
                 <div class="card-body">
                     <h5 class="card-title">Camas</h5>
                     <p class="card-text">Agregar camas nuevas para las habitaciones.</p>
-                    <a href="{{ route('camas.index') }}" class="btn btn-secondary">Gestionar Habitación</a>
+                    <a href="{{ route('camas.index') }}" class="btn btn-secondary">Gestionar Camas</a>
                 </div>
             </div>
         </div>

@@ -1,20 +1,24 @@
 body::before {
-      content: "";
-      position: fixed;
-      top: 35%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 500px;
-      height: 500px;
-      background: url('images/logo.png') no-repeat center center;
-      background-size: contain;
-      opacity: 0.1;
-      filter: blur(5px);
-      z-index: 0;
-      pointer-events: none;
-    }
-    body {
-      position: relative;
-      z-index: 1;
-      background-color: #e6f4ea; /* verde muy suave */
-    }
+  content: "";
+  position: fixed;
+  top: 35%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px;
+  height: 500px;
+  background: url('images/logo.png') no-repeat center center;
+  background-size: contain;
+  opacity: 0.1;
+  filter: blur(5px);
+  z-index: 0;
+  pointer-events: none;
+}
+
+body {
+  position: relative;
+  z-index: 1;
+  background-color: #e6f4ea;
+  /* verde muy suave */
+}
+
+
