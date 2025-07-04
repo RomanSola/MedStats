@@ -18,7 +18,7 @@
      
     <div class="text-center md:text-right">
       <a href="MedStatsoporte@gmail.com"
-        class="bg-[#1B7D8F] hover:bg-[#176d7b] text-white text-sm px-4 py-2 rounded-md shadow-md transition">
+        class="bg-[#1B7D8F] hover:bg-[#176d7b] text-white text-sm px-4 py-2 rounded-md shadow-md transition text-decoration-none">
         🛠️ Soporte Técnico
       </a>
     </div>

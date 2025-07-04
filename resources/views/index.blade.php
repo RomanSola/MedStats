@@ -23,7 +23,7 @@
 
 
   <!-- CARD 1: Insumos -->
-  <a href="{{ route('stocks.index') }}" class="flex h-52 rounded-2xl overflow-hidden transform hover:scale-[1.02]  transition duration-300 bg-white">
+  <a href="{{ route('stocks.index') }}" class="flex h-52 rounded-2xl overflow-hidden transform hover:scale-[1.02]  transition duration-300 bg-white text-decoration-none">
 
     <div class="w-1/2 p-6 flex flex-col justify-between">
       <div>
@@ -42,7 +42,7 @@
   </a>
 
   <!-- CARD 2: Estadísticas -->
-  <a href="/estadisticas" class="flex h-52 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition duration-300 bg-white">
+  <a href="/estadisticas" class="flex h-52 rounded-2xl overflow-hidden transform hover:scale-[1.02]  transition duration-300 bg-white text-decoration-none">
     <div class="w-1/2 p-6 flex flex-col justify-between">
       <div>
         <h2 class="text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent  bg-clip-text drop-shadow-md  flex items-center gap-2">
@@ -58,7 +58,7 @@
   </a>
 
   <!-- CARD 3: Pacientes -->
-  <a href="/pacientes" class="flex h-52 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition duration-300 bg-white">
+  <a href="/pacientes" class="flex h-52 rounded-2xl overflow-hidden transform hover:scale-[1.02]  transition duration-300 bg-white text-decoration-none">
     <div class="w-1/2 p-6 flex flex-col justify-between">
       <div>
         <h2 class="text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent  bg-clip-text drop-shadow-md  flex items-center gap-2">
@@ -74,7 +74,7 @@
   </a>
 
   <!-- CARD 4: Camas -->
-  <a href="/camas" class="flex h-52 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition duration-300 bg-white">
+  <a href="/camas" class="flex h-52 rounded-2xl overflow-hidden transform hover:scale-[1.02]  transition duration-300 bg-white text-decoration-none">
     <div class="w-1/2 p-6 flex flex-col justify-between">
       <div>
         <h2 class="text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent  bg-clip-text drop-shadow-md  flex items-center gap-2">
@@ -90,10 +90,11 @@
   </a>
 
     <!-- CARD 5: Libro de cirugias -->
-  <a href="/camas" class="flex h-52 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition duration-300 bg-white">
+  <a href="/camas" class="flex h-52 rounded-2xl overflow-hidden transform hover:scale-[1.02]  transition duration-300 bg-white text-decoration-none">
     <div class="w-1/2 p-6 flex flex-col justify-between">
       <div>
-        <h2 class="text-2xl font-bold text-gray-800">Libro de cirugias</h2>
+        <h2 class="text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent  bg-clip-text drop-shadow-md  flex items-center gap-2">
+          <img src="{{ asset('assets/img/logo-san-felipe.png') }}" alt="Hospital San Felipe" class="w-6 h-6">Libro de cirugias</h2>
         <p class="text-gray-500 mt-2 text-sm">Registro de cirugias realizadas en quirofano</p>
       </div>
       <span class="text-blue-600 font-semibold mt-4">Ver más →</span>

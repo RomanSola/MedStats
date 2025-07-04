@@ -12,7 +12,7 @@
                 <div class="card-body">
                     <h5 class="card-title">Usuarios</h5>
                     <p class="card-text">Dar de alta nuevos usuarios del sistema.</p>
-                    <a href="#" class="btn btn-primary disabled">Dar de Alta Usuarios</a> <!-- No funcional aún -->
+                    <a href="#" class="btn btn-primary disabled text-decoration-none">Dar de Alta Usuarios</a> <!-- No funcional aún -->
                 </div>
             </div>
         </div>
@@ -37,15 +37,6 @@
             </div>
         </div>
 
-                <div class="col-md-6 mb-3">
-            <div class="card border-secondary">
-                <div class="card-body">
-                    <h5 class="card-title">Camas</h5>
-                    <p class="card-text">Agregar camas nuevas para las habitaciones.</p>
-                    <a href="{{ route('camas.index') }}" class="btn btn-secondary">Gestionar Camas</a>
-                </div>
-            </div>
-        </div>
 
         <div class="col-md-6 mb-3">
             <div class="card border-info">
@@ -78,25 +69,5 @@
             </div>
         </div>
 
-        <div class="col-md-6 mb-3">
-            <div class="card border-dark">
-                <div class="card-body">
-                    <h5 class="card-title">Salas</h5>
-                    <p class="card-text">Agregar salas y su descripcion.</p>
-                    <a href="{{ route('salas.index') }}" class="btn btn-dark">Ir a agregar salas</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-6 mb-3">
-            <div class="card border-secondary">
-                <div class="card-body">
-                    <h5 class="card-title">Habitaciones</h5>
-                    <p class="card-text">Ver o agregar habitaciones.</p>
-                    <a href="{{ route('habitaciones.index') }}" class="btn btn-secondary">Ir a agregar habitaciones</a>
-                </div>
-            </div>
-        </div>
     </div>
-</div>
-@endsection
+    @endsection
