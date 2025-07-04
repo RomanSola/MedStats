@@ -13,7 +13,18 @@
             + Agregar Nueva Cama
         </a>
     </div>
-
+    <form method="GET" action="{{ route('camas.index') }}" class="mb-6">
+        <label for="sala" class="block text-sm font-semibold text-gray-700 mb-1">Filtrar por Sala:</label>
+        <select name="sala_id" id="sala" onchange="this.form.submit()"
+                class="w-full md:w-1/3 rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-green-500">
+            <option value="">Todas las salas</option>
+            @foreach ($salas as $sala)
+                <option value="{{ $sala->id }}" {{ request('sala_id') == $sala->id ? 'selected' : '' }}>
+                    {{ $sala->nombre }}
+                </option>
+            @endforeach
+        </select>
+    </form>
     <div class="row" style="width: 100%">
         @foreach ($camas as $cama)
             <div class="container col-3 shadow" style="background-color: #fff; border-radius: 22px; border: solid 1px lightgreen; padding: 10px; margin: 2%; text-align: center;">

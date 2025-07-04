@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Sala;
 use App\Models\Cama;
 use App\Models\Habitacion;
 use Illuminate\Http\Request;
@@ -9,11 +9,26 @@ use Illuminate\Http\Request;
 class CamaController extends Controller
 {
     //Muestra todos los datos
-    public function index() //Pagina inicial
+    public function index(Request $request)
     {
-        //Llama a la funcion get_categoria del modelo tarea.php
-        $camas = Cama::with('get_habitacion')->get();
-        return view('camas.index', compact('camas')); //Llama a la vista
+        // Obtener todas las salas para el select
+        $salas = Sala::all();
+    
+        // Construir la consulta base con la relación de habitación
+        $camas = Cama::with('get_habitacion');
+    
+        // Si se seleccionó una sala, filtrar por ella
+        if ($request->filled('sala_id')) {
+            $camas->whereHas('get_habitacion', function ($query) use ($request) {
+                $query->where('sala_id', $request->sala_id);
+            });
+        }
+    
+        // Ejecutar la consulta
+        $camas = $camas->get();
+    
+        // Pasar camas y salas a la vista
+        return view('camas.index', compact('camas', 'salas'));
     }
 
     public function create()
