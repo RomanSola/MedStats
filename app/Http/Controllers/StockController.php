@@ -96,7 +96,9 @@ class StockController extends Controller
 
 
             $stock->medicamento_id = $request->input('medicamento_id');
-            $stock->fecha_vencimiento = $request->input('fecha_vencimiento');
+            $stock->fecha_vencimiento = $request->filled('fecha_vencimiento')
+                ? $request->input('fecha_vencimiento')
+                : $stock->fecha_vencimiento;
             $stock->cantidad_act = $oldCantidad + $request->input('cantidad_mod');
             $stock->save();
 

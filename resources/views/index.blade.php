@@ -89,6 +89,20 @@
     </div>
   </a>
 
+    <!-- CARD 5: Libro de cirugias -->
+  <a href="/camas" class="flex h-52 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition duration-300 bg-white">
+    <div class="w-1/2 p-6 flex flex-col justify-between">
+      <div>
+        <h2 class="text-2xl font-bold text-gray-800">Libro de cirugias</h2>
+        <p class="text-gray-500 mt-2 text-sm">Registro de cirugias realizadas en quirofano</p>
+      </div>
+      <span class="text-blue-600 font-semibold mt-4">Ver más →</span>
+    </div>
+    <div class="w-1/2 h-full">
+      <img src="{{ asset('assets/img/libro_cirugias.jpeg') }}" alt="Cirugias" class="w-full h-full object-cover">
+    </div>
+  </a>
+
 </div>
 
 @endsection

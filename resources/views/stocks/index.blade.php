@@ -35,14 +35,13 @@
                 <tbody>
                     @forelse($stock as $item)
                         @php
-                            $claseColor = 'text-gray-800';
-                            if ($item->cantidad_act < 10) {
-                                $claseColor = 'text-red-600 font-bold';
-                            } elseif ($item->cantidad_act < 30) {
-                                $claseColor = 'text-yellow-600 font-medium';
-                            } else {
-                                $claseColor = 'text-green-700 font-medium';
-                            }
+    if ($item->cantidad_act < 30) {
+        $claseColor = 'text-red-600 font-bold'; // 🔴 Crítico
+    } elseif ($item->cantidad_act < 50) {
+        $claseColor = 'text-yellow-600 font-medium'; // 🟡 Advertencia
+    } else {
+        $claseColor = 'text-green-700 font-medium'; // 🟢 Suficiente
+    }
                         @endphp
 
                         <tr class="hover:bg-gray-50">

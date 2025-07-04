@@ -37,7 +37,8 @@
                 @foreach($habitaciones as $habitacion)
                 <option value="{{ $habitacion->id }}"
                         {{ old('habitacion_id') == $habitacion->id ? 'selected' : '' }}>
-                    {{ $habitacion->numero }}
+                        Habitación {{ $habitacion->numero }} - Sala {{ $habitacion->get_sala->nombre ?? 'Sin sala' }}
+
                 </option>
                 @endforeach
             </select>
