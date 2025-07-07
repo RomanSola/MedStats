@@ -4,7 +4,7 @@
         $rutaActual = request()->route()->getName();
 
         switch ($rutaActual) {
-
+            //Todos los que deben volver al inicio
             case 'stocks.index':
             case 'pacientes.index':
             case 'estadisticas':
@@ -13,13 +13,14 @@
             case 'ajustes':
                 $rutaAnterior = 'inicio';
                 break;
-
+            //Todos los que deben volver a Ajustes
             case 'usuarios.index':
             case 'empleados.index':
             case 'medicamentos.index':
             case 'cirugias.index':
             case 'salas.index':
             case 'habitaciones.index':
+            case 'quirofanos.index':
                 $rutaAnterior = 'ajustes';
                 break;
 
@@ -91,6 +92,13 @@
                 $rutaAnterior = 'cirugias.index';
                 break;
 
+            case 'quirofanos.create':
+            case 'quirofanos.edit':
+            case 'quirofanos.show':
+                $rutaAnterior = 'quirofanos.index';
+                break;
+
+            // Por default vuelve al inicio
             default:
                 $rutaAnterior = 'inicio';
                 break;

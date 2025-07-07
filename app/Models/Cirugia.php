@@ -12,9 +12,11 @@ class Cirugia extends Model
     protected $fillable = [
         'paciente_id',
         'procedimiento_id',
+        'quirofano_id',
         'cirujano_id',
         'ayudante_1_id',
         'ayudante_2_id',
+        'ayudante_3_id',
         'anestesista_id',
         'tipo_anestesia_id',
         'instrumentador_id',
@@ -31,6 +33,10 @@ class Cirugia extends Model
     {
         return $this->belongsTo(Procedimiento::class, 'procedimiento_id', 'id');
     }
+    public function get_quirofano()
+    {
+        return $this->belongsTo(Quirofano::class, 'quirofano_id', 'id');
+    }
     public function get_cirujano()
     {
         return $this->belongsTo(Empleado::class, 'cirujano_id', 'id');
@@ -42,6 +48,10 @@ class Cirugia extends Model
     public function get_ayudante2()
     {
         return $this->belongsTo(Empleado::class, 'ayudante_2_id', 'id');
+    }
+    public function get_ayudante3()
+    {
+        return $this->belongsTo(Empleado::class, 'ayudante_3_id', 'id');
     }
     public function get_anestesista()
     {

@@ -13,6 +13,7 @@ use App\Http\Controllers\UsuarioPerfilController;
 use App\Http\Controllers\SalaController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\CirugiaController;
+use App\Http\Controllers\QuirofanoController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BusquedaController;
 
@@ -82,6 +83,7 @@ Route::delete('/pacientes/{paciente}', [PacienteController::class, 'destroy'])->
 Route::get('/pacientes/{paciente}/asignar', [PacienteController::class, 'asignar'])->name('pacientes.asignar');
 Route::post('/pacientes/{paciente}/asignar', [PacienteController::class, 'guardarAsignacion'])->name('pacientes.asignar.guardar');
 Route::post('/pacientes/{paciente}/alta', [PacienteController::class, 'darDeAlta'])->name('pacientes.darDeAlta');
+
 //Procedimientos
 Route::get('/procedimientos', [ProcedimientoController::class, 'index'])->name('procedimientos.index');
 Route::get('/procedimientos/create', [ProcedimientoController::class, 'create'])->name('procedimientos.create');
@@ -157,3 +159,12 @@ Route::post('/cirugias', [CirugiaController::class, 'store'])->name('cirugias.st
 Route::get('/cirugias/{cirugia}/edit', [CirugiaController::class, 'edit'])->name('cirugias.edit');
 Route::get('/cirugias/{cirugia}', [CirugiaController::class, 'show'])->name('cirugias.show');
 Route::put('/cirugias/{cirugia}', [CirugiaController::class, 'update'])->name('cirugias.update');
+
+//Quirofanos
+Route::get('/quirofanos', [QuirofanoController::class, 'index'])->name('quirofanos.index');
+Route::get('/quirofanos/create', [QuirofanoController::class, 'create'])->name('quirofanos.create');
+Route::post('/quirofanos', [QuirofanoController::class, 'store'])->name('quirofanos.store');
+Route::get('/quirofanos/{quirofano}/edit', [QuirofanoController::class, 'edit'])->name('quirofanos.edit');
+Route::get('/quirofanos/{quirofano}/show', [QuirofanoController::class, 'show'])->name('quirofanos.show');
+Route::put('/quirofanos/{quirofano}', [QuirofanoController::class, 'update'])->name('quirofanos.update');
+Route::delete('/quirofanos/{quirofano}', [QuirofanoController::class, 'destroy'])->name('quirofanos.destroy');

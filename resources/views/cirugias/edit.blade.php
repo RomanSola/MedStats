@@ -32,15 +32,31 @@
                         <div class="col-md-4">
                             <label for="pais" class="form-label">Procedimiento</label>
                             <select name="procedimiento_id" id="procedimiento_id" class="form-control">
-                                <option value="">Selecciones el procedimiento</option>
+                                <option value="">Seleccione el procedimiento</option>
                                 @foreach ($procedimientos as $procedimiento)
                                     <option value="{{ $procedimiento->id }}"
                                         {{ $cirugia->procedimiento_id == $procedimiento->id ? 'selected' : '' }}>
-                                        {{ $procedimiento->nombre_procedimiento }}
+                                        {{ $procedimiento->nombre_procedimiento }} - {{ $procedimiento->descripcion }}
                                     </option>
                                 @endforeach
                             </select>
                             @error('procedimiento_id')
+                                <small class="text-danger"> {{ $message }} </small>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="pais" class="form-label">Quirofano</label>
+                            <select name="quirofano_id" id="quirofano_id" class="form-control">
+                                <option value="">Seleccione el Quirofano</option>
+                                @foreach ($quirofanos as $quirofano)
+                                    <option value="{{ $quirofano->id }}"
+                                        {{ $cirugia->quirofano_id == $quirofano->id ? 'selected' : '' }}>
+                                        {{ $quirofano->nombre }} - {{ $quirofano->descripcion }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('quirofano_id')
                                 <small class="text-danger"> {{ $message }} </small>
                             @enderror
                         </div>
@@ -89,6 +105,22 @@
                                 @endforeach
                             </select>
                             @error('ayudante_2_id')
+                                <small class="text-danger"> {{ $message }} </small>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="pais" class="form-label">Ayudante 3</label>
+                            <select name="ayudante_3_id" id="ayudante_3_id" class="form-control">
+                                <option value="">Seleccione el Ayudante 3</option>
+                                @foreach ($empleados as $empleado)
+                                    <option value="{{ $empleado->id }}"
+                                        {{ $cirugia->ayudante_3_id == $empleado->id ? 'selected' : '' }}>
+                                        {{ $empleado->nombre }} {{ $empleado->apellido }} DNI: {{ $empleado->dni }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('ayudante_3_id')
                                 <small class="text-danger"> {{ $message }} </small>
                             @enderror
                         </div>
@@ -143,7 +175,8 @@
 
                         <div class="col-md-4">
                             <label for="urgencia" class="form-label">Urgencia</label>
-                            <input type="checkbox" name="urgencia" id="urgencia" class="form-control" value="1" {{ $cirugia->urgencia ? 'checked' : '' }}>   
+                            <input type="checkbox" name="urgencia" id="urgencia" class="form-control" value="1"
+                                {{ $cirugia->urgencia ? 'checked' : '' }}>
                         </div>
                         @error('urgencia')
                             <small class="text-danger"> {{ $message }} </small>
