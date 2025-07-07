@@ -90,7 +90,7 @@
   </a>
 
     <!-- CARD 5: Libro de cirugias -->
-  <a href="/camas" class="flex h-52 rounded-2xl overflow-hidden transform hover:scale-[1.02]  transition duration-300 bg-white text-decoration-none">
+  <a href="/cirugias" class="flex h-52 rounded-2xl overflow-hidden transform hover:scale-[1.02]  transition duration-300 bg-white text-decoration-none">
     <div class="w-1/2 p-6 flex flex-col justify-between">
       <div>
         <h2 class="text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent  bg-clip-text drop-shadow-md  flex items-center gap-2">
