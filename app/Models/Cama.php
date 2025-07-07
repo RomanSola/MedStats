@@ -10,16 +10,16 @@ class Cama extends Model
     use HasFactory;
 
     protected $fillable = [
-        'habitacion_id', 
+        'habitacion_id',
         'codigo',
         'ocupada'
     ];
     protected $casts = [
-    'ocupada' => 'boolean',
+        'ocupada' => 'boolean',
     ];
     public function habitacion()
     {
-    return $this->belongsTo(Habitacion::class);
+        return $this->belongsTo(Habitacion::class);
     }
     public function get_habitacion()
     {
@@ -31,11 +31,11 @@ class Cama extends Model
         return $this->hasMany(Ocupacion_cama::class);
     }
     public function ocupacionActual()
-{
-    return $this->hasOne(\App\Models\Ocupacion_cama::class)->latestOfMany();
-}
+    {
+        return $this->hasOne(\App\Models\Ocupacion_cama::class)->latestOfMany();
+    }
     public function paciente()
-{
-    return $this->hasOne(Paciente::class, 'cama_id');
-}
+    {
+        return $this->hasOne(Paciente::class, 'cama_id');
+    }
 }

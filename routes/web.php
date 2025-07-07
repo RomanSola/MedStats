@@ -12,6 +12,7 @@ use App\Http\Controllers\TipoAnestesiaController;
 use App\Http\Controllers\UsuarioPerfilController;
 use App\Http\Controllers\SalaController;
 use App\Http\Controllers\StockController;
+use App\Http\Controllers\CirugiaController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BusquedaController;
 
@@ -30,13 +31,7 @@ Route::get('/', function () {
     return view('index');
 })->name('inicio');
 
-
-
-
-
-
 Route::get('/buscar', [BusquedaController::class, 'buscar'])->name('buscar');
-
 
 // configuracion
 Route::view('/ajustes', 'ajustes')->name('ajustes');
@@ -153,3 +148,12 @@ Route::get('/stocks/{stock}/edit', [StockController::class, 'edit'])->name('stoc
 Route::get('/stocks/{stock}', [StockController::class, 'show'])->name('stocks.show');
 Route::put('/stocks/{stock}', [StockController::class, 'update'])->name('stocks.update');
 //Route::delete('/stocks/{}', [StockController::class, 'destroy'])->name('stocks.destroy');
+
+
+//Cirugias
+Route::get('/cirugias', [CirugiaController::class, 'index'])->name('cirugias.index');
+Route::get('/cirugias/create', [CirugiaController::class, 'create'])->name('cirugias.create');
+Route::post('/cirugias', [CirugiaController::class, 'store'])->name('cirugias.store');
+Route::get('/cirugias/{cirugia}/edit', [CirugiaController::class, 'edit'])->name('cirugias.edit');
+Route::get('/cirugias/{cirugia}', [CirugiaController::class, 'show'])->name('cirugias.show');
+Route::put('/cirugias/{cirugia}', [CirugiaController::class, 'update'])->name('cirugias.update');

@@ -22,8 +22,8 @@ return new class extends Migration
             $table->unsignedBigInteger('tipo_anestesia_id');
             $table->unsignedBigInteger('instrumentador_id');
             $table->boolean('urgencia');
-            $table->unsignedBigInteger('creado_por');
-            $table->unsignedBigInteger('modificado_por');
+            $table->unsignedBigInteger('creado_por')->nullable();
+            $table->unsignedBigInteger('modificado_por')->nullable();
             $table->timestamps();
             //Claves foraneas
             $table->foreign('paciente_id')->references('id')->on('pacientes')->onDelete('cascade');
@@ -35,7 +35,7 @@ return new class extends Migration
             $table->foreign('tipo_anestesia_id')->references('id')->on('tipo_anestesias')->onDelete('cascade');
             $table->foreign('instrumentador_id')->references('id')->on('empleados')->onDelete('cascade');
             //FALTA LA TABLA DE USUARIOS
-            //$table->foreign('creado_por')->references('id')->on('usuarios');
+            //$table->foreign('creado_p or')->references('id')->on('usuarios');
             //$table->foreign('modificado_por')->references('id')->on('usuarios');
             
         });
