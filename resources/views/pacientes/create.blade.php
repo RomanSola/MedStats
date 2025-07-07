@@ -11,16 +11,16 @@
         @csrf
 
         <!-- Datos personales -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-                <label for="dni" class="block text-sm font-semibold text-gray-700 mb-1">DNI</label>
-                <input type="text" name="dni" id="dni"
-                       class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500"
-                       value="{{ old('dni') }}" required>
-                @error('dni')
-                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                @enderror
-            </div>
+        <div>
+    <label for="dni" class="block text-sm font-semibold text-gray-700 mb-1">DNI</label>
+    <input type="text" name="dni" id="dni" maxlength="8" pattern="\d{6,8}"
+           class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500"
+           value="{{ old('dni') }}" required title="Debe tener entre 6 y 8 dígitos">
+    @error('dni')
+        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+    @enderror
+    <p id="dni-error-js" class="text-red-600 text-sm mt-1"></p>
+</div>
 
             <div>
                 <label for="fecha_nacimiento" class="block text-sm font-semibold text-gray-700 mb-1">Fecha de Nacimiento</label>

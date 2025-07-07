@@ -67,6 +67,56 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-6 mb-3">
+            <div class="card border-success">
+                <div class="card-body">
+                    <h5 class="card-title">Roles de Usuario</h5>
+                    <p class="card-text">Gestionar los perfiles y permisos del sistema.</p>
+                    <a href="#" class="btn btn-primary disabled text-decoration-none">Ver Roles</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <div class="card border-secondary">
+                <div class="card-body">
+                    <h5 class="card-title">Tipos de Anestesia</h5>
+                    <p class="card-text">Agregar y administrar tipos de anestesia disponibles.</p>
+                    <a href="#" class="btn btn-secondary disable">Ir a Anestesias</a>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-6 mb-3">
+            <div class="card border-info">
+                <div class="card-body">
+                    <h5 class="card-title">Quirófanos</h5>
+                    <p class="card-text">Gestionar quirófanos habilitados para cirugías.</p>
+                    <a href="#" class="btn btn-dark disable">Gestionar Quirófanos</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <div class="card border-warning">
+                <div class="card-body">
+                    <h5 class="card-title">Profesiones</h5>
+                    <p class="card-text">Definir profesiones del personal médico.</p>
+                    <a href="#" class="btn btn-warning disable">Ver Profesiones</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <div class="card border-info">
+                <div class="card-body">
+                    <h5 class="card-title">Procedimientos</h5>
+                    <p class="card-text">Administrar tipos de procedimientos quirúrgicos.</p>
+                    <a href="#" class="btn btn-info disable">Ir a Procedimientos</a>
+                </div>
+            </div>
+        </div>
 
     </div>
     @endsection
