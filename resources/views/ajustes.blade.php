@@ -81,8 +81,8 @@
             <div class="card border-secondary">
                 <div class="card-body">
                     <h5 class="card-title">Tipos de Anestesia</h5>
-                    <p class="card-text">Agregar y administrar tipos de anestesia disponibles.</p>
-                    <a href="#" class="btn btn-secondary disable">Ir a Anestesias</a>
+                    <p class="card-text">Agregar tipos de anestesia.</p>
+                    <a href="{{ route('tipoAnestesias.index') }}" class="btn btn-secondary disable">Ir a Anestesias</a>
                 </div>
             </div>
         </div>
@@ -93,7 +93,7 @@
                 <div class="card-body">
                     <h5 class="card-title">Quirófanos</h5>
                     <p class="card-text">Gestionar quirófanos habilitados para cirugías.</p>
-                    <a href="#" class="btn btn-dark disable">Gestionar Quirófanos</a>
+                    <a href="{{ route('quirofanos.index') }}" class="btn btn-dark disable">Gestionar Quirófanos</a>
                 </div>
             </div>
         </div>
@@ -102,8 +102,8 @@
             <div class="card border-warning">
                 <div class="card-body">
                     <h5 class="card-title">Profesiones</h5>
-                    <p class="card-text">Definir profesiones del personal médico.</p>
-                    <a href="#" class="btn btn-warning disable">Ver Profesiones</a>
+                    <p class="card-text">Definir nuevas profesiones del personal.</p>
+                    <a href="{{ route('profesion.index') }}" class="btn btn-warning disable">Ver Profesiones</a>
                 </div>
             </div>
         </div>
@@ -113,7 +113,7 @@
                 <div class="card-body">
                     <h5 class="card-title">Procedimientos</h5>
                     <p class="card-text">Administrar tipos de procedimientos quirúrgicos.</p>
-                    <a href="#" class="btn btn-info disable">Ir a Procedimientos</a>
+                    <a href=" route('procedimientos.index') " class="btn btn-info disable">Ir a Procedimientos</a>
                 </div>
             </div>
         </div>
