@@ -25,6 +25,7 @@
                                 <th>Anestesista</th>
                                 <th>Tipo de Anestesia</th>
                                 <th>Instrumentador</th>
+                                <th>Enfermero</th>
                                 <th>Urgencia</th>
                                 <th class="text-center">Acciones</th>
                             </tr>
@@ -49,6 +50,8 @@
                                     <td>{{ $cirugia->get_tipo_anestesia->nombre }}</td>
                                     <td>{{ $cirugia->get_instrumentador->nombre }}
                                         {{ $cirugia->get_instrumentador->apellido }}</td>
+                                    <td>{{ $cirugia->get_enfermero->nombre }}
+                                        {{ $cirugia->get_enfermero->apellido }}</td>
                                     <td>{{ $cirugia->urgencia ? 'Si' : 'No' }}</td>
                                     <td class="text-center">
                                         <a href="{{ route('cirugias.show', $cirugia) }}"
@@ -68,5 +71,49 @@
 
             </div>
         </div>
+        <!-- Botón de impresión -->
+        <button class="btn-imprimir" onclick="imprimirUltimosDiez()">🖨️ Imprimir últimas 10 cirugias</button>
+
+        <script>
+        function imprimirUltimosDiez() {
+            const tablaOriginal = document.querySelector('.table-responsive table');
+            const filas = tablaOriginal.querySelectorAll('tbody tr');
+            const ultimasFilas = Array.from(filas).slice(-10); // Toma las últimas 10
+            const encabezado = tablaOriginal.querySelector('thead').outerHTML;
+
+            let cuerpoTabla = '';
+            ultimasFilas.forEach(fila => {
+                cuerpoTabla += fila.outerHTML;
+            });
+
+            const ventana = window.open('', '', 'width=900,height=700');
+            ventana.document.write(`
+        <html>
+        <head>
+            <title>Libro de Cirugías</title>
+            <style>
+                body { font-family: Arial, sans-serif; margin: 20px; }
+                table { width: 100%; border-collapse: collapse; }
+                th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+                th { background-color: #f8c045; }
+            </style>
+        </head>
+        <body>
+            <h2>Últimas 10 Cirugías Registradas</h2>
+            <table>
+                ${encabezado}
+                <tbody>
+                    ${cuerpoTabla}
+                </tbody>
+            </table>
+        </body>
+        </html>
+        `);
+        ventana.document.close();
+        ventana.focus();
+        ventana.print();
+        ventana.close();
+        }
+        </script>
     </div>
 @endsection
