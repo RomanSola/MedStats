@@ -5,7 +5,7 @@
 @section('contenido')
 <div class="max-w-4xl mx-auto px-4 py-8">
 
-    <h1 class="text-2xl font-bold text-blue-800 mb-6">Registrar Nuevo Paciente</h1>
+    <h1 class="text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent  bg-clip-text drop-shadow-md  flex items-center gap-2">Registrar Nuevo Paciente</h1>
 
     <form action="{{ route('pacientes.store') }}" method="POST" class="bg-white shadow rounded-lg p-6 border border-gray-200 space-y-6">
         @csrf
@@ -69,9 +69,10 @@
                     <option value="">Seleccione un género</option>
                     <option value="Masculino" {{ old('genero') == 'Masculino' ? 'selected' : '' }}>Masculino</option>
                     <option value="Femenino" {{ old('genero') == 'Femenino' ? 'selected' : '' }}>Femenino</option>
+                    <option value="X" {{ old('genero') == 'X' ? 'selected' : '' }}>X</option>
                 </select>
             </div>
-        </div>
+        
 
         <!-- Ubicación -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -161,4 +162,6 @@
             });
     });
 </script>
+
+</div>
 @endsection

@@ -56,7 +56,7 @@ class PacienteController extends Controller
         $paciente->nombre = $request->input('nombre');
         $paciente->apellido = $request->input('apellido');
         $paciente->fecha_nacimiento = $request->input('fecha_nacimiento');
-        $paciente->telefono = $request->input('genero');
+        $paciente->genero = $request->input('genero');
         $paciente->telefono = $request->input('telefono');
         $paciente->pais_id = $request->input('pais_id');
         $paciente->provincia_id = $request->input('provincia_id');

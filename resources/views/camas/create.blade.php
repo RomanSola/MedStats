@@ -5,7 +5,8 @@
 @section('contenido')
 <div class="max-w-3xl mx-auto px-4 py-8">
 
-    <h1 class="text-2xl font-bold text-green-800 mb-6">Agregar Nueva Cama</h1>
+    <h1 class="text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent  bg-clip-text drop-shadow-md  flex items-center gap-2">Agregar Nueva Cama</h1>
+<br>
 
     <form action="{{ route('camas.store') }}" method="POST"
           class="bg-white shadow-md rounded-lg p-6 border border-gray-200 space-y-6">
