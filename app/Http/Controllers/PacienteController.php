@@ -39,15 +39,21 @@ class PacienteController extends Controller
     public function store(Request $request)
     {
         $request->validate([ //Si el titulo esta vacion no hace nada 
-            'dni' => 'required|int',
-            'nombre' => 'required',
-            'apellido' => 'required',
-            'fecha_nacimiento' => 'required',
-            'genero' => 'required',
-            'telefono' => 'int',
-            'pais_id' => 'required|exists:pais,id',
-            'provincia_id' => 'required|exists:provincias,id',
-            'cod_postal_id' => 'required|exists:codigo_postals,id',
+            $request->validate([
+                'dni' => 'required|digits_between:6,15|unique:pacientes,dni,',
+                'nombre' => 'required',
+                'apellido' => 'required',
+                'fecha_nacimiento' => 'required',
+                'genero' => 'required',
+                'pais_id' => 'required|exists:pais,id',
+                'provincia_id' => 'required|exists:provincias,id',
+                'cod_postal_id' => 'required|exists:codigo_postals,id',
+            ], [
+                'dni.digits_between' => 'El DNI debe contener solo números entre 6 y 15 dígitos.',
+                'dni.unique' => 'Ya existe otro paciente con ese DNI.',
+    
+            ])
+    
         ]);
 
         $paciente = new paciente();
@@ -80,7 +86,7 @@ class PacienteController extends Controller
     public function update(Request $request, Paciente $paciente)
     {
         $request->validate([
-            'dni' => 'required',
+            'dni' => 'required|digits_between:6,15|unique:pacientes,dni,' . $paciente->id,
             'nombre' => 'required',
             'apellido' => 'required',
             'fecha_nacimiento' => 'required',
@@ -88,6 +94,10 @@ class PacienteController extends Controller
             'pais_id' => 'required|exists:pais,id',
             'provincia_id' => 'required|exists:provincias,id',
             'cod_postal_id' => 'required|exists:codigo_postals,id',
+        ], [
+            'dni.digits_between' => 'El DNI debe contener solo números entre 6 y 15 dígitos.',
+            'dni.unique' => 'Ya existe otro paciente con ese DNI.',
+
         ]);
 
         if ($request->input('dni') != null) {
