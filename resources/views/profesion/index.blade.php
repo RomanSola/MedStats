@@ -1,6 +1,8 @@
 @extends('layouts.app')
 @section('titulo', 'Lista de Profesiones')
 @section('contenido')
+<div class="max-w-7xl mx-auto px-4 py-8">
+
 <h1 class="mb-4">Gestor de Profesiones</h1>
 <a href="{{ route('profesion.create') }}" class="btn btn-primary mb-3">Agregar Nueva Profesión</a>
 <table class="table">
@@ -31,4 +33,5 @@
         @endforeach
     </tbody>
 </table>
+</div>
 @endsection

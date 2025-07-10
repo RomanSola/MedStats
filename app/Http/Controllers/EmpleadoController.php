@@ -74,16 +74,16 @@ class EmpleadoController extends Controller
     {
         $request->validate([ //Si el titulo esta vacion no hace nada 
             'dni' => 'required|int',
-            'nombre' => 'required',
-            'apellido' => 'required',
+            'nombre' => 'required|string',
+            'apellido' => 'required|string',
             'fecha_nacimiento' => 'required',
-            'telefono' => 'int',
+            'telefono' => 'required|regex:/^\d{1,15}$/',
             'pais_id' => 'required|exists:pais,id',
             'provincia_id' => 'required|exists:provincias,id',
             'cod_postal_id' => 'required|exists:codigo_postals,id',
             'profesion_id' => 'required|exists:profesions,id',
         ]);
-        
+
         if ($request->input('dni') != null) {
             $empleado->dni = $request->input('dni');
         }

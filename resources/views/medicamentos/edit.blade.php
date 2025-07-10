@@ -4,7 +4,7 @@
 
 @section('contenido')
 <div class="container mt-4">
-    <h2 class="mb-4">Editar Medicamento</h2>
+    <h2 class="mb-4 text-blue-600 md:text-green-600 ">Editar Medicamento</h2>
 
     <div class="card border-secondary">
         <div class="card-body">

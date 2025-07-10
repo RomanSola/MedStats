@@ -72,7 +72,7 @@
                 <div class="card-body">
                     <h5 class="card-title">Roles de Usuario</h5>
                     <p class="card-text">Gestionar los perfiles y permisos del sistema.</p>
-                    <a href="#" class="btn btn-primary disabled text-decoration-none">Ver Roles</a>
+                    <a href="{{ route('UsuarioPerfil.index') }}" class="btn btn-primary  text-decoration-none">Ver Roles</a>
                 </div>
             </div>
         </div>
@@ -82,7 +82,7 @@
                 <div class="card-body">
                     <h5 class="card-title">Tipos de Anestesia</h5>
                     <p class="card-text">Agregar tipos de anestesia.</p>
-                    <a href="{{ route('tipoAnestesias.index') }}" class="btn btn-secondary disable">Ir a Anestesias</a>
+                    <a href="{{ route('tipoAnestesias.index') }}" class="btn btn-secondary">Ir a Anestesias</a>
                 </div>
             </div>
         </div>
@@ -113,7 +113,7 @@
                 <div class="card-body">
                     <h5 class="card-title">Procedimientos</h5>
                     <p class="card-text">Administrar tipos de procedimientos quirúrgicos.</p>
-                    <a href=" route('procedimientos.index') " class="btn btn-info disable">Ir a Procedimientos</a>
+                    <a href="{{ route('procedimientos.index') }}"  class="btn btn-info disable">Ir a Procedimientos</a>
                 </div>
             </div>
         </div>

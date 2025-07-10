@@ -1,7 +1,8 @@
 @extends('layouts.app')
 @section('titulo', 'Lista de Salas')
 @section('contenido')
-<h1 class="mb-4">Gestor de Salas</h1>
+<div class="container mt-4 bg-light border p-4 rounded">
+<h1 class="mb-4 ">Gestor de Salas</h1>
 <a href="{{ route('salas.create') }}" class="btn btn-primary mb-3">Agregar Nueva Sala</a>
 <table class="table">
     <thead>
@@ -29,4 +30,5 @@
         @endforeach
     </tbody>
 </table>
+</div>
 @endsection
