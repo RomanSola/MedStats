@@ -42,8 +42,8 @@
         <!-- Modificación de stock -->
         <div>
             <label for="cantidad_mod" class="block text-sm font-medium text-gray-700 mb-1">Agregar o Extraer Cantidad</label>
-            <input type="number" name="cantidad_mod" id="cantidad_mod"
-                   class="w-full rounded-md border-gray-300 px-4 py-2 focus:ring-2 focus:ring-gray-500"
+            <input type="number" name="cantidad_mod" id="cantidad_mod" placeholder="Ingrese cantidad que quiera agergar o extraer"
+                   class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500"
                    required>
             @error('cantidad_mod')
             <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
@@ -89,7 +89,7 @@
         <div>
             <label for="comentario" class="block text-sm font-medium text-gray-700 mb-1">Comentario</label>
             <input type="text" name="comentario" id="comentario"
-                   class="w-full rounded-md border-gray-300 px-4 py-2 focus:ring-2 focus:ring-gray-500"
+                   class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500"
                    value="{{ old('comentario') }}">
             @error('comentario')
             <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
