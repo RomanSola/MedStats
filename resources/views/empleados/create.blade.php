@@ -12,13 +12,15 @@
                 @csrf
 
                 <div class="row mb-3">
-                    <div class="col-md-4">
-                        <label for="dni" class="form-label">DNI</label>
-                        <input type="text" name="dni" id="dni" class="form-control" required>
-                    </div>
-                    @error('dni')
-                        <small class="text-danger"> {{ $message }} </small>
-                    @enderror
+    <div class="col-md-4">
+        <label for="dni" class="form-label">DNI</label>
+        <input type="text" name="dni" id="dni" class="form-control" maxlength="8"
+               value="{{ old('dni') }}" required pattern="\d{6,8}" title="Debe tener entre 6 y 8 dígitos numéricos">
+        <div id="dni-error-js" class="form-text text-danger"></div>
+    </div>
+    @error('dni')
+        <small class="text-danger"> {{ $message }} </small>
+    @enderror
                     <div class="col-md-4">
                         <label for="nombre" class="form-label">Nombre</label>
                         <input type="text" name="nombre" id="nombre" class="form-control" required>

@@ -15,15 +15,17 @@
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 </head> 
 
-<body> 
+<body class="flex flex-col min-h-screen"> 
 
     @include('layouts._partials.menu')
 
     <div class="flex justify-start px-4 mt-3">
         <x-boton-volver />
     </div>
-
-    @yield('contenido') 
+ <main class="flex-1">
+    @yield('contenido')
+  </main>
+     
 
     @include('layouts._partials.footer')
 
@@ -60,6 +62,8 @@
 
     <!-- Scripts adicionales desde las vistas -->
     @stack('scripts')
+
+    
 
 </body>
 </html>
