@@ -25,7 +25,6 @@
                                 <th>Anestesista</th>
                                 <th>Tipo de Anestesia</th>
                                 <th>Instrumentador</th>
-                                <th>Enfermero</th>
                                 <th>Urgencia</th>
                                 <th class="text-center">Acciones</th>
                             </tr>
@@ -40,18 +39,16 @@
                                     <td>{{ $cirugia->get_ayudante1->nombre ?? 'N/A' }}
                                         {{ $cirugia->get_ayudante1->apellido ?? '' }}
                                     </td>
-                                    <td>{{ $cirugia->get_ayudante2->nombre }} {{ $cirugia->get_ayudante2->apellido }}
+                                    <td>{{ optional($cirugia->get_ayudante2)->nombre }} {{ optional($cirugia->get_ayudante2)->apellido }}
                                     </td>
-                                    <td>{{ $cirugia->get_ayudante3->nombre ?? 'N/A' }}
-                                        {{ $cirugia->get_ayudante3->apellido ?? '' }}
+                                    <td>{{ optional($cirugia->get_ayudante3)->nombre ?? 'N/A' }}
+                                        {{ optional($cirugia->get_ayudante3)->apellido ?? '' }}
                                     </td>
                                     <td>{{ $cirugia->get_anestesista->nombre }} {{ $cirugia->get_anestesista->apellido }}
                                     </td>
                                     <td>{{ $cirugia->get_tipo_anestesia->nombre }}</td>
-                                    <td>{{ $cirugia->get_instrumentador->nombre }}
-                                        {{ $cirugia->get_instrumentador->apellido }}</td>
-                                    <td>{{ $cirugia->get_enfermero->nombre }}
-                                        {{ $cirugia->get_enfermero->apellido }}</td>
+                                    <td>{{ optional($cirugia->get_instrumentador)->nombre }}
+                                        {{ optional($cirugia->get_instrumentador)->apellido }}</td>
                                     <td>{{ $cirugia->urgencia ? 'Si' : 'No' }}</td>
                                     <td class="text-center">
                                         <a href="{{ route('cirugias.show', $cirugia) }}"

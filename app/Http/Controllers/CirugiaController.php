@@ -78,6 +78,7 @@ class CirugiaController extends Controller
         $cirugia->anestesista_id = $request->input('anestesista_id');
         $cirugia->tipo_anestesia_id = $request->input('tipo_anestesia_id');
         $cirugia->instrumentador_id = $request->input('instrumentador_id');
+        //$cirugia->enfermero_id = $request->input('enfermero_id');
         //Reemplazar cuando tengamos los usuarios
         $cirugia->creado_por = '1';
         $cirugia->modificado_por = '1';
@@ -113,7 +114,8 @@ class CirugiaController extends Controller
             'cirujano_id' => 'required|exists:empleados,id',
             'anestesista_id' => 'required|exists:empleados,id',
             'tipo_anestesia_id' => 'required|exists:tipo_anestesias,id',
-            'instrumentador_id' => 'required|exists:empleados,id',
+            'instrumentador_id' => 'nullable|exists:empleados,id',
+            //'enfermero_id' => 'nullable|exists:empleados,id',
         ]);
         if ($request->input('ayudante_1_id') != null) {
             $request->validate([
@@ -161,6 +163,7 @@ class CirugiaController extends Controller
         if ($request->input('instrumentador_id') != null) {
             $cirugia->instrumentador_id = $request->input('instrumentador_id');
         }
+
         if ($request->input('urgencia') != null) {
             $cirugia->urgencia = true;
         } else {
