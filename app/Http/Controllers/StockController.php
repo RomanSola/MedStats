@@ -28,9 +28,18 @@ class StockController extends Controller
         $request->validate([
             'medicamento_id' => 'required|exists:medicamentos,id',
             'fecha_vencimiento' => 'nullable|date',
-            'lote' => 'required',
+            'lote' => 'required|unique:stocks,lote',
             'cantidad_act' => 'required|integer|min:0',
         ]);
+        $existe = Stock::where('medicamento_id', $request->input('medicamento_id'))
+        ->where('lote', $request->input('lote'))
+        ->exists();
+
+        if ($existe) {
+            return redirect()->back()
+            ->withErrors(['lote' => 'Ya existe un stock para este medicamento con ese lote.'])
+            ->withInput();
+    }
 
         $stock = new Stock();
         $stock->medicamento_id = $request->input('medicamento_id');
