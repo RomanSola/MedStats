@@ -15,7 +15,7 @@
                     <div class="row mb-3">
                         <div class="col-md-4">
                             <label for="pais" class="form-label">Paciente</label>
-                            <select name="paciente_id" id="paciente_id" class="form-control">
+                            <select name="paciente_id" id="paciente_id" class="form-control select2">
                                 <option value="">Seleccione el Paciente</option>
                                 @foreach ($pacientes as $paciente)
                                     <option value="{{ $paciente->id }}"
@@ -27,7 +27,7 @@
                             @error('paciente_id')
                                 <small class="text-danger"> {{ $message }} </small>
                             @enderror
-                        </div>
+                        </div> 
 
                         <div class="col-md-4">
                             <label for="pais" class="form-label">Procedimiento</label>
@@ -227,4 +227,13 @@
             </div>
         </div>
     </div>
+
+<script>
+    $(document).ready(function () {
+        $('#paciente_id').select2({
+            placeholder: "Seleccione un paciente",
+            allowClear: true
+        });
+    });
+</script>
 @endsection
