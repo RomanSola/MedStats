@@ -10,24 +10,26 @@
         @csrf
 
         <div>
-            <label for="habitacion_id" class="block font-medium text-gray-700 mb-1">Habitación</label>
-            <select name="habitacion_id" id="habitacion_id" class="w-full border-gray-300 rounded shadow-sm focus:ring focus:ring-neutral-300">
-                <option value="">-- Seleccioná una habitación --</option>
-                @foreach($habitaciones as $habitacion)
-                    <option value="{{ $habitacion->id }}">{{ $habitacion->numero ?? 'Habitación '.$habitacion->id }}</option>
+            <label for="sala_id" class="block font-medium text-gray-700 mb-1">Sala</label>
+            <select id="sala_id" class="w-full border-gray-300 rounded shadow-sm focus:ring focus:ring-neutral-300">
+                <option value="">-- Seleccioná una sala --</option>
+                @foreach($salas as $sala)
+                    <option value="{{ $sala->id }}">{{ $sala->nombre }}</option>
                 @endforeach
             </select>
         </div>
 
         <div>
+            <label for="habitacion_id" class="block font-medium text-gray-700 mb-1">Habitación</label>
+            <select name="habitacion_id" id="habitacion_id" class="w-full border-gray-300 rounded shadow-sm" disabled>
+                <option value="">-- Seleccioná una habitación --</option>
+            </select>
+        </div>
+
+        <div>
             <label for="cama_id" class="block font-medium text-gray-700 mb-1">Cama</label>
-            <select name="cama_id" id="cama_id" class="w-full border-gray-300 rounded shadow-sm">
+            <select name="cama_id" id="cama_id" class="w-full border-gray-300 rounded shadow-sm" disabled>
                 <option value="">-- Seleccioná una cama --</option>
-                @foreach($habitaciones as $habitacion)
-                    @foreach($habitacion->camas as $cama)
-                        <option value="{{ $cama->id }}">Hab {{ $habitacion->numero ?? $habitacion->id }} - Cama {{ $cama->codigo ?? $cama->id }}</option>
-                    @endforeach
-                @endforeach
             </select>
         </div>
 
@@ -38,4 +40,48 @@
         </div>
     </form>
 </div>
+
+<script>
+    const salas = @json($salas);
+
+    const salaSelect = document.getElementById('sala_id');
+    const habitacionSelect = document.getElementById('habitacion_id');
+    const camaSelect = document.getElementById('cama_id');
+
+    salaSelect.addEventListener('change', () => {
+        const salaId = parseInt(salaSelect.value);
+        const sala = salas.find(s => s.id === salaId);
+
+        habitacionSelect.innerHTML = '<option value="">-- Seleccioná una habitación --</option>';
+        camaSelect.innerHTML = '<option value="">-- Seleccioná una cama --</option>';
+        camaSelect.disabled = true;
+
+        if (sala) {
+            habitacionSelect.disabled = false;
+            sala.habitaciones.forEach(h => {
+                habitacionSelect.innerHTML += `<option value="${h.id}">${h.numero ?? 'Habitación ' + h.id}</option>`;
+            });
+        } else {
+            habitacionSelect.disabled = true;
+        }
+    });
+
+    habitacionSelect.addEventListener('change', () => {
+        const salaId = parseInt(salaSelect.value);
+        const habitacionId = parseInt(habitacionSelect.value);
+        const sala = salas.find(s => s.id === salaId);
+        const habitacion = sala?.habitaciones.find(h => h.id === habitacionId);
+
+        camaSelect.innerHTML = '<option value="">-- Seleccioná una cama --</option>';
+
+        if (habitacion) {
+            camaSelect.disabled = false;
+            habitacion.camas.forEach(c => {
+                camaSelect.innerHTML += `<option value="${c.id}">Cama ${c.codigo ?? c.id}</option>`;
+            });
+        } else {
+            camaSelect.disabled = true;
+        }
+    });
+</script>
 @endsection

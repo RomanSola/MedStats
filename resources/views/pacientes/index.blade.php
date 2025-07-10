@@ -44,14 +44,14 @@
                         <a href="{{ route('pacientes.show', $paciente) }}" class="text-neutral-700 hover:underline font-medium">Ver</a>
                         <a href="{{ route('pacientes.edit', $paciente) }}" class="text-neutral-700 hover:underline font-medium">Editar</a>
                         @if($paciente->cama_id)
-                        <form action="{{ route('pacientes.darDeAlta', $paciente) }}" method="POST" class="inline-block">
+                        <form action="{{ route('pacientes.darDeAlta', $paciente) }}" method="POST" class="inline-block form-dar-de-alta">
                             @csrf
                             <button type="submit" class="text-green-600 hover:underline font-medium">Dar de alta</button>
                         </form>
                         @else
                             <a href="{{ route('pacientes.asignar', $paciente) }}" class="text-blue-700 hover:underline font-medium">Asignar</a>
                         @endif
-                        <form action="{{ route('pacientes.destroy', $paciente) }}" method="POST" class="inline-block">
+                        <form action="{{ route('pacientes.destroy', $paciente) }}" method="POST" class="inline-block form-eliminar">
                             @csrf @method('DELETE')
                             <button type="submit" class="text-red-600 hover:underline font-medium">Eliminar</button>
                         </form>
@@ -59,11 +59,35 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="6" class="px-4 py-2 text-center text-gray-500">No hay pacientes registrados.</td>
+                    <td colspan="8" class="px-4 py-2 text-center text-gray-500">No hay pacientes registrados.</td>
                 </tr>
                 @endforelse
             </tbody>
         </table>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Confirmar dar de alta
+        document.querySelectorAll('.form-dar-de-alta').forEach(form => {
+            form.addEventListener('submit', function (e) {
+                const confirmar = confirm('¿Estás seguro que querés dar de alta a este paciente? Esta acción liberará la cama asignada.');
+                if (!confirmar) {
+                    e.preventDefault();
+                }
+            });
+        });
+
+        // Confirmar eliminación
+        document.querySelectorAll('.form-eliminar').forEach(form => {
+            form.addEventListener('submit', function (e) {
+                const confirmar = confirm('¿Seguro que querés eliminar este paciente? Esta acción no se puede deshacer.');
+                if (!confirmar) {
+                    e.preventDefault();
+                }
+            });
+        });
+    });
+</script>
 @endsection
