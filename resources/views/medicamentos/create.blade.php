@@ -23,6 +23,7 @@
                     {{ $message }}
                     </div>
                 @enderror
+                </div>
 
                 <button type="submit" class="btn btn-success">Agregar</button>
                 <a href="{{ route('medicamentos.index') }}" class="btn btn-outline-success">Cancelar</a>

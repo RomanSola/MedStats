@@ -16,7 +16,8 @@ class SalaController extends Controller
 
     public function create()
     {
-        return view('salas.create');
+        
+        return view('salas.create', compact('salas'));
     }
 
     public function store(Request $request)
