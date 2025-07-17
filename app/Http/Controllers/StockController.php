@@ -77,65 +77,79 @@ class StockController extends Controller
 
     public function update(Request $request, Stock $stock)
     {
-        //dd($request->all());
         $request->validate([
             'medicamento_id' => 'required|exists:medicamentos,id',
-            'cantidad_mod' => 'required|integer',
+            'cantidad_agregar' => 'nullable|integer|min:0',
+            'cantidad_extraer' => 'nullable|integer|min:0',
         ]);
+    
+        // Verificar si ya existe un stock con mismo medicamento y lote (excluyendo el actual)
         $existe = Stock::where('medicamento_id', $request->input('medicamento_id'))
-            ->where('lote', $stock->lote) // o $request->input('lote') si se puede editar
-            ->where('id', '!=', $stock->id) // 👈 excluye el registro actual
+            ->where('lote', $stock->lote)
+            ->where('id', '!=', $stock->id)
             ->exists();
+    
         if ($existe) {
-        return redirect()->back()
-            ->withErrors(['lote' => 'Ya existe un stock para este medicamento con ese lote.'])
-            ->withInput();
-}
-
+            return redirect()->back()
+                ->withErrors(['lote' => 'Ya existe un stock para este medicamento con ese lote.'])
+                ->withInput();
+        }
+    
         $oldCantidad = $stock->cantidad_act;
-
-        if ($request->input('cantidad_mod') != null and $request->input('cantidad_mod') != 0 ) {
-
-            //Validar que no se descuente más stock del que hay
-            $dif = $oldCantidad + $request->input('cantidad_mod');
-
-            if ($dif < 0) {
-                return redirect()->back()
-                    ->withErrors(['cantidad_mod' => 'No se puede descontar más de lo que hay en stock.'])
-                    ->withInput();
-            } elseif (!($dif > $oldCantidad)) {
-                
-                $request->validate([
-                    'paciente_id' => 'required|exists:pacientes,id',
-                    'empleado_id' => 'required|exists:empleados,id',
-                    'comentario' => 'required',
-                ]);
-            }
-
-
-            $stock->medicamento_id = $request->input('medicamento_id');
-            $stock->fecha_vencimiento = $request->filled('fecha_vencimiento')
-                ? $request->input('fecha_vencimiento')
-                : $stock->fecha_vencimiento;
-            $stock->cantidad_act = $oldCantidad + $request->input('cantidad_mod');
-            $stock->save();
-
-            if($request->input('comentario') != null){
-                $comentario = $request->input('comentario');
-            }else{
-                $comentario = 'Se aumentó el stock.';
-            }
-
-            Historial_stock::create([
-                'stock_id' => $stock->id,
-                'cantidad' => $request->input('cantidad_mod'), // cantidad positiva o negativa
-                'fecha' => now()->toDateString(),
-                'empleado_id' => $request->input('empleado_id'),
-                'paciente_id' => $request->input('paciente_id'),
-                'comentario' => $comentario,
-                //'creado_por' => auth()->id(),
+        $agregar = $request->input('cantidad_agregar', 0);
+        $extraer = $request->input('cantidad_extraer', 0);
+    
+        // Validación: no permitir agregar y extraer al mismo tiempo
+        if ($agregar > 0 && $extraer > 0) {
+            return redirect()->back()
+                ->withErrors(['cantidad_agregar' => 'Solo se puede agregar o extraer, no ambas acciones a la vez.'])
+                ->withInput();
+        }
+    
+        // Si no se modifica nada, salir
+        if ($agregar === 0 && $extraer === 0) {
+            return redirect()->route('stocks.index');
+        }
+    
+        // Validar que no se descuente más stock del que hay
+        $nuevaCantidad = $oldCantidad + $agregar - $extraer;
+        if ($nuevaCantidad < 0) {
+            return redirect()->back()
+                ->withErrors(['cantidad_extraer' => 'No se puede descontar más de lo que hay en stock.'])
+                ->withInput();
+        }
+    
+        // Si se está extrayendo, validar datos del paciente, médico y comentario
+        if ($extraer > 0) {
+            $request->validate([
+                'paciente_id' => 'required|exists:pacientes,id',
+                'empleado_id' => 'required|exists:empleados,id',
+                'comentario' => 'required',
             ]);
         }
+    
+        // Actualizar stock
+        $stock->medicamento_id = $request->input('medicamento_id');
+        $stock->fecha_vencimiento = $request->filled('fecha_vencimiento')
+            ? $request->input('fecha_vencimiento')
+            : $stock->fecha_vencimiento;
+        $stock->cantidad_act = $nuevaCantidad;
+        $stock->save();
+    
+        // Registrar historial si hubo modificación
+        $cantidad_modificada = $agregar > 0 ? $agregar : -$extraer;
+        $comentario = $request->input('comentario') ?? ($agregar > 0 ? 'Se aumentó el stock.' : 'Se descontó stock.');
+    
+        Historial_stock::create([
+            'stock_id' => $stock->id,
+            'cantidad' => $cantidad_modificada,
+            'fecha' => now()->toDateString(),
+            'empleado_id' => $request->input('empleado_id'),
+            'paciente_id' => $request->input('paciente_id'),
+            'comentario' => $comentario,
+            // 'creado_por' => auth()->id(), // si querés registrar el usuario
+        ]);
+    
         return redirect()->route('stocks.index');
     }
 }
