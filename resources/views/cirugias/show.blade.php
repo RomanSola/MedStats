@@ -131,6 +131,20 @@
 
                     <div class="row g-3 mt-2 justify-content-center">
                         <div class="col-md-4">
+                            <label class="form-label">Enfermero</label>
+                            <input type="text" class="form-control"
+                                value="{{ $cirugia->get_enfermero->nombre }} {{ $cirugia->get_enfermero->apellido }}"
+                                readonly>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">DNI</label>
+                            <input type="text" class="form-control" value="{{ $cirugia->get_enfermero->dni }}"
+                                readonly>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mt-2 justify-content-center">
+                        <div class="col-md-4">
                             <label class="form-label">Urgencia</label>
                             <input type="text" class="form-control" value="{{ $cirugia->urgencia ? 'Sí' : 'No' }}"
                                 readonly>

@@ -15,11 +15,11 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
                 <label for="dni" class="block text-sm font-medium text-gray-700 mb-1">DNI</label>
-                <input type="text" name="dni" id="dni" class="w-full rounded-md border-gray-300 px-4 py-2"
+                <input type="text" name="dni" id="dni" class="w-full rounded-md border-gray-300 px-4 py-2 @error('dni') is-invalid @enderror"
                     value="{{ old('dni', $paciente->dni) }}" required>
-                @error('dni')
-                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                @enderror
+                    @error('dni')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
             </div>
 
             <div>

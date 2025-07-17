@@ -3,12 +3,13 @@
 @section('title', 'Gestión de Empleados')
 
 @section('contenido')
-<div class="container mt-4">
+<div class="container mt-4 bg-light border p-4 rounded">
     <h2 class="mb-4">Gestor de Empleados</h2>
 
     <div class="card border-warning">
         <div class="card-body">
             <p class="card-text">Administrá los empleados registrados en el sistema. Podés ver detalles, editarlos o eliminarlos.</p>
+            <br>
             <a href="{{ route('empleados.create') }}" class="btn btn-warning mb-3">Agregar Nuevo Empleado</a>
 
             <div class="table-responsive">

@@ -1,4 +1,4 @@
-<div>
+<div class="container mt-2">
 
     @php
         $rutaActual = request()->route()->getName();
@@ -21,8 +21,31 @@
             case 'salas.index':
             case 'habitaciones.index':
             case 'quirofanos.index':
+            case 'camas.index';  
+            case 'procedimientos.index': 
+            case 'profesion.index': 
+            case 'tipoAnestesias.index':
+            case 'ocupacionCamas.index':  
                 $rutaAnterior = 'ajustes';
                 break;
+
+             case 'profesion.create':
+            case 'profesion.edit':
+            case 'profesion.show':
+                $rutaAnterior = 'profesion.index';
+                break;    
+
+            case 'procedimientos.create':
+            case 'procedimientos.edit':
+            case 'procedimientos.show':
+                $rutaAnterior = 'procedimientos.index';
+                break;
+
+            case 'camas.create':
+            case 'camas.edit':
+            case 'camas.show':
+                $rutaAnterior = 'camas.index';
+                break;    
 
             case 'empleados.create':
             case 'empleados.edit':
@@ -106,10 +129,11 @@
     @endphp
 
     @if ($rutaActual !== 'inicio')
-        <a href="{{ route($rutaAnterior) }}" class="btn btn-outline-secondary mt-3">
+        <a href="{{ route($rutaAnterior) }}" class="btn btn-outline-primary mt-1">
             ← Volver atrás
         </a>
     @endif
+    
 
 
     <!-- I begin to speak only when I am certain what I will say is not better left unsaid. - Cato the Younger -->

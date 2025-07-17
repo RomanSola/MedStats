@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('titulo', 'Lista de Tipos de Anestesias')
 @section('contenido')
+<div class="container mt-4 bg-light border p-4 rounded">
 <h1 class="mb-4">Gestor de Tipos de Anestesias</h1>
 <a href="{{ route('tipoAnestesias.create') }}" class="btn btn-primary mb-3">Agregar Nuevo Procedimiento</a>
 <table class="table">
@@ -27,4 +28,5 @@
         @endforeach
     </tbody>
 </table>
+</div>
 @endsection

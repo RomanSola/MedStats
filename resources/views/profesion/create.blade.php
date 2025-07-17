@@ -1,6 +1,8 @@
 @extends('layouts.app')
 @section('titulo', 'Crear Profesión')
 @section('contenido')
+
+<div class="max-w-7xl mx-auto px-4 py-8">
 <h1 class="mb-4">Agregar Nueva Profesión</h1>
 <form action="{{ route( 'profesion.store') }}" method="POST">
     @csrf
@@ -13,4 +15,5 @@
     </div>
     <button class="btn btn-primary">Agregar</button>
 </form>
+</div>
 @endsection

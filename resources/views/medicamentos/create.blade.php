@@ -3,8 +3,9 @@
 @section('title', 'Agregar Nuevo Medicamento')
 
 @section('contenido')
+
 <div class="container mt-4">
-    <h2 class="mb-4">Agregar Nuevo Medicamento</h2>
+    <h2 class="mb-4 text-blue-600 md:text-green-600 ">Agregar Nuevo Medicamento</h2>
 
     <div class="card border-success">
         <div class="card-body">
@@ -14,9 +15,18 @@
                     <label for="nombre" class="form-label">Nombre del medicamento</label>
                     <input type="text" name="nombre" id="nombre" class="form-control" required>
                 </div>
+                <div class="form-group">
+                <label for="lote">Lote</label>
+                <input type="text" name="lote" id="lote" class="form-control @error('lote') is-invalid @enderror" value="{{ old('lote') }}">
+                @error('lote')
+                    <div class="invalid-feedback">
+                    {{ $message }}
+                    </div>
+                @enderror
+                </div>
 
                 <button type="submit" class="btn btn-success">Agregar</button>
-                <a href="{{ route('medicamentos.index') }}" class="btn btn-outline-secondary">Cancelar</a>
+                <a href="{{ route('medicamentos.index') }}" class="btn btn-outline-success">Cancelar</a>
             </form>
         </div>
     </div>

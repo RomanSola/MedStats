@@ -40,8 +40,12 @@
             <div>
                 <label for="lote" class="block text-sm font-medium text-gray-700 mb-1">Lote</label>
                 <input type="text" name="lote" id="lote"
-                    class="w-full rounded-md border-gray-300 px-4 py-2 focus:ring-2 focus:ring-gray-500"
-                    value="{{ old('lote') }}" required>
+                class="w-full rounded-md border-gray-300 px-4 py-2 focus:ring-2 focus:ring-gray-500 @error('lote') border-red-500 @enderror"
+                value="{{ old('lote') }}" required>
+                @error('lote')
+                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
             </div>
 
             <div>

@@ -13,13 +13,12 @@
         <!-- Datos personales -->
         <div>
     <label for="dni" class="block text-sm font-semibold text-gray-700 mb-1">DNI</label>
-    <input type="text" name="dni" id="dni" maxlength="8" pattern="\d{6,8}"
-           class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500"
-           value="{{ old('dni') }}" required title="Debe tener entre 6 y 8 dígitos">
-    @error('dni')
-        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-    @enderror
-    <p id="dni-error-js" class="text-red-600 text-sm mt-1"></p>
+    <input type="text" name="dni" id="dni" maxlength="15"
+           class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500 @error('dni') is-invalid @enderror"
+           value="{{ old('dni') }}" required>
+           @error('dni')
+                <div class="invalid-feedback">{{ $message }}</div>
+           @enderror
 </div>
 
             <div>
@@ -134,34 +133,74 @@
 <!-- Scripts para combos dinámicos -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    $('#pais').on('change', function () {
-        let paisId = $(this).val();
-        fetch(`/api/provincias/${paisId}`)
-            .then(res => res.json())
-            .then(data => {
-                let provincia = $('#provincia');
-                provincia.html('<option value="">Seleccione una provincia</option>');
-                data.forEach(p => {
-                    provincia.append(`<option value="${p.id}">${p.nombre}</option>`);
-                });
-            });
-    });
+    $(document).ready(function () {
+        let oldPaisId = "{{ old('pais_id') }}";
+        let oldProvinciaId = "{{ old('provincia_id') }}";
+        let oldCodPostalId = "{{ old('cod_postal_id') }}";
 
-    $('#provincia').on('change', function () {
-        let paisId = $('#pais').val();
-        let provinciaId = $(this).val();
-        fetch(`/api/cod_postal/${paisId}/${provinciaId}`)
-            .then(res => res.json())
-            .then(data => {
-                let codigos = $('#codigo_postal');
-                codigos.html('<option value="">Seleccione un código postal</option>');
-                data.forEach(c => {
-                    let texto = `${c.codigo}${c.localidad ? ' - ' + c.localidad : ''}`;
-                    codigos.append(`<option value="${c.id}">${texto}</option>`);
+        function cargarProvincias(paisId, selectedProvinciaId = null, callback = null) {
+            fetch(`/api/provincias/${paisId}`)
+                .then(res => res.json())
+                .then(data => {
+                    let provincia = $('#provincia');
+                    provincia.html('<option value="">Seleccione una provincia</option>');
+
+                    data.forEach(p => {
+                        let selected = (selectedProvinciaId == p.id) ? 'selected' : '';
+                        provincia.append(`<option value="${p.id}" ${selected}>${p.nombre}</option>`);
+                    });
+
+                    if (callback) callback();
                 });
+        }
+
+        function cargarCodPostales(paisId, provinciaId, selectedCodPostalId = null) {
+            fetch(`/api/cod_postal/${paisId}/${provinciaId}`)
+                .then(res => res.json())
+                .then(data => {
+                    let codigos = $('#codigo_postal');
+                    codigos.html('<option value="">Seleccione un código postal</option>');
+
+                    data.forEach(c => {
+                        let texto = `${c.codigo}${c.localidad ? ' - ' + c.localidad : ''}`;
+                        let selected = (selectedCodPostalId == c.id) ? 'selected' : '';
+                        codigos.append(`<option value="${c.id}" ${selected}>${texto}</option>`);
+                    });
+                });
+        }
+
+        // Evento cuando cambia el país
+        $('#pais').on('change', function () {
+            let paisId = $(this).val();
+            $('#provincia').html('<option value="">Cargando...</option>');
+            $('#codigo_postal').html('<option value="">Seleccione un código postal</option>');
+            if (paisId) {
+                cargarProvincias(paisId);
+            }
+        });
+
+        // Evento cuando cambia la provincia
+        $('#provincia').on('change', function () {
+            let paisId = $('#pais').val();
+            let provinciaId = $(this).val();
+            $('#codigo_postal').html('<option value="">Cargando...</option>');
+            if (paisId && provinciaId) {
+                cargarCodPostales(paisId, provinciaId);
+            }
+        });
+
+        // Restaurar valores si hay datos viejos
+        if (oldPaisId) {
+            $('#pais').val(oldPaisId);
+            cargarProvincias(oldPaisId, oldProvinciaId, function () {
+                if (oldProvinciaId) {
+                    cargarCodPostales(oldPaisId, oldProvinciaId, oldCodPostalId);
+                }
             });
+        }
     });
 </script>
+
 
 </div>
 @endsection

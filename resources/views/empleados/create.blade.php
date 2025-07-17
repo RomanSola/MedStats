@@ -4,7 +4,8 @@
 
 @section('contenido')
 <div class="container mt-4">
-    <h2 class="mb-4">Agregar Nuevo Empleado</h2>
+    
+    <h2 class="mb-3">Agregar Nuevo Empleado</h2>
 
     <div class="card border-warning">
         <div class="card-body">
@@ -12,28 +13,28 @@
                 @csrf
 
                 <div class="row mb-3">
-    <div class="col-md-4">
-        <label for="dni" class="form-label">DNI</label>
-        <input type="text" name="dni" id="dni" class="form-control" maxlength="8"
-               value="{{ old('dni') }}" required pattern="\d{6,8}" title="Debe tener entre 6 y 8 dígitos numéricos">
-        <div id="dni-error-js" class="form-text text-danger"></div>
-    </div>
-    @error('dni')
-        <small class="text-danger"> {{ $message }} </small>
-    @enderror
+                    <div class="col-md-4">
+                        <label for="dni" class="form-label">DNI</label>
+                        <input type="text" name="dni" id="dni" class="form-control" maxlength="8"
+                            value="{{ old('dni') }}" required pattern="\d{6,8}" title="Debe tener entre 6 y 8 dígitos numéricos">
+                        <div id="dni-error-js" class="form-text text-danger"></div>
+                    </div>
+                    @error('dni')
+                    <small class="text-danger"> {{ $message }} </small>
+                    @enderror
                     <div class="col-md-4">
                         <label for="nombre" class="form-label">Nombre</label>
                         <input type="text" name="nombre" id="nombre" class="form-control" required>
                     </div>
                     @error('nombre')
-                        <small class="text-danger"> {{ $message }} </small>
+                    <small class="text-danger"> {{ $message }} </small>
                     @enderror
                     <div class="col-md-4">
                         <label for="apellido" class="form-label">Apellido</label>
                         <input type="text" name="apellido" id="apellido" class="form-control" required>
                     </div>
                     @error('apellido')
-                        <small class="text-danger"> {{ $message }} </small>
+                    <small class="text-danger"> {{ $message }} </small>
                     @enderror
                 </div>
 
@@ -44,11 +45,12 @@
                     </div>
                     <div class="col-md-4">
                         <label for="telefono" class="form-label">Teléfono</label>
-                        <input type="text" name="telefono" id="telefono" class="form-control">
-                    </div>
-                    @error('telefono')
+                        <input type="text" name="telefono" id="telefono" class="form-control"  maxlength="15" pattern="^\d{1,15}$" required inputmode="numeric" autocomplete="tel">
+                        @error('telefono')
                         <small class="text-danger"> {{ $message }} </small>
-                    @enderror
+                        @enderror
+                    </div>
+
                     <div class="col-md-4">
                         <label for="direccion" class="form-label">Dirección</label>
                         <input type="text" name="direccion" id="direccion" class="form-control">
@@ -61,29 +63,29 @@
                         <select name="pais_id" id="pais" class="form-control">
                             <option value="">Seleccione un País</option>
                             @foreach ($paises as $pais)
-                                <option value="{{ $pais->id }}" {{ old('pais_id') == $pais->id ? 'selected' : '' }}>
-                                    {{ $pais->nombre }}
-                                </option>
+                            <option value="{{ $pais->id }}" {{ old('pais_id') == $pais->id ? 'selected' : '' }}>
+                                {{ $pais->nombre }}
+                            </option>
                             @endforeach
                         </select>
                         @error('pais_id')
-                            <small class="text-danger"> {{ $message }} </small>
+                        <small class="text-danger"> {{ $message }} </small>
                         @enderror
                     </div>
 
                     <div class="col-md-4">
                         <label for="provincia" class="form-label">Provincia</label>
                         <select name="provincia_id" id="provincia" class="form-control"></select>
-                    @error('provincia_id')
+                        @error('provincia_id')
                         <small class="text-danger"> {{ $message }} </small>
-                    @enderror
+                        @enderror
                     </div>
 
                     <div class="col-md-4">
                         <label for="codigo_postal" class="form-label">Código Postal</label>
                         <select name="cod_postal_id" id="codigo_postal" class="form-control"></select>
                         @error('cod_postal_id')
-                            <small class="text-danger"> {{ $message }} </small>
+                        <small class="text-danger"> {{ $message }} </small>
                         @enderror
                     </div>
                 </div>
@@ -93,18 +95,18 @@
                     <select name="profesion_id" id="profesion" class="form-control">
                         <option value="">Seleccione una Profesión</option>
                         @foreach ($profesiones as $profesion)
-                            <option value="{{ $profesion->id }}" {{ old('profesion_id') == $profesion->id ? 'selected' : '' }}>
-                                {{ $profesion->nombre_profesion }}
-                            </option>
+                        <option value="{{ $profesion->id }}" {{ old('profesion_id') == $profesion->id ? 'selected' : '' }}>
+                            {{ $profesion->nombre_profesion }}
+                        </option>
                         @endforeach
                     </select>
                     @error('profesion_id')
-                        <small class="text-danger"> {{ $message }} </small>
+                    <small class="text-danger"> {{ $message }} </small>
                     @enderror
                 </div>
 
                 <button class="btn btn-warning">Agregar</button>
-                <a href="{{ route('empleados.index') }}" class="btn btn-outline-secondary">Cancelar</a>
+                <a href="{{ route('empleados.index') }}" class="btn btn-warning">Cancelar</a>
             </form>
         </div>
     </div>

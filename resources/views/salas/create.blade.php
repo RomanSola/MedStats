@@ -1,6 +1,8 @@
 @extends('layouts.app')
 @section('titulo', 'Crear Sala')
 @section('contenido')
+
+<div class="container mt-4 bg-light border p-4 rounded">
 <h1 class="mb-4">Agregar Nueva Sala</h1>
 <form action="{{ route( 'salas.store') }}" method="POST">
     @csrf
@@ -13,4 +15,5 @@
     </div>
     <button class="btn btn-primary">Agregar</button>
 </form>
+</div>
 @endsection
