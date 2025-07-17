@@ -33,29 +33,39 @@
                 <h3>Habitación {{ $cama->get_habitacion->numero ?? 'Sin asignar' }}</h3>
                 <div class="card" style="width: 18rem; border-radius: 12px; background-color: #e7e7e7; margin-bottom: 12px;">
                     <div class="card-body">
-                        <div class="row mb-2">
-                            <div class="col-7">
-                                <h5 class="card-title"><b>Cama {{ $cama->codigo }}</b></h5>
-                            </div>
-                            <div class="col-4"></div>
-                        </div>
+                        <h5 class="card-title"><b>Cama {{ $cama->codigo }}</b></h5>
 
                         @if ($cama->ocupada && $cama->paciente)
                         <div class="text-left text-sm bg-white border border-gray-300 rounded px-3 py-2 mb-2">
                             <p><strong>Nombre:</strong> {{ $cama->paciente->nombre }} {{ $cama->paciente->apellido }}</p>
                             <p><strong>DNI:</strong> {{ $cama->paciente->dni }}</p>
+
                             @php
                                 $fechaNacimiento = \Carbon\Carbon::parse($cama->paciente->fecha_nacimiento);
-                                $edadAnios = $fechaNacimiento->age;
-                                $edadMeses = $fechaNacimiento->diffInMonths(\Carbon\Carbon::now());
-                            @endphp 
-                            @if ($edadAnios >= 2)
-                                <p><strong>Edad:</strong> {{ $edadAnios }} años</p>
-                            @elseif ($edadAnios == 1)
-                                <p><strong>Edad:</strong> 1 año ({{ $edadMeses }} meses)</p>
+                                $hoy = \Carbon\Carbon::now();
+                                $dias = $fechaNacimiento->diffInDays($hoy);
+                                $semanas = floor($dias / 7);
+                                $meses = $fechaNacimiento->diffInMonths($hoy);
+                                $anios = $fechaNacimiento->diffInYears($hoy);
+                                $mesesExtras = $meses - ($anios * 12);
+                            @endphp
+
+                            @if ($dias < 15)
+                                <p><strong>Edad:</strong> {{ $dias }} {{ $dias === 1 ? 'día' : 'días' }}</p>
+                            @elseif ($dias < 31)
+                                <p><strong>Edad:</strong> {{ $semanas }} {{ $semanas === 1 ? 'semana' : 'semanas' }}</p>
+                            @elseif ($anios < 1)
+                                <p><strong>Edad:</strong> {{ $meses }} {{ $meses === 1 ? 'mes' : 'meses' }}</p>
+                            @elseif ($anios < 3)
+                                <p><strong>Edad:</strong> {{ $anios }} {{ $anios === 1 ? 'año' : 'años' }}
+                                    @if ($mesesExtras > 0)
+                                        ({{ $mesesExtras }} {{ $mesesExtras === 1 ? 'mes' : 'meses' }})
+                                    @endif
+                                </p>
                             @else
-                                <p><strong>Edad:</strong> {{ $edadMeses }} meses</p>
+                                <p><strong>Edad:</strong> {{ $anios }} años</p>
                             @endif
+
                             <p><strong>Género:</strong> {{ $cama->paciente->genero }}</p>
                             <p><strong>Teléfono:</strong> {{ $cama->paciente->telefono }}</p>
                             <p><strong>Dirección:</strong> {{ $cama->paciente->direccion }}</p>
@@ -82,4 +92,5 @@
         @endforeach
     </div>
 </div>
+
 @endsection
