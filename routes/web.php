@@ -38,7 +38,7 @@ Route::get('/buscar', [BusquedaController::class, 'buscar'])->name('buscar');
 Route::view('/ajustes', 'ajustes')->name('ajustes');
 
 //vista estadistica
-Route::view('/estadisticas', 'estadisticas')->name('estadisticas');
+Route::get('/cirugias/estadisticas', [CirugiaController::class, 'estadisticas'])->name('cirugias.estadisticas');
 
 Route::get('/prueba', function (){
     return view('prueba');
@@ -150,7 +150,6 @@ Route::get('/stocks/{stock}/edit', [StockController::class, 'edit'])->name('stoc
 Route::get('/stocks/{stock}', [StockController::class, 'show'])->name('stocks.show');
 Route::put('/stocks/{stock}', [StockController::class, 'update'])->name('stocks.update');
 //Route::delete('/stocks/{}', [StockController::class, 'destroy'])->name('stocks.destroy');
-
 
 //Cirugias
 Route::get('/cirugias', [CirugiaController::class, 'index'])->name('cirugias.index');

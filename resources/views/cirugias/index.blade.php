@@ -16,6 +16,8 @@
                         <thead class="table-warning">
                             <tr>
                                 <th>Paciente</th>
+                                <th>DNI</th>
+                                <th>Edad</th>
                                 <th>Procedimiento</th>
                                 <th>Quirofano</th>
                                 <th>Cirujano</th>
@@ -38,6 +40,14 @@
                                         {{ $cirugia->get_paciente->apellido }}                                        
                                     </td>
                                     <td>
+                                        {{ $cirugia->get_paciente->dni }}
+                                    </td>
+                                    <td>
+                                        {{ optional($cirugia->get_paciente)->fecha_nacimiento
+                                        ? \Carbon\Carbon::parse($cirugia->get_paciente->fecha_nacimiento)->age
+                                        : '—' }}
+                                    </td>
+                                    <td>
                                         {{ $cirugia->get_procedimiento->nombre_procedimiento }}
                                     </td>
                                     <td>
@@ -52,8 +62,8 @@
                                         {{ $cirugia->get_ayudante1->apellido ?? '' }}
                                     </td>
                                     <td>
-                                        {{ optional($cirugia->get_ayudante2)->nombre }} 
-                                        {{ optional($cirugia->get_ayudante2)->apellido }}
+                                        {{ optional($cirugia->get_ayudante2)->nombre ?? 'N/A' }}
+                                        {{ optional($cirugia->get_ayudante2)->apellido ?? '' }}
                                     </td>
                                     <td>
                                         {{ optional($cirugia->get_ayudante3)->nombre ?? 'N/A' }}

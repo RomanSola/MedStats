@@ -9,6 +9,8 @@ use App\Models\Procedimiento;
 use App\Models\Quirofano;
 use App\Models\Tipo_anestesia;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class CirugiaController extends Controller
 {
@@ -181,5 +183,54 @@ class CirugiaController extends Controller
     {
         $cirugia->delete();
         return redirect()->route('cirugias.index');
+    }
+
+    public function estadisticas()
+    {
+        $total = \App\Models\Cirugia::count();
+        $meses = \App\Models\Cirugia::select(DB::raw('MONTH(created_at) as mes'))
+        ->distinct()
+        ->count();
+
+        $semanas = \App\Models\Cirugia::select(DB::raw('YEARWEEK(created_at, 1) as semana'))
+        ->distinct()
+        ->count();
+
+        $promedioMensual = $meses > 0 ? round($total / $meses, 2) : 0;
+        $promedioSemanal = $semanas > 0 ? round($total / $semanas, 2) : 0;
+    
+        $porCirujano = \App\Models\Cirugia::select('cirujano_id', DB::raw('COUNT(*) as total'))
+            ->groupBy('cirujano_id')
+            ->with('get_cirujano')
+            ->get();
+
+        $porEnfermero = \App\Models\Cirugia::select('enfermero_id', DB::raw('COUNT(*) as total'))
+            ->groupBy('enfermero_id')
+            ->with('get_enfermero')
+            ->get();
+
+        $porMes = \App\Models\Cirugia::select(DB::raw('MONTH(created_at) as mes'), DB::raw('COUNT(*) as total'))
+            ->groupBy('mes')
+            ->get();
+
+        $urgentes = \App\Models\Cirugia::where('urgencia', 'SI')->count();
+        $programadas = \App\Models\Cirugia::where('urgencia', 'NO')->count();
+
+        $porAnestesia = \App\Models\Cirugia::select('tipo_anestesia_id', DB::raw('COUNT(*) as total'))
+            ->groupBy('tipo_anestesia_id')
+            ->with('get_tipo_anestesia')
+            ->get();
+
+        return view('cirugias.estadisticas', compact(
+            'total',
+            'porCirujano',
+            'porEnfermero',
+            'porMes',
+            'urgentes',
+            'programadas',
+            'porAnestesia',
+            'promedioMensual',
+            'promedioSemanal'
+        ));
     }
 }

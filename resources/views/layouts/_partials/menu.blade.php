@@ -54,7 +54,7 @@
           <a href="libro_paciente.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">@lang('Libro Pacientes')</a>
           <a href="{{ route('medicamentos.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">@lang('Insumos Médicos')</a>
           <a href="{{ route('camas.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">@lang('Camas')</a>
-          <a href="{{ route('estadisticas') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">@lang('Estadísticas')</a>
+          <a href="{{ route('cirugias.estadisticas') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">@lang('Estadísticas')</a>
           <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">@lang('Perfil de Usuario')</a>
           <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-100">@lang('Cerrar Sesión')</a>
         </div>
