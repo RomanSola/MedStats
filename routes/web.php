@@ -16,6 +16,7 @@ use App\Http\Controllers\CirugiaController;
 use App\Http\Controllers\QuirofanoController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BusquedaController;
+use App\Http\Controllers\PersonaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +34,15 @@ Route::get('/', function () {
 })->name('inicio');
 
 Route::get('/buscar', [BusquedaController::class, 'buscar'])->name('buscar');
+
+
+//Buscador
+Route::get('/buscador', function () {
+    return view('busqueda');
+});
+Route::get('/buscar', [PersonaController::class, 'buscar'])->name('buscar');
+Route::get('/persona/{id}', [PersonaController::class, 'ver'])->name('persona.ver');
+
 
 // configuracion
 Route::view('/ajustes', 'ajustes')->name('ajustes');
