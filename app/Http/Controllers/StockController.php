@@ -31,6 +31,15 @@ class StockController extends Controller
             'lote' => 'required',
             'cantidad_act' => 'required|integer|min:0',
         ]);
+        $existe = Stock::where('medicamento_id', $request->input('medicamento_id'))
+        ->where('lote', $request->input('lote'))
+        ->exists();
+
+        if ($existe) {
+            return redirect()->back()
+            ->withErrors(['lote' => 'Ya existe un stock para este medicamento con ese lote.'])
+            ->withInput();
+        }
 
         $stock = new Stock();
         $stock->medicamento_id = $request->input('medicamento_id');
@@ -73,6 +82,15 @@ class StockController extends Controller
             'medicamento_id' => 'required|exists:medicamentos,id',
             'cantidad_mod' => 'required|integer',
         ]);
+        $existe = Stock::where('medicamento_id', $request->input('medicamento_id'))
+            ->where('lote', $stock->lote) // o $request->input('lote') si se puede editar
+            ->where('id', '!=', $stock->id) // 👈 excluye el registro actual
+            ->exists();
+        if ($existe) {
+        return redirect()->back()
+            ->withErrors(['lote' => 'Ya existe un stock para este medicamento con ese lote.'])
+            ->withInput();
+}
 
         $oldCantidad = $stock->cantidad_act;
 

@@ -196,7 +196,7 @@
                         
                         <div class="col-md-4">
                             <label for="pais" class="form-label">Enfermero</label>
-                            <select name="instrumentador_id" id="instrumentador_id" class="form-control">
+                            <select name="enfermero_id" id="enfermero_id" class="form-control">
                                 <option value="">Seleccione el Enfermero</option>
                             @php
                                 $profesionesPermitidas = [4];

@@ -9,6 +9,8 @@ use App\Models\Procedimiento;
 use App\Models\Quirofano;
 use App\Models\Tipo_anestesia;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class CirugiaController extends Controller
 {
@@ -18,7 +20,7 @@ class CirugiaController extends Controller
     {
         //$cirugias = Tarea::all(); //Hace un select all a la tabla
         //Llama a la funcion get_categoria del modelo tarea.php
-        $cirugias = Cirugia::with(['get_paciente', 'get_procedimiento', 'get_quirofano', 'get_cirujano', 'get_ayudante1', 'get_ayudante2', 'get_ayudante3', 'get_anestesista', 'get_instrumentador', 'get_tipo_anestesia'])->get();
+        $cirugias = Cirugia::with(['get_paciente', 'get_procedimiento', 'get_quirofano', 'get_cirujano', 'get_ayudante1', 'get_ayudante2', 'get_ayudante3', 'get_anestesista', 'get_instrumentador','get_enfermero', 'get_tipo_anestesia'])->get();
         //dd($cirugias);
         return view('cirugias.index', compact('cirugias')); //Llama a la vista y le pasa las Cirugias obtenidas
     }
@@ -48,6 +50,7 @@ class CirugiaController extends Controller
             'anestesista_id' => 'required|exists:empleados,id',
             'tipo_anestesia_id' => 'required|exists:tipo_anestesias,id',
             'instrumentador_id' => 'required|exists:empleados,id',
+            'enfermero_id' => 'required|exists:empleados,id',
         ]);
 
         if ($request->input('ayudante_1_id') != null) {
@@ -78,7 +81,7 @@ class CirugiaController extends Controller
         $cirugia->anestesista_id = $request->input('anestesista_id');
         $cirugia->tipo_anestesia_id = $request->input('tipo_anestesia_id');
         $cirugia->instrumentador_id = $request->input('instrumentador_id');
-        //$cirugia->enfermero_id = $request->input('enfermero_id');
+        $cirugia->enfermero_id = $request->input('enfermero_id');
         //Reemplazar cuando tengamos los usuarios
         $cirugia->creado_por = '1';
         $cirugia->modificado_por = '1';
@@ -115,7 +118,7 @@ class CirugiaController extends Controller
             'anestesista_id' => 'required|exists:empleados,id',
             'tipo_anestesia_id' => 'required|exists:tipo_anestesias,id',
             'instrumentador_id' => 'nullable|exists:empleados,id',
-            //'enfermero_id' => 'nullable|exists:empleados,id',
+            'enfermero_id' => 'nullable|exists:empleados,id',
         ]);
         if ($request->input('ayudante_1_id') != null) {
             $request->validate([
@@ -163,7 +166,9 @@ class CirugiaController extends Controller
         if ($request->input('instrumentador_id') != null) {
             $cirugia->instrumentador_id = $request->input('instrumentador_id');
         }
-
+        if ($request->input('enfermero_id') != null) {
+            $cirugia->enfermero_id = $request->input('enfermero_id');
+        }
         if ($request->input('urgencia') != null) {
             $cirugia->urgencia = true;
         } else {
@@ -178,5 +183,54 @@ class CirugiaController extends Controller
     {
         $cirugia->delete();
         return redirect()->route('cirugias.index');
+    }
+
+    public function estadisticas()
+    {
+        $total = \App\Models\Cirugia::count();
+        $meses = \App\Models\Cirugia::select(DB::raw('MONTH(created_at) as mes'))
+        ->distinct()
+        ->count();
+
+        $semanas = \App\Models\Cirugia::select(DB::raw('YEARWEEK(created_at, 1) as semana'))
+        ->distinct()
+        ->count();
+
+        $promedioMensual = $meses > 0 ? round($total / $meses, 2) : 0;
+        $promedioSemanal = $semanas > 0 ? round($total / $semanas, 2) : 0;
+    
+        $porCirujano = \App\Models\Cirugia::select('cirujano_id', DB::raw('COUNT(*) as total'))
+            ->groupBy('cirujano_id')
+            ->with('get_cirujano')
+            ->get();
+
+        $porEnfermero = \App\Models\Cirugia::select('enfermero_id', DB::raw('COUNT(*) as total'))
+            ->groupBy('enfermero_id')
+            ->with('get_enfermero')
+            ->get();
+
+        $porMes = \App\Models\Cirugia::select(DB::raw('MONTH(created_at) as mes'), DB::raw('COUNT(*) as total'))
+            ->groupBy('mes')
+            ->get();
+
+        $urgentes = \App\Models\Cirugia::where('urgencia', '1')->count();
+        $programadas = \App\Models\Cirugia::where('urgencia', '0')->count();
+
+        $porAnestesia = \App\Models\Cirugia::select('tipo_anestesia_id', DB::raw('COUNT(*) as total'))
+            ->groupBy('tipo_anestesia_id')
+            ->with('get_tipo_anestesia')
+            ->get();
+
+        return view('cirugias.estadisticas', compact(
+            'total',
+            'porCirujano',
+            'porEnfermero',
+            'porMes',
+            'urgentes',
+            'programadas',
+            'porAnestesia',
+            'promedioMensual',
+            'promedioSemanal'
+        ));
     }
 }

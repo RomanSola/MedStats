@@ -33,8 +33,11 @@ class CamaController extends Controller
 
     public function create()
     {
-        $habitaciones = Habitacion::all();
-        return view('camas.create', compact('habitaciones'));
+        $salas = Sala::all();
+        $habitaciones = Habitacion::where('sala_id', request('sala_id'))->get();
+
+        
+        return view('camas.create', compact('habitaciones','salas'));
     }
 
     public function store(Request $request)

@@ -16,6 +16,8 @@ class HabitacionController extends Controller
         //dd($habitaciones);
         return view('habitaciones.index', compact('habitaciones')); //Llama a la vista y le pasa las tareas obtenidas
     }
+
+    
     
     public function create()
     {

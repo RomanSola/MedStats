@@ -3,14 +3,18 @@
 @section('contenido')
 
 
+<!-- Formulario estilizado con funcionalidad autocomplete -->
 <div class="w-full flex justify-center mt-6">
   <form action="{{ route('buscar') }}" method="GET"
     class="flex items-center justify-center gap-2 w-full max-w-5xl px-6">
+
     <input
       type="text"
-      name="query"
+      id="busqueda"
+      name="busqueda"
       placeholder="Buscar paciente, insumo, cama..."
       class="flex-grow border border-[#B4DCE2] rounded-md px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-[#1B7D8F]">
+
     <button
       type="submit"
       class="bg-[#1B7D8F] hover:bg-[#176d7b] text-white text-base px-5 py-3 rounded-md shadow transition whitespace-nowrap">
@@ -18,6 +22,45 @@
     </button>
   </form>
 </div>
+
+<!-- Lista de resultados opcional (no se usa con autocomplete, pero la dejo por si querés algo extra) -->
+<ul id="resultados"></ul>
+
+<!-- Scripts de jQuery y jQuery UI -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+
+<!-- Script autocomplete -->
+<script>
+  $(function() {
+    $("#busqueda").autocomplete({
+      source: function(request, response) {
+        $.ajax({
+          url: "/buscar", // O la ruta Laravel correcta
+          dataType: "json",
+          data: {
+            term: request.term
+          },
+          success: function(data) {
+            response($.map(data, function(item) {
+              return {
+                label: item.name + " " + item.surname + " (DNI: " + item.dni + ")",
+                value: item.name,
+                id: item.id
+              };
+            }));
+          }
+        });
+      },
+      minLength: 2,
+      select: function(event, ui) {
+        window.location.href = "/ver/" + ui.item.id;
+      }
+    });
+  });
+</script>
+
 
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-8 bg-gray-100 min-h-screen">
 
@@ -42,7 +85,7 @@
   </a>
 
   <!-- CARD 2: Estadísticas -->
-  <a href="/estadisticas" class="flex h-52 rounded-2xl overflow-hidden transform hover:scale-[1.02]  transition duration-300 bg-white text-decoration-none">
+  <a href="{{ route('cirugias.estadisticas') }}" class="flex h-52 rounded-2xl overflow-hidden transform hover:scale-[1.02]  transition duration-300 bg-white text-decoration-none">
     <div class="w-1/2 p-6 flex flex-col justify-between">
       <div>
         <h2 class="text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent  bg-clip-text drop-shadow-md  flex items-center gap-2">
