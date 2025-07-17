@@ -25,6 +25,7 @@
                                 <th>Anestesista</th>
                                 <th>Tipo de Anestesia</th>
                                 <th>Instrumentador</th>
+                                <th>Enfermero</th>
                                 <th>Urgencia</th>
                                 <th class="text-center">Acciones</th>
                             </tr>
@@ -32,24 +33,49 @@
                         <tbody>
                             @forelse($cirugias as $cirugia)
                                 <tr>
-                                    <td>{{ $cirugia->get_paciente->nombre }} {{ $cirugia->get_paciente->apellido }}</td>
-                                    <td>{{ $cirugia->get_procedimiento->nombre_procedimiento }}</td>
-                                    <td>{{ $cirugia->get_quirofano->nombre ?? 'N/A' }}</td>
-                                    <td>{{ $cirugia->get_cirujano->nombre }} {{ $cirugia->get_cirujano->apellido }}</td>
-                                    <td>{{ $cirugia->get_ayudante1->nombre ?? 'N/A' }}
+                                    <td>
+                                        {{ $cirugia->get_paciente->nombre }} 
+                                        {{ $cirugia->get_paciente->apellido }}                                        
+                                    </td>
+                                    <td>
+                                        {{ $cirugia->get_procedimiento->nombre_procedimiento }}
+                                    </td>
+                                    <td>
+                                        {{ $cirugia->get_quirofano->nombre ?? 'N/A' }}
+                                    </td>
+                                    <td>
+                                        {{ $cirugia->get_cirujano->nombre }} 
+                                        {{ $cirugia->get_cirujano->apellido }}
+                                    </td>
+                                    <td>
+                                        {{ $cirugia->get_ayudante1->nombre ?? 'N/A' }}
                                         {{ $cirugia->get_ayudante1->apellido ?? '' }}
                                     </td>
-                                    <td>{{ optional($cirugia->get_ayudante2)->nombre }} {{ optional($cirugia->get_ayudante2)->apellido }}
+                                    <td>
+                                        {{ optional($cirugia->get_ayudante2)->nombre }} 
+                                        {{ optional($cirugia->get_ayudante2)->apellido }}
                                     </td>
-                                    <td>{{ optional($cirugia->get_ayudante3)->nombre ?? 'N/A' }}
+                                    <td>
+                                        {{ optional($cirugia->get_ayudante3)->nombre ?? 'N/A' }}
                                         {{ optional($cirugia->get_ayudante3)->apellido ?? '' }}
                                     </td>
-                                    <td>{{ $cirugia->get_anestesista->nombre }} {{ $cirugia->get_anestesista->apellido }}
+                                    <td>
+                                        {{ $cirugia->get_anestesista->nombre }} 
+                                        {{ $cirugia->get_anestesista->apellido }}
                                     </td>
-                                    <td>{{ $cirugia->get_tipo_anestesia->nombre }}</td>
+                                    <td>
+                                        {{ $cirugia->get_tipo_anestesia->nombre }}
+                                    </td>
                                     <td>{{ optional($cirugia->get_instrumentador)->nombre }}
-                                        {{ optional($cirugia->get_instrumentador)->apellido }}</td>
-                                    <td>{{ $cirugia->urgencia ? 'Si' : 'No' }}</td>
+                                        {{ optional($cirugia->get_instrumentador)->apellido }}
+                                    </td>
+                                    <td>
+                                        {{ optional($cirugia->get_enfermero)->nombre }}
+                                        {{ optional($cirugia->get_enfermero)->apellido }}
+                                    </td>
+                                    <td>
+                                        {{ $cirugia->urgencia ? 'Si' : 'No' }}
+                                    </td>
                                     <td class="text-center">
                                         <a href="{{ route('cirugias.show', $cirugia) }}"
                                             class="btn btn-outline-primary btn-sm me-1">Ver</a>
@@ -65,7 +91,6 @@
                         </tbody>
                     </table>
                 </div>
-
             </div>
         </div>
         <!-- Botón de impresión -->

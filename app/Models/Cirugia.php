@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Models;
-
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -20,6 +18,7 @@ class Cirugia extends Model
         'anestesista_id',
         'tipo_anestesia_id',
         'instrumentador_id',
+        'enfermero_id',
         'urgencia',
         'creado_por',
         'modificado_por'
@@ -60,6 +59,10 @@ class Cirugia extends Model
     public function get_instrumentador()
     {
         return $this->belongsTo(Empleado::class, 'instrumentador_id', 'id');
+    }
+    public function get_enfermero()
+    {
+        return $this->belongsTo(Empleado::class, 'enfermero_id', 'id');
     }
     public function get_tipo_anestesia()
     {
