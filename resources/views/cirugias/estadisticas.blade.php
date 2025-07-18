@@ -5,14 +5,19 @@
 
     {{-- Actividad general --}}
     <div class="card mb-4">
-        <div class="card-header">Actividad general</div>
-        <div class="card-body">
-            <p>Total de cirugías: <strong>{{ $total }}</strong></p>
-            <p>Promedio mensual: <strong>{{ $promedioMensual }}</strong></p>
-            <p>Promedio semanal: <strong>{{ $promedioSemanal }}</strong></p>
-        </div>
+    <div class="card-header">Actividad general</div>
+    <div class="card-body">
+        <p>Total de cirugías: <strong>{{ $total }}</strong></p>
+        <p>Promedio mensual: <strong>{{ $promedioMensual }}</strong></p>
+        <p>Promedio semanal: <strong>{{ $promedioSemanal }}</strong></p>
+    </div>
     </div>
 
+    {{-- Gráfico mensual --}}
+    <div class="card mb-4">
+        <div class="card-header">Gráfico mensual</div>
+        <div class="card-body" style="width: 300px; height: 300px; margin: auto;">
+            <canvas id="cirugiasPorMes" height="200px;"></canvas>
         </div>
     </div>
 
@@ -25,6 +30,9 @@
                     <li>{{ optional($item->get_cirujano)->nombre }} {{ optional($item->get_cirujano)->apellido }}: {{ $item->total }}</li>
                 @endforeach
             </ul>
+            <div style="width: 300px; height: 300px; margin: auto;">
+                <canvas id="graficoCirujanos"></canvas>
+            </div>
         </div>
     </div>
 
@@ -87,5 +95,51 @@
 <canvas id="cirugiasPorMes" height="100"></canvas>
 
 @push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('cirugiasPorMes').getContext('2d');
+    const chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: {!! json_encode($porMesLabels) !!},
+            datasets: [{
+                label: 'Cirugías por mes',
+                data: {!! json_encode($porMesValores) !!},
+                backgroundColor: '#3b82f6'
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false }
+            }
+        }
+    });
+</script>
+<script>
+    const ctxCirujanos = document.getElementById('graficoCirujanos').getContext('2d');
+    const chartCirujanos = new Chart(ctxCirujanos, {
+        type: 'doughnut',
+        data: {
+            labels: @json($cirujanoLabels),
+            datasets: [{
+                label: 'Cirugías por cirujano',
+                data: @json($cirujanoValores),
+                backgroundColor: [
+                    '#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6',
+                    '#ec4899', '#22d3ee', '#f43f5e', '#a3e635', '#6366f1'
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+</script>
 @endpush
 @endsection
