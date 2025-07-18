@@ -213,8 +213,8 @@ class CirugiaController extends Controller
             ->groupBy('mes')
             ->get();
 
-        $urgentes = \App\Models\Cirugia::where('urgencia', 'SI')->count();
-        $programadas = \App\Models\Cirugia::where('urgencia', 'NO')->count();
+        $urgentes = \App\Models\Cirugia::where('urgencia', '1')->count();
+        $programadas = \App\Models\Cirugia::where('urgencia', '0')->count();
 
         $porAnestesia = \App\Models\Cirugia::select('tipo_anestesia_id', DB::raw('COUNT(*) as total'))
             ->groupBy('tipo_anestesia_id')
