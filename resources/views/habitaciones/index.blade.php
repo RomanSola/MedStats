@@ -3,7 +3,7 @@
 @section('contenido')
 <h1 class="mb-4">Gestor de Habitaciones</h1>
 <a href="{{ route('habitaciones.create') }}" class="btn btn-primary mb-3">Agregar Nueva Habitación</a>
-<table class="table">
+<table class="table table-hover table-bordered shadow-sm text-center rounded">
     <thead>
         <tr>
             <th>Habitación</th>

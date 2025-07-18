@@ -5,7 +5,7 @@
 
 <h1 class="mb-4">Gestor de Profesiones</h1>
 <a href="{{ route('profesion.create') }}" class="btn btn-primary mb-3">Agregar Nueva Profesión</a>
-<table class="table">
+<table class="table table-hover table-bordered shadow-sm text-center rounded">
     <thead>
         <tr>
             <th>Profesión</th>

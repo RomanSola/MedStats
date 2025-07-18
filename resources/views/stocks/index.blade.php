@@ -22,8 +22,8 @@
         </div>
 
         <div class="bg-white shadow rounded-lg border border-gray-200 overflow-auto">
-            <table class="min-w-full text-sm text-gray-800 table-auto">
-                <thead class="bg-gray-100 text-gray-700 font-semibold">
+            <table class=" table table-hover table-bordered shadow-sm text-center rounded">
+                <thead>
                     <tr>
                         <th class="px-4 py-2 border">Medicamento</th>
                         <th class="px-4 py-2 border">Lote</th>

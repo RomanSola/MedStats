@@ -12,7 +12,7 @@
             <a href="{{ route('quirofanos.create') }}" class="btn btn-info mb-3">Agregar Nuevo Quirofano</a>
 
             <div class="table-responsive">
-                <table class="table table-bordered align-middle">
+                <table class="table table-hover table-bordered shadow-sm text-center rounded">
                     <thead class="table-info">
                         <tr>
                             <th>Quirofano</th>
