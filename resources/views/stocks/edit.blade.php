@@ -39,23 +39,36 @@
             </div>
         </div>
 
-        <!-- Modificación de stock -->
-        <div>
-            <label for="cantidad_mod" class="block text-sm font-medium text-gray-700 mb-1">Agregar o Extraer Cantidad</label>
-            <input type="number" name="cantidad_mod" id="cantidad_mod"
-                   class="w-full rounded-md border-gray-300 px-4 py-2 focus:ring-2 focus:ring-gray-500"
-                   required>
-            @error('cantidad_mod')
-            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-            @enderror
-        </div>
+<!-- Modificación de stock -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div>
+        <label for="cantidad_agregar" class="block text-sm font-medium text-gray-700 mb-1">Agregar Cantidad</label>
+        <input type="number" name="cantidad_agregar" id="cantidad_agregar" min="0"
+               class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500"
+               value="{{ old('cantidad_agregar') }}">
+        @error('cantidad_agregar')
+        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+        @enderror
+    </div>
+
+    <div>
+        <label for="cantidad_extraer" class="block text-sm font-medium text-gray-700 mb-1">Extraer Cantidad</label>
+        <input type="number" name="cantidad_extraer" id="cantidad_extraer" min="0"
+               class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500"
+               
+               value="{{ old('cantidad_extraer') }}">
+        @error('cantidad_extraer')
+        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+        @enderror
+    </div>
+</div>
 
         <!-- Asociación con paciente y médico -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
                 <label for="paciente_id" class="block text-sm font-medium text-gray-700 mb-1">El medicamento es para</label>
                 <select name="paciente_id" id="paciente_id"
-                        class="w-full rounded-md border-gray-300 px-4 py-2">
+                        class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500">
                     <option value="">Seleccione un paciente</option>
                     @foreach ($pacientes as $paciente)
                         <option value="{{ $paciente->id }}" {{ old('paciente_id') == $paciente->id ? 'selected' : '' }}>
@@ -71,7 +84,7 @@
             <div>
                 <label for="empleado_id" class="block text-sm font-medium text-gray-700 mb-1">Recetado por</label>
                 <select name="empleado_id" id="empleado_id"
-                        class="w-full rounded-md border-gray-300 px-4 py-2">
+                        class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500">
                     <option value="">Seleccione un médico</option>
                     @foreach ($empleados as $empleado)
                         <option value="{{ $empleado->id }}" {{ old('empleado_id') == $empleado->id ? 'selected' : '' }}>
@@ -89,7 +102,7 @@
         <div>
             <label for="comentario" class="block text-sm font-medium text-gray-700 mb-1">Comentario</label>
             <input type="text" name="comentario" id="comentario"
-                   class="w-full rounded-md border-gray-300 px-4 py-2 focus:ring-2 focus:ring-gray-500"
+                   class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500"
                    value="{{ old('comentario') }}">
             @error('comentario')
             <p class="text-red-600 text-sm mt-1">{{ $message }}</p>

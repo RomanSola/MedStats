@@ -4,7 +4,7 @@
 <div class="container mt-4 bg-light border p-4 rounded">
 <h1 class="mb-4">Gestor de Perfiles de Usuario</h1>
 <a href="{{ route('UsuarioPerfil.create') }}" class="btn btn-primary mb-3">Agregar Nuevo Perfil</a>
-<table class="table">
+<table class="table table-hover table-bordered shadow-sm text-center rounded">
     <thead>
         <tr>
             <th>Perfil</th>

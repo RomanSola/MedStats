@@ -14,7 +14,7 @@
 
     <div class="max-w-7xl mx-auto px-4 py-8">
         <div class="flex justify-between items-center mb-6">
-            <h1 class="text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent  bg-clip-text drop-shadow-md  flex items-center gap-2">Medicamentos en Stock</h1>
+            <h1 class="text-2xl font-semibold text-gray-800">Medicamentos en Stock</h1>
             <a href="{{ route('stocks.create') }}"
                 class="bg-neutral-700 hover:bg-neutral-800 text-white font-medium py-2 px-6 rounded-full shadow">
                 + Ingresar Nuevo Medicamento
@@ -22,8 +22,8 @@
         </div>
 
         <div class="bg-white shadow rounded-lg border border-gray-200 overflow-auto">
-            <table class="min-w-full text-sm text-gray-800 table-auto">
-                <thead class="bg-gray-100 text-gray-700 font-semibold">
+            <table class=" table table-hover table-bordered shadow-sm text-center rounded">
+                <thead>
                     <tr>
                         <th class="px-4 py-2 border">Medicamento</th>
                         <th class="px-4 py-2 border">Lote</th>

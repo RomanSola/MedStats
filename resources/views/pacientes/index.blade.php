@@ -64,7 +64,6 @@
         </table>
     </div>
 </div>
-
 <!-- MODAL DE CONFIRMACIÓN PERSONALIZADO -->
 <div id="modal-confirmacion" class="modal">
     <div class="modal-content">
@@ -182,3 +181,4 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 @endsection
+

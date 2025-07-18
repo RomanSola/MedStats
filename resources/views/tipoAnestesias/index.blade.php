@@ -4,7 +4,7 @@
 <div class="container mt-4 bg-light border p-4 rounded">
 <h1 class="mb-4">Gestor de Tipos de Anestesias</h1>
 <a href="{{ route('tipoAnestesias.create') }}" class="btn btn-primary mb-3">Agregar Nuevo Procedimiento</a>
-<table class="table">
+<table class="table table-hover table-bordered shadow-sm text-center rounded">
     <thead>
         <tr>
             <th>Tipo de Anestesia</th>

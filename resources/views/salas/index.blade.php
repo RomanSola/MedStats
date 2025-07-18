@@ -4,7 +4,7 @@
 <div class="container mt-4 bg-light border p-4 rounded">
 <h1 class="mb-4 ">Gestor de Salas</h1>
 <a href="{{ route('salas.create') }}" class="btn btn-primary mb-3">Agregar Nueva Sala</a>
-<table class="table">
+<table class="table table-hover table-bordered shadow-sm text-center rounded">
     <thead>
         <tr>
             <th>Sala</th>
