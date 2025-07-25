@@ -73,7 +73,7 @@
 
     {{-- Urgencias vs programadas --}}
     <div class="card mb-4">
-        <div class="card-header">Urgencias vs Programadas</div>
+        <div class="card-header">Urgencias vs. Programadas</div>
         <div class="card-body">
             <p>Urgentes: {{ $urgentes }} | Programadas: {{ $programadas }}</p>
         </div>

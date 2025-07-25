@@ -4,11 +4,11 @@
 
 @section('contenido')
     <div class="container mt-4">
-        <h2 class="mb-4">Gestor de Cirugias</h2>
+        <h2 class="mb-4">Gestor de Cirugías</h2>
 
         <div class="card border-warning">
             <div class="card-body">
-                <p class="card-text">Administrá las cirugias registradas en el sistema. Podés ver detalles y editarlos.</p>
+                <p class="card-text">Administrá las cirugías registradas en el sistema. Podés ver detalles y editarlos.</p>
                 <a href="{{ route('cirugias.create') }}" class="btn btn-warning mb-3">Registrar Nueva Cirugía</a>
 
                 <div class="table-responsive">
@@ -19,7 +19,7 @@
                                 <th>DNI</th>
                                 <th>Edad</th>
                                 <th>Procedimiento</th>
-                                <th>Quirofano</th>
+                                <th>Quirófano</th>
                                 <th>Cirujano</th>
                                 <th>Ayudante 1</th>
                                 <th>Ayudante 2</th>
@@ -36,8 +36,8 @@
                             @forelse($cirugias as $cirugia)
                                 <tr>
                                     <td>
-                                        {{ $cirugia->get_paciente->nombre }} 
-                                        {{ $cirugia->get_paciente->apellido }}                                        
+                                        {{ $cirugia->get_paciente->nombre }}
+                                        {{ $cirugia->get_paciente->apellido }}
                                     </td>
                                     <td>
                                         {{ $cirugia->get_paciente->dni }}
@@ -54,7 +54,7 @@
                                         {{ $cirugia->get_quirofano->nombre ?? 'N/A' }}
                                     </td>
                                     <td>
-                                        {{ $cirugia->get_cirujano->nombre }} 
+                                        {{ $cirugia->get_cirujano->nombre }}
                                         {{ $cirugia->get_cirujano->apellido }}
                                     </td>
                                     <td>
@@ -70,7 +70,7 @@
                                         {{ optional($cirugia->get_ayudante3)->apellido ?? '' }}
                                     </td>
                                     <td>
-                                        {{ $cirugia->get_anestesista->nombre }} 
+                                        {{ $cirugia->get_anestesista->nombre }}
                                         {{ $cirugia->get_anestesista->apellido }}
                                     </td>
                                     <td>
@@ -95,7 +95,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="12" class="text-center text-muted">No hay cirugias registradas aún.</td>
+                                    <td colspan="12" class="text-center text-muted">No hay cirugías registradas aún.</td>
                                 </tr>
                             @endforelse
                         </tbody>

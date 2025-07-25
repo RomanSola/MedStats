@@ -4,7 +4,7 @@
 
 @section('contenido')
 <div class="container mt-4">
-    <h2 class="mb-4">Gestor de Quirofanos</h2>
+    <h2 class="mb-4">Gestor de Quirofanós</h2>
 
     <div class="card border-info">
         <div class="card-body">
@@ -15,7 +15,7 @@
                 <table class="table table-hover table-bordered shadow-sm text-center rounded">
                     <thead class="table-info">
                         <tr>
-                            <th>Quirofano</th>
+                            <th>Quirófano</th>
                             <th>Descripción</th>
                             <th class="text-center">Acciones</th>
                         </tr>
@@ -35,12 +35,12 @@
                                         Eliminar
                                     </button>
                                 </form>
-                                
+
                             </td>
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="3" class="text-center text-muted">No hay Quirofanos registrados.</td>
+                            <td colspan="3" class="text-center text-muted">No hay Quirófanos registrados.</td>
                         </tr>
                         @endforelse
                     </tbody>

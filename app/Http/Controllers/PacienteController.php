@@ -14,6 +14,7 @@ use App\Models\Sala;
 
 class PacienteController extends Controller
 {
+
     public function index()
     {
         $pacientes = Paciente::all();
@@ -33,7 +34,7 @@ class PacienteController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([ //Si el titulo esta vacion no hace nada 
+        $request->validate([ //Si el titulo esta vacion no hace nada
             $request->validate([
                 'dni' => 'required|digits_between:6,15|unique:pacientes,dni,',
                 'nombre' => 'required',
@@ -46,9 +47,9 @@ class PacienteController extends Controller
             ], [
                 'dni.digits_between' => 'El DNI debe contener solo números entre 6 y 15 dígitos.',
                 'dni.unique' => 'Ya existe otro paciente con ese DNI.',
-    
+
             ])
-    
+
         ]);
 
         $paciente = new Paciente();

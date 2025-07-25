@@ -11,8 +11,9 @@
     <input
       type="text"
       id="busqueda"
+      autocomplete="off"
       name="busqueda"
-      placeholder="Buscar paciente, insumo, cama..."
+      placeholder="Buscar paciente por nombre, apellido o DNI"
       class="flex-grow border border-[#B4DCE2] rounded-md px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-[#1B7D8F]">
 
     <button
@@ -23,13 +24,12 @@
   </form>
 </div>
 
-<!-- Lista de resultados opcional (no se usa con autocomplete, pero la dejo por si querés algo extra) -->
-<ul id="resultados"></ul>
-
-<!-- Scripts de jQuery y jQuery UI -->
+<!-- jQuery completo -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+
+<!-- jQuery UI -->
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
 
 <!-- Script autocomplete -->
 <script>
@@ -37,7 +37,7 @@
     $("#busqueda").autocomplete({
       source: function(request, response) {
         $.ajax({
-          url: "/buscar", // O la ruta Laravel correcta
+          url: "{{ route('buscar.ajax') }}",
           dataType: "json",
           data: {
             term: request.term
@@ -45,8 +45,8 @@
           success: function(data) {
             response($.map(data, function(item) {
               return {
-                label: item.name + " " + item.surname + " (DNI: " + item.dni + ")",
-                value: item.name,
+                label: item.nombre + " " + item.apellido + " (DNI: " + item.dni + ")",
+                value: item.nombre+item.apellido,
                 id: item.id
               };
             }));
@@ -55,7 +55,7 @@
       },
       minLength: 2,
       select: function(event, ui) {
-        window.location.href = "/ver/" + ui.item.id;
+        window.location.href = "/persona/" + ui.item.id;
       }
     });
   });
@@ -137,8 +137,8 @@
     <div class="w-1/2 p-6 flex flex-col justify-between">
       <div>
         <h2 class="text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent  bg-clip-text drop-shadow-md  flex items-center gap-2">
-          <img src="{{ asset('assets/img/logo-san-felipe.png') }}" alt="Hospital San Felipe" class="w-6 h-6">Libro de cirugias</h2>
-        <p class="text-gray-500 mt-2 text-sm">Registro de cirugias realizadas en quirofano</p>
+          <img src="{{ asset('assets/img/logo-san-felipe.png') }}" alt="Hospital San Felipe" class="w-6 h-6">Libro de cirugías</h2>
+        <p class="text-gray-500 mt-2 text-sm">Registro de cirugias realizadas en quirófano</p>
       </div>
       <span class="text-blue-600 font-semibold mt-4">Ver más →</span>
     </div>

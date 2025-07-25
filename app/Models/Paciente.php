@@ -10,19 +10,40 @@ class Paciente extends Model
     use HasFactory;
 
     protected $fillable = [
-        'dni', 
-        'nombre', 
-        'apellido', 
-        'fecha_nacimiento', 
-        'genero', 
-        'telefono', 
-        'pais_id', 
+        'dni',
+        'nombre',
+        'apellido',
+        'fecha_nacimiento',
+        'genero',
+        'telefono',
+        'pais_id',
         'provincia_id',
-        'cod_postal_id', 
-        'direccion', 
-        'creado_por', 
+        'cod_postal_id',
+        'direccion',
+        'creado_por',
         'modificado_por'
     ];
+    public function historial_stock()
+    {
+        return $this->hasMany(Historial_stock::class, 'paciente_id');
+    }
+
+    public function medicamentos()
+    {
+        return $this->hasManyThrough(
+        Medicamento::class,
+        Historial_stock::class,
+        'paciente_id',        // Foreign key on historial_stock
+        'id',                 // Foreign key on medicamento
+        'id',                 // Local key on paciente
+        'stock_id'            // Local key on historial_stock (vía stock)
+    )->join('stock', 'stock.id', '=', 'historial_stock.stock_id')
+     ->join('medicamentos', 'medicamentos.id', '=', 'stock.medicamento_id')
+     ->select('medicamentos.*')
+     ->distinct();
+    }
+
+
     public function habitacion()
     {
         return $this->belongsTo(Habitacion::class);
