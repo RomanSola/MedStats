@@ -202,17 +202,26 @@ class CirugiaController extends Controller
         $porCirujano = \App\Models\Cirugia::select('cirujano_id', DB::raw('COUNT(*) as total'))
             ->groupBy('cirujano_id')
             ->with('get_cirujano')
-            ->get();
+            ->get()
+            ->sortByDesc('total')
+            ->take(5);
             $cirujanoLabels = $porCirujano->map(function ($item) {
                 $c = $item->get_cirujano;
                 return $c ? $c->nombre . ' ' . $c->apellido : 'Sin asignar';
                 })->values();
             $cirujanoValores = $porCirujano->pluck('total')->values();
 
-        $porEnfermero = \App\Models\Cirugia::select('enfermero_id', DB::raw('COUNT(*) as total'))
+        $topEnfermeros = \App\Models\Cirugia::select('enfermero_id', DB::raw('COUNT(*) as total'))
             ->groupBy('enfermero_id')
             ->with('get_enfermero')
-            ->get();
+            ->get()
+            ->sortByDesc('total')
+            ->take(5);
+            $enfermeroLabels = $topEnfermeros->map(function ($item) {
+                return optional($item->get_enfermero)->nombre . ' ' . optional($item->get_enfermero)->apellido;
+            });
+
+            $enfermeroValores = $topEnfermeros->pluck('total');
 
         $porMes = \App\Models\Cirugia::select(DB::raw('MONTH(created_at) as mes'), DB::raw('COUNT(*) as total'))
             ->groupBy('mes')
@@ -235,7 +244,9 @@ class CirugiaController extends Controller
         return view('cirugias.estadisticas', compact(
         'total',
         'porCirujano',
-        'porEnfermero',
+        'topEnfermeros', 
+        'enfermeroLabels', 
+        'enfermeroValores',
         'porMes',
         'porMesLabels',
         'porMesValores',
