@@ -7,34 +7,65 @@
         </h2>
     </div>
 
-    <div class="row mb-4">
-    {{-- Columna izquierda: Actividad general --}}
-    <div class="col-md-6">
-        <div class="card h-100 shadow-sm">
-            <div class="card-header bg-primary text-white">Actividad general</div>
-            <div class="card-body">
-                <p>Total de cirugías: <strong>{{ $total }}</strong></p>
-                <p>Promedio mensual: <strong>{{ $promedioMensual }}</strong></p>
-                <p>Promedio semanal: <strong>{{ $promedioSemanal }}</strong></p>
+<div class="row mb-4">
+    {{-- Columna izquierda: Estadísticas --}}
+    <div class="col-md-6" data-aos="fade-up" data-aos-duration="800">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">
+                    <i class="bi bi-bar-chart-line me-2"></i>
+                    Estadísticas de Cirugías
+                </h5>
+
+                {{-- Selector de año --}}
+                <form method="GET" action="/estadisticas" class="d-flex align-items-center">
+                    <label for="anio" class="me-2 mb-0 fw-semibold">Año:</label>
+                    <select name="anio" id="anio"
+                class="form-select form-select-sm w-auto text-white bg-info border-0"
+                onchange="this.form.submit()">
+                @foreach($aniosDisponibles as $anio)
+                <option value="{{ $anio }}" {{ $anio == $anioSeleccionado ? 'selected' : '' }}>
+                    {{ $anio }}
+                </option>
+                @endforeach
+                    </select>
+                </form>
+            </div>
+
+            <div class="card-body bg-light">
+                <div class="row text-center">
+                    <div class="col-md-4 mb-3 mb-md-0">
+                        <div class="text-muted small">Total de cirugías</div>
+                        <div class="fs-4 fw-bold text-primary">{{ $total }}</div>
+                    </div>
+                    <div class="col-md-4 mb-3 mb-md-0">
+                        <div class="text-muted small">Promedio mensual</div>
+                        <div class="fs-4 fw-bold text-success">{{ $promedioMensual }}</div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-muted small">Promedio semanal</div>
+                        <div class="fs-4 fw-bold text-warning">{{ $promedioSemanal }}</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
     {{-- Columna derecha: Gráfico mensual --}}
-    <div class="col-md-6">
+    <div class="col-md-6" data-aos="fade-up" data-aos-duration="800">
         <div class="card h-100 shadow-sm">
             <div class="card-header bg-info text-white">Gráfico mensual</div>
-            <div class="card-body">
+            <div class="card-body bg-light">
                 <div style="height: 300px;">
                     <canvas id="cirugiasPorMes"></canvas>
                 </div>
             </div>
-            </div>
         </div>
     </div>
+</div>
 
     {{-- Cirugías por cirujano --}}
-    <div class="card mb-4 shadow-sm">
+    <div class="card mb-4 shadow-sm" data-aos="fade-up" data-aos-duration="800">
     <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
         <span><i class="bi bi-person-lines-fill me-2"></i> Cirugías por cirujano</span>
         <small class="text-light">Total: {{ $porCirujano->sum('total') }}</small>
@@ -81,30 +112,9 @@
     </div>
     </div>
     
+    {{-- Urgencias vs Programadas --}}
 
-    {{-- Distribución mensual --}}
-    <div class="card mb-4">
-        <div class="card-header">Distribución de cirugías por mes</div>
-        <div class="card-body">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Mes</th>
-                        <th>Cantidad</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($porMes as $item)
-                        <tr>
-                            <td>{{ \Carbon\Carbon::create()->month($item->mes)->translatedFormat('F') }}</td>
-                            <td>{{ $item->total }}</td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-    </div>
-
+    <div class="card-body">
     <div class="row mb-4">
     {{-- Columna izquierda: Resumen numérico --}}
         <div class="col-md-6">
@@ -139,6 +149,7 @@
                 </div>
             </div>
         </div>
+    </div>
     </div>
 </div>
 </div>
@@ -236,7 +247,9 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 </script>
-
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+        <script>
+            AOS.init();
+        </script>
 @endpush
-
 @endsection

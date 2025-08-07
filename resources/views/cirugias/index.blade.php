@@ -12,7 +12,7 @@
                 <a href="{{ route('cirugias.create') }}" class="btn btn-warning mb-3">Registrar Nueva Cirugía</a>
 
                 <div class="table-responsive">
-                    <table class="table table-bordered align-middle">
+                    <table id= "miTabla" class="table table-bordered align-middle">
                         <thead class="table-warning">
                             <tr>
                                 <th>Paciente</th>
@@ -104,48 +104,94 @@
             </div>
         </div>
         <!-- Botón de impresión -->
-        <button class="btn-imprimir" onclick="imprimirUltimosDiez()">🖨️ Imprimir últimas 10 cirugias</button>
 
-        <script>
-        function imprimirUltimosDiez() {
+
+    <div class="mb-3">
+        <button onclick="imprimirTablaCompleta()" class="btn btn-secondary me-2">
+            🖨️ Imprimir toda la tabla
+        </button>
+        <button onclick="imprimirUltimosDiez()" class="btn btn-secondary me-2">
+        🖨️ Imprimir últimas 10 cirugías
+        </button>
+        <button onclick="exportarFiltradoPDF()" class="btn btn-warning">
+            📄 Exportar PDF filtrado
+        </button>
+    </div>
+@endsection
+
+@push('scripts')
+    <!-- jsPDF y autoTable -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+
+    <!-- Funciones de impresión y exportación -->
+    <script>
+        function imprimirTablaCompleta() {
             const tablaOriginal = document.querySelector('.table-responsive table');
-            const filas = tablaOriginal.querySelectorAll('tbody tr');
-            const ultimasFilas = Array.from(filas).slice(-10); // Toma las últimas 10
             const encabezado = tablaOriginal.querySelector('thead').outerHTML;
-
-            let cuerpoTabla = '';
-            ultimasFilas.forEach(fila => {
-                cuerpoTabla += fila.outerHTML;
-            });
+            const cuerpo = tablaOriginal.querySelector('tbody').outerHTML;
 
             const ventana = window.open('', '', 'width=900,height=700');
             ventana.document.write(`
-        <html>
-        <head>
-            <title>Libro de Cirugías</title>
-            <style>
-                body { font-family: Arial, sans-serif; margin: 20px; }
-                table { width: 100%; border-collapse: collapse; }
-                th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-                th { background-color: #f8c045; }
-            </style>
-        </head>
-        <body>
-            <h2>Últimas 10 Cirugías Registradas</h2>
-            <table>
-                ${encabezado}
-                <tbody>
-                    ${cuerpoTabla}
-                </tbody>
-            </table>
-        </body>
-        </html>
-        `);
-        ventana.document.close();
-        ventana.focus();
-        ventana.print();
-        ventana.close();
+            <html>
+            <head>
+                <title>Libro de Cirugías</title>
+                <style>
+                    body { font-family: Arial, sans-serif; margin: 20px; }
+                    table { width: 100%; border-collapse: collapse; }
+                    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+                    th { background-color: #f8c045; }
+                </style>
+            </head>
+            <body>
+                <h2>Cirugías Registradas</h2>
+                <table>
+                    ${encabezado}
+                    ${cuerpo}
+                </table>
+            </body>
+            </html>
+            `);
+            ventana.document.close();
+            ventana.focus();
+            ventana.print();
+            ventana.close();
         }
-        </script>
-    </div>
-@endsection
+
+        async function exportarFiltradoPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            const tablaDT = $('#miTabla').DataTable();
+            const datosFiltrados = tablaDT.rows({ search: 'applied' }).data();
+
+            const headers = Array.from(document.querySelector(' thead tr').children).map(th => th.innerText); //Ver cambio de idioma
+
+            const cleanText = html => {
+                const temp = document.createElement('div');
+                temp.innerHTML = html;
+                return temp.textContent || temp.innerText || '';
+            };
+
+            const body = [];
+            for (let i = 0; i < datosFiltrados.length; i++) {
+                const fila = datosFiltrados[i];
+                body.push(fila.map(cell => cleanText(cell)));
+            }
+
+            doc.text("Cirugías Filtradas", 14, 20);
+            doc.autoTable({
+                head: [headers],
+                body: body,
+                startY: 30,
+                styles: { fontSize: 8 },
+                headStyles: { fillColor: [248, 192, 69] }
+            });
+
+            doc.save('cirugias_filtradas.pdf');
+        }
+    </script>
+@endpush    

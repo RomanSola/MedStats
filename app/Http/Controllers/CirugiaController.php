@@ -187,17 +187,29 @@ class CirugiaController extends Controller
 
     public function estadisticas()
     {
-        $total = \App\Models\Cirugia::count();
+        $anioSeleccionado = request('anio') ?? now()->year;
+
+        $aniosDisponibles = \App\Models\Cirugia::select(DB::raw('YEAR(created_at) as anio'))
+        ->distinct()
+        ->orderBy('anio', 'desc')
+        ->pluck('anio');
+
+        $total = \App\Models\Cirugia::whereYear('created_at', $anioSeleccionado)->count();
+
         $meses = \App\Models\Cirugia::select(DB::raw('MONTH(created_at) as mes'))
+        ->whereYear('created_at', $anioSeleccionado)
         ->distinct()
         ->count();
 
         $semanas = \App\Models\Cirugia::select(DB::raw('YEARWEEK(created_at, 1) as semana'))
+        ->whereYear('created_at', $anioSeleccionado)
         ->distinct()
         ->count();
 
         $promedioMensual = $meses > 0 ? round($total / $meses, 2) : 0;
         $promedioSemanal = $semanas > 0 ? round($total / $semanas, 2) : 0;
+
+
     
         $porCirujano = \App\Models\Cirugia::select('cirujano_id', DB::raw('COUNT(*) as total'))
             ->groupBy('cirujano_id')
@@ -223,9 +235,22 @@ class CirugiaController extends Controller
 
             $enfermeroValores = $topEnfermeros->pluck('total');
 
-        $porMes = \App\Models\Cirugia::select(DB::raw('MONTH(created_at) as mes'), DB::raw('COUNT(*) as total'))
-            ->groupBy('mes')
+        // Distribución de cirugías por mes
+        $porMes = \App\Models\Cirugia::select(
+            DB::raw('MONTH(created_at) as mes'),
+            DB::raw('COUNT(*) as total')
+        )
+            ->groupBy(DB::raw('MONTH(created_at)'))
+            ->orderBy(DB::raw('MONTH(created_at)'))
             ->get();
+
+        // Agrega nombre del mes para visualización
+        $porMes->transform(function ($item) {
+            $item->mes_nombre = \Carbon\Carbon::create()->month($item->mes)->translatedFormat('F');
+        return $item;
+        });
+
+
 
         $urgentes = \App\Models\Cirugia::where('urgencia', '1')->count();
         $programadas = \App\Models\Cirugia::where('urgencia', '0')->count();
@@ -242,7 +267,6 @@ class CirugiaController extends Controller
         $porMes = $porMes->sortBy('mes')->values();
 
         return view('cirugias.estadisticas', compact(
-        'total',
         'porCirujano',
         'topEnfermeros', 
         'enfermeroLabels', 
@@ -256,7 +280,12 @@ class CirugiaController extends Controller
         'promedioMensual',
         'promedioSemanal',
         'cirujanoLabels',
-        'cirujanoValores'
+        'cirujanoValores',
+        'anioSeleccionado',
+        'aniosDisponibles',
+        'total',
+        'promedioMensual',
+        'promedioSemanal'
         ));
     }
 }
