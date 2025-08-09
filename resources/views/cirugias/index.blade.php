@@ -28,6 +28,8 @@
                                 <th>Tipo de Anestesia</th>
                                 <th>Instrumentador</th>
                                 <th>Enfermero</th>
+                                <th>Fecha</th>
+                                <th>Hora</th>
                                 <th>Urgencia</th>
                                 <th class="text-center">Acciones</th>
                             </tr>
@@ -82,6 +84,12 @@
                                     <td>
                                         {{ optional($cirugia->get_enfermero)->nombre }}
                                         {{ optional($cirugia->get_enfermero)->apellido }}
+                                    </td>
+                                    <td>
+                                        {{ $cirugia->fecha_cirugia ?? '' }}
+                                    </td>
+                                    <td>
+                                        {{ $cirugia->hora_cirugia ?? '' }}
                                     </td>
                                     <td>
                                         {{ $cirugia->urgencia ? 'Si' : 'No' }}

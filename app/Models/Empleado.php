@@ -42,4 +42,33 @@ class Empleado extends Model
     {
         return $this->belongsTo(Codigo_postal::class, 'cod_postal_id', 'id');
     }
+    
+    public function get_cirujano()
+    {
+        return $this->hasMany(Cirugia::class, 'cirujano_id', 'id');
+    }
+    public function get_ayudante1()
+    {
+        return $this->hasMany(Cirugia::class, 'ayudante_1_id', 'id');
+    }
+    public function get_ayudante2()
+    {
+        return $this->hasMany(Cirugia::class, 'ayudante_2_id', 'id');
+    }
+    public function get_ayudante3()
+    {
+        return $this->hasMany(Cirugia::class, 'ayudante_3_id', 'id');
+    }
+    public function get_anestesista()
+    {
+        return $this->hasMany(Cirugia::class, 'anestesista_id', 'id');
+    }
+    public function get_instrumentador()
+    {
+        return $this->hasMany(Cirugia::class, 'instrumentador_id', 'id');
+    }
+    public function get_enfermero()
+    {
+        return $this->hasMany(Cirugia::class, 'enfermero_id', 'id');
+    }
 }

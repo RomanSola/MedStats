@@ -212,6 +212,22 @@
                         </div>
 
                         <div class="col-md-4">
+                            <label for="fecha_cirugia" class="form-label">Fecha de la cirugía</label>
+                            <input type="date" name="fecha_cirugia" id="fecha_cirugia" class="form-control" value="{{ $cirugia->fecha_cirugia }}" required>
+                        </div>
+                        @error('fecha_cirugia')
+                            <small class="text-danger"> {{ $message }} </small>
+                        @enderror
+
+                        <div class="col-md-4">
+                            <label for="hora_cirugia" class="form-label">Hora de la cirugia</label>
+                            <input type="time" name="hora_cirugia" id="hora_cirugia" class="form-control" value="{{ $cirugia->hora_cirugia }}" required>
+                        </div>
+                        @error('hora_cirugia')
+                            <small class="text-danger"> {{ $message }} </small>
+                        @enderror
+
+                        <div class="col-md-4">
                             <label for="urgencia" class="form-label">Urgencia</label>
                             <input type="checkbox" name="urgencia" id="urgencia" class="form-control" value="1"
                                 {{ $cirugia->urgencia ? 'checked' : '' }}>

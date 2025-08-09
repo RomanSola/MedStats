@@ -23,6 +23,7 @@ class Paciente extends Model
         'creado_por',
         'modificado_por'
     ];
+    
     public function historial_stock()
     {
         return $this->hasMany(Historial_stock::class, 'paciente_id');
@@ -43,12 +44,10 @@ class Paciente extends Model
      ->distinct();
     }
 
-
     public function habitacion()
     {
         return $this->belongsTo(Habitacion::class);
     }
-
     public function cama()
     {
         return $this->belongsTo(Cama::class);
@@ -57,7 +56,6 @@ class Paciente extends Model
     {
         return $this->belongsTo(Pais::class, 'pais_id', 'id');
     }
-
     public function get_provincia()
     {
         return $this->belongsTo(Provincia::class, 'provincia_id', 'id');
@@ -66,5 +64,17 @@ class Paciente extends Model
     public function get_codigo_postal()
     {
         return $this->belongsTo(Codigo_postal::class, 'cod_postal_id', 'id');
+    }
+    public function get_cirugias()
+    {
+        return $this->hasMany(Cirugia::class, 'paciente_id', 'id');
+    }
+    public function get_historial_stock()
+    {
+        return $this->hasMany(Historial_stock::class, 'paciente_id', 'id');
+    }
+    public function get_ocupacion_cama()
+    {
+        return $this->hasMany(Cirugia::class, 'paciente_id', 'id');
     }
 }

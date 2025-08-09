@@ -20,6 +20,8 @@ class Cirugia extends Model
         'instrumentador_id',
         'enfermero_id',
         'urgencia',
+        'fecha_cirugia',
+        'hora_cirugia',
         'creado_por',
         'modificado_por'
     ];

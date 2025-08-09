@@ -130,8 +130,13 @@ class PacienteController extends Controller
 
     public function destroy(Paciente $paciente)
     {
+        //Verifico que el paciente no exista en otras tablas antes de borrarlo
+        if ($paciente->get_cirugias()->exists() ||  $paciente->get_historial_stock()->exists() || $paciente->get_ocupacion_cama()->exists()) {
+            return redirect()->route('pacientes.index')
+                ->with('error', 'No se puede eliminar el paciente porque tiene registros asociados.');
+        }
         $paciente->delete();
-        return redirect()->route('pacientes.index');
+        return redirect()->route('pacientes.index')->with('success', 'Paciente eliminado.');
     }
 
     public function asignar(Paciente $paciente)

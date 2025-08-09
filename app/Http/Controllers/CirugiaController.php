@@ -51,6 +51,8 @@ class CirugiaController extends Controller
             'tipo_anestesia_id' => 'required|exists:tipo_anestesias,id',
             'instrumentador_id' => 'required|exists:empleados,id',
             'enfermero_id' => 'required|exists:empleados,id',
+            'fecha_cirugia' => 'required',
+            'hora_cirugia' => 'required',
         ]);
 
         if ($request->input('ayudante_1_id') != null) {
@@ -119,6 +121,8 @@ class CirugiaController extends Controller
             'tipo_anestesia_id' => 'required|exists:tipo_anestesias,id',
             'instrumentador_id' => 'nullable|exists:empleados,id',
             'enfermero_id' => 'nullable|exists:empleados,id',
+            'fecha_cirugia' => 'required',
+            'hora_cirugia' => 'required',
         ]);
         if ($request->input('ayudante_1_id') != null) {
             $request->validate([

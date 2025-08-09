@@ -26,7 +26,8 @@
                         <div class="col-md-4">
                             <label class="form-label">Procedimiento</label>
                             <input type="text" class="form-control"
-                                value="{{ $cirugia->get_procedimiento->nombre_procedimiento }} - {{ $cirugia->get_procedimiento->descripcion }}" readonly>
+                                value="{{ $cirugia->get_procedimiento->nombre_procedimiento }} - {{ $cirugia->get_procedimiento->descripcion }}"
+                                readonly>
                         </div>
                         <div class="col-md-4"></div> {{-- columna vacía --}}
                     </div>
@@ -35,7 +36,8 @@
                         <div class="col-md-4">
                             <label class="form-label">Quirofano</label>
                             <input type="text" class="form-control"
-                                value="{{ $cirugia->get_quirofano->nombre }} - {{ $cirugia->get_quirofano->descripcion }}" readonly>
+                                value="{{ $cirugia->get_quirofano->nombre }} - {{ $cirugia->get_quirofano->descripcion }}"
+                                readonly>
                         </div>
                         <div class="col-md-4"></div> {{-- columna vacía --}}
                     </div>
@@ -57,12 +59,13 @@
                         <div class="col-md-4">
                             <label class="form-label">Ayudante 1</label>
                             <input type="text" class="form-control"
-                                value="{{ $cirugia->get_ayudante1->nombre ?? ''}} {{ $cirugia->get_ayudante1->apellido ?? ''}}"
+                                value="{{ $cirugia->get_ayudante1->nombre ?? '' }} {{ $cirugia->get_ayudante1->apellido ?? '' }}"
                                 readonly>
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">DNI</label>
-                            <input type="text" class="form-control" value="{{ $cirugia->get_ayudante1->dni ?? '' }}" readonly>
+                            <input type="text" class="form-control" value="{{ $cirugia->get_ayudante1->dni ?? '' }}"
+                                readonly>
                         </div>
                     </div>
 
@@ -75,10 +78,11 @@
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">DNI</label>
-                            <input type="text" class="form-control" value="{{ $cirugia->get_ayudante2->dni ?? '' }}" readonly>
+                            <input type="text" class="form-control" value="{{ $cirugia->get_ayudante2->dni ?? '' }}"
+                                readonly>
                         </div>
                     </div>
-                    
+
                     <div class="row g-3 mt-2 justify-content-center">
                         <div class="col-md-4">
                             <label class="form-label">Ayudante 3</label>
@@ -88,7 +92,8 @@
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">DNI</label>
-                            <input type="text" class="form-control" value="{{ $cirugia->get_ayudante3->dni ?? '' }}" readonly>
+                            <input type="text" class="form-control" value="{{ $cirugia->get_ayudante3->dni ?? '' }}"
+                                readonly>
                         </div>
                     </div>
 
@@ -140,6 +145,20 @@
                             <label class="form-label">DNI</label>
                             <input type="text" class="form-control" value="{{ $cirugia->get_enfermero->dni }}"
                                 readonly>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mt-2 justify-content-center">
+                        <div class="col-md-4">
+                            <label class="form-label">Fecha de la cirugia</label>
+                            <input type="text" class="form-control" value="{{ $cirugia->fecha_cirugia }}" readonly>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mt-2 justify-content-center">
+                        <div class="col-md-4">
+                            <label class="form-label">Hora de la cirugia</label>
+                            <input type="text" class="form-control" value="{{ $cirugia->hora_cirugia }}" readonly>
                         </div>
                     </div>
 
