@@ -26,7 +26,12 @@
     @include('layouts._partials.menu')
 
     <div class="flex justify-start px-4 mt-3">
-        <x-boton-volver />
+        @if (url()->previous() !== url()->current())
+            <a href="{{ url()->previous() }}" 
+               class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium py-2 px-4 rounded">
+                ← Volver
+            </a>
+        @endif
     </div>
 
     <main class="flex-1">
@@ -81,3 +86,4 @@
 
 </body>
 </html>
+

@@ -11,6 +11,16 @@
                 + Ingresar Nuevo Paciente
             </a>
         </div>
+        <!--Buscador -->
+        <form action="{{ route('pacientes.index') }}" method="GET" class="mb-4 flex space-x-2">
+            <input type="text" name="buscar" value="{{ request('buscar') }}"
+                placeholder="Buscar paciente por DNI, nombre o apellido"
+                class="border border-gray-300 rounded px-3 py-2 w-1/3">
+            <button type="submit"
+                class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                Buscar
+            </button>
+        </form>
         
         @if (session('success'))
             <div class="alert alert-success">
