@@ -36,6 +36,25 @@
                            class="form-control border border-warning shadow-sm">
                 </div>
 
+                {{-- Campo rol_id --}}
+                <div>
+                    <label for="rol_id" class="form-label fw-semibold text-dark">
+                        Rol en Quirófano
+                    </label>
+                    <select name="rol_id" id="rol_id"
+                            class="form-control border border-warning shadow-sm">
+                        <option value="">Seleccione un Rol</option>
+                        @foreach ($roles as $rol)
+                            <option value="{{ $rol->id }}" {{ old('rol_id') == $rol->id ? 'selected' : '' }}>
+                                {{ $rol->rol }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('rol_id')
+                        <small class="text-danger"> {{ $message }} </small>
+                    @enderror
+                </div>
+
                 {{-- Botones --}}
                 <div class="pt-2 d-flex justify-content-between">
                     <button type="submit" class="btn btn-outline-warning fw-semibold px-4">

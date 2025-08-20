@@ -107,10 +107,10 @@
                     @enderror
                 </div>
 
-                 <div class="pt-2 d-flex justify-content-between">
-                    <button class="btn btn-outline-warning fw-semibold px-4">Agregar</button>
-                    <a href="{{ route('empleados.index') }}" class="btn btn-outline-warning fw-semibold px-4">Cancelar</a>
-                </div>
+                
+                <button class="btn btn-warning">Agregar</button>
+                <a href="{{ route('empleados.index') }}" class="btn btn-warning">Cancelar</a>
+
             </form>
         </div>
     </div>

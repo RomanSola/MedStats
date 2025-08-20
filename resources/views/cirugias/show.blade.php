@@ -28,22 +28,30 @@
                     </div>
                 </div>
 
-                {{-- Procedimiento --}}
-                <div class="row g-3 mt-2 justify-content-center">
-                    <div class="col-md-4">
-                        <label class="form-label">Procedimiento</label>
-                        <input type="text" class="form-control border border-danger shadow-sm"
-                               value="{{ $cirugia->get_procedimiento->nombre_procedimiento }} - {{ $cirugia->get_procedimiento->descripcion }}" readonly>
+
+                    <div class="row g-3 mt-2 justify-content-center">
+                        <div class="col-md-4">
+                            <label class="form-label">Procedimiento</label>
+                            <input type="text" class="form-control"
+                                value="{{ $cirugia->get_procedimiento->nombre_procedimiento }} - {{ $cirugia->get_procedimiento->descripcion }}"
+                                readonly>
+                        </div>
+                        <div class="col-md-4"></div> {{-- columna vacía --}}
+
                     </div>
                     <div class="col-md-4"></div>
                 </div>
 
-                {{-- Quirofano --}}
-                <div class="row g-3 mt-2 justify-content-center">
-                    <div class="col-md-4">
-                        <label class="form-label">Quirofano</label>
-                        <input type="text" class="form-control border border-danger shadow-sm"
-                               value="{{ $cirugia->get_quirofano->nombre }} - {{ $cirugia->get_quirofano->descripcion }}" readonly>
+
+                    <div class="row g-3 mt-2 justify-content-center">
+                        <div class="col-md-4">
+                            <label class="form-label">Quirofano</label>
+                            <input type="text" class="form-control"
+                                value="{{ $cirugia->get_quirofano->nombre }} - {{ $cirugia->get_quirofano->descripcion }}"
+                                readonly>
+                        </div>
+                        <div class="col-md-4"></div> {{-- columna vacía --}}
+
                     </div>
                     <div class="col-md-4"></div>
                 </div>
@@ -62,13 +70,20 @@
                     </div>
                 </div>
 
-                {{-- Ayudantes --}}
-                @foreach ([1,2,3] as $i)
-                <div class="row g-3 mt-2 justify-content-center">
-                    <div class="col-md-4">
-                        <label class="form-label">Ayudante {{ $i }}</label>
-                        <input type="text" class="form-control border border-danger shadow-sm"
-                               value="{{ optional($cirugia->{'get_ayudante'.$i})->nombre }} {{ optional($cirugia->{'get_ayudante'.$i})->apellido }}" readonly>
+
+                    <div class="row g-3 mt-2 justify-content-center">
+                        <div class="col-md-4">
+                            <label class="form-label">Ayudante 1</label>
+                            <input type="text" class="form-control"
+                                value="{{ $cirugia->get_ayudante1->nombre ?? '' }} {{ $cirugia->get_ayudante1->apellido ?? '' }}"
+                                readonly>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">DNI</label>
+                            <input type="text" class="form-control" value="{{ $cirugia->get_ayudante1->dni ?? '' }}"
+                                readonly>
+                        </div>
+
                     </div>
                     <div class="col-md-4">
                         <label class="form-label">DNI</label>
@@ -78,17 +93,33 @@
                 </div>
                 @endforeach
 
-                {{-- Anestesista --}}
-                <div class="row g-3 mt-2 justify-content-center">
-                    <div class="col-md-4">
-                        <label class="form-label">Anestesista</label>
-                        <input type="text" class="form-control border border-danger shadow-sm"
-                               value="{{ $cirugia->get_anestesista->nombre }} {{ $cirugia->get_anestesista->apellido }}" readonly>
+                    <div class="row g-3 mt-2 justify-content-center">
+                        <div class="col-md-4">
+                            <label class="form-label">Ayudante 2</label>
+                            <input type="text" class="form-control"
+                                value="{{ $cirugia->get_ayudante2->nombre ?? '' }} {{ $cirugia->get_ayudante2->apellido ?? '' }}"
+                                readonly>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">DNI</label>
+                            <input type="text" class="form-control" value="{{ $cirugia->get_ayudante2->dni ?? '' }}"
+                                readonly>
+                        </div>
                     </div>
-                    <div class="col-md-4">
-                        <label class="form-label">DNI</label>
-                        <input type="text" class="form-control border border-danger shadow-sm"
-                               value="{{ $cirugia->get_anestesista->dni }}" readonly>
+
+                    <div class="row g-3 mt-2 justify-content-center">
+                        <div class="col-md-4">
+                            <label class="form-label">Ayudante 3</label>
+                            <input type="text" class="form-control"
+                                value="{{ $cirugia->get_ayudante3->nombre ?? '' }} {{ $cirugia->get_ayudante3->apellido ?? '' }}"
+                                readonly>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">DNI</label>
+                            <input type="text" class="form-control" value="{{ $cirugia->get_ayudante3->dni ?? '' }}"
+                                readonly>
+                        </div>
+
                     </div>
                 </div>
 
@@ -140,12 +171,29 @@
                     <div class="col-md-4"></div>
                 </div>
 
-                {{-- Botón de volver --}}
-                <div class="text-center mt-4">
-                    <a href="{{ route('cirugias.index') }}" class="btn btn-outline-danger fw-semibold px-4">
-                        Volver al listado
-                    </a>
-                </div>
+                    <div class="row g-3 mt-2 justify-content-center">
+                        <div class="col-md-4">
+                            <label class="form-label">Fecha de la cirugia</label>
+                            <input type="text" class="form-control" value="{{ $cirugia->fecha_cirugia }}" readonly>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mt-2 justify-content-center">
+                        <div class="col-md-4">
+                            <label class="form-label">Hora de la cirugia</label>
+                            <input type="text" class="form-control" value="{{ $cirugia->hora_cirugia }}" readonly>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mt-2 justify-content-center">
+                        <div class="col-md-4">
+                            <label class="form-label">Urgencia</label>
+                            <input type="text" class="form-control" value="{{ $cirugia->urgencia ? 'Sí' : 'No' }}"
+                                readonly>
+                        </div>
+                        <div class="col-md-4"></div> {{-- columna vacía --}}
+                    </div>
+
 
             </form>
         </div>

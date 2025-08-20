@@ -29,20 +29,13 @@ use App\Http\Controllers\PersonaController;
 |
 */
 
-Route::get('/', function () {
-    return view('index');
-})->name('inicio');
-
-Route::get('/buscar', [BusquedaController::class, 'buscar'])->name('buscar');
+Route::get('/', function () {return view('index');})->name('inicio');
 
 
 //Buscador
-Route::get('/buscador', function () {
-    return view('busqueda');
-});
 Route::get('/buscar', [PersonaController::class, 'buscar'])->name('buscar');
+Route::get('/buscar/ajax', [PersonaController::class, 'buscarAjax'])->name('buscar.ajax');
 Route::get('/persona/{id}', [PersonaController::class, 'ver'])->name('persona.ver');
-
 
 // configuracion
 Route::view('/ajustes', 'ajustes')->name('ajustes');

@@ -31,6 +31,14 @@
                            value="{{ $profesion->descripcion }}" readonly>
                 </div>
 
+                {{-- Campo rol quirúrgico --}}
+                <div class="mb-3">
+                    <label class="form-label fw-semibold text-dark">Rol en Quirófano</label>
+                    <input type="text"
+                           class="form-control border border-warning shadow-sm"
+                           value="{{ $profesion->get_rol->rol ?? 'Sin asignar' }}" readonly>
+                </div>
+
                 {{-- Botón de volver --}}
                 <div class="text-center mt-4">
                     <a href="{{ route('profesion.index') }}" class="btn btn-outline-warning fw-semibold px-4">

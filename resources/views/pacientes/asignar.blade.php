@@ -3,24 +3,59 @@
 @section('titulo', 'Asignar habitación y cama')
 
 @section('contenido')
-    <div class="max-w-2xl mx-auto px-4 py-8">
 
-        {{-- Título institucional --}}
-        <h1
-            class="text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent bg-clip-text drop-shadow-md mb-6">
-            Asignar Habitación y Cama a:
-            <span class="text-gray-800 font-serif text-xl tracking-tight">
-                {{ $paciente->nombre }} {{ $paciente->apellido }}
-            </span>
+<div class="max-w-2xl mx-auto px-4 py-8">
+    <h1 class="text-2xl font-semibold text-gray-800 mb-6">
+        Asignar Habitación y Cama a {{ $paciente->nombre }} {{ $paciente->apellido }}
+    </h1>
 
-        </h1>
+    {{-- Aviso cuando se viene desde la creación del paciente --}}
+    @if(session('success'))
+        <div class="mb-6 p-4 rounded-md bg-green-100 border border-green-300 text-green-800 shadow-sm">
+            {{ session('success') }}
+        </div>
+    @endif
 
+    <form action="{{ route('pacientes.asignar.guardar', $paciente) }}" method="POST" 
+          class="bg-white p-6 rounded-lg shadow space-y-6 border">
+        @csrf
 
+        <div>
+            <label for="sala_id" class="block font-medium text-gray-700 mb-1">Sala</label>
+            <select id="sala_id" 
+                    class="w-full border-gray-300 rounded shadow-sm focus:ring focus:ring-neutral-300">
+                <option value="">-- Seleccioná una sala --</option>
+                @foreach($salas as $sala)
+                    <option value="{{ $sala->id }}">{{ $sala->nombre }}</option>
+                @endforeach
+            </select>
+        </div>
 
-        {{-- Formulario --}}
-        <form action="{{ route('pacientes.asignar.guardar', $paciente) }}" method="POST"
-            class="bg-white p-6 rounded-lg shadow-md border border-gray-200 space-y-6">
-            @csrf
+        <div>
+            <label for="habitacion_id" class="block font-medium text-gray-700 mb-1">Habitación</label>
+            <select name="habitacion_id" id="habitacion_id" 
+                    class="w-full border-gray-300 rounded shadow-sm" disabled>
+                <option value="">-- Seleccioná una habitación --</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="cama_id" class="block font-medium text-gray-700 mb-1">Cama</label>
+            <select name="cama_id" id="cama_id" 
+                    class="w-full border-gray-300 rounded shadow-sm" disabled>
+                <option value="">-- Seleccioná una cama --</option>
+            </select>
+        </div>
+
+        <div class="text-right">
+            <button type="submit" 
+                    class="bg-neutral-700 text-white px-6 py-2 rounded-full hover:bg-neutral-800 shadow">
+                Guardar asignación
+            </button>
+        </div>
+    </form>
+</div>
+
 
             {{-- Sala --}}
             <div>
@@ -76,33 +111,8 @@
             camaSelect.innerHTML = '<option value="">-- Seleccioná una cama --</option>';
             camaSelect.disabled = true;
 
-            if (sala) {
-                habitacionSelect.disabled = false;
-                sala.habitaciones.forEach(h => {
-                    habitacionSelect.innerHTML +=
-                        `<option value="${h.id}">${h.numero ?? 'Habitación ' + h.id}</option>`;
-                });
-            } else {
-                habitacionSelect.disabled = true;
-            }
-        });
+        }
+    });
+</script>
 
-        habitacionSelect.addEventListener('change', () => {
-            const salaId = parseInt(salaSelect.value);
-            const habitacionId = parseInt(habitacionSelect.value);
-            const sala = salas.find(s => s.id === salaId);
-            const habitacion = sala?.habitaciones.find(h => h.id === habitacionId);
-
-            camaSelect.innerHTML = '<option value="">-- Seleccioná una cama --</option>';
-
-            if (habitacion) {
-                camaSelect.disabled = false;
-                habitacion.camas.forEach(c => {
-                    camaSelect.innerHTML += `<option value="${c.id}">Cama ${c.codigo ?? c.id}</option>`;
-                });
-            } else {
-                camaSelect.disabled = true;
-            }
-        });
-    </script>
 @endsection

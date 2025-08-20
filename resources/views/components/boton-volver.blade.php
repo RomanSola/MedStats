@@ -18,7 +18,6 @@
             case 'empleados.index':
             case 'medicamentos.index':
             case 'cirugias.index':
-            case 'salas.index':
             case 'habitaciones.index':
             case 'quirofanos.index':
             case 'camas.index':
@@ -27,6 +26,7 @@
             case 'tipoAnestesias.index':
             case 'ocupacionCamas.index':
             case 'UsuarioPerfil.index':
+            case 'salas.index':
                 $rutaAnterior = 'ajustes';
                 break;
 

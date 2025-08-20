@@ -25,6 +25,7 @@
                     <tr>
                         <th>Profesión</th>
                         <th>Descripción</th>
+                        <th>Rol</th>
                         <th class="text-center">Acciones</th>
                     </tr>
                 </thead>
@@ -33,6 +34,7 @@
                     <tr>
                         <td>{{ $profesion->nombre_profesion }}</td>
                         <td>{{ $profesion->descripcion }}</td>
+                        <td>{{ $profesion->get_rol->rol ?? '' }}</td>
                         <td class="text-center">
                             <a href="{{ route('profesion.show', $profesion) }}" class="btn btn-outline-warning btn-sm me-1">
                                 Ver

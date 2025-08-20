@@ -51,6 +51,8 @@ class CirugiaController extends Controller
             'tipo_anestesia_id' => 'required|exists:tipo_anestesias,id',
             'instrumentador_id' => 'required|exists:empleados,id',
             'enfermero_id' => 'required|exists:empleados,id',
+            'fecha_cirugia' => 'required',
+            'hora_cirugia' => 'required',
         ]);
 
         if ($request->input('ayudante_1_id') != null) {
@@ -119,6 +121,8 @@ class CirugiaController extends Controller
             'tipo_anestesia_id' => 'required|exists:tipo_anestesias,id',
             'instrumentador_id' => 'nullable|exists:empleados,id',
             'enfermero_id' => 'nullable|exists:empleados,id',
+            'fecha_cirugia' => 'required',
+            'hora_cirugia' => 'required',
         ]);
         if ($request->input('ayudante_1_id') != null) {
             $request->validate([
@@ -187,31 +191,70 @@ class CirugiaController extends Controller
 
     public function estadisticas()
     {
-        $total = \App\Models\Cirugia::count();
+        $anioSeleccionado = request('anio') ?? now()->year;
+
+        $aniosDisponibles = \App\Models\Cirugia::select(DB::raw('YEAR(created_at) as anio'))
+        ->distinct()
+        ->orderBy('anio', 'desc')
+        ->pluck('anio');
+
+        $total = \App\Models\Cirugia::whereYear('created_at', $anioSeleccionado)->count();
+
         $meses = \App\Models\Cirugia::select(DB::raw('MONTH(created_at) as mes'))
+        ->whereYear('created_at', $anioSeleccionado)
         ->distinct()
         ->count();
 
         $semanas = \App\Models\Cirugia::select(DB::raw('YEARWEEK(created_at, 1) as semana'))
+        ->whereYear('created_at', $anioSeleccionado)
         ->distinct()
         ->count();
 
         $promedioMensual = $meses > 0 ? round($total / $meses, 2) : 0;
         $promedioSemanal = $semanas > 0 ? round($total / $semanas, 2) : 0;
+
+
     
         $porCirujano = \App\Models\Cirugia::select('cirujano_id', DB::raw('COUNT(*) as total'))
             ->groupBy('cirujano_id')
             ->with('get_cirujano')
-            ->get();
+            ->get()
+            ->sortByDesc('total')
+            ->take(5);
+            $cirujanoLabels = $porCirujano->map(function ($item) {
+                $c = $item->get_cirujano;
+                return $c ? $c->nombre . ' ' . $c->apellido : 'Sin asignar';
+                })->values();
+            $cirujanoValores = $porCirujano->pluck('total')->values();
 
-        $porEnfermero = \App\Models\Cirugia::select('enfermero_id', DB::raw('COUNT(*) as total'))
+        $topEnfermeros = \App\Models\Cirugia::select('enfermero_id', DB::raw('COUNT(*) as total'))
             ->groupBy('enfermero_id')
             ->with('get_enfermero')
+            ->get()
+            ->sortByDesc('total')
+            ->take(5);
+            $enfermeroLabels = $topEnfermeros->map(function ($item) {
+                return optional($item->get_enfermero)->nombre . ' ' . optional($item->get_enfermero)->apellido;
+            });
+
+            $enfermeroValores = $topEnfermeros->pluck('total');
+
+        // Distribución de cirugías por mes
+        $porMes = \App\Models\Cirugia::select(
+            DB::raw('MONTH(created_at) as mes'),
+            DB::raw('COUNT(*) as total')
+        )
+            ->groupBy(DB::raw('MONTH(created_at)'))
+            ->orderBy(DB::raw('MONTH(created_at)'))
             ->get();
 
-        $porMes = \App\Models\Cirugia::select(DB::raw('MONTH(created_at) as mes'), DB::raw('COUNT(*) as total'))
-            ->groupBy('mes')
-            ->get();
+        // Agrega nombre del mes para visualización
+        $porMes->transform(function ($item) {
+            $item->mes_nombre = \Carbon\Carbon::create()->month($item->mes)->translatedFormat('F');
+        return $item;
+        });
+
+
 
         $urgentes = \App\Models\Cirugia::where('urgencia', '1')->count();
         $programadas = \App\Models\Cirugia::where('urgencia', '0')->count();
@@ -220,17 +263,33 @@ class CirugiaController extends Controller
             ->groupBy('tipo_anestesia_id')
             ->with('get_tipo_anestesia')
             ->get();
+        
+        $porMesLabels = $porMes->pluck('mes')->map(function ($m) {
+            return \Carbon\Carbon::create()->month($m)->translatedFormat('F');
+            });
+        $porMesValores = $porMes->pluck('total');
+        $porMes = $porMes->sortBy('mes')->values();
 
         return view('cirugias.estadisticas', compact(
-            'total',
-            'porCirujano',
-            'porEnfermero',
-            'porMes',
-            'urgentes',
-            'programadas',
-            'porAnestesia',
-            'promedioMensual',
-            'promedioSemanal'
+        'porCirujano',
+        'topEnfermeros', 
+        'enfermeroLabels', 
+        'enfermeroValores',
+        'porMes',
+        'porMesLabels',
+        'porMesValores',
+        'urgentes',
+        'programadas',
+        'porAnestesia',
+        'promedioMensual',
+        'promedioSemanal',
+        'cirujanoLabels',
+        'cirujanoValores',
+        'anioSeleccionado',
+        'aniosDisponibles',
+        'total',
+        'promedioMensual',
+        'promedioSemanal'
         ));
     }
 }

@@ -120,7 +120,19 @@ class EmpleadoController extends Controller
     }
 
     public function destroy(Empleado $empleado)
-    {
+    {   
+        //Verifico que el empleado no exista en otras tablas antes de borrarlo
+        if ($empleado->get_cirujano()->exists() ||
+            $empleado->get_ayudante1()->exists() ||
+            $empleado->get_ayudante2()->exists() ||
+            $empleado->get_ayudante3()->exists() ||
+            $empleado->get_anestesista()->exists() ||
+            $empleado->get_instrumentador()->exists() ||
+            $empleado->get_enfermero()->exists() )
+        {
+            return redirect()->route('empleado.index')
+                ->with('error', 'No se puede eliminar el empleado porque tiene registros asociados.');
+        }
         $empleado->delete();
         return redirect()->route('empleados.index');
     }

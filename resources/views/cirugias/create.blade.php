@@ -201,24 +201,34 @@
                             @enderror
                         </div>
                         <div class="col-md-4">
-                            <label for="urgencia" class="form-label">Urgencia</label>
-                            <input type="checkbox" name="urgencia" id="urgencia" class="form-control border-danger">
+                            <label for="fecha_cirugia" class="form-label">Fecha de la cirugía</label>
+                            <input type="date" name="fecha_cirugia" id="fecha_cirugia" class="form-control" required>
+                        </div>
+                        @error('fecha_cirugia')
+                            <small class="text-danger"> {{ $message }} </small>
+                        @enderror
 
+                        <div class="col-md-4">
+                            <label for="hora_cirugia" class="form-label">Hora de la cirugia</label>
+                            <input type="time" name="hora_cirugia" id="hora_cirugia" class="form-control" required>
+                        </div>
+                        @error('hora_cirugia')
+                            <small class="text-danger"> {{ $message }} </small>
+                        @enderror
+
+                        <div class="col-md-4">
+                            <label for="urgencia" class="form-label">Urgencia</label>
+                             <input type="checkbox" name="urgencia" id="urgencia" class="form-control">
 
                         </div>
                         @error('urgencia')
                             <small class="text-danger"> {{ $message }} </small>
                         @enderror
                     </div>
-                    <div class="mt-4 d-flex justify-content-end gap-2">
-                        <button type="submit" class="btn btn-outline-danger border-danger px-5 py-2 rounded shadow-sm">
-                            Agregar
-                        </button>
-                        <a href="{{ route('cirugias.index') }}"
-                            class="btn btn-outline-secondary px-5 py-2 rounded shadow-sm">
-                            Cancelar
-                        </a>
-                    </div>
+
+                    <button class="btn btn-warning">Agregar</button>
+                    <a href="{{ route('cirugias.index') }}" class="btn btn-outline-secondary">Cancelar</a>
+
                 </form>
             </div>
         </div>

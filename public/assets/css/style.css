@@ -20,3 +20,27 @@ body {
   background-color: #e6f4ea;
   /* verde muy suave */
 }
+
+table{
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+thead{
+  background-color: #32989D;
+  color: white;
+}
+
+.table-responsive table{
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.table-responsive thead{
+  background-color: #32989D;
+  color: white;
+}
+
+

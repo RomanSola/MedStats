@@ -3,8 +3,8 @@
 @section('title', 'Lista de Quirófanos')
 
 @section('contenido')
-<div class="container py-4">
 
+<div class="container mt-4">
     {{-- Título institucional celeste --}}
     <h2 class="text-info fw-bold border-bottom border-info pb-2 mb-4">
         Gestor de Quirófanos
@@ -25,8 +25,10 @@
 
             {{-- Tabla de quirófanos --}}
             <div class="table-responsive">
+
                 <table class="table table-bordered border-info align-middle">
-                    <thead class="table-info text-dark">
+                    <thead class="table-info">
+
                         <tr>
                             <th>Quirófano</th>
                             <th>Descripción</th>
@@ -53,13 +55,15 @@
                                         Eliminar
                                     </button>
                                 </form>
+
+
                             </td>
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="3" class="text-center text-muted">
-                                No hay quirófanos registrados.
-                            </td>
+
+                            <td colspan="3" class="text-center text-muted">No hay Quirófanos registrados.</td>
+
                         </tr>
                         @endforelse
                     </tbody>

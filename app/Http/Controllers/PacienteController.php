@@ -14,9 +14,20 @@ use App\Models\Sala;
 
 class PacienteController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $pacientes = Paciente::all();
+        $query = Paciente::query();
+
+        // Filtrar por DNI, nombre o apellido
+        if ($request->filled('buscar')) {
+            $busqueda = $request->buscar;
+            $query->where('dni', 'like', "%$busqueda%")
+                  ->orWhere('nombre', 'like', "%$busqueda%")
+                  ->orWhere('apellido', 'like', "%$busqueda%");
+        }
+
+        $pacientes = $query->get();
+
         return view('pacientes.index', compact('pacientes'));
     }
 
@@ -33,22 +44,18 @@ class PacienteController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([ //Si el titulo esta vacion no hace nada 
-            $request->validate([
-                'dni' => 'required|digits_between:6,15|unique:pacientes,dni,',
-                'nombre' => 'required',
-                'apellido' => 'required',
-                'fecha_nacimiento' => 'required',
-                'genero' => 'required',
-                'pais_id' => 'required|exists:pais,id',
-                'provincia_id' => 'required|exists:provincias,id',
-                'cod_postal_id' => 'required|exists:codigo_postals,id',
-            ], [
-                'dni.digits_between' => 'El DNI debe contener solo números entre 6 y 15 dígitos.',
-                'dni.unique' => 'Ya existe otro paciente con ese DNI.',
-    
-            ])
-    
+        $request->validate([
+            'dni' => 'required|digits_between:6,15|unique:pacientes,dni,',
+            'nombre' => 'required',
+            'apellido' => 'required',
+            'fecha_nacimiento' => 'required',
+            'genero' => 'required',
+            'pais_id' => 'required|exists:pais,id',
+            'provincia_id' => 'required|exists:provincias,id',
+            'cod_postal_id' => 'required|exists:codigo_postals,id',
+        ], [
+            'dni.digits_between' => 'El DNI debe contener solo números entre 6 y 15 dígitos.',
+            'dni.unique' => 'Ya existe otro paciente con ese DNI.',
         ]);
 
         $paciente = new Paciente();
@@ -67,7 +74,9 @@ class PacienteController extends Controller
 
         $paciente->save();
 
-        return redirect()->route('pacientes.index');
+        // redirigir a asignación de cama
+        return redirect()->route('pacientes.asignar', $paciente->id)
+            ->with('success', 'Paciente registrado. Ahora puede asignarle una cama.');
     }
 
     public function edit(Paciente $paciente)
@@ -90,7 +99,6 @@ class PacienteController extends Controller
         ], [
             'dni.digits_between' => 'El DNI debe contener solo números entre 6 y 15 dígitos.',
             'dni.unique' => 'Ya existe otro paciente con ese DNI.',
-
         ]);
 
         if ($request->input('dni') != null) {
@@ -129,8 +137,12 @@ class PacienteController extends Controller
 
     public function destroy(Paciente $paciente)
     {
+        if ($paciente->get_cirugias()->exists() ||  $paciente->get_historial_stock()->exists() || $paciente->get_ocupacion_cama()->exists()) {
+            return redirect()->route('pacientes.index')
+                ->with('error', 'No se puede eliminar el paciente porque tiene registros asociados.');
+        }
         $paciente->delete();
-        return redirect()->route('pacientes.index');
+        return redirect()->route('pacientes.index')->with('success', 'Paciente eliminado.');
     }
 
     public function asignar(Paciente $paciente)

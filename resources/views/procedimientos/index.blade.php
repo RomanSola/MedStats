@@ -25,8 +25,10 @@
 
             {{-- Tabla de procedimientos --}}
             <div class="table-responsive">
-                <table class="table table-bordered border-danger align-middle">
-                    <thead class="table-danger text-dark">
+
+                <table class="table table-hover table-bordered shadow-sm text-center rounded">
+                    <thead class="table-info">
+
                         <tr>
                             <th>Procedimiento</th>
                             <th>Descripción</th>

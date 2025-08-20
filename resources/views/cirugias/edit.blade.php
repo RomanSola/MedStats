@@ -67,7 +67,7 @@
                             <select name="cirujano_id" id="cirujano_id" class="form-control">
                                 <option value="">Seleccione el Cirujano</option>
                             @php
-                                $profesionesPermitidas = [1, 2, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
+                                $profesionesPermitidas = [1]; //Solo Cirujanos
                             @endphp
                             @foreach ($empleados->filter(fn($e) => in_array($e->profesion_id, $profesionesPermitidas)) as $empleado)
                                 <option value="{{ $empleado->id }}"
@@ -86,7 +86,7 @@
                             <select name="ayudante_1_id" id="ayudante_1_id" class="form-control">
                                 <option value="">Seleccione el Ayudante 1</option>
                             @php
-                                $profesionesPermitidas = [1, 2, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
+                                $profesionesPermitidas = [2]; //Solo Ayudantes
                             @endphp
                             @foreach ($empleados->filter(fn($e) => in_array($e->profesion_id, $profesionesPermitidas)) as $empleado)
                                 <option value="{{ $empleado->id }}"
@@ -105,7 +105,7 @@
                             <select name="ayudante_2_id" id="ayudante_2_id" class="form-control">
                                 <option value="">Seleccione el Ayudante 2</option>
                             @php
-                                $profesionesPermitidas = [1, 2, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
+                                $profesionesPermitidas = [2]; //Solo Ayudantes
                             @endphp
                             @foreach ($empleados->filter(fn($e) => in_array($e->profesion_id, $profesionesPermitidas)) as $empleado)
                                 <option value="{{ $empleado->id }}"
@@ -124,7 +124,7 @@
                             <select name="ayudante_3_id" id="ayudante_3_id" class="form-control">
                                 <option value="">Seleccione el Ayudante 3</option>
                             @php
-                                $profesionesPermitidas = [1, 2, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
+                                $profesionesPermitidas = [2]; //Solo Ayudantes
                             @endphp
                             @foreach ($empleados->filter(fn($e) => in_array($e->profesion_id, $profesionesPermitidas)) as $empleado)
                                 <option value="{{ $empleado->id }}"
@@ -143,7 +143,7 @@
                             <select name="anestesista_id" id="anestesista_id" class="form-control">
                                 <option value="">Seleccione el Anestesista</option>
                             @php
-                                $profesionesPermitidas = [4, 5];
+                                $profesionesPermitidas = [3]; //Solo Anestesistas
                             @endphp
                             @foreach ($empleados->filter(fn($e) => in_array($e->profesion_id, $profesionesPermitidas)) as $empleado)
                                 <option value="{{ $empleado->id }}"
@@ -178,7 +178,7 @@
                             <select name="instrumentador_id" id="instrumentador_id" class="form-control">
                                 <option value="">Seleccione el Instrumentador</option>
                             @php
-                            $profesionesPermitidas = [3];
+                            $profesionesPermitidas = [4]; //Solo Instrumentadores
                             @endphp
                             @foreach ($empleados->filter(fn($e) => in_array($e->profesion_id, $profesionesPermitidas)) as $empleado)
                                 <option value="{{ $empleado->id }}"
@@ -197,7 +197,7 @@
                             <select name="enfermero_id" id="enfermero_id" class="form-control">
                                 <option value="">Seleccione el Enfermero</option>
                             @php
-                                $profesionesPermitidas = [4];
+                                $profesionesPermitidas = [5]; //Solo Enfermeros
                             @endphp
                             @foreach ($empleados->filter(fn($e) => in_array($e->profesion_id, $profesionesPermitidas)) as $empleado)
                                 <option value="{{ $empleado->id }}"
@@ -212,7 +212,24 @@
                         </div>
 
                         <div class="col-md-4">
-                            <label for="urgencia" class="form-label border-danger">Urgencia</label>
+
+                            <label for="fecha_cirugia" class="form-label">Fecha de la cirugía</label>
+                            <input type="date" name="fecha_cirugia" id="fecha_cirugia" class="form-control" value="{{ $cirugia->fecha_cirugia }}" required>
+                        </div>
+                        @error('fecha_cirugia')
+                            <small class="text-danger"> {{ $message }} </small>
+                        @enderror
+
+                        <div class="col-md-4">
+                            <label for="hora_cirugia" class="form-label">Hora de la cirugia</label>
+                            <input type="time" name="hora_cirugia" id="hora_cirugia" class="form-control" value="{{ $cirugia->hora_cirugia }}" required>
+                        </div>
+                        @error('hora_cirugia')
+                            <small class="text-danger"> {{ $message }} </small>
+                        @enderror
+
+                        <div class="col-md-4">
+                            <label for="urgencia" class="form-label">Urgencia</label>
                             <input type="checkbox" name="urgencia" id="urgencia" class="form-control" value="1"
                                 {{ $cirugia->urgencia ? 'checked' : '' }}>
                         </div>
