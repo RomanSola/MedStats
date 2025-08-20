@@ -21,9 +21,9 @@
                                 <th>Procedimiento</th>
                                 <th>Quirófano</th>
                                 <th>Cirujano</th>
-                                <th>Ayudante 1</th>
-                                <th>Ayudante 2</th>
-                                <th>Ayudante 3</th>
+                                <th class="no-print">Ayudante 1</th>
+                                <th class="no-print">Ayudante 2</th>
+                                <th class="no-print">Ayudante 3</th>
                                 <th>Anestesista</th>
                                 <th>Tipo de Anestesia</th>
                                 <th>Instrumentador</th>
@@ -33,6 +33,13 @@
                                 <th>Urgencia</th>
                                 <th class="text-center">Acciones</th>
                             </tr>
+                        <style>
+                        @media print {
+                            .no-print{
+                                display: none !important;
+                            }
+                            }
+                        </style>
                         </thead>
                         <tbody>
                             @forelse($cirugias as $cirugia)
@@ -59,15 +66,15 @@
                                         {{ $cirugia->get_cirujano->nombre }}
                                         {{ $cirugia->get_cirujano->apellido }}
                                     </td>
-                                    <td>
+                                    <td class="no-print">
                                         {{ $cirugia->get_ayudante1->nombre ?? 'N/A' }}
                                         {{ $cirugia->get_ayudante1->apellido ?? '' }}
                                     </td>
-                                    <td>
+                                    <td class="no-print">
                                         {{ optional($cirugia->get_ayudante2)->nombre ?? 'N/A' }}
                                         {{ optional($cirugia->get_ayudante2)->apellido ?? '' }}
                                     </td>
-                                    <td>
+                                    <td class="no-print">
                                         {{ optional($cirugia->get_ayudante3)->nombre ?? 'N/A' }}
                                         {{ optional($cirugia->get_ayudante3)->apellido ?? '' }}
                                     </td>
@@ -166,10 +173,10 @@
         <button onclick="imprimirTablaCompleta()" class="btn btn-secondary me-2">
             🖨️ Imprimir toda la tabla
         </button>
-        <button onclick="imprimirUltimosDiez()" class="btn btn-secondary me-2">
-        🖨️ Imprimir últimas 10 cirugías
-        </button>
-        <button onclick="exportarFiltradoPDF()" class="btn btn-danger">
+
+
+        <button onclick="exportarFiltradoPDF()" class="btn btn-warning">
+
             📄 Exportar PDF filtrado
         </button>
     </div>
@@ -249,6 +256,29 @@
 
             doc.save('cirugias_filtradas.pdf');
         }
+
+        $(document).ready(function () {
+        let table = $('#miTabla').DataTable({
+        orderCellsTop: true,
+        fixedHeader: true,
+        language: {
+            search: "Buscar:",
+            lengthMenu: "Mostrar _MENU_ registros",
+            zeroRecords: "No se encontraron coincidencias",
+            info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+            infoEmpty: "No hay registros disponibles",
+            infoFiltered: "(filtrado de _MAX_ registros totales)",
+        }
+        });
+
+        $('#miTabla thead tr:eq(1) th').each(function (i) {
+            $('input', this).on('keyup change', function () {
+                if (table.column(i).search() !== this.value) {
+                    table.column(i).search(this.value).draw();
+                }
+            });
+        });
+        });
     </script>
 @endpush    
 

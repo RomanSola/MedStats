@@ -3,46 +3,52 @@
 @section('titulo', 'Gestión de Pacientes')
 
 @section('contenido')
+
     <div class="max-w-7xl mx-auto px-4 py-8">
         <div class="flex justify-between items-center mb-6">
-
             <h1 class="text-2xl font-semibold text-gray-800">Pacientes Registrados</h1>
             <a href="{{ route('pacientes.create') }}"
                 class="bg-neutral-700 hover:bg-neutral-800 text-white font-medium py-2 px-6 rounded-full shadow">
                 + Ingresar Nuevo Paciente
             </a>
         </div>
-        <!--Buscador -->
+
+
+        <!-- Buscador -->
         <form action="{{ route('pacientes.index') }}" method="GET" class="mb-4 flex space-x-2">
             <input type="text" name="buscar" value="{{ request('buscar') }}"
                 placeholder="Buscar paciente por DNI, nombre o apellido"
                 class="border border-gray-300 rounded px-3 py-2 w-1/3">
-            <button type="submit"
-                class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
                 Buscar
             </button>
+            <a href="{{ route('pacientes.index') }}" class="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300">
+                Limpiar
+            </a>
         </form>
-        
+
+
         @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
+            <div class="alert alert-success">{{ session('success') }}</div>
         @endif
 
         @if (session('error'))
-            <div class="alert alert-danger">
-                {{ session('error') }}
-            </div>
+            <div class="alert alert-danger">{{ session('error') }}</div>
         @endif
-
 
         <div class="bg-white shadow rounded-lg border border-gray-200 overflow-auto">
             <table class="min-w-full text-sm text-gray-800 table-auto">
                 <thead class="bg-gray-100 text-gray-700 font-semibold">
                     <tr>
-                        <th class="px-4 py-2 border">DNI</th>
-                        <th class="px-4 py-2 border">Nombre</th>
-                        <th class="px-4 py-2 border">Apellido</th>
+                        <th class="px-4 py-2 border">
+                            <a href="{{ route('pacientes.index', ['orden' => 'dni']) }}">DNI</a>
+                        </th>
+                        <th class="px-4 py-2 border">
+                            <a href="{{ route('pacientes.index', ['orden' => 'nombre']) }}">Nombre</a>
+                        </th>
+                        <th class="px-4 py-2 border">
+                            <a href="{{ route('pacientes.index', ['orden' => 'apellido']) }}">Apellido</a>
+                        </th>
                         <th class="px-4 py-2 border">Teléfono</th>
                         <th class="px-4 py-2 border">Género</th>
                         <th class="px-4 py-2 border">Habitación</th>
@@ -60,7 +66,6 @@
                             <td class="px-4 py-2 border">{{ $paciente->genero }}</td>
                             <td class="px-4 py-2 border">{{ $paciente->habitacion?->numero ?? '—' }}</td>
                             <td class="px-4 py-2 border">{{ $paciente->cama?->codigo ?? '—' }}</td>
-
                             <td class="px-4 py-2 border text-center space-x-2">
                                 <a href="{{ route('pacientes.show', $paciente) }}"
                                     class="text-neutral-700 hover:underline font-medium">Ver</a>
@@ -88,7 +93,6 @@
                                 </form>
                             </td>
                         </tr>
-
                     @empty
                         <tr>
                             <td colspan="8" class="px-4 py-2 text-center text-gray-500">No hay pacientes registrados.
@@ -99,6 +103,7 @@
             </table>
         </div>
     </div>
+
     <!-- MODAL DE CONFIRMACIÓN PERSONALIZADO -->
     <div id="modal-confirmacion" class="modal">
         <div class="modal-content">
@@ -106,6 +111,7 @@
             <div class="botones">
                 <button id="modal-cancelar">Cancelar</button>
                 <button id="modal-confirmar">Confirmar</button>
+                >>>>>>> 62bd9fa341ea60e94cbfeb1b2ee99dea34deb6f6
             </div>
         </div>
     </div>
@@ -160,74 +166,112 @@
     </style>
 
     <!-- SCRIPT PARA MANEJAR LOS MODALES -->
+    <script src="{{ asset('js/modal.js') }}"></script>
+
+    <!-- SCRIPT: Live Search -->
+    <script>
+        document.querySelector('input[name="buscar"]').addEventListener('input', function(e) {
+            const query = e.target.value;
+
+            fetch(`/pacientes/live-search?buscar=${query}`)
+                .then(res => res.json())
+                .then(data => {
+                    const tbody = document.querySelector('tbody');
+                    tbody.innerHTML = '';
+
+                    if (data.length === 0) {
+                        tbody.innerHTML =
+                            `<tr><td colspan="8" class="px-4 py-2 text-center text-gray-500">No hay pacientes registrados.</td></tr>`;
+                        return;
+                    }
+
+                    data.forEach(p => {
+                        tbody.innerHTML += `
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-4 py-2 border">${p.dni}</td>
+                        <td class="px-4 py-2 border">${p.nombre}</td>
+                        <td class="px-4 py-2 border">${p.apellido}</td>
+                        <td class="px-4 py-2 border">${p.telefono}</td>
+                        <td class="px-4 py-2 border">${p.genero}</td>
+                        <td class="px-4 py-2 border">${p.habitacion?.numero ?? '—'}</td>
+                        <td class="px-4 py-2 border">${p.cama?.codigo ?? '—'}</td>
+                        <td class="px-4 py-2 border text-center">Acciones</td>
+                    </tr>
+                `;
+                    });
+                });
+        });
+    </script>
+
+
+    <!-- SCRIPT PARA MANEJAR LOS MODALES -->
 
     <script src="{{ asset('js/modal.js') }}">
-    /*
+        /*
 
-        document.addEventListener('DOMContentLoaded', function() {
-            const modal = document.getElementById('modal-confirmacion');
-            const mensaje = document.getElementById('modal-mensaje');
-            const btnCancelar = document.getElementById('modal-cancelar');
-            const btnConfirmar = document.getElementById('modal-confirmar');
+            document.addEventListener('DOMContentLoaded', function() {
+                const modal = document.getElementById('modal-confirmacion');
+                const mensaje = document.getElementById('modal-mensaje');
+                const btnCancelar = document.getElementById('modal-cancelar');
+                const btnConfirmar = document.getElementById('modal-confirmar');
 
-            let formularioActual = null;
+                let formularioActual = null;
 
-            // Abre el modal con el mensaje deseado y referencia al formulario
-            function abrirModal(texto, form) {
-                mensaje.textContent = texto;
-                formularioActual = form;
-                modal.style.display = 'block';
-            }
-
-            // Cierra el modal si el usuario cancela
-            btnCancelar.addEventListener('click', () => {
-                modal.style.display = 'none';
-                formularioActual = null;
-            });
-
-            // Envía el formulario si el usuario confirma
-            btnConfirmar.addEventListener('click', () => {
-                if (formularioActual) formularioActual.submit();
-            });
-
-            // CONFIRMACIÓN PARA DAR DE ALTA
-            document.querySelectorAll('.form-dar-de-alta').forEach(form => {
-                form.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    abrirModal(
-                        '¿Estás seguro que querés dar de alta a este paciente? Esta acción liberará la cama asignada.',
-                        form);
-                });
-            });
-
-            // CONFIRMACIÓN PARA ELIMINAR
-            document.querySelectorAll('.form-eliminar').forEach(form => {
-                form.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    abrirModal(
-                        '¿Seguro que querés eliminar este paciente? Esta acción no se puede deshacer.',
-                        form);
-                });
-            });
-
-            // CONFIRMACIÓN PARA ASIGNAR
-            document.querySelectorAll('.form-asignar').forEach(form => {
-                form.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    abrirModal('¿Querés asignar una cama a este paciente?', form);
-                });
-            });
-
-            // Cierra el modal si se hace clic fuera del contenido
-            window.onclick = function(event) {
-                if (event.target == modal) {
-                    modal.style.display = "none";
-                    formularioActual = null;
+                // Abre el modal con el mensaje deseado y referencia al formulario
+                function abrirModal(texto, form) {
+                    mensaje.textContent = texto;
+                    formularioActual = form;
+                    modal.style.display = 'block';
                 }
-            };
-        });
 
-    */
+                // Cierra el modal si el usuario cancela
+                btnCancelar.addEventListener('click', () => {
+                    modal.style.display = 'none';
+                    formularioActual = null;
+                });
 
+                // Envía el formulario si el usuario confirma
+                btnConfirmar.addEventListener('click', () => {
+                    if (formularioActual) formularioActual.submit();
+                });
+
+                // CONFIRMACIÓN PARA DAR DE ALTA
+                document.querySelectorAll('.form-dar-de-alta').forEach(form => {
+                    form.addEventListener('submit', function(e) {
+                        e.preventDefault();
+                        abrirModal(
+                            '¿Estás seguro que querés dar de alta a este paciente? Esta acción liberará la cama asignada.',
+                            form);
+                    });
+                });
+
+                // CONFIRMACIÓN PARA ELIMINAR
+                document.querySelectorAll('.form-eliminar').forEach(form => {
+                    form.addEventListener('submit', function(e) {
+                        e.preventDefault();
+                        abrirModal(
+                            '¿Seguro que querés eliminar este paciente? Esta acción no se puede deshacer.',
+                            form);
+                    });
+                });
+
+                // CONFIRMACIÓN PARA ASIGNAR
+                document.querySelectorAll('.form-asignar').forEach(form => {
+                    form.addEventListener('submit', function(e) {
+                        e.preventDefault();
+                        abrirModal('¿Querés asignar una cama a este paciente?', form);
+                    });
+                });
+
+                // Cierra el modal si se hace clic fuera del contenido
+                window.onclick = function(event) {
+                    if (event.target == modal) {
+                        modal.style.display = "none";
+                        formularioActual = null;
+                    }
+                };
+            });
+
+        */
     </script>
 @endsection

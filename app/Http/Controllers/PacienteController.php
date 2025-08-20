@@ -16,20 +16,23 @@ class PacienteController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Paciente::query();
-
-        // Filtrar por DNI, nombre o apellido
-        if ($request->filled('buscar')) {
-            $busqueda = $request->buscar;
-            $query->where('dni', 'like', "%$busqueda%")
-                  ->orWhere('nombre', 'like', "%$busqueda%")
-                  ->orWhere('apellido', 'like', "%$busqueda%");
-        }
-
-        $pacientes = $query->get();
-
+        $orden = $request->get('orden', 'apellido');
+        $busqueda = $request->get('buscar');
+    
+        $pacientes = Paciente::with(['habitacion', 'cama'])
+            ->when($busqueda, function ($query, $busqueda) {
+                $query->where(function ($q) use ($busqueda) {
+                    $q->where('dni', 'like', "%{$busqueda}%")
+                      ->orWhere('nombre', 'like', "%{$busqueda}%")
+                      ->orWhere('apellido', 'like', "%{$busqueda}%");
+                });
+            })
+            ->orderBy($orden)
+            ->paginate(10);
+    
         return view('pacientes.index', compact('pacientes'));
     }
+    
 
     public function show(Paciente $paciente)
     {
@@ -177,6 +180,19 @@ class PacienteController extends Controller
 
         return redirect()->route('pacientes.index')->with('success', 'Paciente asignado correctamente.');
     }
+    public function liveSearch(Request $request)
+{
+    $buscar = $request->get('buscar');
+
+    $pacientes = Paciente::with(['habitacion', 'cama'])
+        ->where('dni', 'like', "%{$buscar}%")
+        ->orWhere('nombre', 'like', "%{$buscar}%")
+        ->orWhere('apellido', 'like', "%{$buscar}%")
+        ->get();
+
+    return response()->json($pacientes);
+}
+
 
     public function darDeAlta(Paciente $paciente)
     {
@@ -202,3 +218,4 @@ class PacienteController extends Controller
         return redirect()->route('pacientes.index')->with('success', 'Paciente dado de alta y cama liberada.');
     }
 }
+

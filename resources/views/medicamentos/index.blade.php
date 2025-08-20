@@ -14,7 +14,7 @@
     <div class="card border-success shadow-sm mb-4">
         <div class="card-body">
 
-            <p class="mb-3 text-success fw-semibold">
+            <p class="mb-3 text-secondary fw-semibold">
                 Desde aquí podés administrar los medicamentos disponibles en el sistema.
             </p>
 

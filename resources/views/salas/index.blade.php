@@ -6,7 +6,8 @@
 <div class="container mt-4">
 
     {{-- Título institucional celeste --}}
-    <h1 class="text-info fw-bold border-bottom border-info pb-2 mb-4">
+    <h1 class="text-3xl fw-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent bg-clip-text drop-shadow mb-4">
+
         Gestor de Salas
     </h1>
 
@@ -14,7 +15,7 @@
     <div class="card border-info shadow-sm mb-4">
         <div class="card-body">
 
-            <p class="mb-3 text-info fw-semibold">
+            <p class="mb-3 text-secondary fw-semibold">
                 Desde aquí podés administrar las salas del establecimiento y su capacidad.
             </p>
 

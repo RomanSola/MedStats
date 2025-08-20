@@ -27,14 +27,20 @@
     @include('layouts._partials.menu')
 
     <div class="flex justify-start px-4 mt-3">
-        @if (url()->previous() !== url()->current())
-            <a href="{{ url()->previous() }}" 
-               class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium py-2 px-4 rounded">
-                ← Volver
-            </a>
-        @endif
+        {{-- Solo mostramos “Volver” si NO estamos en la ruta ‘inicio’ --}}
+        @unless(request()->routeIs('inicio'))
+            <button
+              type="button"
+              onclick="history.back()"
+              class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium py-2 px-4 rounded"
+            >
+              ← Volver
+            </button>
+        @endunless
     </div>
-
+    
+    
+    
     <main class="flex-1">
         @yield('contenido')
     </main>
@@ -87,4 +93,4 @@
 
 </body>
 </html>
-
+```

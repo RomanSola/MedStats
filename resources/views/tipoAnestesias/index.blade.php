@@ -34,12 +34,12 @@
                                     <td>
                                         <!-- Botón Editar -->
                                         <a href="{{ route('tipoAnestesias.edit', $anestesia) }}"
-                                            class="btn btn-secondary btn-sm mr-1">Editar</a>
+                                            class="btn btn-outline-warning btn-sm me-1">Editar</a>
                                         <form action="{{ route('tipoAnestesias.destroy', $anestesia) }}" method="POST"
                                             class="d-inline">
                                             @csrf
                                             @method('DELETE')
-                                            <button class="btn btn-danger btn-sm">Eliminar</button>
+                                            <button class="btn btn-outline-danger btn-sm">Eliminar</button>
                                         </form>
                                     </td>
                                 </tr>

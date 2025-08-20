@@ -19,7 +19,7 @@
 
                 {{-- Campo nombre --}}
                 <div>
-                    <label for="nombre" class="form-label fw-semibold text-info">
+                    <label for="nombre" class="form-label fw-semibold text-gray">
                         Sala
                     </label>
                     <input type="text" name="nombre" id="nombre"
