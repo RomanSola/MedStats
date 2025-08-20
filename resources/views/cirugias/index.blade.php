@@ -118,9 +118,7 @@
         <button onclick="imprimirTablaCompleta()" class="btn btn-secondary me-2">
             🖨️ Imprimir toda la tabla
         </button>
-        <button onclick="imprimirUltimosDiez()" class="btn btn-secondary me-2">
-        🖨️ Imprimir últimas 10 cirugías
-        </button>
+
         <button onclick="exportarFiltradoPDF()" class="btn btn-warning">
             📄 Exportar PDF filtrado
         </button>
