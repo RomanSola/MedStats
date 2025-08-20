@@ -5,109 +5,91 @@
 @section('contenido')
 <div class="max-w-4xl mx-auto px-4 py-8">
 
-    <h1 class="text-2xl font-bold text-blue-800 mb-6">Editar Paciente</h1>
+    {{-- Título institucional --}}
+    <h1 class="text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent bg-clip-text drop-shadow-md mb-6">
+        Editar Paciente
+    </h1>
 
+    {{-- Formulario --}}
     <form action="{{ route('pacientes.update', $paciente) }}" method="POST"
         class="bg-white shadow rounded-lg p-6 border border-gray-200 space-y-6">
         @csrf
         @method('PUT')
 
+        {{-- Datos personales --}}
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-                <label for="dni" class="block text-sm font-medium text-gray-700 mb-1">DNI</label>
-                <input type="text" name="dni" id="dni" class="w-full rounded-md border-gray-300 px-4 py-2 @error('dni') is-invalid @enderror"
-                    value="{{ old('dni', $paciente->dni) }}" required>
-                    @error('dni')
-                        <div class="invalid-feedback">{{ $message }}</div>
+            @foreach ([
+                ['dni', 'DNI', 'text'],
+                ['fecha_nacimiento', 'Fecha de nacimiento', 'date'],
+                ['nombre', 'Nombre', 'text'],
+                ['apellido', 'Apellido', 'text'],
+                ['telefono', 'Teléfono', 'text']
+            ] as [$field, $label, $type])
+                <div>
+                    <label for="{{ $field }}" class="block text-sm font-medium text-gray-700 mb-1">{{ $label }}</label>
+                    <input type="{{ $type }}" name="{{ $field }}" id="{{ $field }}"
+                        class="w-full rounded-md border-gray-300 px-4 py-2 @error($field) is-invalid @enderror"
+                        value="{{ old($field, $paciente->$field) }}" {{ $field !== 'telefono' ? 'required' : '' }}>
+                    @error($field)
+                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                     @enderror
-            </div>
+                </div>
+            @endforeach
 
-            <div>
-                <label for="fecha_nacimiento" class="block text-sm font-medium text-gray-700 mb-1">Fecha de
-                    nacimiento</label>
-                <input type="date" name="fecha_nacimiento" id="fecha_nacimiento"
-                    class="w-full rounded-md border-gray-300 px-4 py-2"
-                    value="{{ old('fecha_nacimiento', $paciente->fecha_nacimiento) }}" required>
-                @error('fecha_nacimiento')
-                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <div>
-                <label for="nombre" class="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
-                <input type="text" name="nombre" id="nombre" class="w-full rounded-md border-gray-300 px-4 py-2"
-                    value="{{ old('nombre', $paciente->nombre) }}" required>
-                @error('nombre')
-                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <div>
-                <label for="apellido" class="block text-sm font-medium text-gray-700 mb-1">Apellido</label>
-                <input type="text" name="apellido" id="apellido" class="w-full rounded-md border-gray-300 px-4 py-2"
-                    value="{{ old('apellido', $paciente->apellido) }}" required>
-                @error('apellido')
-                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <div>
-                <label for="telefono" class="block text-sm font-medium text-gray-700 mb-1">Teléfono</label>
-                <input type="text" name="telefono" id="telefono" class="w-full rounded-md border-gray-300 px-4 py-2"
-                    value="{{ old('telefono', $paciente->telefono) }}">
-                @error('telefono')
-                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                @enderror
-            </div>
-
+            {{-- Género --}}
             <div>
                 <label for="genero" class="block text-sm font-medium text-gray-700 mb-1">Género</label>
                 <select name="genero" id="genero" class="w-full rounded-md border-gray-300 px-4 py-2">
                     <option value="">Seleccione el género</option>
-                    <option value="Masculino" {{ old('genero', $paciente->genero) == 'Masculino' ? 'selected' : '' }}>
-                        Masculino</option>
-                    <option value="Femenino" {{ old('genero', $paciente->genero) == 'Femenino' ? 'selected' : '' }}>
-                        Femenino</option>
-                    <option value="X" {{ old('genero', $paciente->genero) == 'X' ? 'selected' : '' }}>X</option>
+                    @foreach (['Masculino', 'Femenino', 'X'] as $opcion)
+                        <option value="{{ $opcion }}" {{ old('genero', $paciente->genero) == $opcion ? 'selected' : '' }}>
+                            {{ $opcion }}
+                        </option>
+                    @endforeach
                 </select>
             </div>
         </div>
 
+        {{-- Ubicación --}}
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {{-- País --}}
             <div>
                 <label for="pais" class="block text-sm font-medium text-gray-700 mb-1">País</label>
                 <select name="pais_id" id="pais" class="w-full rounded-md border-gray-300 px-4 py-2">
                     <option value="">Seleccione un país</option>
                     @foreach ($paises as $pais)
-                    <option value="{{ $pais->id }}"
-                        {{ old('pais_id', $paciente->pais_id) == $pais->id ? 'selected' : '' }}>
-                        {{ $pais->nombre }}
-                    </option>
+                        <option value="{{ $pais->id }}"
+                            {{ old('pais_id', $paciente->pais_id) == $pais->id ? 'selected' : '' }}>
+                            {{ $pais->nombre }}
+                        </option>
                     @endforeach
                 </select>
-                @error('pais')
-                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                @error('pais_id')
+                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
+            {{-- Provincia --}}
             <div>
                 <label for="provincia" class="block text-sm font-medium text-gray-700 mb-1">Provincia</label>
                 <select name="provincia_id" id="provincia" class="w-full rounded-md border-gray-300 px-4 py-2">
                 </select>
                 @error('provincia_id')
-                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
+            {{-- Código Postal --}}
             <div>
                 <label for="codigo_postal" class="block text-sm font-medium text-gray-700 mb-1">Código Postal</label>
                 <select name="cod_postal_id" id="codigo_postal" class="w-full rounded-md border-gray-300 px-4 py-2">
                 </select>
                 @error('cod_postal_id')
-                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
+            {{-- Dirección --}}
             <div>
                 <label for="direccion" class="block text-sm font-medium text-gray-700 mb-1">Dirección</label>
                 <input type="text" name="direccion" id="direccion"
@@ -116,18 +98,21 @@
             </div>
         </div>
 
+        {{-- Botones --}}
         <div class="flex justify-between pt-4">
-            <a href="{{ route('pacientes.index') }}" class="text-blue-700 hover:text-blue-900 font-medium">←
-                Cancelar</a>
+            <a href="{{ route('pacientes.index') }}"
+               class="btn btn-outline-primary px-5 py-2 rounded shadow-sm">
+               ← Cancelar
+            </a>
             <button type="submit"
-                class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-full shadow transition">
+                class="bg-neutral-700 hover:bg-neutral-800 text-white font-semibold px-6 py-2 rounded-full shadow-md transition">
                 Guardar Cambios
             </button>
         </div>
     </form>
 </div>
 
-<!-- Scripts para combos -->
+{{-- Scripts para combos --}}
 <script>
     const paisSelect = document.getElementById('pais');
     const provinciaSelect = document.getElementById('provincia');
@@ -136,7 +121,6 @@
     const selectedPais = "{{ old('pais_id', $paciente->pais_id) }}";
     const selectedProv = "{{ old('provincia_id', $paciente->provincia_id) }}";
     const selectedCP = "{{ old('cod_postal_id', $paciente->cod_postal_id) }}";
-
 
     function cargarProvincias(paisId, selected = null) {
         fetch(`/api/provincias/${paisId}`)

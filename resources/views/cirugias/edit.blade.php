@@ -6,7 +6,7 @@
     <div class="container mt-4">
         <h2 class="mb-4">Editar Cirugía</h2>
 
-        <div class="card border-warning">
+        <div class="card border-danger">
             <div class="card-body">
                 <form action="{{ route('cirugias.update', $cirugia) }}" method="POST">
                     @csrf
@@ -15,7 +15,7 @@
                     <div class="row mb-3">
                         <div class="col-md-4">
                             <label for="pais" class="form-label">Paciente</label>
-                            <select name="paciente_id" id="paciente_id" class="form-control select2">
+                            <select name="paciente_id" id="paciente_id" class="form-control select2 border-danger">
                                 <option value="">Seleccione el Paciente</option>
                                 @foreach ($pacientes as $paciente)
                                     <option value="{{ $paciente->id }}"
@@ -212,7 +212,7 @@
                         </div>
 
                         <div class="col-md-4">
-                            <label for="urgencia" class="form-label">Urgencia</label>
+                            <label for="urgencia" class="form-label border-danger">Urgencia</label>
                             <input type="checkbox" name="urgencia" id="urgencia" class="form-control" value="1"
                                 {{ $cirugia->urgencia ? 'checked' : '' }}>
                         </div>

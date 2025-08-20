@@ -4,7 +4,9 @@
 
 @section('contenido')
 <div class="max-w-4xl mx-auto px-4 py-8">
-    <h1 class="text-2xl font-semibold text-gray-800 mb-6">Modificar Stock</h1>
+    <h1 class="text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent bg-clip-text drop-shadow-md px-2 mb-6">
+        Modificar Stock
+    </h1>
 
     <form action="{{ route('stocks.update', $stock) }}" method="POST"
           class="bg-white shadow rounded-lg border border-gray-200 p-6 space-y-6">
@@ -42,11 +44,12 @@
         <!-- Modificación de stock -->
         <div>
             <label for="cantidad_mod" class="block text-sm font-medium text-gray-700 mb-1">Agregar o Extraer Cantidad</label>
-            <input type="number" name="cantidad_mod" id="cantidad_mod" placeholder="Ingrese cantidad que quiera agergar o extraer"
+            <input type="number" name="cantidad_mod" id="cantidad_mod"
+                   placeholder="Ingrese cantidad que quiera agregar o extraer"
                    class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500"
                    required>
             @error('cantidad_mod')
-            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
             @enderror
         </div>
 
@@ -64,7 +67,7 @@
                     @endforeach
                 </select>
                 @error('paciente_id')
-                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
@@ -80,7 +83,7 @@
                     @endforeach
                 </select>
                 @error('empleado_id')
-                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                 @enderror
             </div>
         </div>
@@ -92,14 +95,14 @@
                    class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500"
                    value="{{ old('comentario') }}">
             @error('comentario')
-            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
             @enderror
         </div>
 
         <!-- Botón -->
         <div class="flex justify-end pt-4">
             <button type="submit"
-                    class="bg-neutral-700 hover:bg-neutral-800 text-white font-medium px-6 py-2 rounded-full shadow transition">
+                    class="btn btn-outline-primary px-6 py-2 rounded shadow-sm">
                 Guardar Cambios
             </button>
         </div>
