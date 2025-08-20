@@ -21,9 +21,9 @@
                                 <th>Procedimiento</th>
                                 <th>Quirófano</th>
                                 <th>Cirujano</th>
-                                <th>Ayudante 1</th>
-                                <th>Ayudante 2</th>
-                                <th>Ayudante 3</th>
+                                <th class="no-print">Ayudante 1</th>
+                                <th class="no-print">Ayudante 2</th>
+                                <th class="no-print">Ayudante 3</th>
                                 <th>Anestesista</th>
                                 <th>Tipo de Anestesia</th>
                                 <th>Instrumentador</th>
@@ -33,6 +33,13 @@
                                 <th>Urgencia</th>
                                 <th class="text-center">Acciones</th>
                             </tr>
+                        <style>
+                        @media print {
+                            .no-print{
+                                display: none !important;
+                            }
+                            }
+</style>
                         </thead>
                         <tbody>
                             @forelse($cirugias as $cirugia)
@@ -59,15 +66,15 @@
                                         {{ $cirugia->get_cirujano->nombre }}
                                         {{ $cirugia->get_cirujano->apellido }}
                                     </td>
-                                    <td>
+                                    <td class="no-print">
                                         {{ $cirugia->get_ayudante1->nombre ?? 'N/A' }}
                                         {{ $cirugia->get_ayudante1->apellido ?? '' }}
                                     </td>
-                                    <td>
+                                    <td class="no-print">
                                         {{ optional($cirugia->get_ayudante2)->nombre ?? 'N/A' }}
                                         {{ optional($cirugia->get_ayudante2)->apellido ?? '' }}
                                     </td>
-                                    <td>
+                                    <td class="no-print">
                                         {{ optional($cirugia->get_ayudante3)->nombre ?? 'N/A' }}
                                         {{ optional($cirugia->get_ayudante3)->apellido ?? '' }}
                                     </td>
