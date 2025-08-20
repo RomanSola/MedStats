@@ -111,7 +111,7 @@
             <div class="botones">
                 <button id="modal-cancelar">Cancelar</button>
                 <button id="modal-confirmar">Confirmar</button>
-                >>>>>>> 62bd9fa341ea60e94cbfeb1b2ee99dea34deb6f6
+            
             </div>
         </div>
     </div>

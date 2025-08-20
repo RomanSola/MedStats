@@ -119,10 +119,10 @@
 
             </div>
 
-            {{-- Botón de impresión --}}
-            <button class="btn btn-outline-secondary mt-4" onclick="imprimirUltimosDiez()">
+            {{-- Botón de impresión <button class="btn btn-outline-secondary mt-4" onclick="imprimirUltimosDiez()">
                 Imprimir últimas 10 cirugías
-            </button>
+            </button>--}}
+            
 
             {{-- Script de impresión --}}
             <script>

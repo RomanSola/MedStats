@@ -64,7 +64,7 @@
         @enderror
     </div>
 </div>
->>>>>>> 524d7ee4039076c0d2a8d9e210b50a8bc8208a9f
+
 
         <!-- Asociación con paciente y médico -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
