@@ -104,7 +104,7 @@
                     <small class="text-danger"> {{ $message }} </small>
                     @enderror
                 </div>
-
+                
                 <button class="btn btn-warning">Agregar</button>
                 <a href="{{ route('empleados.index') }}" class="btn btn-warning">Cancelar</a>
             </form>
