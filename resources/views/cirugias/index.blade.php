@@ -206,7 +206,7 @@
         orderCellsTop: true,
         fixedHeader: true,
         language: {
-            search: "Buscar global:",
+            search: "Buscar:",
             lengthMenu: "Mostrar _MENU_ registros",
             zeroRecords: "No se encontraron coincidencias",
             info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
