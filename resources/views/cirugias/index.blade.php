@@ -39,7 +39,7 @@
                                 display: none !important;
                             }
                             }
-</style>
+                        </style>
                         </thead>
                         <tbody>
                             @forelse($cirugias as $cirugia)
@@ -206,5 +206,28 @@
 
             doc.save('cirugias_filtradas.pdf');
         }
+
+        $(document).ready(function () {
+        let table = $('#miTabla').DataTable({
+        orderCellsTop: true,
+        fixedHeader: true,
+        language: {
+            search: "Buscar:",
+            lengthMenu: "Mostrar _MENU_ registros",
+            zeroRecords: "No se encontraron coincidencias",
+            info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+            infoEmpty: "No hay registros disponibles",
+            infoFiltered: "(filtrado de _MAX_ registros totales)",
+        }
+        });
+
+        $('#miTabla thead tr:eq(1) th').each(function (i) {
+            $('input', this).on('keyup change', function () {
+                if (table.column(i).search() !== this.value) {
+                    table.column(i).search(this.value).draw();
+                }
+            });
+        });
+        });
     </script>
 @endpush    
