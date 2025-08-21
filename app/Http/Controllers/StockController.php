@@ -67,14 +67,15 @@ class StockController extends Controller
             ->paginate(15);
         return view('stocks.show', compact('hist_item', 'stock'));
     }
-
-    public function edit(Stock $stock)
+    public function edit(Stock $stock, Request $request)
     {
+        $modo = $request->query('modo'); // puede ser 'agregar' o 'extraer'
         $pacientes = Paciente::all();
         $empleados = Empleado::all();
-        return view('stocks.edit', compact('stock', 'pacientes', 'empleados'));
+    
+        return view('stocks.edit', compact('stock', 'pacientes', 'empleados', 'modo'));
     }
-
+    
     public function update(Request $request, Stock $stock)
     {
         $request->validate([

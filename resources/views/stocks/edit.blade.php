@@ -43,26 +43,27 @@
 
 <!-- Modificación de stock -->
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-    <div>
-        <label for="cantidad_agregar" class="block text-sm font-medium text-gray-700 mb-1">Agregar Cantidad</label>
-        <input type="number" name="cantidad_agregar" id="cantidad_agregar" min="0"
-               class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500"
-               value="{{ old('cantidad_agregar') }}">
-        @error('cantidad_agregar')
-        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-        @enderror
-    </div>
-
-    <div>
-        <label for="cantidad_extraer" class="block text-sm font-medium text-gray-700 mb-1">Extraer Cantidad</label>
-        <input type="number" name="cantidad_extraer" id="cantidad_extraer" min="0"
-               class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500"
-               
-               value="{{ old('cantidad_extraer') }}">
-        @error('cantidad_extraer')
-        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-        @enderror
-    </div>
+    @if ($modo === 'agregar')
+        <div>
+            <label for="cantidad_agregar" class="block text-sm font-medium text-gray-700 mb-1">Agregar Cantidad</label>
+            <input type="number" name="cantidad_agregar" id="cantidad_agregar" min="0"
+                   class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-green-500"
+                   value="{{ old('cantidad_agregar') }}">
+            @error('cantidad_agregar')
+            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+            @enderror
+        </div>
+    @elseif ($modo === 'extraer')
+        <div>
+            <label for="cantidad_extraer" class="block text-sm font-medium text-gray-700 mb-1">Extraer Cantidad</label>
+            <input type="number" name="cantidad_extraer" id="cantidad_extraer" min="0"
+                   class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-red-500"
+                   value="{{ old('cantidad_extraer') }}">
+            @error('cantidad_extraer')
+            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+            @enderror
+        </div>
+    @endif
 </div>
 
 

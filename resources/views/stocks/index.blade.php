@@ -59,8 +59,12 @@
                                     Historial
                                 </a>
 
-                                <a href="{{ route('stocks.edit', $item) }}" class="btn btn-outline-warning btn-sm">
-                                    Editar
+                                <a href="{{ route('stocks.edit', ['stock' => $item->id, 'modo' => 'agregar']) }}" class="btn btn-outline-success btn-sm">
+                                    Agregar
+                                </a>
+                                
+                                <a href="{{ route('stocks.edit', ['stock' => $item->id, 'modo' => 'extraer']) }}" class="btn btn-outline-danger btn-sm">
+                                    Extraer
                                 </a>
                             </td>
 
