@@ -2,8 +2,8 @@
 @section('contenido')
 <div class="container">
     <div class="text-center mb-4">
-        <h2 class="bg-light d-inline-block px-4 py-2 rounded shadow-sm text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent  bg-clip-text drop-shadow-md  flex items-center gap-2 px-2">
-         Estadísticas de Cirugías
+        <h2 class="bg-light d-inline-block px-4 py-2 rounded shadow-sm">
+        📊 Estadísticas de Cirugías
         </h2>
     </div>
 
@@ -124,17 +124,7 @@
                     <p>Cirugías urgentes: <strong>{{ $urgentes }}</strong></p>
                     <p>Cirugías programadas: <strong>{{ $programadas }}</strong></p>
                     <p>Porcentaje urgencias: 
-                    
-                    @if ($urgentes + $programadas > 0)
-    <p>Porcentaje urgencias:
-        <strong>{{ round(($urgentes / ($urgentes + $programadas)) * 100, 2) }}%</strong>
-    </p>
-@else
-    <p>Porcentaje urgencias:
-        <strong>0%</strong>
-    </p>
-@endif
-
+                    <strong>{{ round(($urgentes / ($urgentes + $programadas)) * 100, 2) }}%</strong>
                     </p>
                 </div>
             </div>

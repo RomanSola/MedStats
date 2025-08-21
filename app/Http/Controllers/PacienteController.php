@@ -21,35 +21,14 @@ class PacienteController extends Controller
         // Filtrar por DNI, nombre o apellido
         if ($request->filled('buscar')) {
             $busqueda = $request->buscar;
-<<<<<<< HEAD
-            $query->where(function($q) use ($busqueda) {
-                $q->where('dni', 'like', "%$busqueda%")
-                  ->orWhere('nombre', 'like', "%$busqueda%")
-                  ->orWhere('apellido', 'like', "%$busqueda%");
-            });
-=======
             $query->where('dni', 'like', "%$busqueda%")
                   ->orWhere('nombre', 'like', "%$busqueda%")
                   ->orWhere('apellido', 'like', "%$busqueda%");
->>>>>>> parent of 62bd9fa (Cambios volver)
         }
 
         $pacientes = $query->get();
 
-<<<<<<< HEAD
-        // 🔹 Contexto de cama si venís desde "Camas"
-        $camaContext = null;
-        if ($request->filled('cama')) {
-            $camaId = (int) $request->query('cama');
-            $camaContext = Cama::with('habitacion.sala')
-                ->where('ocupada', false)
-                ->find($camaId);
-        }
-
-        return view('pacientes.index', compact('pacientes', 'camaContext'));
-=======
         return view('pacientes.index', compact('pacientes'));
->>>>>>> parent of 62bd9fa (Cambios volver)
     }
 
     public function show(Paciente $paciente)
@@ -92,9 +71,10 @@ class PacienteController extends Controller
         $paciente->direccion = $request->input('direccion');
         $paciente->creado_por = '1';
         $paciente->modificado_por = '1';
+
         $paciente->save();
 
-        // 🔹 Mantengo el flujo anterior: al crear, ir a pantalla de asignación
+        // redirigir a asignación de cama
         return redirect()->route('pacientes.asignar', $paciente->id)
             ->with('success', 'Paciente registrado. Ahora puede asignarle una cama.');
     }
@@ -157,7 +137,7 @@ class PacienteController extends Controller
 
     public function destroy(Paciente $paciente)
     {
-        if ($paciente->get_cirugias()->exists() || $paciente->get_historial_stock()->exists() || $paciente->get_ocupacion_cama()->exists()) {
+        if ($paciente->get_cirugias()->exists() ||  $paciente->get_historial_stock()->exists() || $paciente->get_ocupacion_cama()->exists()) {
             return redirect()->route('pacientes.index')
                 ->with('error', 'No se puede eliminar el paciente porque tiene registros asociados.');
         }
@@ -197,43 +177,6 @@ class PacienteController extends Controller
 
         return redirect()->route('pacientes.index')->with('success', 'Paciente asignado correctamente.');
     }
-<<<<<<< HEAD
-
-    // 🔹 NUEVO: Asignación directa cuando venís desde "Camas"
-    public function asignarDirecta(Request $request, Paciente $paciente)
-    {
-        $request->validate([
-            'cama_id' => 'required|exists:camas,id',
-        ]);
-
-        $cama = Cama::with('habitacion')->findOrFail($request->cama_id);
-
-        if ($cama->ocupada) {
-            return back()->with('error', 'La cama seleccionada ya está ocupada.');
-        }
-
-        if ($paciente->cama_id) {
-            return back()->with('error', 'Este paciente ya tiene una cama asignada.');
-        }
-
-        $paciente->habitacion_id = $cama->habitacion_id;
-        $paciente->cama_id = $cama->id;
-        $paciente->save();
-
-        $cama->ocupada = true;
-        $cama->save();
-
-        Ocupacion_cama::create([
-            'paciente_id' => $paciente->id,
-            'cama_id' => $cama->id,
-            'fecha_ingreso' => now()
-        ]);
-
-        // 🔹 Si venís desde camas → volver a camas, si no → pacientes
-        return redirect()->route('camas.index')->with('success', 'Paciente asignado a la cama correctamente.');
-    }
-=======
->>>>>>> parent of 62bd9fa (Cambios volver)
 
     public function darDeAlta(Paciente $paciente)
     {
@@ -258,8 +201,4 @@ class PacienteController extends Controller
 
         return redirect()->route('pacientes.index')->with('success', 'Paciente dado de alta y cama liberada.');
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> parent of 62bd9fa (Cambios volver)

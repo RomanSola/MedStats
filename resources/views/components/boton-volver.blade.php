@@ -9,7 +9,7 @@
             case 'pacientes.index':
             case 'estadisticas':
             case 'camas.index':
-            //case 'cirugias.index':
+            case 'cirugias.index':
             case 'ajustes':
                 $rutaAnterior = 'inicio';
                 break;
@@ -18,23 +18,22 @@
             case 'empleados.index':
             case 'medicamentos.index':
             case 'cirugias.index':
+            case 'salas.index':
             case 'habitaciones.index':
             case 'quirofanos.index':
-            case 'camas.index':
-            case 'procedimientos.index':
-            case 'profesion.index':
+            case 'camas.index';  
+            case 'procedimientos.index': 
+            case 'profesion.index': 
             case 'tipoAnestesias.index':
-            case 'ocupacionCamas.index':
-            case 'UsuarioPerfil.index':
-            case 'salas.index':
+            case 'ocupacionCamas.index':  
                 $rutaAnterior = 'ajustes';
                 break;
 
-            case 'profesion.create':
+             case 'profesion.create':
             case 'profesion.edit':
             case 'profesion.show':
                 $rutaAnterior = 'profesion.index';
-                break;
+                break;    
 
             case 'procedimientos.create':
             case 'procedimientos.edit':
@@ -46,7 +45,7 @@
             case 'camas.edit':
             case 'camas.show':
                 $rutaAnterior = 'camas.index';
-                break;
+                break;    
 
             case 'empleados.create':
             case 'empleados.edit':
@@ -109,11 +108,10 @@
             case 'salas.edit':
                 $rutaAnterior = 'salas.index';
                 break;
-
+                
             case 'cirugias.create':
             case 'cirugias.edit':
             case 'cirugias.show':
-            case 'cirugias.estadisticas':
                 $rutaAnterior = 'cirugias.index';
                 break;
 
@@ -129,24 +127,13 @@
                 break;
         }
     @endphp
+
     @if ($rutaActual !== 'inicio')
-        <div class="mt-3">
-            <a href="{{ route($rutaAnterior) }}"
-                class="d-inline-flex align-items-center gap-2 px-4 py-2 rounded-pill border border-primary text-primary bg-white hover:bg-primary hover:text-white hover:shadow-lg transition-all duration-300 text-sm fw-semibold"
-                style="text-decoration: none;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                    class="bi bi-arrow-left" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd"
-                        d="M15 8a.5.5 0 0 1-.5.5H3.707l3.147 3.146a.5.5 0 0 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 0 1 .708.708L3.707 7.5H14.5A.5.5 0 0 1 15 8z" />
-                </svg>
-                Volver atrás
-            </a>
-        </div>
+        <a href="{{ route($rutaAnterior) }}" class="btn btn-outline-primary mt-1">
+            ← Volver atrás
+        </a>
     @endif
-
-
-
-
+    
 
 
     <!-- I begin to speak only when I am certain what I will say is not better left unsaid. - Cato the Younger -->

@@ -11,33 +11,6 @@
                 + Ingresar Nuevo Paciente
             </a>
         </div>
-<<<<<<< HEAD
-
-        {{-- 🔹 Aviso si venimos desde Camas con una cama concreta --}}
-        @isset($camaContext)
-            @if($camaContext)
-                <div class="mb-4 p-4 rounded-md bg-blue-100 border border-blue-300 text-blue-800 shadow-sm">
-                    Asignación directa activa: seleccioná un paciente para asignarlo a la
-                    <strong>cama {{ $camaContext->codigo ?? $camaContext->id }}</strong>
-                    (Habitación {{ $camaContext->habitacion->numero ?? $camaContext->habitacion_id }}).
-                    <a href="{{ route('pacientes.index') }}" class="underline ml-2">Cancelar</a>
-                </div>
-            @endif
-        @endisset
-
-        @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
-
-        @if (session('error'))
-            <div class="alert alert-danger">
-                {{ session('error') }}
-            </div>
-        @endif
-
-=======
         <!--Buscador -->
         <form action="{{ route('pacientes.index') }}" method="GET" class="mb-4 flex space-x-2">
             <input type="text" name="buscar" value="{{ request('buscar') }}"
@@ -61,7 +34,6 @@
             </div>
         @endif
 
->>>>>>> parent of 62bd9fa (Cambios volver)
         <div class="bg-white shadow rounded-lg border border-gray-200 overflow-auto">
             <table class="min-w-full text-sm text-gray-800 table-auto">
                 <thead class="bg-gray-100 text-gray-700 font-semibold">
@@ -91,13 +63,7 @@
                                     class="text-neutral-700 hover:underline font-medium">Ver</a>
                                 <a href="{{ route('pacientes.edit', $paciente) }}"
                                     class="text-neutral-700 hover:underline font-medium">Editar</a>
-<<<<<<< HEAD
-
                                 @if ($paciente->cama_id)
-                                    {{-- Dar de alta si ya tiene cama --}}
-=======
-                                @if ($paciente->cama_id)
->>>>>>> parent of 62bd9fa (Cambios volver)
                                     <form action="{{ route('pacientes.darDeAlta', $paciente) }}" method="POST"
                                         class="inline-block form-dar-de-alta">
                                         @csrf
@@ -105,38 +71,12 @@
                                             alta</button>
                                     </form>
                                 @else
-<<<<<<< HEAD
-                                    @if(isset($camaContext) && $camaContext)
-                                        {{-- 🔹 Asignación directa a la cama del contexto (POST) --}}
-                                        <form action="{{ route('pacientes.asignarDirecta', $paciente->id) }}" method="POST"
-                                              class="inline-block form-asignar">
-                                            @csrf
-                                            <input type="hidden" name="cama_id" value="{{ $camaContext->id }}">
-                                            <button type="submit"
-                                                class="btn btn-outline-success btn-sm">
-                                                Asignar a cama {{ $camaContext->codigo ?? $camaContext->id }}
-                                            </button>
-                                        </form>
-                                    @else
-                                        {{-- Comportamiento normal: ir a pantalla de asignación --}}
-                                        <form action="{{ route('pacientes.asignar', $paciente) }}" method="GET"
-                                            class="inline-block form-asignar">
-                                            <button type="submit"
-                                                class="text-blue-700 hover:underline font-medium">
-                                                Asignar
-                                            </button>
-                                        </form>
-                                    @endif
-                                @endif
-
-=======
                                     <form action="{{ route('pacientes.asignar', $paciente) }}" method="GET"
                                         class="inline-block form-asignar">
                                         <button type="submit"
                                             class="text-blue-700 hover:underline font-medium">Asignar</button>
                                     </form>
                                 @endif
->>>>>>> parent of 62bd9fa (Cambios volver)
                                 <form action="{{ route('pacientes.destroy', $paciente) }}" method="POST"
                                     class="inline-block form-eliminar">
                                     @csrf @method('DELETE')
@@ -153,60 +93,6 @@
                     @endforelse
                 </tbody>
             </table>
-<<<<<<< HEAD
-        </div>
-    </div>
-
-    <!-- MODAL DE CONFIRMACIÓN PERSONALIZADO -->
-    <div id="modal-confirmacion" class="modal">
-        <div class="modal-content">
-            <p id="modal-mensaje">¿Estás seguro?</p>
-            <div class="botones">
-                <button id="modal-cancelar">Cancelar</button>
-                <button id="modal-confirmar">Confirmar</button>
-            </div>
-        </div>
-    </div
-
-    <!-- ESTILOS DEL MODAL -->
-    <style>
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 50;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.5);
-        }
-
-        .modal-content {
-            background-color: #fff;
-            margin: 15% auto;
-            padding: 20px;
-            border-radius: 8px;
-            width: 90%;
-            max-width: 400px;
-            text-align: center;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
-        }
-
-        .botones {
-            margin-top: 20px;
-            display: flex;
-            justify-content: space-around;
-        }
-
-        .botones button {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-=======
         </div>
     </div>
     <!-- MODAL DE CONFIRMACIÓN PERSONALIZADO -->
@@ -258,12 +144,10 @@
             cursor: pointer;
         }
 
->>>>>>> parent of 62bd9fa (Cambios volver)
         #modal-cancelar {
             background-color: #ccc;
             color: #333;
         }
-<<<<<<< HEAD
 
         #modal-confirmar {
             background-color: #d9534f;
@@ -272,119 +156,70 @@
     </style>
 
     <!-- SCRIPT PARA MANEJAR LOS MODALES -->
-    <script src="{{ asset('js/modal.js') }}"></script>
-
-    <!-- SCRIPT: Live Search -->
-    <script>
-        document.querySelector('input[name="buscar"]').addEventListener('input', function(e) {
-            const query = e.target.value;
-
-            fetch(`/pacientes/live-search?buscar=${query}`)
-                .then(res => res.json())
-                .then(data => {
-                    const tbody = document.querySelector('tbody');
-                    tbody.innerHTML = '';
-
-                    if (data.length === 0) {
-                        tbody.innerHTML =
-                            `<tr><td colspan="8" class="px-4 py-2 text-center text-gray-500">No hay pacientes registrados.</td></tr>`;
-                        return;
-                    }
-
-                    data.forEach(p => {
-                        tbody.innerHTML += `
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-4 py-2 border">${p.dni}</td>
-                        <td class="px-4 py-2 border">${p.nombre}</td>
-                        <td class="px-4 py-2 border">${p.apellido}</td>
-                        <td class="px-4 py-2 border">${p.telefono}</td>
-                        <td class="px-4 py-2 border">${p.genero}</td>
-                        <td class="px-4 py-2 border">${p.habitacion?.numero ?? '—'}</td>
-                        <td class="px-4 py-2 border">${p.cama?.codigo ?? '—'}</td>
-                        <td class="px-4 py-2 border text-center">Acciones</td>
-                    </tr>
-                `;
-                    });
-                });
-        });
-    </script>
-=======
->>>>>>> parent of 62bd9fa (Cambios volver)
-
-        #modal-confirmar {
-            background-color: #d9534f;
-            color: white;
-        }
-    </style>
-
-    <!-- SCRIPT PARA MANEJAR LOS MODALES -->
-
     <script src="{{ asset('js/modal.js') }}">
-        /*
+    /*
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById('modal-confirmacion');
+            const mensaje = document.getElementById('modal-mensaje');
+            const btnCancelar = document.getElementById('modal-cancelar');
+            const btnConfirmar = document.getElementById('modal-confirmar');
 
-            document.addEventListener('DOMContentLoaded', function() {
-                const modal = document.getElementById('modal-confirmacion');
-                const mensaje = document.getElementById('modal-mensaje');
-                const btnCancelar = document.getElementById('modal-cancelar');
-                const btnConfirmar = document.getElementById('modal-confirmar');
+            let formularioActual = null;
 
-                let formularioActual = null;
+            // Abre el modal con el mensaje deseado y referencia al formulario
+            function abrirModal(texto, form) {
+                mensaje.textContent = texto;
+                formularioActual = form;
+                modal.style.display = 'block';
+            }
 
-                // Abre el modal con el mensaje deseado y referencia al formulario
-                function abrirModal(texto, form) {
-                    mensaje.textContent = texto;
-                    formularioActual = form;
-                    modal.style.display = 'block';
-                }
-
-                // Cierra el modal si el usuario cancela
-                btnCancelar.addEventListener('click', () => {
-                    modal.style.display = 'none';
-                    formularioActual = null;
-                });
-
-                // Envía el formulario si el usuario confirma
-                btnConfirmar.addEventListener('click', () => {
-                    if (formularioActual) formularioActual.submit();
-                });
-
-                // CONFIRMACIÓN PARA DAR DE ALTA
-                document.querySelectorAll('.form-dar-de-alta').forEach(form => {
-                    form.addEventListener('submit', function(e) {
-                        e.preventDefault();
-                        abrirModal(
-                            '¿Estás seguro que querés dar de alta a este paciente? Esta acción liberará la cama asignada.',
-                            form);
-                    });
-                });
-
-                // CONFIRMACIÓN PARA ELIMINAR
-                document.querySelectorAll('.form-eliminar').forEach(form => {
-                    form.addEventListener('submit', function(e) {
-                        e.preventDefault();
-                        abrirModal(
-                            '¿Seguro que querés eliminar este paciente? Esta acción no se puede deshacer.',
-                            form);
-                    });
-                });
-
-                // CONFIRMACIÓN PARA ASIGNAR
-                document.querySelectorAll('.form-asignar').forEach(form => {
-                    form.addEventListener('submit', function(e) {
-                        e.preventDefault();
-                        abrirModal('¿Querés asignar una cama a este paciente?', form);
-                    });
-                });
-
-                // Cierra el modal si se hace clic fuera del contenido
-                window.onclick = function(event) {
-                    if (event.target == modal) {
-                        modal.style.display = "none";
-                        formularioActual = null;
-                    }
-                };
+            // Cierra el modal si el usuario cancela
+            btnCancelar.addEventListener('click', () => {
+                modal.style.display = 'none';
+                formularioActual = null;
             });
 
-        */
+            // Envía el formulario si el usuario confirma
+            btnConfirmar.addEventListener('click', () => {
+                if (formularioActual) formularioActual.submit();
+            });
+
+            // CONFIRMACIÓN PARA DAR DE ALTA
+            document.querySelectorAll('.form-dar-de-alta').forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    abrirModal(
+                        '¿Estás seguro que querés dar de alta a este paciente? Esta acción liberará la cama asignada.',
+                        form);
+                });
+            });
+
+            // CONFIRMACIÓN PARA ELIMINAR
+            document.querySelectorAll('.form-eliminar').forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    abrirModal(
+                        '¿Seguro que querés eliminar este paciente? Esta acción no se puede deshacer.',
+                        form);
+                });
+            });
+
+            // CONFIRMACIÓN PARA ASIGNAR
+            document.querySelectorAll('.form-asignar').forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    abrirModal('¿Querés asignar una cama a este paciente?', form);
+                });
+            });
+
+            // Cierra el modal si se hace clic fuera del contenido
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                    formularioActual = null;
+                }
+            };
+        });
+    */
     </script>
 @endsection

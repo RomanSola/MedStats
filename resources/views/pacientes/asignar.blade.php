@@ -3,7 +3,6 @@
 @section('titulo', 'Asignar habitación y cama')
 
 @section('contenido')
-
 <div class="max-w-2xl mx-auto px-4 py-8">
     <h1 class="text-2xl font-semibold text-gray-800 mb-6">
         Asignar Habitación y Cama a {{ $paciente->nombre }} {{ $paciente->apellido }}
@@ -56,63 +55,47 @@
     </form>
 </div>
 
+<script>
+    const salas = @json($salas);
 
-            {{-- Sala --}}
-            <div>
-                <label for="sala_id" class="block text-sm font-medium text-gray-700 mb-1">Sala</label>
-                <select id="sala_id" class="w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-neutral-300">
-                    <option value="">-- Seleccioná una sala --</option>
-                    @foreach ($salas as $sala)
-                        <option value="{{ $sala->id }}">{{ $sala->nombre }}</option>
-                    @endforeach
-                </select>
-            </div>
+    const salaSelect = document.getElementById('sala_id');
+    const habitacionSelect = document.getElementById('habitacion_id');
+    const camaSelect = document.getElementById('cama_id');
 
-            {{-- Habitación --}}
-            <div>
-                <label for="habitacion_id" class="block text-sm font-medium text-gray-700 mb-1">Habitación</label>
-                <select name="habitacion_id" id="habitacion_id" class="w-full border-gray-300 rounded-md shadow-sm"
-                    disabled>
-                    <option value="">-- Seleccioná una habitación --</option>
-                </select>
-            </div>
+    salaSelect.addEventListener('change', () => {
+        const salaId = parseInt(salaSelect.value);
+        const sala = salas.find(s => s.id === salaId);
 
-            {{-- Cama --}}
-            <div>
-                <label for="cama_id" class="block text-sm font-medium text-gray-700 mb-1">Cama</label>
-                <select name="cama_id" id="cama_id" class="w-full border-gray-300 rounded-md shadow-sm" disabled>
-                    <option value="">-- Seleccioná una cama --</option>
-                </select>
-            </div>
+        habitacionSelect.innerHTML = '<option value="">-- Seleccioná una habitación --</option>';
+        camaSelect.innerHTML = '<option value="">-- Seleccioná una cama --</option>';
+        camaSelect.disabled = true;
 
-            {{-- Botón de acción --}}
-            <div class="text-right pt-4">
-                <button type="submit"
-                    class="bg-neutral-700 hover:bg-neutral-800 text-white font-semibold px-6 py-2 rounded-full shadow-md transition">
-                    Guardar asignación
-                </button>
-            </div>
-        </form>
-    </div>
+        if (sala) {
+            habitacionSelect.disabled = false;
+            sala.habitaciones.forEach(h => {
+                habitacionSelect.innerHTML += `<option value="${h.id}">${h.numero ?? 'Habitación ' + h.id}</option>`;
+            });
+        } else {
+            habitacionSelect.disabled = true;
+        }
+    });
 
-    {{-- Script dinámico --}}
-    <script>
-        const salas = @json($salas);
+    habitacionSelect.addEventListener('change', () => {
+        const salaId = parseInt(salaSelect.value);
+        const habitacionId = parseInt(habitacionSelect.value);
+        const sala = salas.find(s => s.id === salaId);
+        const habitacion = sala?.habitaciones.find(h => h.id === habitacionId);
 
-        const salaSelect = document.getElementById('sala_id');
-        const habitacionSelect = document.getElementById('habitacion_id');
-        const camaSelect = document.getElementById('cama_id');
+        camaSelect.innerHTML = '<option value="">-- Seleccioná una cama --</option>';
 
-        salaSelect.addEventListener('change', () => {
-            const salaId = parseInt(salaSelect.value);
-            const sala = salas.find(s => s.id === salaId);
-
-            habitacionSelect.innerHTML = '<option value="">-- Seleccioná una habitación --</option>';
-            camaSelect.innerHTML = '<option value="">-- Seleccioná una cama --</option>';
+        if (habitacion) {
+            camaSelect.disabled = false;
+            habitacion.camas.forEach(c => {
+                camaSelect.innerHTML += `<option value="${c.id}">Cama ${c.codigo ?? c.id}</option>`;
+            });
+        } else {
             camaSelect.disabled = true;
-
         }
     });
 </script>
-
 @endsection

@@ -3,8 +3,8 @@
 
     <!-- Centro: logos + título y subtítulo -->
     <div class="flex items-center justify-center gap-2 md:gap-3 flex-wrap">
-      <a href="{{ route('inicio') }}" class="inline-block no-underline">
-      <img src="{{ asset('assets/img/logo-san-felipe.png') }}" alt="Hospital San Felipe" class="h-16 w-auto"></a>
+
+      <img src="{{ asset('assets/img/logo-san-felipe.png') }}" alt="Hospital San Felipe" class="h-16 w-auto">
       <div class="text-center">
         <h1 class="text-4xl md:text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent bg-clip-text drop-shadow-md tracking-widest whitespace-nowrap">
           Hospital San Felipe 
@@ -51,7 +51,7 @@
         <div id="dropdownMenu"
           class="hidden absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-50">
           <a href="{{ route('inicio') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">@lang('Inicio')</a>
-          <a href="{{ route ('pacientes.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">@lang('Libro Pacientes')</a>
+          <a href="libro_paciente.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">@lang('Libro Pacientes')</a>
           <a href="{{ route('medicamentos.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">@lang('Insumos Médicos')</a>
           <a href="{{ route('camas.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">@lang('Camas')</a>
           <a href="{{ route('cirugias.estadisticas') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">@lang('Estadísticas')</a>
