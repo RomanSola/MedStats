@@ -226,12 +226,12 @@
 
         async function exportarFiltradoPDF() {
             const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
+            const doc = new jsPDF({ orientation: 'landscape' });
 
             const tablaDT = $('#miTabla').DataTable();
             const datosFiltrados = tablaDT.rows({ search: 'applied' }).data();
 
-            const headers = Array.from(document.querySelector(' thead tr').children).map(th => th.innerText); //Ver cambio de idioma
+            const headers = Array.from(document.querySelector(' thead tr').children).map(th => th.innerText);
 
             const cleanText = html => {
                 const temp = document.createElement('div');
