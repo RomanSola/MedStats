@@ -16,23 +16,31 @@ class PacienteController extends Controller
 {
     public function index(Request $request)
     {
-        $orden = $request->get('orden', 'apellido');
-        $busqueda = $request->get('buscar');
-    
-        $pacientes = Paciente::with(['habitacion', 'cama'])
-            ->when($busqueda, function ($query, $busqueda) {
-                $query->where(function ($q) use ($busqueda) {
-                    $q->where('dni', 'like', "%{$busqueda}%")
-                      ->orWhere('nombre', 'like', "%{$busqueda}%")
-                      ->orWhere('apellido', 'like', "%{$busqueda}%");
-                });
-            })
-            ->orderBy($orden)
-            ->paginate(10);
-    
-        return view('pacientes.index', compact('pacientes'));
+        $query = Paciente::query();
+
+        // Filtrar por DNI, nombre o apellido
+        if ($request->filled('buscar')) {
+            $busqueda = $request->buscar;
+            $query->where(function($q) use ($busqueda) {
+                $q->where('dni', 'like', "%$busqueda%")
+                  ->orWhere('nombre', 'like', "%$busqueda%")
+                  ->orWhere('apellido', 'like', "%$busqueda%");
+            });
+        }
+
+        $pacientes = $query->get();
+
+        // 🔹 Contexto de cama si venís desde "Camas"
+        $camaContext = null;
+        if ($request->filled('cama')) {
+            $camaId = (int) $request->query('cama');
+            $camaContext = Cama::with('habitacion.sala')
+                ->where('ocupada', false)
+                ->find($camaId);
+        }
+
+        return view('pacientes.index', compact('pacientes', 'camaContext'));
     }
-    
 
     public function show(Paciente $paciente)
     {
@@ -74,10 +82,9 @@ class PacienteController extends Controller
         $paciente->direccion = $request->input('direccion');
         $paciente->creado_por = '1';
         $paciente->modificado_por = '1';
-
         $paciente->save();
 
-        // redirigir a asignación de cama
+        // 🔹 Mantengo el flujo anterior: al crear, ir a pantalla de asignación
         return redirect()->route('pacientes.asignar', $paciente->id)
             ->with('success', 'Paciente registrado. Ahora puede asignarle una cama.');
     }
@@ -140,7 +147,7 @@ class PacienteController extends Controller
 
     public function destroy(Paciente $paciente)
     {
-        if ($paciente->get_cirugias()->exists() ||  $paciente->get_historial_stock()->exists() || $paciente->get_ocupacion_cama()->exists()) {
+        if ($paciente->get_cirugias()->exists() || $paciente->get_historial_stock()->exists() || $paciente->get_ocupacion_cama()->exists()) {
             return redirect()->route('pacientes.index')
                 ->with('error', 'No se puede eliminar el paciente porque tiene registros asociados.');
         }
@@ -180,19 +187,40 @@ class PacienteController extends Controller
 
         return redirect()->route('pacientes.index')->with('success', 'Paciente asignado correctamente.');
     }
-    public function liveSearch(Request $request)
-{
-    $buscar = $request->get('buscar');
 
-    $pacientes = Paciente::with(['habitacion', 'cama'])
-        ->where('dni', 'like', "%{$buscar}%")
-        ->orWhere('nombre', 'like', "%{$buscar}%")
-        ->orWhere('apellido', 'like', "%{$buscar}%")
-        ->get();
+    // 🔹 NUEVO: Asignación directa cuando venís desde "Camas"
+    public function asignarDirecta(Request $request, Paciente $paciente)
+    {
+        $request->validate([
+            'cama_id' => 'required|exists:camas,id',
+        ]);
 
-    return response()->json($pacientes);
-}
+        $cama = Cama::with('habitacion')->findOrFail($request->cama_id);
 
+        if ($cama->ocupada) {
+            return back()->with('error', 'La cama seleccionada ya está ocupada.');
+        }
+
+        if ($paciente->cama_id) {
+            return back()->with('error', 'Este paciente ya tiene una cama asignada.');
+        }
+
+        $paciente->habitacion_id = $cama->habitacion_id;
+        $paciente->cama_id = $cama->id;
+        $paciente->save();
+
+        $cama->ocupada = true;
+        $cama->save();
+
+        Ocupacion_cama::create([
+            'paciente_id' => $paciente->id,
+            'cama_id' => $cama->id,
+            'fecha_ingreso' => now()
+        ]);
+
+        // 🔹 Si venís desde camas → volver a camas, si no → pacientes
+        return redirect()->route('camas.index')->with('success', 'Paciente asignado a la cama correctamente.');
+    }
 
     public function darDeAlta(Paciente $paciente)
     {
@@ -218,4 +246,3 @@ class PacienteController extends Controller
         return redirect()->route('pacientes.index')->with('success', 'Paciente dado de alta y cama liberada.');
     }
 }
-

@@ -3,7 +3,6 @@
 @section('titulo', 'Gestión de Pacientes')
 
 @section('contenido')
-
     <div class="max-w-7xl mx-auto px-4 py-8">
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-2xl font-semibold text-gray-800">Pacientes Registrados</h1>
@@ -13,42 +12,37 @@
             </a>
         </div>
 
-
-        <!-- Buscador -->
-        <form action="{{ route('pacientes.index') }}" method="GET" class="mb-4 flex space-x-2">
-            <input type="text" name="buscar" value="{{ request('buscar') }}"
-                placeholder="Buscar paciente por DNI, nombre o apellido"
-                class="border border-gray-300 rounded px-3 py-2 w-1/3">
-            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-                Buscar
-            </button>
-            <a href="{{ route('pacientes.index') }}" class="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300">
-                Limpiar
-            </a>
-        </form>
-
+        {{-- 🔹 Aviso si venimos desde Camas con una cama concreta --}}
+        @isset($camaContext)
+            @if($camaContext)
+                <div class="mb-4 p-4 rounded-md bg-blue-100 border border-blue-300 text-blue-800 shadow-sm">
+                    Asignación directa activa: seleccioná un paciente para asignarlo a la
+                    <strong>cama {{ $camaContext->codigo ?? $camaContext->id }}</strong>
+                    (Habitación {{ $camaContext->habitacion->numero ?? $camaContext->habitacion_id }}).
+                    <a href="{{ route('pacientes.index') }}" class="underline ml-2">Cancelar</a>
+                </div>
+            @endif
+        @endisset
 
         @if (session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
         @endif
 
         @if (session('error'))
-            <div class="alert alert-danger">{{ session('error') }}</div>
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
         @endif
 
         <div class="bg-white shadow rounded-lg border border-gray-200 overflow-auto">
             <table class="min-w-full text-sm text-gray-800 table-auto">
                 <thead class="bg-gray-100 text-gray-700 font-semibold">
                     <tr>
-                        <th class="px-4 py-2 border">
-                            <a href="{{ route('pacientes.index', ['orden' => 'dni']) }}">DNI</a>
-                        </th>
-                        <th class="px-4 py-2 border">
-                            <a href="{{ route('pacientes.index', ['orden' => 'nombre']) }}">Nombre</a>
-                        </th>
-                        <th class="px-4 py-2 border">
-                            <a href="{{ route('pacientes.index', ['orden' => 'apellido']) }}">Apellido</a>
-                        </th>
+                        <th class="px-4 py-2 border">DNI</th>
+                        <th class="px-4 py-2 border">Nombre</th>
+                        <th class="px-4 py-2 border">Apellido</th>
                         <th class="px-4 py-2 border">Teléfono</th>
                         <th class="px-4 py-2 border">Género</th>
                         <th class="px-4 py-2 border">Habitación</th>
@@ -71,7 +65,9 @@
                                     class="text-neutral-700 hover:underline font-medium">Ver</a>
                                 <a href="{{ route('pacientes.edit', $paciente) }}"
                                     class="text-neutral-700 hover:underline font-medium">Editar</a>
+
                                 @if ($paciente->cama_id)
+                                    {{-- Dar de alta si ya tiene cama --}}
                                     <form action="{{ route('pacientes.darDeAlta', $paciente) }}" method="POST"
                                         class="inline-block form-dar-de-alta">
                                         @csrf
@@ -79,12 +75,29 @@
                                             alta</button>
                                     </form>
                                 @else
-                                    <form action="{{ route('pacientes.asignar', $paciente) }}" method="GET"
-                                        class="inline-block form-asignar">
-                                        <button type="submit"
-                                            class="text-blue-700 hover:underline font-medium">Asignar</button>
-                                    </form>
+                                    @if(isset($camaContext) && $camaContext)
+                                        {{-- 🔹 Asignación directa a la cama del contexto (POST) --}}
+                                        <form action="{{ route('pacientes.asignarDirecta', $paciente->id) }}" method="POST"
+                                              class="inline-block form-asignar">
+                                            @csrf
+                                            <input type="hidden" name="cama_id" value="{{ $camaContext->id }}">
+                                            <button type="submit"
+                                                class="btn btn-outline-success btn-sm">
+                                                Asignar a cama {{ $camaContext->codigo ?? $camaContext->id }}
+                                            </button>
+                                        </form>
+                                    @else
+                                        {{-- Comportamiento normal: ir a pantalla de asignación --}}
+                                        <form action="{{ route('pacientes.asignar', $paciente) }}" method="GET"
+                                            class="inline-block form-asignar">
+                                            <button type="submit"
+                                                class="text-blue-700 hover:underline font-medium">
+                                                Asignar
+                                            </button>
+                                        </form>
+                                    @endif
                                 @endif
+
                                 <form action="{{ route('pacientes.destroy', $paciente) }}" method="POST"
                                     class="inline-block form-eliminar">
                                     @csrf @method('DELETE')
@@ -111,10 +124,9 @@
             <div class="botones">
                 <button id="modal-cancelar">Cancelar</button>
                 <button id="modal-confirmar">Confirmar</button>
-            
             </div>
         </div>
-    </div>
+    </div
 
     <!-- ESTILOS DEL MODAL -->
     <style>

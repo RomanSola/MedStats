@@ -110,11 +110,12 @@
                                     </button>
                                 </form>
                             @else
-                                <a href="{{ url('/pacientes?habitacion=' . ($cama->habitacion->id ?? 0) . '&cama=' . $cama->id) }}"
-                                   class="btn btn-outline-success btn-sm">
-                                   Asignar paciente
+                                <a href="{{ route('pacientes.index', ['cama' => $cama->id, 'from' => 'camas']) }}"
+                                    class="btn btn-outline-success btn-sm">
+                                    Asignar paciente
                                 </a>
                             @endif
+
 
                             <a href="{{ route('camas.edit', ['cama' => $cama->id]) }}"
                                class="btn btn-outline-warning btn-sm mt-1">

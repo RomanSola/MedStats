@@ -76,6 +76,7 @@ Route::delete('/empleados/{empleado}', [EmpleadoController::class, 'destroy'])->
 
 
 //Pacientes
+//Pacientes
 Route::get('/pacientes', [PacienteController::class, 'index'])->name('pacientes.index');
 Route::get('/pacientes/create', [PacienteController::class, 'create'])->name('pacientes.create');
 Route::post('/pacientes', [PacienteController::class, 'store'])->name('pacientes.store');
@@ -83,10 +84,21 @@ Route::get('/pacientes/{paciente}/edit', [PacienteController::class, 'edit'])->n
 Route::get('/pacientes/{paciente}', [PacienteController::class, 'show'])->name('pacientes.show');
 Route::put('/pacientes/{paciente}', [PacienteController::class, 'update'])->name('pacientes.update');
 Route::delete('/pacientes/{paciente}', [PacienteController::class, 'destroy'])->name('pacientes.destroy');
+
+// Asignaciones
 Route::get('/pacientes/{paciente}/asignar', [PacienteController::class, 'asignar'])->name('pacientes.asignar');
 Route::post('/pacientes/{paciente}/asignar', [PacienteController::class, 'guardarAsignacion'])->name('pacientes.asignar.guardar');
+
+// Alta
 Route::post('/pacientes/{paciente}/alta', [PacienteController::class, 'darDeAlta'])->name('pacientes.darDeAlta');
+
+// Live search
 Route::get('/pacientes/live-search', [PacienteController::class, 'liveSearch'])->name('pacientes.liveSearch');
+
+// Asignación directa 
+Route::post('/pacientes/{paciente}/asignar-directa', [PacienteController::class, 'asignarDirecta'])
+    ->name('pacientes.asignarDirecta');
+
 
 
 //Procedimientos
