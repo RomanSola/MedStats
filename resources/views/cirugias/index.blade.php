@@ -1,15 +1,15 @@
 @extends('layouts.app')
 
-@section('title', 'Gestión de Cirugias')
+@section('title', 'Gestión de Cirugías')
 
 @section('contenido')
     <div class="container mt-4">
         <h2 class="mb-4">Gestor de Cirugías</h2>
 
-        <div class="card border-warning">
+        <div class="card border-danger">
             <div class="card-body">
                 <p class="card-text">Administrá las cirugías registradas en el sistema. Podés ver detalles y editarlos.</p>
-                <a href="{{ route('cirugias.create') }}" class="btn btn-warning mb-3">Registrar Nueva Cirugía</a>
+                <a href="{{ route('cirugias.create') }}" class="btn btn-danger mb-3">Registrar Nueva Cirugía</a>
 
                 <div class="table-responsive">
                     <table id= "miTabla" class="table table-bordered align-middle">
@@ -21,9 +21,9 @@
                                 <th>Procedimiento</th>
                                 <th>Quirófano</th>
                                 <th>Cirujano</th>
-                                <th>Ayudante 1</th>
-                                <th>Ayudante 2</th>
-                                <th>Ayudante 3</th>
+                                <th class="no-print">Ayudante 1</th>
+                                <th class="no-print">Ayudante 2</th>
+                                <th class="no-print">Ayudante 3</th>
                                 <th>Anestesista</th>
                                 <th>Tipo de Anestesia</th>
                                 <th>Instrumentador</th>
@@ -33,7 +33,13 @@
                                 <th>Urgencia</th>
                                 <th class="text-center">Acciones</th>
                             </tr>
-
+                        <style>
+                        @media print {
+                            .no-print{
+                                display: none !important;
+                            }
+                            }
+                        </style>
                         </thead>
                         <tbody>
                             @forelse($cirugias as $cirugia)
@@ -60,15 +66,15 @@
                                         {{ $cirugia->get_cirujano->nombre }}
                                         {{ $cirugia->get_cirujano->apellido }}
                                     </td>
-                                    <td>
+                                    <td class="no-print">
                                         {{ $cirugia->get_ayudante1->nombre ?? 'N/A' }}
                                         {{ $cirugia->get_ayudante1->apellido ?? '' }}
                                     </td>
-                                    <td>
+                                    <td class="no-print">
                                         {{ optional($cirugia->get_ayudante2)->nombre ?? 'N/A' }}
                                         {{ optional($cirugia->get_ayudante2)->apellido ?? '' }}
                                     </td>
-                                    <td>
+                                    <td class="no-print">
                                         {{ optional($cirugia->get_ayudante3)->nombre ?? 'N/A' }}
                                         {{ optional($cirugia->get_ayudante3)->apellido ?? '' }}
                                     </td>
@@ -110,17 +116,67 @@
                         </tbody>
                     </table>
                 </div>
+
             </div>
+
+            {{-- Botón de impresión <button class="btn btn-outline-secondary mt-4" onclick="imprimirUltimosDiez()">
+                Imprimir últimas 10 cirugías
+            </button>--}}
+            
+
+            {{-- Script de impresión --}}
+            <script>
+                function imprimirUltimosDiez() {
+                    const tablaOriginal = document.querySelector('.table-responsive table');
+                    const filas = tablaOriginal.querySelectorAll('tbody tr');
+                    const ultimasFilas = Array.from(filas).slice(-10);
+                    const encabezado = tablaOriginal.querySelector('thead').outerHTML;
+
+                    let cuerpoTabla = '';
+                    ultimasFilas.forEach(fila => {
+                        cuerpoTabla += fila.outerHTML;
+                    });
+
+                    const ventana = window.open('', '', 'width=900,height=700');
+                    ventana.document.write(`
+                        <html>
+                        <head>
+                            <title>Libro de Cirugías</title>
+                            <style>
+                                body { font-family: Arial, sans-serif; margin: 20px; }
+                                table { width: 100%; border-collapse: collapse; }
+                                th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+                                th { background-color: #f8d7da; }
+                            </style>
+                        </head>
+                        <body>
+                            <h2>Últimas 10 Cirugías Registradas</h2>
+                            <table>
+                                ${encabezado}
+                                <tbody>
+                                    ${cuerpoTabla}
+                                </tbody>
+                            </table>
+                        </body>
+                        </html>
+                    `);
+                    ventana.document.close();
+                    ventana.focus();
+                    ventana.print();
+                    ventana.close();
+                }
+            </script>
+
         </div>
         <!-- Botón de impresión -->
-
-
     <div class="mb-3">
         <button onclick="imprimirTablaCompleta()" class="btn btn-secondary me-2">
             🖨️ Imprimir toda la tabla
         </button>
 
+
         <button onclick="exportarFiltradoPDF()" class="btn btn-warning">
+
             📄 Exportar PDF filtrado
         </button>
     </div>
@@ -170,12 +226,12 @@
 
         async function exportarFiltradoPDF() {
             const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
+            const doc = new jsPDF({ orientation: 'landscape' });
 
             const tablaDT = $('#miTabla').DataTable();
             const datosFiltrados = tablaDT.rows({ search: 'applied' }).data();
 
-            const headers = Array.from(document.querySelector(' thead tr').children).map(th => th.innerText); //Ver cambio de idioma
+            const headers = Array.from(document.querySelector(' thead tr').children).map(th => th.innerText);
 
             const cleanText = html => {
                 const temp = document.createElement('div');
@@ -225,3 +281,4 @@
         });
     </script>
 @endpush    
+

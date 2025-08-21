@@ -3,24 +3,40 @@
 @section('title', 'Ver Procedimiento')
 
 @section('contenido')
-<div class="container mt-4">
-    <h2 class="mb-4">Detalle del Procedimiento</h2>
+<div class="max-w-xl mx-auto px-4 py-4">
 
-    <div class="card border-info">
-        <div class="card-body">
+    {{-- Título institucional rojo --}}
+    <h2 class="text-danger fw-bold border-bottom border-danger pb-2 mb-4 text-center">
+        Detalle del Procedimiento
+    </h2>
+
+    {{-- Contenedor con borde rojo institucional --}}
+    <div class="card border-danger shadow-sm">
+        <div class="card-body text-dark">
+
             <form>
+                {{-- Campo nombre --}}
                 <div class="mb-3">
-                    <label class="form-label">Procedimiento</label>
-                    <input type="text" class="form-control" value="{{ $procedimiento->nombre_procedimiento }}" readonly>
+                    <label class="form-label fw-semibold text-dark">Procedimiento</label>
+                    <input type="text" class="form-control border border-danger shadow-sm"
+                           value="{{ $procedimiento->nombre_procedimiento }}" readonly>
                 </div>
 
+                {{-- Campo descripción --}}
                 <div class="mb-3">
-                    <label class="form-label">Descripción</label>
-                    <input type="text" class="form-control" value="{{ $procedimiento->descripcion }}" readonly>
+                    <label class="form-label fw-semibold text-dark">Descripción</label>
+                    <input type="text" class="form-control border border-danger shadow-sm"
+                           value="{{ $procedimiento->descripcion }}" readonly>
                 </div>
 
-                <a href="{{ route('procedimientos.index') }}" class="btn btn-outline-secondary">← Volver al listado</a>
+                {{-- Botón de volver --}}
+                <div class="text-center mt-4">
+                    <a href="{{ route('procedimientos.index') }}" class="btn btn-outline-danger fw-semibold px-4">
+                        ← Volver al listado
+                    </a>
+                </div>
             </form>
+
         </div>
     </div>
 </div>

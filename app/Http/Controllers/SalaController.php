@@ -7,32 +7,28 @@ use Illuminate\Http\Request;
 
 class SalaController extends Controller
 {
-    public function index() //Pagina inicial
+    public function index() // Página inicial
     {
-        $salas = Sala::all(); //Hace un select all a la tabla
-        //dd($salas);
-        return view('salas.index', compact('salas')); //Llama a la vista y le pasa los datos
+        $salas = Sala::all(); // Hace un select all a la tabla
+        return view('salas.index', compact('salas')); // Llama a la vista y le pasa los datos
     }
 
     public function create()
     {
-      return view('salas.create'); 
+        return view('salas.create');
     }
-
 
     public function store(Request $request)
     {
-        $request->validate([ //Si el titulo esta vacio no hace nada 
+        $request->validate([
             'nombre' => 'required',
         ]);
 
         $sala = new Sala();
-        $sala->nombre = $request->input('nombre'); //Datos del POST se obtiene en request
-        $sala->descripcion = $request->input('descripcion'); //Datos del POST se obtiene en request
-        
-        //dd($sala);
-        $sala->save(); //Guarda en la BD, si existe lo actualiza, sino crea
-        
+        $sala->nombre = $request->input('nombre');
+        $sala->descripcion = $request->input('descripcion');
+        $sala->save();
+
         return redirect()->route('salas.index');
     }
 
@@ -43,15 +39,17 @@ class SalaController extends Controller
 
     public function update(Request $request, Sala $sala)
     {
-        $request->validate([ //Si esta vacio no hace nada 
+        $request->validate([
             'nombre' => 'required',
         ]);
 
         if ($request->input('nombre') != null) {
             $sala->nombre = $request->input('nombre');
         }
+
         $sala->descripcion = $request->input('descripcion');
         $sala->save();
+
         return redirect()->route('salas.index');
     }
 

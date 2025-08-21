@@ -5,7 +5,9 @@
 @section('contenido')
 <div class="container mt-4">
     
-    <h2 class="mb-3">Agregar Nuevo Empleado</h2>
+     <h2 class="text-warning fw-bold border-bottom border-warning pb-2 mb-4">
+        Agregar Nuevo Empleado
+    </h2>
 
     <div class="card border-warning">
         <div class="card-body">
@@ -104,9 +106,11 @@
                     <small class="text-danger"> {{ $message }} </small>
                     @enderror
                 </div>
+
                 
                 <button class="btn btn-warning">Agregar</button>
                 <a href="{{ route('empleados.index') }}" class="btn btn-warning">Cancelar</a>
+
             </form>
         </div>
     </div>

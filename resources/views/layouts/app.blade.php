@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('titulo')</title>
 
+
     <!-- Bootstrap -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
@@ -85,5 +86,9 @@
     @stack('scripts')
 
 </body>
+<<<<<<< HEAD
+</html>
+=======
 </html>
 
+>>>>>>> parent of 62bd9fa (Cambios volver)

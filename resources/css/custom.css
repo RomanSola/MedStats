@@ -1,0 +1,29 @@
+/* === TITULOS === */
+.titulo-seccion {
+  @apply text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] 
+         text-transparent bg-clip-text drop-shadow-md flex items-center gap-2 px-2;
+}
+
+/* === CONTENEDORES PRINCIPALES === */
+.card-box {
+  @apply bg-white shadow rounded-lg border border-gray-200 p-6;
+}
+
+/* === BOTONES PRINCIPALES === */
+.btn-principal {
+  @apply bg-[#1B7D8F] hover:bg-[#176d7b] text-white text-base px-5 py-3 rounded-md shadow transition;
+}
+
+/* === BOTONES SECUNDARIOS (outline) === */
+.btn-outline {
+  @apply border border-[#1B7D8F] text-[#1B7D8F] px-4 py-2 rounded-md hover:bg-[#e0f4f6];
+}
+
+/* === TABLAS === */
+.tabla-estilo {
+  @apply table table-bordered align-middle w-full;
+}
+
+.tabla-estilo thead {
+  background-color: #d0ebf9;
+}

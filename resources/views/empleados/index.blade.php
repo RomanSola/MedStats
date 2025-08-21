@@ -3,6 +3,7 @@
 @section('title', 'Gestión de Empleados')
 
 @section('contenido')
+
     <div class="container mt-4 bg-light border p-4 rounded">
         <h2 class="mb-4">Gestor de Empleados</h2>
 
@@ -68,7 +69,10 @@
                     </table>
                 </div>
 
+
             </div>
         </div>
     </div>
+
+
 @endsection
