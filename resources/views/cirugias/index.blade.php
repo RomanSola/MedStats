@@ -117,12 +117,7 @@
                     </table>
                 </div>
 
-            </div>
-
-            {{-- Botón de impresión <button class="btn btn-outline-secondary mt-4" onclick="imprimirUltimosDiez()">
-                Imprimir últimas 10 cirugías
-            </button>--}}
-            
+            </div>            
 
             {{-- Script de impresión --}}
             <script>
@@ -226,36 +221,71 @@
 
         async function exportarFiltradoPDF() {
             const { jsPDF } = window.jspdf;
-            const doc = new jsPDF({ orientation: 'landscape' });
+            const doc = new jsPDF({
+                orientation: 'landscape',
+                format: 'legal'
+            });
 
             const tablaDT = $('#miTabla').DataTable();
             const datosFiltrados = tablaDT.rows({ search: 'applied' }).data();
+            const thElements = document.querySelectorAll('thead tr th');
+            const headers = [];
+            const columnasIncluidas = [];
+            let indexFecha = -1;
+            let indexHora = -1;
 
-            const headers = Array.from(document.querySelector(' thead tr').children).map(th => th.innerText);
+            hElements.forEach((th, index) => {
+            const texto = th.innerText.trim().toLowerCase();
 
-            const cleanText = html => {
-                const temp = document.createElement('div');
-                temp.innerHTML = html;
-                return temp.textContent || temp.innerText || '';
-            };
+            if (texto === 'fecha') indexFecha = index;
+            else if (texto === 'hora') indexHora = index;
+            else if (texto !== 'acciones' && texto !== 'urgencia') {
+                headers.push(th.innerText.trim());
+                columnasIncluidas.push(index);
+            }
+        });
 
-            const body = [];
-            for (let i = 0; i < datosFiltrados.length; i++) {
-                const fila = datosFiltrados[i];
-                body.push(fila.map(cell => cleanText(cell)));
+        if (indexFecha !== -1 && indexHora !== -1) {
+            headers.unshift('Fecha y Hora');
+        }
+
+        const cleanText = html => {
+            const temp = document.createElement('div');
+            temp.innerHTML = html;
+            return temp.textContent || temp.innerText || '';
+        };
+
+        const body = [];
+        for (let i = 0; i < datosFiltrados.length; i++) {
+            const fila = datosFiltrados[i];
+            const filaFiltrada = [];
+
+            // Combinar Fecha y Hora
+            if (indexFecha !== -1 && indexHora !== -1) {
+                const fecha = cleanText(fila[indexFecha]);
+                const hora = cleanText(fila[indexHora]);
+                filaFiltrada.push(`${fecha} ${hora}`);
             }
 
-            doc.text("Cirugías Filtradas", 14, 20);
-            doc.autoTable({
-                head: [headers],
-                body: body,
-                startY: 30,
-                styles: { fontSize: 8 },
-                headStyles: { fillColor: [248, 192, 69] }
+            // Agregar columnas restantes
+            columnasIncluidas.forEach(index => {
+                filaFiltrada.push(cleanText(fila[index]));
             });
 
-            doc.save('cirugias_filtradas.pdf');
-        }
+            body.push(filaFiltrada);
+            }
+
+        doc.text("Cirugías Filtradas", 14, 20);
+        doc.autoTable({
+            head: [headers],
+            body: body,
+            startY: 30,
+            styles: { fontSize: 8 },
+            headStyles: { fillColor: [248, 192, 69] }
+        });
+
+        doc.save('cirugias_filtradas.pdf');
+    }
 
         $(document).ready(function () {
         let table = $('#miTabla').DataTable({
@@ -281,4 +311,3 @@
         });
     </script>
 @endpush    
-
