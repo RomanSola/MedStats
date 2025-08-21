@@ -21,15 +21,22 @@ class PacienteController extends Controller
         // Filtrar por DNI, nombre o apellido
         if ($request->filled('buscar')) {
             $busqueda = $request->buscar;
+<<<<<<< HEAD
             $query->where(function($q) use ($busqueda) {
                 $q->where('dni', 'like', "%$busqueda%")
                   ->orWhere('nombre', 'like', "%$busqueda%")
                   ->orWhere('apellido', 'like', "%$busqueda%");
             });
+=======
+            $query->where('dni', 'like', "%$busqueda%")
+                  ->orWhere('nombre', 'like', "%$busqueda%")
+                  ->orWhere('apellido', 'like', "%$busqueda%");
+>>>>>>> parent of 62bd9fa (Cambios volver)
         }
 
         $pacientes = $query->get();
 
+<<<<<<< HEAD
         // 🔹 Contexto de cama si venís desde "Camas"
         $camaContext = null;
         if ($request->filled('cama')) {
@@ -40,6 +47,9 @@ class PacienteController extends Controller
         }
 
         return view('pacientes.index', compact('pacientes', 'camaContext'));
+=======
+        return view('pacientes.index', compact('pacientes'));
+>>>>>>> parent of 62bd9fa (Cambios volver)
     }
 
     public function show(Paciente $paciente)
@@ -187,6 +197,7 @@ class PacienteController extends Controller
 
         return redirect()->route('pacientes.index')->with('success', 'Paciente asignado correctamente.');
     }
+<<<<<<< HEAD
 
     // 🔹 NUEVO: Asignación directa cuando venís desde "Camas"
     public function asignarDirecta(Request $request, Paciente $paciente)
@@ -221,6 +232,8 @@ class PacienteController extends Controller
         // 🔹 Si venís desde camas → volver a camas, si no → pacientes
         return redirect()->route('camas.index')->with('success', 'Paciente asignado a la cama correctamente.');
     }
+=======
+>>>>>>> parent of 62bd9fa (Cambios volver)
 
     public function darDeAlta(Paciente $paciente)
     {
@@ -245,4 +258,8 @@ class PacienteController extends Controller
 
         return redirect()->route('pacientes.index')->with('success', 'Paciente dado de alta y cama liberada.');
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> parent of 62bd9fa (Cambios volver)

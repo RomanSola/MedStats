@@ -11,6 +11,7 @@
                 + Ingresar Nuevo Paciente
             </a>
         </div>
+<<<<<<< HEAD
 
         {{-- 🔹 Aviso si venimos desde Camas con una cama concreta --}}
         @isset($camaContext)
@@ -36,6 +37,31 @@
             </div>
         @endif
 
+=======
+        <!--Buscador -->
+        <form action="{{ route('pacientes.index') }}" method="GET" class="mb-4 flex space-x-2">
+            <input type="text" name="buscar" value="{{ request('buscar') }}"
+                placeholder="Buscar paciente por DNI, nombre o apellido"
+                class="border border-gray-300 rounded px-3 py-2 w-1/3">
+            <button type="submit"
+                class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                Buscar
+            </button>
+        </form>
+        
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+
+>>>>>>> parent of 62bd9fa (Cambios volver)
         <div class="bg-white shadow rounded-lg border border-gray-200 overflow-auto">
             <table class="min-w-full text-sm text-gray-800 table-auto">
                 <thead class="bg-gray-100 text-gray-700 font-semibold">
@@ -65,9 +91,13 @@
                                     class="text-neutral-700 hover:underline font-medium">Ver</a>
                                 <a href="{{ route('pacientes.edit', $paciente) }}"
                                     class="text-neutral-700 hover:underline font-medium">Editar</a>
+<<<<<<< HEAD
 
                                 @if ($paciente->cama_id)
                                     {{-- Dar de alta si ya tiene cama --}}
+=======
+                                @if ($paciente->cama_id)
+>>>>>>> parent of 62bd9fa (Cambios volver)
                                     <form action="{{ route('pacientes.darDeAlta', $paciente) }}" method="POST"
                                         class="inline-block form-dar-de-alta">
                                         @csrf
@@ -75,6 +105,7 @@
                                             alta</button>
                                     </form>
                                 @else
+<<<<<<< HEAD
                                     @if(isset($camaContext) && $camaContext)
                                         {{-- 🔹 Asignación directa a la cama del contexto (POST) --}}
                                         <form action="{{ route('pacientes.asignarDirecta', $paciente->id) }}" method="POST"
@@ -98,6 +129,14 @@
                                     @endif
                                 @endif
 
+=======
+                                    <form action="{{ route('pacientes.asignar', $paciente) }}" method="GET"
+                                        class="inline-block form-asignar">
+                                        <button type="submit"
+                                            class="text-blue-700 hover:underline font-medium">Asignar</button>
+                                    </form>
+                                @endif
+>>>>>>> parent of 62bd9fa (Cambios volver)
                                 <form action="{{ route('pacientes.destroy', $paciente) }}" method="POST"
                                     class="inline-block form-eliminar">
                                     @csrf @method('DELETE')
@@ -114,6 +153,7 @@
                     @endforelse
                 </tbody>
             </table>
+<<<<<<< HEAD
         </div>
     </div>
 
@@ -166,10 +206,64 @@
             cursor: pointer;
         }
 
+=======
+        </div>
+    </div>
+    <!-- MODAL DE CONFIRMACIÓN PERSONALIZADO -->
+    <div id="modal-confirmacion" class="modal">
+        <div class="modal-content">
+            <p id="modal-mensaje">¿Estás seguro?</p>
+            <div class="botones">
+                <button id="modal-cancelar">Cancelar</button>
+                <button id="modal-confirmar">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ESTILOS DEL MODAL -->
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 50;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+        }
+
+        .botones {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .botones button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+>>>>>>> parent of 62bd9fa (Cambios volver)
         #modal-cancelar {
             background-color: #ccc;
             color: #333;
         }
+<<<<<<< HEAD
 
         #modal-confirmar {
             background-color: #d9534f;
@@ -214,7 +308,14 @@
                 });
         });
     </script>
+=======
+>>>>>>> parent of 62bd9fa (Cambios volver)
 
+        #modal-confirmar {
+            background-color: #d9534f;
+            color: white;
+        }
+    </style>
 
     <!-- SCRIPT PARA MANEJAR LOS MODALES -->
 

@@ -91,6 +91,7 @@ Route::post('/pacientes/{paciente}/asignar', [PacienteController::class, 'guarda
 
 // Alta
 Route::post('/pacientes/{paciente}/alta', [PacienteController::class, 'darDeAlta'])->name('pacientes.darDeAlta');
+<<<<<<< HEAD
 
 // Live search
 Route::get('/pacientes/live-search', [PacienteController::class, 'liveSearch'])->name('pacientes.liveSearch');
@@ -100,6 +101,8 @@ Route::post('/pacientes/{paciente}/asignar-directa', [PacienteController::class,
     ->name('pacientes.asignarDirecta');
 
 
+=======
+>>>>>>> parent of 62bd9fa (Cambios volver)
 
 //Procedimientos
 Route::get('/procedimientos', [ProcedimientoController::class, 'index'])->name('procedimientos.index');
