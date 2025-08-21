@@ -7,6 +7,7 @@
         {{-- Formulario de búsqueda --}}
         <form action="{{ route('buscar') }}" method="GET" autocomplete="off">
     <input
+    style="width: 300px; padding: 8px; margin-right: 10px;"
         type="text"
         id="busqueda"
         name="busqueda"
@@ -14,31 +15,58 @@
         value="{{ old('busqueda', request('busqueda')) }}"
         required
     >
-    <button type="submit">Buscar</button>
+    <button 
+    style="padding: 8px 16px; background-color: #4CAF50; color: white; border: none; cursor: pointer;"
+    type="submit">Buscar</button>
+
         </form>
 
 
         <br>
 
+        <h1 style="font-size: 24px; margin-bottom: 20px;">Datos Personales</h1>
         {{-- Si hay detalle de una persona --}}
         @if(isset($persona))
-            <table>
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Apellido</th>
-                        <th>DNI</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>{{ $persona->nombre }}</td>
-                        <td>{{ $persona->apellido }}</td>
-                        <td>{{ $persona->dni }}</td>
-                    </tr>
-                </tbody>
-            </table>
+                    Nombre:{{ $persona->nombre }}
+                    <br>
+                    Apellido:{{ $persona->apellido }}
+                    <br>
+                    DNI:{{ $persona->dni }}
+                    <br>
+                    Fecha de Nacimiento:{{ \Carbon\Carbon::parse($persona->fecha_nacimiento)->format('d/m/Y') }}
+                    <br>
+                    Teléfono:{{ $persona->telefono }}
+                    <br>
+                    Dirección:{{ $persona->direccion }}
+                    <br><br>
+                    {{-- Acciones --}}
+                    <a href="{{ route('pacientes.show', $persona) }}"
+                                    class="text-neutral-700 hover:underline font-medium">Ver</a>
+                                <a href="{{ route('pacientes.edit', $persona) }}"
+                                    class="text-neutral-700 hover:underline font-medium">Editar</a>
+                                @if ($persona->cama_id)
+                                    <form action="{{ route('pacientes.darDeAlta', $persona) }}" method="POST"
+                                        class="inline-block form-dar-de-alta">
+                                        @csrf
+                                        <button type="submit" class="text-green-600 hover:underline font-medium">Dar de
+                                            alta</button>
+                                    </form>
+                                @else
+                                    <form action="{{ route('pacientes.asignar', $persona) }}" method="GET"
+                                        class="inline-block form-asignar">
+                                        <button type="submit"
+                                            class="text-blue-700 hover:underline font-medium">Asignar</button>
+                                    </form>
+                                @endif
+                                <form action="{{ route('pacientes.destroy', $persona) }}" method="POST"
+                                    class="inline-block form-eliminar">
+                                    @csrf @method('DELETE')
+                                    <button type="submit"
+                                        class="text-red-600 hover:underline font-medium">Eliminar</button>
+                                </form>
+                    <br><br>
 
+            <h2 style="font-size: 20px; margin-bottom: 15px;">Historial de Medicamentos</h2
             {{-- Mostrar medicamentos del historial --}}
             @php
                 $historial = $persona->historial_stock()->with('get_stock.get_medicamento')->get();
