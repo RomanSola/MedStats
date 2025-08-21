@@ -125,7 +125,7 @@ class StockController extends Controller
             $request->validate([
                 'paciente_id' => 'required|exists:pacientes,id',
                 'empleado_id' => 'required|exists:empleados,id',
-                'comentario' => 'required',
+                'comentario' => 'nullable|string|max:255',
             ]);
         }
     
