@@ -7,6 +7,7 @@
         {{-- Formulario de búsqueda --}}
         <form action="{{ route('buscar') }}" method="GET" autocomplete="off">
     <input
+        style="width: 300px; padding: 10px; border-radius: 5px; border: 1px solid #ccc;"
         type="text"
         id="busqueda"
         name="busqueda"
@@ -14,31 +15,43 @@
         value="{{ old('busqueda', request('busqueda')) }}"
         required
     >
-    <button type="submit">Buscar</button>
+    <button 
+    style="padding: 10px 15px; border-radius: 5px; background-color: #1B7D8F; color: white; border: none;" 
+    type="submit">Buscar</button>
         </form>
 
-
+        <br><br>
+        <h1
+        style="font-size: 24px; color: #333; font-weight: bold;">Datos Personales</h1>
+        
         <br>
 
         {{-- Si hay detalle de una persona --}}
         @if(isset($persona))
-            <table>
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Apellido</th>
-                        <th>DNI</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>{{ $persona->nombre }}</td>
-                        <td>{{ $persona->apellido }}</td>
-                        <td>{{ $persona->dni }}</td>
-                    </tr>
-                </tbody>
-            </table>
+            
+                        Nombre:{{ $persona->nombre }}
+                        <br>
+                        Apellido:{{ $persona->apellido }}
+                        <br>
+                        DNI:{{ $persona->dni }}
+                        <br>
+                        Fecha de Nacimiento:{{ \Carbon\Carbon::parse($persona->fecha_nacimiento)->format('d/m/Y') }}
+                        <br>
+                        Teléfono:{{ $persona->telefono }}
+                        <br>
+                        Dirección:{{ $persona->direccion }}
+            <br>
 
+            
+            
+        <br><br>
+
+            <h1
+        style="font-size: 24px; color: #333; font-weight: bold;">
+        Historial de Medicamentos</h1>
+
+        <br>
+        
             {{-- Mostrar medicamentos del historial --}}
             @php
                 $historial = $persona->historial_stock()->with('get_stock.get_medicamento')->get();
