@@ -40,7 +40,31 @@
                         Teléfono:{{ $persona->telefono }}
                         <br>
                         Dirección:{{ $persona->direccion }}
-            <br>
+            <br><br>
+            <a href="{{ route('pacientes.show', $persona) }}"
+                                    class="text-neutral-700 hover:underline font-medium">Ver</a>
+                                <a href="{{ route('pacientes.edit', $persona) }}"
+                                    class="text-neutral-700 hover:underline font-medium">Editar</a>
+                                @if ($persona->cama_id)
+                                    <form action="{{ route('pacientes.darDeAlta', $persona) }}" method="POST"
+                                        class="inline-block form-dar-de-alta">
+                                        @csrf
+                                        <button type="submit" class="text-green-600 hover:underline font-medium">Dar de
+                                            alta</button>
+                                    </form>
+                                @else
+                                    <form action="{{ route('pacientes.asignar', $persona) }}" method="GET"
+                                        class="inline-block form-asignar">
+                                        <button type="submit"
+                                            class="text-blue-700 hover:underline font-medium">Asignar</button>
+                                    </form>
+                                @endif
+                                <form action="{{ route('pacientes.destroy', $persona) }}" method="POST"
+                                    class="inline-block form-eliminar">
+                                    @csrf @method('DELETE')
+                                    <button type="submit"
+                                        class="text-red-600 hover:underline font-medium">Eliminar</button>
+                                </form>
 
             
             
