@@ -67,40 +67,42 @@
 </div>
 
 
-        <!-- Asociación con paciente y médico -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-                <label for="paciente_id" class="block text-sm font-medium text-gray-700 mb-1">El medicamento es para</label>
-                <select name="paciente_id" id="paciente_id"
-                        class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500">
-                    <option value="">Seleccione un paciente</option>
-                    @foreach ($pacientes as $paciente)
-                        <option value="{{ $paciente->id }}" {{ old('paciente_id') == $paciente->id ? 'selected' : '' }}>
-                            {{ $paciente->apellido }}, {{ $paciente->nombre }} – DNI {{ $paciente->dni }}
-                        </option>
-                    @endforeach
-                </select>
-                @error('paciente_id')
-                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <div>
-                <label for="empleado_id" class="block text-sm font-medium text-gray-700 mb-1">Recetado por</label>
-                <select name="empleado_id" id="empleado_id"
-                        class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500">
-                    <option value="">Seleccione un médico</option>
-                    @foreach ($empleados as $empleado)
-                        <option value="{{ $empleado->id }}" {{ old('empleado_id') == $empleado->id ? 'selected' : '' }}>
-                            Dr/a {{ $empleado->apellido }} – DNI {{ $empleado->dni }}
-                        </option>
-                    @endforeach
-                </select>
-                @error('empleado_id')
-                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                @enderror
-            </div>
+@if ($modo === 'extraer')
+    <!-- Asociación con paciente y médico -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+            <label for="paciente_id" class="block text-sm font-medium text-gray-700 mb-1">El medicamento es para</label>
+            <select name="paciente_id" id="paciente_id"
+                    class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500">
+                <option value="">Seleccione un paciente</option>
+                @foreach ($pacientes as $paciente)
+                    <option value="{{ $paciente->id }}" {{ old('paciente_id') == $paciente->id ? 'selected' : '' }}>
+                        {{ $paciente->apellido }}, {{ $paciente->nombre }} – DNI {{ $paciente->dni }}
+                    </option>
+                @endforeach
+            </select>
+            @error('paciente_id')
+                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+            @enderror
         </div>
+
+        <div>
+            <label for="empleado_id" class="block text-sm font-medium text-gray-700 mb-1">Recetado por</label>
+            <select name="empleado_id" id="empleado_id"
+                    class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500">
+                <option value="">Seleccione un médico</option>
+                @foreach ($empleados as $empleado)
+                    <option value="{{ $empleado->id }}" {{ old('empleado_id') == $empleado->id ? 'selected' : '' }}>
+                        Dr/a {{ $empleado->apellido }} – DNI {{ $empleado->dni }}
+                    </option>
+                @endforeach
+            </select>
+            @error('empleado_id')
+                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+            @enderror
+        </div>
+    </div>
+@endif
 
         <!-- Comentario -->
         <div>
