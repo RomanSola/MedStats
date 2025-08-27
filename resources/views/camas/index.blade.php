@@ -19,7 +19,7 @@
         </a>
     </div>
 
-    {{-- Filtro por sala compacto --}}
+    {{-- Filtro por sala --}}
     <form method="GET" action="{{ route('camas.index') }}" class="mb-4">
         <div class="flex items-center gap-2">
             <label for="sala" class="text-sm font-semibold text-gray-700">Filtrar por Sala:</label>
@@ -35,29 +35,22 @@
         </div>
     </form>
 
-    {{-- Contenedor azul degradado institucional --}}
+    {{-- Contenedor azul degradado --}}
     <div class="p-[1px] rounded-xl bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] shadow-md mb-4">
         <div class="bg-white rounded-xl p-4">
-
-            {{-- Tarjetas de camas --}}
             <div class="row w-full">
                 @foreach ($camas as $cama)
                     <div class="container col-3 bg-white rounded-xl border border-gray-400 shadow-lg p-3 m-2 text-center">
-
-                        {{-- Título habitación --}}
                         <h3 class="text-base font-semibold text-gray-700 mb-1">
                             Habitación {{ $cama->get_habitacion->numero ?? 'Sin asignar' }}
                         </h3>
 
-                        {{-- Tarjeta interna --}}
                         <div class="bg-gray-100 rounded-lg p-3 mb-2 shadow-sm">
-
-                            {{-- Título cama --}}
                             <h5 class="text-sm font-bold text-gray-800 mb-1">
                                 Cama {{ $cama->codigo }}
                             </h5>
 
-                            {{-- Datos del paciente si está ocupada --}}
+                            {{-- Datos del paciente --}}
                             @if ($cama->ocupada && $cama->paciente)
                                 <div class="text-left text-sm bg-white border border-gray-300 rounded px-2 py-2 mb-2">
                                     <p><strong>Nombre:</strong> {{ $cama->paciente->nombre }} {{ $cama->paciente->apellido }}</p>
@@ -95,13 +88,13 @@
                                 </div>
                             @endif
 
-                            {{-- Estado de ocupación --}}
+                            {{-- Estado --}}
                             <h4 class="text-xs font-semibold text-white px-2 py-1 rounded-full inline-block mb-2
                                 {{ $cama->ocupada == 'ocupada' ? 'bg-red-500' : 'bg-green-500' }}">
                                 {{ $cama->ocupada == 'ocupada' ? 'OCUPADA' : 'LIBRE' }}
                             </h4>
 
-                            {{-- Botones de acción --}}
+                            {{-- Botones --}}
                             @if ($cama->ocupada && $cama->paciente)
                                 <form action="{{ route('pacientes.darDeAlta', $cama->paciente) }}" method="POST" class="mb-2">
                                     @csrf
@@ -109,13 +102,16 @@
                                         Dar de Alta
                                     </button>
                                 </form>
-                            @else
-                                <a href="{{ route('pacientes.index', ['cama' => $cama->id, 'from' => 'camas']) }}"
-                                    class="btn btn-outline-success btn-sm">
-                                    Asignar paciente
-                                </a>
-                            @endif
 
+                            @else
+                                <button type="button"
+                                        class="btn btn-outline-success btn-sm"
+                                        data-toggle="modal"
+                                        data-target="#asignarPacienteModal"
+                                        data-cama-id="{{ $cama->id }}">
+                                    Asignar paciente
+                                </button>
+                            @endif
 
                             <a href="{{ route('camas.edit', ['cama' => $cama->id]) }}"
                                class="btn btn-outline-warning btn-sm mt-1">
@@ -128,4 +124,78 @@
         </div>
     </div>
 </div>
+
+{{-- Modal --}}
+<div class="modal fade" id="asignarPacienteModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Asignar paciente a cama</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <input type="text" id="buscarPaciente" class="form-control mb-3" placeholder="Buscar paciente por nombre o DNI...">
+        <div id="listaPacientes">
+          <p class="text-muted">Escriba para buscar pacientes.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{-- Script --}}
+@push('scripts')
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    let camaSeleccionada = null;
+    const inputBusqueda = document.getElementById('buscarPaciente');
+    const listaPacientes = document.getElementById('listaPacientes');
+    const csrfToken = "{{ csrf_token() }}"; // ✅ se inyecta desde Laravel
+
+    $('#asignarPacienteModal').on('show.bs.modal', function (event) {
+        const button = $(event.relatedTarget);
+        camaSeleccionada = button.data('cama-id');
+        inputBusqueda.value = "";
+        listaPacientes.innerHTML = "<p class='text-muted'>Escriba para buscar pacientes.</p>";
+    });
+
+    inputBusqueda.addEventListener("keyup", function () {
+        const q = this.value.trim();
+        if (q.length < 2) {
+            listaPacientes.innerHTML = "<p class='text-muted'>Escriba al menos 2 caracteres.</p>";
+            return;
+        }
+
+        fetch(`/pacientes/live-search?buscar=${encodeURIComponent(q)}`)
+            .then(res => res.json())
+            .then(data => {
+                listaPacientes.innerHTML = "";
+                if (data.length === 0) {
+                    listaPacientes.innerHTML = "<p class='text-danger'>No se encontraron pacientes.</p>";
+                }
+                data.forEach(p => {
+                    const form = document.createElement("form");
+                    form.method = "POST";
+                    form.action = `/pacientes/${p.id}/asignar-directa`;
+
+                    form.innerHTML = `
+                        <input type="hidden" name="_token" value="${csrfToken}">
+                        <input type="hidden" name="cama_id" value="${camaSeleccionada}">
+                        <div class="d-flex justify-content-between align-items-center border rounded p-2 mb-2">
+                            <span><strong>${p.nombre} ${p.apellido}</strong> (DNI: ${p.dni})</span>
+                            <button type="submit" class="btn btn-sm btn-outline-success">Asignar</button>
+                        </div>`;
+                    listaPacientes.appendChild(form);
+                });
+            })
+            .catch(err => {
+                console.error(err);
+                listaPacientes.innerHTML = "<p class='text-danger'>Error al buscar pacientes.</p>";
+            });
+    });
+});
+</script>
+@endpush
 @endsection

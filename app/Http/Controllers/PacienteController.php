@@ -18,7 +18,6 @@ class PacienteController extends Controller
     {
         $query = Paciente::query();
 
-        // Filtrar por DNI, nombre o apellido
         if ($request->filled('buscar')) {
             $busqueda = $request->buscar;
             $query->where(function($q) use ($busqueda) {
@@ -84,7 +83,6 @@ class PacienteController extends Controller
         $paciente->modificado_por = '1';
         $paciente->save();
 
-        // 🔹 Mantengo el flujo anterior: al crear, ir a pantalla de asignación
         return redirect()->route('pacientes.asignar', $paciente->id)
             ->with('success', 'Paciente registrado. Ahora puede asignarle una cama.');
     }
@@ -188,61 +186,78 @@ class PacienteController extends Controller
         return redirect()->route('pacientes.index')->with('success', 'Paciente asignado correctamente.');
     }
 
-    // 🔹 NUEVO: Asignación directa cuando venís desde "Camas"
     public function asignarDirecta(Request $request, Paciente $paciente)
-    {
-        $request->validate([
-            'cama_id' => 'required|exists:camas,id',
-        ]);
+{
+    $request->validate([
+        'cama_id' => 'required|exists:camas,id',
+    ]);
 
-        $cama = Cama::with('habitacion')->findOrFail($request->cama_id);
+    $cama = Cama::findOrFail($request->cama_id);
 
-        if ($cama->ocupada) {
-            return back()->with('error', 'La cama seleccionada ya está ocupada.');
-        }
-
-        if ($paciente->cama_id) {
-            return back()->with('error', 'Este paciente ya tiene una cama asignada.');
-        }
-
-        $paciente->habitacion_id = $cama->habitacion_id;
-        $paciente->cama_id = $cama->id;
-        $paciente->save();
-
-        $cama->ocupada = true;
-        $cama->save();
-
-        Ocupacion_cama::create([
-            'paciente_id' => $paciente->id,
-            'cama_id' => $cama->id,
-            'fecha_ingreso' => now()
-        ]);
-
-        // 🔹 Si venís desde camas → volver a camas, si no → pacientes
-        return redirect()->route('camas.index')->with('success', 'Paciente asignado a la cama correctamente.');
+    if ($cama->ocupada) {
+        return back()->with('error', 'La cama seleccionada ya está ocupada.');
     }
 
-    public function darDeAlta(Paciente $paciente)
-    {
-        if ($paciente->cama) {
-            $paciente->cama->ocupada = false;
-            $paciente->cama->save();
-        }
-
-        $ocupacion = Ocupacion_cama::where('paciente_id', $paciente->id)
-            ->whereNull('fecha_egreso')
-            ->latest('fecha_ingreso')
-            ->first();
-
-        if ($ocupacion) {
-            $ocupacion->fecha_egreso = now();
-            $ocupacion->save();
-        }
-
-        $paciente->cama_id = null;
-        $paciente->habitacion_id = null;
-        $paciente->save();
-
-        return redirect()->route('pacientes.index')->with('success', 'Paciente dado de alta y cama liberada.');
+    if ($paciente->cama_id) {
+        return back()->with('error', 'Este paciente ya tiene una cama asignada.');
     }
+
+    $paciente->habitacion_id = $cama->habitacion_id;
+    $paciente->cama_id = $cama->id;
+    $paciente->save();
+
+    $cama->ocupada = true;
+    $cama->save();
+
+    Ocupacion_cama::create([
+        'paciente_id' => $paciente->id,
+        'cama_id' => $cama->id,
+        'fecha_ingreso' => now()
+    ]);
+
+    return redirect()->route('camas.index')->with('success', 'Paciente asignado a la cama correctamente.');
+}
+public function darDeAlta(Paciente $paciente)
+{
+    if ($paciente->cama) {
+        $paciente->cama->ocupada = false;
+        $paciente->cama->save();
+    }
+
+    $ocupacion = Ocupacion_cama::where('paciente_id', $paciente->id)
+        ->whereNull('fecha_egreso')
+        ->latest('fecha_ingreso')
+        ->first();
+
+    if ($ocupacion) {
+        $ocupacion->fecha_egreso = now();
+        $ocupacion->save();
+    }
+
+    $paciente->cama_id = null;
+    $paciente->habitacion_id = null;
+    $paciente->save();
+
+    return redirect()->route('camas.index')->with('success', 'Paciente dado de alta y cama liberada.');
+}
+
+
+
+    
+  public function liveSearch(Request $request)
+{
+    $buscar = $request->input('buscar');
+
+    $pacientes = \App\Models\Paciente::query()
+        ->where('nombre', 'like', "%{$buscar}%")
+        ->orWhere('apellido', 'like', "%{$buscar}%")
+        ->orWhere('dni', 'like', "%{$buscar}%")
+        ->limit(10)
+        ->get(['id', 'nombre', 'apellido', 'dni']); // Solo columnas necesarias
+
+    return response()->json($pacientes);
+}
+
+
+
 }

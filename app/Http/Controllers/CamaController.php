@@ -8,28 +8,30 @@ use Illuminate\Http\Request;
 
 class CamaController extends Controller
 {
-    //Muestra todos los datos
     public function index(Request $request)
-    {
-        // Obtener todas las salas para el select
-        $salas = Sala::all();
-    
-        // Construir la consulta base con la relación de habitación
-        $camas = Cama::with('get_habitacion');
-    
-        // Si se seleccionó una sala, filtrar por ella
-        if ($request->filled('sala_id')) {
-            $camas->whereHas('get_habitacion', function ($query) use ($request) {
-                $query->where('sala_id', $request->sala_id);
-            });
-        }
-    
-        // Ejecutar la consulta
-        $camas = $camas->get();
-    
-        // Pasar camas y salas a la vista
-        return view('camas.index', compact('camas', 'salas'));
+{
+    // Obtener todas las salas para el select
+    $salas = Sala::all();
+
+    // Construir la consulta base con la relación de habitación
+    $camas = Cama::with('get_habitacion');
+
+    // Si se seleccionó una sala, filtrar por ella
+    if ($request->filled('sala_id')) {
+        $camas->whereHas('get_habitacion', function ($query) use ($request) {
+            $query->where('sala_id', $request->sala_id);
+        });
     }
+
+    // Ejecutar la consulta
+    $camas = $camas->get();
+
+    // 🔹 Pacientes que no tienen cama asignada
+    $pacientesLibres = \App\Models\Paciente::whereNull('cama_id')->get();
+
+    // Pasar camas, salas y pacientes libres a la vista
+    return view('camas.index', compact('camas', 'salas', 'pacientesLibres'));
+}
 
     public function create()
     {

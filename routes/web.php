@@ -32,10 +32,13 @@ use App\Http\Controllers\PersonaController;
 Route::get('/', function () {return view('index');})->name('inicio');
 
 
+
 //Buscador
 Route::get('/buscar', [PersonaController::class, 'buscar'])->name('buscar');
 Route::get('/buscar/ajax', [PersonaController::class, 'buscarAjax'])->name('buscar.ajax');
 Route::get('/persona/{id}', [PersonaController::class, 'ver'])->name('persona.ver');
+Route::get('/pacientes/live-search', [PacienteController::class, 'liveSearch'])->name('pacientes.live-search');
+
 
 // configuracion
 Route::view('/ajustes', 'ajustes')->name('ajustes');
@@ -75,7 +78,7 @@ Route::put('/empleados/{empleado}', [EmpleadoController::class, 'update'])->name
 Route::delete('/empleados/{empleado}', [EmpleadoController::class, 'destroy'])->name('empleados.destroy');
 
 
-//Pacientes
+
 //Pacientes
 Route::get('/pacientes', [PacienteController::class, 'index'])->name('pacientes.index');
 Route::get('/pacientes/create', [PacienteController::class, 'create'])->name('pacientes.create');
@@ -93,11 +96,13 @@ Route::post('/pacientes/{paciente}/asignar', [PacienteController::class, 'guarda
 Route::post('/pacientes/{paciente}/alta', [PacienteController::class, 'darDeAlta'])->name('pacientes.darDeAlta');
 
 // Live search
-Route::get('/pacientes/live-search', [PacienteController::class, 'liveSearch'])->name('pacientes.liveSearch');
+Route::get('/pacientes/live-search', [PacienteController::class, 'liveSearch'])
+    ->name('pacientes.liveSearch');
 
-// Asignación directa 
-Route::post('/pacientes/{paciente}/asignar-directa', [PacienteController::class, 'asignarDirecta'])
+// Asignación directa (paciente y cama desde el formulario)
+Route::post('/pacientes/asignar-directa', [PacienteController::class, 'asignarDirecta'])
     ->name('pacientes.asignarDirecta');
+
 
 
 
@@ -109,7 +114,8 @@ Route::get('/procedimientos/{procedimiento}/edit', [ProcedimientoController::cla
 Route::get('/procedimientos/{procedimiento}/show', [ProcedimientoController::class, 'show'])->name('procedimientos.show');
 Route::put('/procedimientos/{procedimiento}', [ProcedimientoController::class, 'update'])->name('procedimientos.update');
 Route::delete('/procedimientos/{procedimiento}', [ProcedimientoController::class, 'destroy'])->name('procedimientos.destroy');
-
+Route::post('/pacientes/{paciente}/asignar-directa', [PacienteController::class, 'asignarDirecta'])
+    ->name('pacientes.asignar.directa');
 //Tipo Anestesia
 Route::get('/tipoAnestesias', [TipoAnestesiaController::class, 'index'])->name('tipoAnestesias.index');
 Route::get('/tipoAnestesias/create', [TipoAnestesiaController::class, 'create'])->name('tipoAnestesias.create');
@@ -141,6 +147,11 @@ Route::post('/camas', [CamaController::class, 'store'])->name('camas.store');
 Route::get('/camas/{cama}/edit', [CamaController::class, 'edit'])->name('camas.edit');
 Route::put('/camas/{cama}', [CamaController::class, 'update'])->name('camas.update');
 Route::delete('/camas/{cama}', [CamaController::class, 'destroy'])->name('camas.destroy');
+// Dar de alta un paciente
+Route::post('/pacientes/{paciente}/dar-de-alta', [PacienteController::class, 'darDeAlta'])
+    ->name('pacientes.darDeAlta');
+
+
 
 //Ocupación Camas
 Route::get('/ocupacionCamas', [OcupacionCamaController::class, 'index'])->name('ocupacionCamas.index');
