@@ -238,7 +238,7 @@ public function darDeAlta(Paciente $paciente)
     $paciente->habitacion_id = null;
     $paciente->save();
 
-    return redirect()->route('camas.index')->with('success', 'Paciente dado de alta y cama liberada.');
+    return redirect()->route('pacientes.index')->with('success', 'Paciente dado de alta y cama liberada.');
 }
 
 
