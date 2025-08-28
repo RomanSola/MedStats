@@ -9,6 +9,7 @@
         Ingresar nuevo medicamento al stock
     </h1>
     <br>
+
     <form action="{{ route('stocks.store') }}" method="POST"
         class="bg-white shadow rounded-lg border border-gray-200 p-6 space-y-6">
         @csrf
@@ -36,13 +37,11 @@
             <div>
                 <label for="lote" class="block text-sm font-medium text-gray-700 mb-1">Lote</label>
                 <input type="text" name="lote" id="lote"
-                class="w-full rounded-md border-gray-300 px-4 py-2 focus:ring-2 focus:ring-gray-500 @error('lote') border-red-500 @enderror"
-                value="{{ old('lote') }}" required>
+                    class="w-full rounded-md border-gray-300 px-4 py-2 focus:ring-2 focus:ring-gray-500 @error('lote') border-red-500 @enderror"
+                    value="{{ old('lote') }}" required>
                 @error('lote')
-                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                 @enderror
-            </div>
-
             </div>
 
             <div>
@@ -56,7 +55,7 @@
         <!-- Botón -->
         <div class="flex justify-end pt-4">
             <button type="submit"
-                    class="inline-block bg-neutral-700 hover:bg-neutral-800 text-white font-medium py-2 px-6 rounded-full shadow-md cursor-pointer transition duration-300"
+                class="inline-block bg-neutral-700 hover:bg-neutral-800 text-white font-medium py-2 px-6 rounded-full shadow-md cursor-pointer transition duration-300"
                 style="text-decoration: none;">
                 Agregar medicamento
             </button>

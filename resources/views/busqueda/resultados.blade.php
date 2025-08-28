@@ -3,29 +3,10 @@
 @section('title', 'Búsqueda')
 
 @section('contenido')
-
 <div class="page-container">
 
-    <center>
-        {{-- Formulario de búsqueda --}}
-        <form action="{{ route('buscar') }}" method="GET" autocomplete="off">
-    <input
-    style="width: 300px; padding: 8px; margin-right: 10px;"
-        type="text"
-        id="busqueda"
-        name="busqueda"
-        placeholder="Buscar por nombre, apellido o DNI"
-        value="{{ old('busqueda', request('busqueda')) }}"
-        required
-    >
-    <button 
-    style="padding: 8px 16px; background-color: #4CAF50; color: white; border: none; cursor: pointer;"
-    type="submit">Buscar</button>
-
-        </form>
-
-
- 
+    {{-- Título --}}
+    <h1 class="page-title text-center">Búsqueda</h1>
 
     {{-- Formulario de búsqueda --}}
     <form action="{{ route('buscar') }}" method="GET" autocomplete="off" class="max-w-xl mx-auto mt-6 space-y-4">
@@ -45,55 +26,43 @@
         </div>
     </form>
 
-        <br>
+    {{-- Si hay detalle de una persona --}}
+    @if(isset($persona))
+        <div class="mt-8">
+            <h2 class="text-xl font-semibold mb-4">Datos Personales</h2>
+            <p><strong>Nombre:</strong> {{ $persona->nombre }}</p>
+            <p><strong>Apellido:</strong> {{ $persona->apellido }}</p>
+            <p><strong>DNI:</strong> {{ $persona->dni }}</p>
+            <p><strong>Fecha de Nacimiento:</strong> {{ \Carbon\Carbon::parse($persona->fecha_nacimiento)->format('d/m/Y') }}</p>
+            <p><strong>Teléfono:</strong> {{ $persona->telefono }}</p>
+            <p><strong>Dirección:</strong> {{ $persona->direccion }}</p>
 
-        <h1 style="font-size: 24px; margin-bottom: 20px;">Datos Personales</h1>
-        {{-- Si hay detalle de una persona --}}
-        @if(isset($persona))
-                    Nombre:{{ $persona->nombre }}
-                    <br>
-                    Apellido:{{ $persona->apellido }}
-                    <br>
-                    DNI:{{ $persona->dni }}
-                    <br>
-                    Fecha de Nacimiento:{{ \Carbon\Carbon::parse($persona->fecha_nacimiento)->format('d/m/Y') }}
-                    <br>
-                    Teléfono:{{ $persona->telefono }}
-                    <br>
-                    Dirección:{{ $persona->direccion }}
-                    <br><br>
-                    {{-- Acciones --}}
-                    <a href="{{ route('pacientes.show', $persona) }}"
-                                    class="text-neutral-700 hover:underline font-medium">Ver</a>
-                                <a href="{{ route('pacientes.edit', $persona) }}"
-                                    class="text-neutral-700 hover:underline font-medium">Editar</a>
-                                @if ($persona->cama_id)
-                                    <form action="{{ route('pacientes.darDeAlta', $persona) }}" method="POST"
-                                        class="inline-block form-dar-de-alta">
-                                        @csrf
-                                        <button type="submit" class="text-green-600 hover:underline font-medium">Dar de
-                                            alta</button>
-                                    </form>
-                                @else
-                                    <form action="{{ route('pacientes.asignar', $persona) }}" method="GET"
-                                        class="inline-block form-asignar">
-                                        <button type="submit"
-                                            class="text-blue-700 hover:underline font-medium">Asignar</button>
-                                    </form>
-                                @endif
-                                <form action="{{ route('pacientes.destroy', $persona) }}" method="POST"
-                                    class="inline-block form-eliminar">
-                                    @csrf @method('DELETE')
-                                    <button type="submit"
-                                        class="text-red-600 hover:underline font-medium">Eliminar</button>
-                                </form>
-                    <br><br>
+            <div class="mt-4 space-x-4">
+                <a href="{{ route('pacientes.show', $persona) }}" class="text-neutral-700 hover:underline font-medium">Ver</a>
+                <a href="{{ route('pacientes.edit', $persona) }}" class="text-neutral-700 hover:underline font-medium">Editar</a>
 
-            <h2 style="font-size: 20px; margin-bottom: 15px;">Historial de Medicamentos</h2
-            {{-- Mostrar medicamentos del historial --}}
-            @php
-                $historial = $persona->historial_stock()->with('get_stock.get_medicamento')->get();
-            @endphp
+                @if ($persona->cama_id)
+                    <form action="{{ route('pacientes.darDeAlta', $persona) }}" method="POST" class="inline-block form-dar-de-alta">
+                        @csrf
+                        <button type="submit" class="text-green-600 hover:underline font-medium">Dar de alta</button>
+                    </form>
+                @else
+                    <form action="{{ route('pacientes.asignar', $persona) }}" method="GET" class="inline-block form-asignar">
+                        <button type="submit" class="text-blue-700 hover:underline font-medium">Asignar</button>
+                    </form>
+                @endif
+
+                <form action="{{ route('pacientes.destroy', $persona) }}" method="POST" class="inline-block form-eliminar">
+                    @csrf @method('DELETE')
+                    <button type="submit" class="text-red-600 hover:underline font-medium">Eliminar</button>
+                </form>
+            </div>
+        </div>
+
+        {{-- Mostrar historial de medicamentos --}}
+        @php
+            $historial = $persona->historial_stock()->with('get_stock.get_medicamento')->get();
+        @endphp
 
         @if($historial->isNotEmpty())
             <h3 class="text-lg font-semibold mt-6 mb-2">Medicamentos administrados:</h3>
@@ -105,8 +74,8 @@
                     @if($medicamento)
                         <li>
                             <span class="font-medium">{{ $medicamento->nombre }}</span>
-                            (Cantidad: {{ $registro->cantidad }})
-                            - <span class="text-gray-500">Fecha: {{ \Carbon\Carbon::parse($registro->fecha)->format('d/m/Y') }}</span>
+                            (Cantidad: {{ $registro->cantidad }}) -
+                            <span class="text-gray-500">Fecha: {{ \Carbon\Carbon::parse($registro->fecha)->format('d/m/Y') }}</span>
                         </li>
                     @endif
                 @endforeach
@@ -125,8 +94,7 @@
             <ul class="mt-4 space-y-2">
                 @foreach ($resultados as $persona)
                     <li>
-                        <a href="{{ route('persona.ver', $persona->id) }}" 
-                           class="text-[#1B7D8F] hover:underline">
+                        <a href="{{ route('persona.ver', $persona->id) }}" class="text-[#1B7D8F] hover:underline">
                             {{ $persona->nombre }} {{ $persona->apellido }} - DNI: {{ $persona->dni }}
                         </a>
                     </li>
