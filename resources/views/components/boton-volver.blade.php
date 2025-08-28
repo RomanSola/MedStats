@@ -73,6 +73,7 @@
             case 'pacientes.create':
             case 'pacientes.edit':
             case 'pacientes.show':
+            case 'pacientes.asignar'
                 $rutaAnterior = 'pacientes.index';
                 break;
 

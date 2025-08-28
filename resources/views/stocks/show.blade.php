@@ -11,7 +11,8 @@
         <p><span class="font-medium">Lote:</span> {{ $stock->lote }}</p>
     </div>
 
-    <div class="bg-white shadow rounded-lg border border-gray-200 overflow-auto">
+    {{-- Contenedor con borde más grueso --}}
+    <div class="bg-white shadow rounded-lg border-2 border-gray-300 overflow-auto">
         <table class="min-w-full text-sm text-gray-800 table-auto">
             <thead class="bg-gray-100 text-gray-700 font-semibold">
                 <tr>
@@ -37,11 +38,13 @@
                         @if($item->get_paciente) (DNI {{ $item->get_paciente->dni }}) @endif
                     </td>
                     <td class="px-4 py-2 border">{{ $item->comentario }}</td>
-                    <td class="px-4 py-2 border text-center">–</td> {{-- Usuario pendiente --}}
+                    <td class="px-4 py-2 border text-center">–</td>
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="6" class="px-4 py-2 text-center text-gray-500">No hay movimientos registrados.</td>
+                    <td colspan="6" class="px-4 py-2 text-center text-gray-500">
+                        No hay movimientos registrados.
+                    </td>
                 </tr>
                 @endforelse
             </tbody>

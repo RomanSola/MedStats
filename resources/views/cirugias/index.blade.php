@@ -4,13 +4,26 @@
 
 @section('contenido')
     <div class="container mt-4">
-        <h2 class="mb-4">Gestor de Cirugías</h2>
 
-        <div class="card border-warning">
+
+        <div class="flex justify-between items-center mb-6">
+            <h1
+                class="text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent  bg-clip-text drop-shadow-md  flex items-center gap-2 px-2">
+                Gestor de Cirugías</h1>
+            <a href="{{ route('stocks.create') }}"
+                class="inline-block bg-neutral-700 hover:bg-neutral-800 text-white font-medium py-2 px-6 rounded-full shadow-md cursor-pointer transition duration-300"
+                style="text-decoration: none;">
+                Registrar Nueva Cirugía
+            </a>
+        </div>
+        
+
+        <div class="card border">
             <div class="card-body">
                 <p class="card-text">Administrá las cirugías registradas en el sistema. Podés ver detalles y editarlos.</p>
-                <a href="{{ route('cirugias.create') }}" class="btn btn-warning mb-3">Registrar Nueva Cirugía</a>
-
+                
+                <br>
+                <br>
                 <div class="table-responsive">
                     <table id= "miTabla" class="table table-bordered align-middle">
                         <thead class="table-warning">

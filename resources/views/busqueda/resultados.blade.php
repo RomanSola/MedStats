@@ -3,6 +3,9 @@
 @section('title', 'Búsqueda')
 
 @section('contenido')
+
+<div class="page-container">
+
     <center>
         {{-- Formulario de búsqueda --}}
         <form action="{{ route('buscar') }}" method="GET" autocomplete="off">
@@ -21,6 +24,26 @@
 
         </form>
 
+
+ 
+
+    {{-- Formulario de búsqueda --}}
+    <form action="{{ route('buscar') }}" method="GET" autocomplete="off" class="max-w-xl mx-auto mt-6 space-y-4">
+        <div>
+            <input
+                type="text"
+                id="busqueda"
+                name="busqueda"
+                placeholder="Buscar por nombre, apellido o DNI"
+                value="{{ old('busqueda', request('busqueda')) }}"
+                required
+                class="form-input"
+            >
+        </div>
+        <div class="text-center">
+            <button type="submit" class="btn-primary">Buscar</button>
+        </div>
+    </form>
 
         <br>
 
@@ -72,73 +95,74 @@
                 $historial = $persona->historial_stock()->with('get_stock.get_medicamento')->get();
             @endphp
 
-            @if($historial->isNotEmpty())
-                <h3>Medicamentos administrados:</h3>
-                <ul>
-                    @foreach ($historial as $registro)
-                        @php
-                            $medicamento = $registro->get_stock->get_medicamento ?? null;
-                        @endphp
-                        @if($medicamento)
-                            <li>
-                                {{ $medicamento->nombre }}
-                                (Cantidad: {{ $registro->cantidad }})
-                                - Fecha: {{ \Carbon\Carbon::parse($registro->fecha)->format('d/m/Y') }}
-                            </li>
-                        @endif
-                    @endforeach
-                </ul>
-            @else
-                <p>No tiene medicamentos administrados aún.</p>
-            @endif
-
-        {{-- Si hay una búsqueda con resultados --}}
-        @elseif(isset($resultados))
-            <h2>Resultados para "{{ $busqueda }}"</h2>
-
-            @if($resultados->isEmpty())
-                <p>No se encontraron coincidencias.</p>
-            @else
-                <ul>
-                    @foreach ($resultados as $persona)
+        @if($historial->isNotEmpty())
+            <h3 class="text-lg font-semibold mt-6 mb-2">Medicamentos administrados:</h3>
+            <ul class="list-disc list-inside text-gray-700 space-y-1">
+                @foreach ($historial as $registro)
+                    @php
+                        $medicamento = $registro->get_stock->get_medicamento ?? null;
+                    @endphp
+                    @if($medicamento)
                         <li>
-                            <a href="{{ route('persona.ver', $persona->id) }}">
-                                {{ $persona->nombre }} {{ $persona->apellido }} - DNI: {{ $persona->dni }}
-                            </a>
+                            <span class="font-medium">{{ $medicamento->nombre }}</span>
+                            (Cantidad: {{ $registro->cantidad }})
+                            - <span class="text-gray-500">Fecha: {{ \Carbon\Carbon::parse($registro->fecha)->format('d/m/Y') }}</span>
                         </li>
-                    @endforeach
-                </ul>
-            @endif
+                    @endif
+                @endforeach
+            </ul>
+        @else
+            <p class="text-gray-500 mt-4">No tiene medicamentos administrados aún.</p>
         @endif
-    </center>
 
-    {{-- jQuery y Autocomplete --}}
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    {{-- Si hay una búsqueda con resultados --}}
+    @elseif(isset($resultados))
+        <h2 class="text-xl font-semibold mt-8">Resultados para "{{ $busqueda }}"</h2>
 
-    <script>
-        $(function () {
-            $('#busqueda').autocomplete({
-                source: function (request, response) {
-                    $.ajax({
-                        url: "{{ route('buscar.ajax') }}",
-                        data: { term: request.term },
-                        success: function (data) {
-                            response($.map(data, function (item) {
-                                return {
-                                    label: item.nombre + " " + item.apellido + " - DNI: " + item.dni,
-                                    value: item.nombre + " " + item.apellido,
-                                    id: item.id
-                                };
-                            }));
-                        }
-                    });
-                },
-                select: function (event, ui) {
-                    window.location.href = '/persona/' + ui.item.id;
-                }
-            });
+        @if($resultados->isEmpty())
+            <p class="text-gray-500 mt-2">No se encontraron coincidencias.</p>
+        @else
+            <ul class="mt-4 space-y-2">
+                @foreach ($resultados as $persona)
+                    <li>
+                        <a href="{{ route('persona.ver', $persona->id) }}" 
+                           class="text-[#1B7D8F] hover:underline">
+                            {{ $persona->nombre }} {{ $persona->apellido }} - DNI: {{ $persona->dni }}
+                        </a>
+                    </li>
+                @endforeach
+            </ul>
+        @endif
+    @endif
+</div>
+
+{{-- jQuery y Autocomplete --}}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+
+<script>
+    $(function () {
+        $('#busqueda').autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "{{ route('buscar.ajax') }}",
+                    data: { term: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return {
+                                label: item.nombre + " " + item.apellido + " - DNI: " + item.dni,
+                                value: item.nombre + " " + item.apellido,
+                                id: item.id
+                            };
+                        }));
+                    }
+                });
+            },
+            select: function (event, ui) {
+                window.location.href = '/persona/' + ui.item.id;
+            }
         });
-    </script>
+    });
+</script>
 @endsection
