@@ -8,6 +8,7 @@ use App\Models\Paciente;
 use App\Models\Empleado;
 use App\Models\Medicamento;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class StockController extends Controller
 {
@@ -149,8 +150,107 @@ class StockController extends Controller
             'paciente_id' => $request->input('paciente_id'),
             'comentario' => $comentario,
             // 'creado_por' => auth()->id(), // si querés registrar el usuario
-        ]);
-    
+        ]); 
         return redirect()->route('stocks.index');
+    }
+
+
+    public function estadisticas(Request $request)
+    {
+    $desde = $request->input('desde');
+    $hasta = $request->input('hasta');
+
+    //Si no se especifica período, usar el mes actual como default
+    if (!$desde || !$hasta) {
+        $desde = now()->startOfMonth()->toDateString();
+        $hasta = now()->endOfMonth()->toDateString();
+    }
+
+    //Totales generales
+    $totalStock = Stock::sum('cantidad_act');
+
+    $totalAgregados = Historial_stock::where('cantidad', '>', 0)
+        ->whereBetween('fecha', [$desde, $hasta])
+        ->sum('cantidad');
+
+    $totalExtraidos = Historial_stock::where('cantidad', '<', 0)
+        ->whereBetween('fecha', [$desde, $hasta])
+        ->sum(DB::raw('ABS(cantidad)'));
+
+    //Insumos más utilizados
+    $insumos = Historial_stock::select('stock_id', DB::raw('SUM(ABS(cantidad)) as total'))
+        ->where('cantidad', '<', 0)
+        ->whereBetween('fecha', [$desde, $hasta])
+        ->groupBy('stock_id')
+        ->with('get_stock.get_medicamento')
+        ->orderByDesc('total')
+        ->take(5)
+        ->get();
+
+    $insumoLabels = $insumos->map(function ($item) {
+        return optional($item->get_stock->get_medicamento)->nombre ?? 'Sin nombre';
+    });
+
+    $insumoValores = $insumos->pluck('total');
+
+    //Vencimientos próximos (dentro de 60 días)
+    $vencimientos = Stock::whereNotNull('fecha_vencimiento')
+        ->where('fecha_vencimiento', '>=', now())
+        ->where('fecha_vencimiento', '<=', now()->addDays(60))
+        ->with('get_medicamento')
+        ->orderBy('fecha_vencimiento')
+        ->get();
+    //Insumos sin movimiento en el último mes
+    $umbralDias = max(1, intval($request->input('dias', 30)));
+    $fechaLimite = now()->subDays($umbralDias)->toDateString();
+    $stocksSinMovimiento = Stock::whereDoesntHave('historial_stock', function ($query) use ($fechaLimite) {
+    $query->where('fecha', '>', $fechaLimite);
+    })
+        ->with('get_medicamento')
+        ->get();
+
+
+
+$periodoAnalisis = 30;
+$fechaInicio = now()->subDays($periodoAnalisis)->toDateString();
+$fechaFin = now()->toDateString();
+
+// Consumo por insumo en los últimos 30 días
+$consumos = Historial_stock::select('stock_id', DB::raw('SUM(ABS(cantidad)) as total_consumo'))
+    ->where('cantidad', '<', 0)
+    ->whereBetween('fecha', [$fechaInicio, $fechaFin])
+    ->groupBy('stock_id')
+    ->get()
+    ->keyBy('stock_id');
+
+// Proyección por insumo
+$proyecciones = Stock::with('get_medicamento')->get()->map(function ($stock) use ($consumos, $periodoAnalisis) {
+    $consumoTotal = $consumos[$stock->id]->total_consumo ?? 0;
+    $consumoDiario = $consumoTotal / $periodoAnalisis;
+    $diasRestantes = $consumoDiario > 0 ? round($stock->cantidad_act / $consumoDiario) : null;
+
+    return [
+        'medicamento' => optional($stock->get_medicamento)->nombre,
+        'lote' => $stock->lote,
+        'cantidad_act' => $stock->cantidad_act,
+        'consumo_diario' => round($consumoDiario, 2),
+        'dias_restantes' => $diasRestantes,
+    ];
+});
+
+
+    return view('stocks.estadisticasstock', compact(
+        'totalStock',
+        'totalAgregados',
+        'totalExtraidos',
+        'insumoLabels',
+        'insumoValores',
+        'vencimientos',
+        'desde',
+        'hasta',
+        'stocksSinMovimiento',
+        'umbralDias',
+        'proyecciones'
+    ));
     }
 }

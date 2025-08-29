@@ -164,15 +164,16 @@
 
         </div>
         <!-- Botón de impresión -->
+         <br>
     <div class="mb-3">
-        <button onclick="imprimirTablaCompleta()" class="btn btn-secondary me-2">
+        <button onclick="imprimirTablaCompleta()" class="btn btn-info me-2">
             🖨️ Imprimir toda la tabla
         </button>
-
-
-        <button onclick="exportarFiltradoPDF()" class="btn btn-warning">
-
+        <button onclick="exportarFiltradoPDF()" class="btn btn-danger me-2">
             📄 Exportar PDF filtrado
+        </button>
+        <button id="btnExportarExcel" class="btn btn-success me-2">
+            <i class="bi bi-file-earmark-excel"></i> 📄 Exportar a Excel
         </button>
     </div>
 @endsection
@@ -184,6 +185,12 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <!-- Botones de DataTables -->
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
+    <!-- SheetJS para generar archivos Excel -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
     <!-- Funciones de impresión y exportación -->
     <script>
@@ -234,7 +241,7 @@
             let indexFecha = -1;
             let indexHora = -1;
 
-            hElements.forEach((th, index) => {
+            thElements.forEach((th, index) => {
             const texto = th.innerText.trim().toLowerCase();
 
             if (texto === 'fecha') indexFecha = index;
@@ -287,27 +294,58 @@
         doc.save('cirugias_filtradas.pdf');
     }
 
-        $(document).ready(function () {
-        let table = $('#miTabla').DataTable({
-        orderCellsTop: true,
-        fixedHeader: true,
-        language: {
-            search: "Buscar:",
-            lengthMenu: "Mostrar _MENU_ registros",
-            zeroRecords: "No se encontraron coincidencias",
-            info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
-            infoEmpty: "No hay registros disponibles",
-            infoFiltered: "(filtrado de _MAX_ registros totales)",
-        }
-        });
+    document.getElementById('btnExportarExcel').addEventListener('click', function () {
+    const tablaDT = $('#miTabla').DataTable();
+    const datosFiltrados = tablaDT.rows({ search: 'applied' }).data().toArray();
 
-        $('#miTabla thead tr:eq(1) th').each(function (i) {
-            $('input', this).on('keyup change', function () {
-                if (table.column(i).search() !== this.value) {
-                    table.column(i).search(this.value).draw();
-                }
-            });
+    const thElements = document.querySelectorAll('#miTabla thead tr th');
+    const columnasExcluidas = ['acciones', 'urgencia'];
+    const headers = [];
+    const columnasIncluidas = [];
+    let indexFecha = -1;
+    let indexHora = -1;
+
+    // Detectar columnas y construir encabezados
+    thElements.forEach((th, index) => {
+        const texto = th.innerText.trim().toLowerCase();
+        if (texto === 'fecha') indexFecha = index;
+        else if (texto === 'hora') indexHora = index;
+        else if (!columnasExcluidas.includes(texto)) {
+            headers.push(th.innerText.trim());
+            columnasIncluidas.push(index);
+        }
+    });
+
+    if (indexFecha !== -1 && indexHora !== -1) {
+        headers.unshift('Fecha y Hora');
+    }
+
+    // Función para limpiar HTML embebido
+        const cleanText = html => {
+        const temp = document.createElement('div');
+        temp.innerHTML = html;
+        return temp.innerText.replace(/\s+/g, ' ').trim();
+        };
+
+    // Construir cuerpo de datos
+    const filas = datosFiltrados.map(fila => {
+    const filaFiltrada = [];
+        if (indexFecha !== -1 && indexHora !== -1) {
+            const fecha = cleanText(fila[indexFecha]);
+            const hora = cleanText(fila[indexHora]);
+            filaFiltrada.push(`${fecha} ${hora}`);
+        }
+        columnasIncluidas.forEach(index => {
+            filaFiltrada.push(cleanText(fila[index]));
         });
-        });
+        return filaFiltrada;
+    });
+    // Generar archivo Excel con SheetJS
+    const hoja = [headers, ...filas];
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.aoa_to_sheet(hoja);
+    XLSX.utils.book_append_sheet(wb, ws, 'Cirugías');
+    XLSX.writeFile(wb, 'cirugias_filtradas.xlsx');
+});
     </script>
 @endpush    

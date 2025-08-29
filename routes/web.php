@@ -45,6 +45,7 @@ Route::view('/ajustes', 'ajustes')->name('ajustes');
 
 //vista estadistica
 Route::get('/cirugias/estadisticas', [CirugiaController::class, 'estadisticas'])->name('cirugias.estadisticas');
+Route::get('/stocks/estadisticasstock', [StockController::class, 'estadisticas'])->name('stocks.estadisticasstock');
 
 Route::get('/prueba', function (){
     return view('prueba');

@@ -2,10 +2,16 @@
 @section('contenido')
 <div class="container">
     <div class="text-center mb-4">
-        <h2 class="bg-light d-inline-block px-4 py-2 rounded shadow-sm text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent  bg-clip-text drop-shadow-md  flex items-center gap-2 px-2">
-         Estadísticas de Cirugías
+    <div class="inline-flex items-center gap-4">
+        <h2 class="bg-light d-inline-block px-4 py-2 rounded shadow-sm text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent bg-clip-text drop-shadow-md flex items-center gap-2 px-2">
+        Estadísticas de Cirugías
         </h2>
+        <a href="{{ route('stocks.estadisticasstock') }}" class="btn btn-outline-info shadow-sm">
+        <i class="bi bi-box-seam me-1"></i> Estadísticas de Stock
+        </a>
     </div>
+    </div>
+
     <form method="GET" action="{{ route('cirugias.estadisticas') }}" class="bg-light p-3 rounded shadow-sm mb-4">
     <div class="row g-2 align-items-end">
     <div class="col-md-4">

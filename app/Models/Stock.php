@@ -26,4 +26,8 @@ class Stock extends Model
     {
         return $this->hasMany(Historial_stock::class, 'stock_id', 'id');
     }
+    public function historial_stock()
+{
+    return $this->hasMany(Historial_stock::class, 'stock_id');
+}
 }
