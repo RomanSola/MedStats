@@ -191,85 +191,100 @@ class CirugiaController extends Controller
 
     public function estadisticas()
     {
-        $anioSeleccionado = request('anio') ?? now()->year;
+$desde = request('desde');
+$hasta = request('hasta');
 
-        $aniosDisponibles = \App\Models\Cirugia::select(DB::raw('YEAR(created_at) as anio'))
-        ->distinct()
-        ->orderBy('anio', 'desc')
-        ->pluck('anio');
+// Si no se especifica, se usa el año actual como rango completo
+if (!$desde || !$hasta) {
+    $anioSeleccionado = request('anio') ?? now()->year;
+    $desde = "$anioSeleccionado-01-01";
+    $hasta = "$anioSeleccionado-12-31";
+}
 
-        $total = \App\Models\Cirugia::whereYear('created_at', $anioSeleccionado)->count();
+$aniosDisponibles = \App\Models\Cirugia::select(DB::raw('YEAR(created_at) as anio'))
+    ->distinct()
+    ->orderBy('anio', 'desc')
+    ->pluck('anio');
 
-        $meses = \App\Models\Cirugia::select(DB::raw('MONTH(created_at) as mes'))
-        ->whereYear('created_at', $anioSeleccionado)
-        ->distinct()
-        ->count();
+// Base query reutilizable
+$baseQuery = \App\Models\Cirugia::whereBetween('created_at', [$desde, $hasta]);
 
-        $semanas = \App\Models\Cirugia::select(DB::raw('YEARWEEK(created_at, 1) as semana'))
-        ->whereYear('created_at', $anioSeleccionado)
-        ->distinct()
-        ->count();
+$total = $baseQuery->count();
 
-        $promedioMensual = $meses > 0 ? round($total / $meses, 2) : 0;
-        $promedioSemanal = $semanas > 0 ? round($total / $semanas, 2) : 0;
+$meses = (clone $baseQuery)
+    ->select(DB::raw('MONTH(created_at) as mes'))
+    ->distinct()
+    ->count();
 
+$semanas = (clone $baseQuery)
+    ->select(DB::raw('YEARWEEK(created_at, 1) as semana'))
+    ->distinct()
+    ->count();
 
-    
-        $porCirujano = \App\Models\Cirugia::select('cirujano_id', DB::raw('COUNT(*) as total'))
-            ->groupBy('cirujano_id')
-            ->with('get_cirujano')
-            ->get()
-            ->sortByDesc('total')
-            ->take(5);
-            $cirujanoLabels = $porCirujano->map(function ($item) {
-                $c = $item->get_cirujano;
-                return $c ? $c->nombre . ' ' . $c->apellido : 'Sin asignar';
-                })->values();
-            $cirujanoValores = $porCirujano->pluck('total')->values();
+$promedioMensual = $meses > 0 ? round($total / $meses, 2) : 0;
+$promedioSemanal = $semanas > 0 ? round($total / $semanas, 2) : 0;
 
-        $topEnfermeros = \App\Models\Cirugia::select('enfermero_id', DB::raw('COUNT(*) as total'))
-            ->groupBy('enfermero_id')
-            ->with('get_enfermero')
-            ->get()
-            ->sortByDesc('total')
-            ->take(5);
-            $enfermeroLabels = $topEnfermeros->map(function ($item) {
-                return optional($item->get_enfermero)->nombre . ' ' . optional($item->get_enfermero)->apellido;
-            });
+// Cirugías por cirujano
+$porCirujano = (clone $baseQuery)
+    ->select('cirujano_id', DB::raw('COUNT(*) as total'))
+    ->groupBy('cirujano_id')
+    ->with('get_cirujano')
+    ->get()
+    ->sortByDesc('total')
+    ->take(5);
 
-            $enfermeroValores = $topEnfermeros->pluck('total');
+$cirujanoLabels = $porCirujano->map(function ($item) {
+    $c = $item->get_cirujano;
+    return $c ? $c->nombre . ' ' . $c->apellido : 'Sin asignar';
+})->values();
 
-        // Distribución de cirugías por mes
-        $porMes = \App\Models\Cirugia::select(
-            DB::raw('MONTH(created_at) as mes'),
-            DB::raw('COUNT(*) as total')
-        )
-            ->groupBy(DB::raw('MONTH(created_at)'))
-            ->orderBy(DB::raw('MONTH(created_at)'))
-            ->get();
+$cirujanoValores = $porCirujano->pluck('total')->values();
 
-        // Agrega nombre del mes para visualización
-        $porMes->transform(function ($item) {
-            $item->mes_nombre = \Carbon\Carbon::create()->month($item->mes)->translatedFormat('F');
-        return $item;
-        });
+// Top enfermeros/as
+$topEnfermeros = (clone $baseQuery)
+    ->select('enfermero_id', DB::raw('COUNT(*) as total'))
+    ->groupBy('enfermero_id')
+    ->with('get_enfermero')
+    ->get()
+    ->sortByDesc('total')
+    ->take(5);
 
+$enfermeroLabels = $topEnfermeros->map(function ($item) {
+    return optional($item->get_enfermero)->nombre . ' ' . optional($item->get_enfermero)->apellido;
+});
 
+$enfermeroValores = $topEnfermeros->pluck('total');
 
-        $urgentes = \App\Models\Cirugia::where('urgencia', '1')->count();
-        $programadas = \App\Models\Cirugia::where('urgencia', '0')->count();
+// Distribución por mes
+$porMes = (clone $baseQuery)
+    ->select(DB::raw('MONTH(created_at) as mes'), DB::raw('COUNT(*) as total'))
+    ->groupBy(DB::raw('MONTH(created_at)'))
+    ->orderBy(DB::raw('MONTH(created_at)'))
+    ->get();
 
-        $porAnestesia = \App\Models\Cirugia::select('tipo_anestesia_id', DB::raw('COUNT(*) as total'))
-            ->groupBy('tipo_anestesia_id')
-            ->with('get_tipo_anestesia')
-            ->get();
-        
-        $porMesLabels = $porMes->pluck('mes')->map(function ($m) {
-            return \Carbon\Carbon::create()->month($m)->translatedFormat('F');
-            });
-        $porMesValores = $porMes->pluck('total');
-        $porMes = $porMes->sortBy('mes')->values();
+$porMes->transform(function ($item) {
+    $item->mes_nombre = \Carbon\Carbon::create()->month($item->mes)->translatedFormat('F');
+    return $item;
+});
 
+$porMesLabels = $porMes->pluck('mes')->map(function ($m) {
+    return \Carbon\Carbon::create()->month($m)->translatedFormat('F');
+});
+
+$porMesValores = $porMes->pluck('total');
+$porMes = $porMes->sortBy('mes')->values();
+
+// Urgentes y programadas
+$urgentes = (clone $baseQuery)->where('urgencia', '1')->count();
+$programadas = (clone $baseQuery)->where('urgencia', '0')->count();
+
+// Por tipo de anestesia
+$porAnestesia = (clone $baseQuery)
+    ->select('tipo_anestesia_id', DB::raw('COUNT(*) as total'))
+    ->groupBy('tipo_anestesia_id')
+    ->with('get_tipo_anestesia')
+    ->get();
+    $anioSeleccionado = request('anio') ?? \Carbon\Carbon::parse($desde)->year;
         return view('cirugias.estadisticas', compact(
         'porCirujano',
         'topEnfermeros', 
