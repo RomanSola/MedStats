@@ -118,54 +118,10 @@
                 </div>
 
             </div>            
-
-            {{-- Script de impresión --}}
-            <script>
-                function imprimirUltimosDiez() {
-                    const tablaOriginal = document.querySelector('.table-responsive table');
-                    const filas = tablaOriginal.querySelectorAll('tbody tr');
-                    const ultimasFilas = Array.from(filas).slice(-10);
-                    const encabezado = tablaOriginal.querySelector('thead').outerHTML;
-
-                    let cuerpoTabla = '';
-                    ultimasFilas.forEach(fila => {
-                        cuerpoTabla += fila.outerHTML;
-                    });
-
-                    const ventana = window.open('', '', 'width=900,height=700');
-                    ventana.document.write(`
-                        <html>
-                        <head>
-                            <title>Libro de Cirugías</title>
-                            <style>
-                                body { font-family: Arial, sans-serif; margin: 20px; }
-                                table { width: 100%; border-collapse: collapse; }
-                                th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-                                th { background-color: #f8d7da; }
-                            </style>
-                        </head>
-                        <body>
-                            <h2>Últimas 10 Cirugías Registradas</h2>
-                            <table>
-                                ${encabezado}
-                                <tbody>
-                                    ${cuerpoTabla}
-                                </tbody>
-                            </table>
-                        </body>
-                        </html>
-                    `);
-                    ventana.document.close();
-                    ventana.focus();
-                    ventana.print();
-                    ventana.close();
-                }
-            </script>
-
         </div>
         <!-- Botón de impresión -->
          <br>
-    <div class="mb-3">
+        <div class="mb-3">
         <button onclick="imprimirTablaCompleta()" class="btn btn-info me-2">
             🖨️ Imprimir toda la tabla
         </button>
@@ -194,6 +150,32 @@
 
     <!-- Funciones de impresión y exportación -->
     <script>
+    $(document).ready(function () {
+        $('#miTabla').DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'excelHtml5',
+                text: 'Exportar a Excel',
+                className: 'btn btn-success btn-sm'
+            },
+            {
+                extend: 'pdfHtml5',
+                text: 'Exportar a PDF',
+                className: 'btn btn-danger btn-sm',
+                orientation: 'landscape',
+                pageSize: 'A4',
+                customize: function (doc) {
+                    doc.defaultStyle.fontSize = 8;
+                }
+            }
+        ],
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
+        }
+        });
+    });
+
         function imprimirTablaCompleta() {
             const tablaOriginal = document.querySelector('.table-responsive table');
             const encabezado = tablaOriginal.querySelector('thead').outerHTML;
