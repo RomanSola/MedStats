@@ -13,6 +13,7 @@
             case 'ajustes':
                 $rutaAnterior = 'inicio';
                 break;
+
             //Todos los que deben volver a Ajustes
             case 'usuarios.index':
             case 'empleados.index':
@@ -129,25 +130,21 @@
                 break;
         }
     @endphp
+
     @if ($rutaActual !== 'inicio')
-        <div class="mt-3">
+        <div class="mt-3"
+            style="position: fixed; bottom: 20px; right: 20px; z-index: 9999;">
             <a href="{{ route($rutaAnterior) }}"
-                class="d-inline-flex align-items-center gap-2 px-4 py-2 rounded-pill border border-primary text-primary bg-white hover:bg-primary hover:text-white hover:shadow-lg transition-all duration-300 text-sm fw-semibold"
+                class="d-inline-flex align-items-center gap-2 px-3 py-2 rounded-circle border border-primary text-primary bg-white hover:bg-primary hover:text-white hover:shadow-lg transition-all duration-300 text-sm fw-semibold shadow"
                 style="text-decoration: none;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                     class="bi bi-arrow-left" viewBox="0 0 16 16">
                     <path fill-rule="evenodd"
                         d="M15 8a.5.5 0 0 1-.5.5H3.707l3.147 3.146a.5.5 0 0 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 0 1 .708.708L3.707 7.5H14.5A.5.5 0 0 1 15 8z" />
                 </svg>
-                Volver atrás
             </a>
         </div>
     @endif
-
-
-
-
-
 
     <!-- I begin to speak only when I am certain what I will say is not better left unsaid. - Cato the Younger -->
 </div>

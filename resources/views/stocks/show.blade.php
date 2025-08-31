@@ -13,9 +13,9 @@
         <p><span class="font-medium">Lote:</span> {{ $stock->lote }}</p>
     </div>
 
-    <div class="bg-white shadow rounded-lg border border-gray-200 overflow-auto">
-        <table class="min-w-full text-sm text-gray-800 table-auto">
-            <thead class="bg-gray-100 text-gray-700 font-semibold">
+        <div class="bg-white shadow rounded-lg border border-gray-200 overflow-auto">
+            <table class=" table table-hover table-bordered shadow-sm text-center rounded">
+                <thead>
                 <tr>
                     <th class="px-4 py-2 border text-center">Cantidad</th>
                     <th class="px-4 py-2 border text-center">Fecha</th>

@@ -3,6 +3,7 @@
 @section('titulo', 'Ficha del Paciente')
 
 @section('contenido')
+
 <div class="max-w-4xl mx-auto px-4 py-8">
 
     {{-- Título institucional --}}
@@ -78,10 +79,10 @@
     </div>
 
     {{-- Botón de retorno --}}
-    <div class="mt-6">
+    <div class="mt-8">
         <a href="{{ route('pacientes.index') }}"
-           class="btn btn-outline-primary px-5 py-2 rounded shadow-sm">
-           ← Volver al listado
+           class="btn btn-outline-secondary px-5 py-2 rounded shadow-sm">
+            Volver al stock
         </a>
     </div>
 </div>

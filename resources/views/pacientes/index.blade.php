@@ -5,12 +5,16 @@
 @section('contenido')
     <div class="max-w-7xl mx-auto px-4 py-8">
         <div class="flex justify-between items-center mb-6">
-            <h1 class="text-2xl font-semibold text-gray-800">Pacientes Registrados</h1>
+            <h1
+                class="text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent  bg-clip-text drop-shadow-md  flex items-center gap-2 px-2">
+                Pacientes Registrados</h1>
             <a href="{{ route('pacientes.create') }}"
-                class="bg-neutral-700 hover:bg-neutral-800 text-white font-medium py-2 px-6 rounded-full shadow">
-                + Ingresar Nuevo Paciente
+                class="inline-block bg-neutral-700 hover:bg-neutral-800 text-white font-medium py-2 px-6 rounded-full shadow-md cursor-pointer transition duration-300"
+                style="text-decoration: none;">
+                Ingresar Nuevo Paciente
             </a>
         </div>
+
         <!-- Buscador -->
         <form action="{{ route('pacientes.index') }}" method="GET" class="mb-4 flex space-x-2">
             <input type="text" name="buscar" value="{{ request('buscar') }}"
@@ -19,12 +23,13 @@
             <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
                 Buscar
             </button>
-            <a href="{{ route('pacientes.index') }}" class="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300">
+            <button href="{{ route('pacientes.index') }}"
+                class="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300">
                 Limpiar
-            </a>
+            </button>
         </form>
-        
-        
+
+
         @if (session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
@@ -38,8 +43,8 @@
         @endif
 
         <div class="bg-white shadow rounded-lg border border-gray-200 overflow-auto">
-            <table class="min-w-full text-sm text-gray-800 table-auto">
-                <thead class="bg-gray-100 text-gray-700 font-semibold">
+            <table class=" table table-hover table-bordered shadow-sm text-center rounded">
+                <thead>
                     <tr>
                         <th class="px-4 py-2 border">DNI</th>
                         <th class="px-4 py-2 border">Nombre</th>
@@ -63,14 +68,14 @@
                             <td class="px-4 py-2 border">{{ $paciente->cama?->codigo ?? '—' }}</td>
                             <td class="px-4 py-2 border text-center space-x-2">
                                 <a href="{{ route('pacientes.show', $paciente) }}"
-                                    class="text-neutral-700 hover:underline font-medium">Ver</a>
+                                    class="btn btn-outline-primary btn-sm me-1">Ver</a>
                                 <a href="{{ route('pacientes.edit', $paciente) }}"
-                                    class="text-neutral-700 hover:underline font-medium">Editar</a>
+                                    class="btn btn-outline-warning btn-sm me-1">Editar</a>
                                 @if ($paciente->cama_id)
                                     <form action="{{ route('pacientes.darDeAlta', $paciente) }}" method="POST"
                                         class="inline-block form-dar-de-alta">
                                         @csrf
-                                        <button type="submit" class="text-green-600 hover:underline font-medium">Dar de
+                                        <button type="submit" class="btn btn-outline-success btn-sm me-1">Dar de
                                             alta</button>
                                     </form>
                                 @else
@@ -84,7 +89,7 @@
                                     class="inline-block form-eliminar">
                                     @csrf @method('DELETE')
                                     <button type="submit"
-                                        class="text-red-600 hover:underline font-medium">Eliminar</button>
+                                        class="btn btn-outline-danger btn-sm me-1">Eliminar</button>
                                 </form>
                             </td>
                         </tr>
@@ -160,69 +165,69 @@
 
     <!-- SCRIPT PARA MANEJAR LOS MODALES -->
     <script src="{{ asset('js/modal.js') }}">
-    /*
-        document.addEventListener('DOMContentLoaded', function() {
-            const modal = document.getElementById('modal-confirmacion');
-            const mensaje = document.getElementById('modal-mensaje');
-            const btnCancelar = document.getElementById('modal-cancelar');
-            const btnConfirmar = document.getElementById('modal-confirmar');
+        /*
+                document.addEventListener('DOMContentLoaded', function() {
+                    const modal = document.getElementById('modal-confirmacion');
+                    const mensaje = document.getElementById('modal-mensaje');
+                    const btnCancelar = document.getElementById('modal-cancelar');
+                    const btnConfirmar = document.getElementById('modal-confirmar');
 
-            let formularioActual = null;
+                    let formularioActual = null;
 
-            // Abre el modal con el mensaje deseado y referencia al formulario
-            function abrirModal(texto, form) {
-                mensaje.textContent = texto;
-                formularioActual = form;
-                modal.style.display = 'block';
-            }
+                    // Abre el modal con el mensaje deseado y referencia al formulario
+                    function abrirModal(texto, form) {
+                        mensaje.textContent = texto;
+                        formularioActual = form;
+                        modal.style.display = 'block';
+                    }
 
-            // Cierra el modal si el usuario cancela
-            btnCancelar.addEventListener('click', () => {
-                modal.style.display = 'none';
-                formularioActual = null;
-            });
+                    // Cierra el modal si el usuario cancela
+                    btnCancelar.addEventListener('click', () => {
+                        modal.style.display = 'none';
+                        formularioActual = null;
+                    });
 
-            // Envía el formulario si el usuario confirma
-            btnConfirmar.addEventListener('click', () => {
-                if (formularioActual) formularioActual.submit();
-            });
+                    // Envía el formulario si el usuario confirma
+                    btnConfirmar.addEventListener('click', () => {
+                        if (formularioActual) formularioActual.submit();
+                    });
 
-            // CONFIRMACIÓN PARA DAR DE ALTA
-            document.querySelectorAll('.form-dar-de-alta').forEach(form => {
-                form.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    abrirModal(
-                        '¿Estás seguro que querés dar de alta a este paciente? Esta acción liberará la cama asignada.',
-                        form);
+                    // CONFIRMACIÓN PARA DAR DE ALTA
+                    document.querySelectorAll('.form-dar-de-alta').forEach(form => {
+                        form.addEventListener('submit', function(e) {
+                            e.preventDefault();
+                            abrirModal(
+                                '¿Estás seguro que querés dar de alta a este paciente? Esta acción liberará la cama asignada.',
+                                form);
+                        });
+                    });
+
+                    // CONFIRMACIÓN PARA ELIMINAR
+                    document.querySelectorAll('.form-eliminar').forEach(form => {
+                        form.addEventListener('submit', function(e) {
+                            e.preventDefault();
+                            abrirModal(
+                                '¿Seguro que querés eliminar este paciente? Esta acción no se puede deshacer.',
+                                form);
+                        });
+                    });
+
+                    // CONFIRMACIÓN PARA ASIGNAR
+                    document.querySelectorAll('.form-asignar').forEach(form => {
+                        form.addEventListener('submit', function(e) {
+                            e.preventDefault();
+                            abrirModal('¿Querés asignar una cama a este paciente?', form);
+                        });
+                    });
+
+                    // Cierra el modal si se hace clic fuera del contenido
+                    window.onclick = function(event) {
+                        if (event.target == modal) {
+                            modal.style.display = "none";
+                            formularioActual = null;
+                        }
+                    };
                 });
-            });
-
-            // CONFIRMACIÓN PARA ELIMINAR
-            document.querySelectorAll('.form-eliminar').forEach(form => {
-                form.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    abrirModal(
-                        '¿Seguro que querés eliminar este paciente? Esta acción no se puede deshacer.',
-                        form);
-                });
-            });
-
-            // CONFIRMACIÓN PARA ASIGNAR
-            document.querySelectorAll('.form-asignar').forEach(form => {
-                form.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    abrirModal('¿Querés asignar una cama a este paciente?', form);
-                });
-            });
-
-            // Cierra el modal si se hace clic fuera del contenido
-            window.onclick = function(event) {
-                if (event.target == modal) {
-                    modal.style.display = "none";
-                    formularioActual = null;
-                }
-            };
-        });
-    */
+            */
     </script>
 @endsection

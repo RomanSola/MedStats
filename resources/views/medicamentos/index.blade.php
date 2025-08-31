@@ -5,29 +5,29 @@
 @section('contenido')
 <div class="container mt-4">
 
-    {{-- Título institucional verde con degradado --}}
-    <h2 class="text-3xl fw-bold bg-gradient-to-r from-green-600 via-green-400 to-green-600 text-transparent bg-clip-text drop-shadow mb-4">
-         Gestor de Medicamentos
-    </h2>
+        <div class="max-w-7xl mx-auto px-4 py-8">
+        <div class="flex justify-between items-center mb-6">
+            <h1
+                class="text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent  bg-clip-text drop-shadow-md  flex items-center gap-2 px-2">
+                Gestor de Medicamentos</h1>
+            <a href="{{ route('medicamentos.create') }}"
+                class="inline-block bg-neutral-700 hover:bg-neutral-800 text-white font-medium py-2 px-6 rounded-full shadow-md cursor-pointer transition duration-300"
+                style="text-decoration: none;">
+                Agregar Nuevo Medicamento
+            </a>
+        </div>
 
     {{-- Contenedor principal con borde verde --}}
-    <div class="card border-success shadow-sm mb-4">
+    <div class="card shadow-sm mb-4">
         <div class="card-body">
 
             <p class="mb-3 text-secondary fw-semibold">
                 Desde aquí podés administrar los medicamentos disponibles en el sistema.
             </p>
-
-            {{-- Botón de acción --}}
-            <a href="{{ route('medicamentos.create') }}"
-               class="btn btn-outline-success fw-semibold mb-3">
-                 Agregar Nuevo Medicamento
-            </a>
-
             {{-- Tabla de medicamentos --}}
-            <div class="table-responsive">
-                <table class="table table-bordered border-success align-middle">
-                    <thead class="table-success text-dark">
+        <div class="bg-white shadow rounded-lg border border-gray-200 overflow-auto">
+            <table class=" table table-hover table-bordered shadow-sm text-center rounded">
+                <thead>
                         <tr>
                             <th>Nombre del Medicamento</th>
                             <th class="text-center">Acciones</th>

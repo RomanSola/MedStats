@@ -3,200 +3,140 @@
 @section('title', 'Ver Cirugía')
 
 @section('contenido')
-<div class="container py-4">
-    {{-- Título institucional rojo --}}
-    <h2 class="text-danger fw-bold border-bottom border-danger pb-2 mb-4 text-center">
-        Detalle de la cirugía
-    </h2>
+<div class="max-w-4xl mx-auto px-6 py-8">
 
-    {{-- Contenedor con borde rojo institucional --}}
-    <div class="card border-danger shadow-sm">
-        <div class="card-body text-dark">
-            <form>
+    {{-- Título --}}
+    <h1 class="text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent bg-clip-text drop-shadow mb-6">
+        Detalle de la Cirugía
+    </h1>
 
-                {{-- Paciente --}}
-                <div class="row g-3 mt-2 justify-content-center">
-                    <div class="col-md-4">
-                        <label class="form-label">Paciente</label>
-                        <input type="text" class="form-control border border-danger shadow-sm"
-                               value="{{ $cirugia->get_paciente->nombre }} {{ $cirugia->get_paciente->apellido }}" readonly>
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label">DNI</label>
-                        <input type="text" class="form-control border border-danger shadow-sm"
-                               value="{{ $cirugia->get_paciente->dni }}" readonly>
-                    </div>
+    {{-- Tarjeta principal --}}
+    <div class="bg-white shadow rounded-lg p-6 border border-gray-200 space-y-5 text-[15px]">
+
+        {{-- Paciente --}}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <p class="text-gray-500 uppercase tracking-wide text-sm">Paciente</p>
+                <p class="font-semibold text-gray-800">{{ $cirugia->get_paciente->nombre }} {{ $cirugia->get_paciente->apellido }}</p>
+            </div>
+            <div>
+                <p class="text-gray-500 uppercase tracking-wide text-sm">DNI</p>
+                <p class="font-semibold text-gray-800">{{ $cirugia->get_paciente->dni }}</p>
+            </div>
+        </div>
+
+        {{-- Procedimiento --}}
+        <div>
+            <p class="text-gray-500 uppercase text-sm">Procedimiento</p>
+            <p class="text-gray-800 font-medium">
+                {{ $cirugia->get_procedimiento->nombre_procedimiento }} - {{ $cirugia->get_procedimiento->descripcion }}
+            </p>
+        </div>
+
+        {{-- Quirófano --}}
+        <div>
+            <p class="text-gray-500 uppercase text-sm">Quirófano</p>
+            <p class="text-gray-800 font-medium">
+                {{ $cirugia->get_quirofano->nombre }} - {{ $cirugia->get_quirofano->descripcion }}
+            </p>
+        </div>
+
+        {{-- Cirujano --}}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <p class="text-gray-500 uppercase text-sm">Cirujano</p>
+                <p class="text-gray-800 font-medium">{{ $cirugia->get_cirujano->nombre }} {{ $cirugia->get_cirujano->apellido }}</p>
+            </div>
+            <div>
+                <p class="text-gray-500 uppercase text-sm">DNI</p>
+                <p class="text-gray-800 font-medium">{{ $cirugia->get_cirujano->dni }}</p>
+            </div>
+        </div>
+
+        {{-- Ayudantes --}}
+        @foreach (['1', '2', '3'] as $num)
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <p class="text-gray-500 uppercase text-sm">Ayudante {{ $num }}</p>
+                <p class="text-gray-800 font-medium">
+                    {{ $cirugia->{'get_ayudante' . $num}->nombre ?? '' }} {{ $cirugia->{'get_ayudante' . $num}->apellido ?? '' }}
+                </p>
+            </div>
+            <div>
+                <p class="text-gray-500 uppercase text-sm">DNI</p>
+                <p class="text-gray-800 font-medium">{{ $cirugia->{'get_ayudante' . $num}->dni ?? '' }}</p>
+            </div>
+        </div>
+        @endforeach
+
+        {{-- Tipo de Anestesia --}}
+        <div>
+            <p class="text-gray-500 uppercase text-sm">Tipo de Anestesia</p>
+            <p class="text-gray-800 font-medium">{{ $cirugia->get_tipo_anestesia->nombre }}</p>
+        </div>
+
+        {{-- Instrumentador --}}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <p class="text-gray-500 uppercase text-sm">Instrumentador</p>
+                <p class="text-gray-800 font-medium">
+                    {{ $cirugia->get_instrumentador->nombre }} {{ $cirugia->get_instrumentador->apellido }}
+                </p>
+            </div>
+            <div>
+                <p class="text-gray-500 uppercase text-sm">DNI</p>
+                <p class="text-gray-800 font-medium">{{ $cirugia->get_instrumentador->dni }}</p>
+            </div>
+        </div>
+
+        {{-- Enfermero --}}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <p class="text-gray-500 uppercase text-sm">Enfermero</p>
+                <p class="text-gray-800 font-medium">
+                    {{ $cirugia->get_enfermero->nombre }} {{ $cirugia->get_enfermero->apellido }}
+                </p>
+            </div>
+            <div>
+                <p class="text-gray-500 uppercase text-sm">DNI</p>
+                <p class="text-gray-800 font-medium">{{ $cirugia->get_enfermero->dni }}</p>
+            </div>
+        </div>
+
+        {{-- Urgencia como switch visual --}}
+        <div>
+            <p class="text-gray-500 uppercase text-sm mb-1">Urgencia</p>
+            <label class="inline-flex items-center cursor-default">
+                <input type="checkbox" class="sr-only peer" disabled {{ $cirugia->urgencia ? 'checked' : '' }}>
+                <div class="w-11 h-6 bg-gray-300 rounded-full peer-checked:bg-[#2BA8A0] relative transition-all">
+                    <span class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition peer-checked:translate-x-5"></span>
                 </div>
+                <span class="ml-3 text-base font-medium text-gray-800">
+                    {{ $cirugia->urgencia ? 'Sí' : 'No' }}
+                </span>
+            </label>
+        </div>
 
-
-                    <div class="row g-3 mt-2 justify-content-center">
-                        <div class="col-md-4">
-                            <label class="form-label">Procedimiento</label>
-                            <input type="text" class="form-control"
-                                value="{{ $cirugia->get_procedimiento->nombre_procedimiento }} - {{ $cirugia->get_procedimiento->descripcion }}"
-                                readonly>
-                        </div>
-                        <div class="col-md-4"></div> {{-- columna vacía --}}
-
-                    </div>
-                    <div class="col-md-4"></div>
-                </div>
-
-
-                    <div class="row g-3 mt-2 justify-content-center">
-                        <div class="col-md-4">
-                            <label class="form-label">Quirofano</label>
-                            <input type="text" class="form-control"
-                                value="{{ $cirugia->get_quirofano->nombre }} - {{ $cirugia->get_quirofano->descripcion }}"
-                                readonly>
-                        </div>
-                        <div class="col-md-4"></div> {{-- columna vacía --}}
-
-                    </div>
-                    <div class="col-md-4"></div>
-                </div>
-
-                {{-- Cirujano --}}
-                <div class="row g-3 mt-2 justify-content-center">
-                    <div class="col-md-4">
-                        <label class="form-label">Cirujano</label>
-                        <input type="text" class="form-control border border-danger shadow-sm"
-                               value="{{ $cirugia->get_cirujano->nombre }} {{ $cirugia->get_cirujano->apellido }}" readonly>
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label">DNI</label>
-                        <input type="text" class="form-control border border-danger shadow-sm"
-                               value="{{ $cirugia->get_cirujano->dni }}" readonly>
-                    </div>
-                </div>
-
-
-                    <div class="row g-3 mt-2 justify-content-center">
-                        <div class="col-md-4">
-                            <label class="form-label">Ayudante 1</label>
-                            <input type="text" class="form-control"
-                                value="{{ $cirugia->get_ayudante1->nombre ?? '' }} {{ $cirugia->get_ayudante1->apellido ?? '' }}"
-                                readonly>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">DNI</label>
-                            <input type="text" class="form-control" value="{{ $cirugia->get_ayudante1->dni ?? '' }}"
-                                readonly>
-                        </div>
-
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label">DNI</label>
-                        <input type="text" class="form-control border border-danger shadow-sm"
-                               value="{{ optional($cirugia->{'get_ayudante'.$i})->dni }}" readonly>
-                    </div>
-                </div>
-                @endforeach
-
-                    <div class="row g-3 mt-2 justify-content-center">
-                        <div class="col-md-4">
-                            <label class="form-label">Ayudante 2</label>
-                            <input type="text" class="form-control"
-                                value="{{ $cirugia->get_ayudante2->nombre ?? '' }} {{ $cirugia->get_ayudante2->apellido ?? '' }}"
-                                readonly>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">DNI</label>
-                            <input type="text" class="form-control" value="{{ $cirugia->get_ayudante2->dni ?? '' }}"
-                                readonly>
-                        </div>
-                    </div>
-
-                    <div class="row g-3 mt-2 justify-content-center">
-                        <div class="col-md-4">
-                            <label class="form-label">Ayudante 3</label>
-                            <input type="text" class="form-control"
-                                value="{{ $cirugia->get_ayudante3->nombre ?? '' }} {{ $cirugia->get_ayudante3->apellido ?? '' }}"
-                                readonly>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">DNI</label>
-                            <input type="text" class="form-control" value="{{ $cirugia->get_ayudante3->dni ?? '' }}"
-                                readonly>
-                        </div>
-
-                    </div>
-                </div>
-
-                {{-- Tipo de anestesia --}}
-                <div class="row g-3 mt-2 justify-content-center">
-                    <div class="col-md-4">
-                        <label class="form-label">Tipo de Anestesia</label>
-                        <input type="text" class="form-control border border-danger shadow-sm"
-                               value="{{ $cirugia->get_tipo_anestesia->nombre }}" readonly>
-                    </div>
-                    <div class="col-md-4"></div>
-                </div>
-
-                {{-- Instrumentador --}}
-                <div class="row g-3 mt-2 justify-content-center">
-                    <div class="col-md-4">
-                        <label class="form-label">Instrumentador</label>
-                        <input type="text" class="form-control border border-danger shadow-sm"
-                               value="{{ $cirugia->get_instrumentador->nombre }} {{ $cirugia->get_instrumentador->apellido }}" readonly>
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label">DNI</label>
-                        <input type="text" class="form-control border border-danger shadow-sm"
-                               value="{{ $cirugia->get_instrumentador->dni }}" readonly>
-                    </div>
-                </div>
-
-                {{-- Enfermero --}}
-                <div class="row g-3 mt-2 justify-content-center">
-                    <div class="col-md-4">
-                        <label class="form-label">Enfermero</label>
-                        <input type="text" class="form-control border border-danger shadow-sm"
-                               value="{{ $cirugia->get_enfermero->nombre }} {{ $cirugia->get_enfermero->apellido }}" readonly>
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label">DNI</label>
-                        <input type="text" class="form-control border border-danger shadow-sm"
-                               value="{{ $cirugia->get_enfermero->dni }}" readonly>
-                    </div>
-                </div>
-
-                {{-- Urgencia --}}
-                <div class="row g-3 mt-2 justify-content-center">
-                    <div class="col-md-4">
-                        <label class="form-label">Urgencia</label>
-                        <input type="text" class="form-control border border-danger shadow-sm"
-                               value="{{ $cirugia->urgencia ? 'Sí' : 'No' }}" readonly>
-                    </div>
-                    <div class="col-md-4"></div>
-                </div>
-
-                    <div class="row g-3 mt-2 justify-content-center">
-                        <div class="col-md-4">
-                            <label class="form-label">Fecha de la cirugia</label>
-                            <input type="text" class="form-control" value="{{ $cirugia->fecha_cirugia }}" readonly>
-                        </div>
-                    </div>
-
-                    <div class="row g-3 mt-2 justify-content-center">
-                        <div class="col-md-4">
-                            <label class="form-label">Hora de la cirugia</label>
-                            <input type="text" class="form-control" value="{{ $cirugia->hora_cirugia }}" readonly>
-                        </div>
-                    </div>
-
-                    <div class="row g-3 mt-2 justify-content-center">
-                        <div class="col-md-4">
-                            <label class="form-label">Urgencia</label>
-                            <input type="text" class="form-control" value="{{ $cirugia->urgencia ? 'Sí' : 'No' }}"
-                                readonly>
-                        </div>
-                        <div class="col-md-4"></div> {{-- columna vacía --}}
-                    </div>
-
-
-            </form>
+        {{-- Fecha y hora --}}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <p class="text-gray-500 uppercase text-sm">Fecha de la cirugía</p>
+                <p class="text-gray-800 font-medium">{{ $cirugia->fecha_cirugia }}</p>
+            </div>
+            <div>
+                <p class="text-gray-500 uppercase text-sm">Hora de la cirugía</p>
+                <p class="text-gray-800 font-medium">{{ $cirugia->hora_cirugia }}</p>
+            </div>
         </div>
     </div>
+
+    {{-- Botón volver --}}
+    <div class="mt-6">
+        <a href="{{ route('cirugias.index') }}"
+           class="btn btn-outline-secondary px-4 py-2 text-sm rounded shadow-sm">
+            Volver
+        </a>
+    </div>
+
 </div>
 @endsection

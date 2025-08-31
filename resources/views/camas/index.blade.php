@@ -5,19 +5,16 @@
 @section('contenido')
 <div class="max-w-6xl mx-auto px-4 py-4">
 
-    {{-- Título institucional --}}
-    <h1 class="text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent bg-clip-text drop-shadow-md mb-4">
-        Listado de Camas
-    </h1>
-
-    {{-- Botón agregar cama --}}
-    <div class="flex justify-end mb-2">
-        <a href="{{ route('camas.create') }}"
-           class="inline-block bg-neutral-700 hover:bg-neutral-800 text-white font-medium py-2 px-5 rounded-full shadow-md transition duration-300"
-           style="text-decoration: none;">
-           Agregar Nueva Cama
-        </a>
-    </div>
+        <div class="flex justify-between items-center mb-6">
+            <h1
+                class="text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent  bg-clip-text drop-shadow-md  flex items-center gap-2 px-2">
+                 Listado de Camas</h1>
+          <!-- <a href="{{ route('camas.create') }}"
+                class="inline-block bg-neutral-700 hover:bg-neutral-800 text-white font-medium py-2 px-6 rounded-full shadow-md cursor-pointer transition duration-300"
+                style="text-decoration: none;">
+                Agregar Nueva Cama
+            </a>-->
+        </div>
 
     {{-- Filtro por sala --}}
     <form method="GET" action="{{ route('camas.index') }}" class="mb-4">
@@ -37,75 +34,77 @@
 
     {{-- Contenedor azul degradado --}}
     <div class="p-[1px] rounded-xl bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] shadow-md mb-4">
-        <div class="bg-white rounded-xl p-4">
-            <div class="row w-full">
-                @foreach ($camas as $cama)
-                    <div class="container col-3 bg-white rounded-xl border border-gray-400 shadow-lg p-3 m-2 text-center">
-                        <h3 class="text-base font-semibold text-gray-700 mb-1">
-                            Habitación {{ $cama->get_habitacion->numero ?? 'Sin asignar' }}
-                        </h3>
+    <div class="bg-white rounded-xl p-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            @foreach ($camas as $cama)
+                <div class="bg-white rounded-xl border border-gray-300 shadow p-4 text-center">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2">
+                        Habitación {{ $cama->get_habitacion->numero ?? 'Sin asignar' }}
+                    </h3>
 
-                        <div class="bg-gray-100 rounded-lg p-3 mb-2 shadow-sm">
-                            <h5 class="text-sm font-bold text-gray-800 mb-1">
-                                Cama {{ $cama->codigo }}
-                            </h5>
+                    <div class="bg-gray-100 rounded-lg p-3 mb-2 shadow-inner">
+                        <h5 class="text-md font-bold text-gray-800 mb-3">
+                            Cama {{ $cama->codigo }}
+                        </h5>
 
-                            {{-- Datos del paciente --}}
-                            @if ($cama->ocupada && $cama->paciente)
-                                <div class="text-left text-sm bg-white border border-gray-300 rounded px-2 py-2 mb-2">
-                                    <p><strong>Nombre:</strong> {{ $cama->paciente->nombre }} {{ $cama->paciente->apellido }}</p>
-                                    <p><strong>DNI:</strong> {{ $cama->paciente->dni }}</p>
+                        {{-- Datos del paciente --}}
+                        @if ($cama->ocupada && $cama->paciente)
+                            <div class="text-left text-sm bg-white border border-gray-200 rounded-lg px-3 py-2 mb-3 space-y-1">
+                                <p><strong>Nombre:</strong> {{ $cama->paciente->nombre }} {{ $cama->paciente->apellido }}</p>
+                                <p><strong>DNI:</strong> {{ $cama->paciente->dni }}</p>
 
-                                    @php
-                                        $fechaNacimiento = \Carbon\Carbon::parse($cama->paciente->fecha_nacimiento);
-                                        $hoy = \Carbon\Carbon::now();
-                                        $dias = $fechaNacimiento->diffInDays($hoy);
-                                        $semanas = floor($dias / 7);
-                                        $meses = $fechaNacimiento->diffInMonths($hoy);
-                                        $anios = $fechaNacimiento->diffInYears($hoy);
-                                        $mesesExtras = $meses - ($anios * 12);
-                                    @endphp
+                                @php
+                                    $fechaNacimiento = \Carbon\Carbon::parse($cama->paciente->fecha_nacimiento);
+                                    $hoy = \Carbon\Carbon::now();
+                                    $dias = $fechaNacimiento->diffInDays($hoy);
+                                    $semanas = floor($dias / 7);
+                                    $meses = $fechaNacimiento->diffInMonths($hoy);
+                                    $anios = $fechaNacimiento->diffInYears($hoy);
+                                    $mesesExtras = $meses - ($anios * 12);
+                                @endphp
 
-                                    @if ($dias < 15)
-                                        <p><strong>Edad:</strong> {{ $dias }} {{ $dias === 1 ? 'día' : 'días' }}</p>
-                                    @elseif ($dias < 31)
-                                        <p><strong>Edad:</strong> {{ $semanas }} {{ $semanas === 1 ? 'semana' : 'semanas' }}</p>
-                                    @elseif ($anios < 1)
-                                        <p><strong>Edad:</strong> {{ $meses }} {{ $meses === 1 ? 'mes' : 'meses' }}</p>
-                                    @elseif ($anios < 3)
-                                        <p><strong>Edad:</strong> {{ $anios }} {{ $anios === 1 ? 'año' : 'años' }}
-                                            @if ($mesesExtras > 0)
-                                                ({{ $mesesExtras }} {{ $mesesExtras === 1 ? 'mes' : 'meses' }})
-                                            @endif
-                                        </p>
-                                    @else
-                                        <p><strong>Edad:</strong> {{ $anios }} años</p>
-                                    @endif
+                                @if ($dias < 15)
+                                    <p><strong>Edad:</strong> {{ $dias }} {{ $dias === 1 ? 'día' : 'días' }}</p>
+                                @elseif ($dias < 31)
+                                    <p><strong>Edad:</strong> {{ $semanas }} {{ $semanas === 1 ? 'semana' : 'semanas' }}</p>
+                                @elseif ($anios < 1)
+                                    <p><strong>Edad:</strong> {{ $meses }} {{ $meses === 1 ? 'mes' : 'meses' }}</p>
+                                @elseif ($anios < 3)
+                                    <p><strong>Edad:</strong> {{ $anios }} {{ $anios === 1 ? 'año' : 'años' }}
+                                        @if ($mesesExtras > 0)
+                                            ({{ $mesesExtras }} {{ $mesesExtras === 1 ? 'mes' : 'meses' }})
+                                        @endif
+                                    </p>
+                                @else
+                                    <p><strong>Edad:</strong> {{ $anios }} años</p>
+                                @endif
 
-                                    <p><strong>Género:</strong> {{ $cama->paciente->genero }}</p>
-                                    <p><strong>Teléfono:</strong> {{ $cama->paciente->telefono }}</p>
-                                    <p><strong>Dirección:</strong> {{ $cama->paciente->direccion }}</p>
-                                </div>
-                            @endif
+                                <p><strong>Género:</strong> {{ $cama->paciente->genero }}</p>
+                                <p><strong>Teléfono:</strong> {{ $cama->paciente->telefono }}</p>
+                                <p><strong>Dirección:</strong> {{ $cama->paciente->direccion }}</p>
+                            </div>
+                        @endif
 
-                            {{-- Estado --}}
-                            <h4 class="text-xs font-semibold text-white px-2 py-1 rounded-full inline-block mb-2
+                        {{-- Estado --}}
+                        <div class="mb-3">
+                            <span class="text-xs font-semibold text-white px-3 py-1 rounded-full inline-block
                                 {{ $cama->ocupada == 'ocupada' ? 'bg-red-500' : 'bg-green-500' }}">
                                 {{ $cama->ocupada == 'ocupada' ? 'OCUPADA' : 'LIBRE' }}
-                            </h4>
+                            </span>
+                        </div>
 
-                            {{-- Botones --}}
+                        {{-- Botones --}}
+                        <div class="flex flex-col items-center space-y-2">
                             @if ($cama->ocupada && $cama->paciente)
-                                <form action="{{ route('pacientes.darDeAlta', $cama->paciente) }}" method="POST" class="mb-2">
+                                <form action="{{ route('pacientes.darDeAlta', $cama->paciente) }}" method="POST">
                                     @csrf
-                                    <button type="submit" class="btn btn-outline-danger btn-sm">
+                                    <button type="submit" class="btn btn-outline-success btn-sm">
                                         Dar de Alta
                                     </button>
                                 </form>
-
                             @else
                                 <button type="button"
-                                        class="btn btn-outline-success btn-sm"
+                                        class="btn btn-outline-secondary btn-sm"
                                         data-toggle="modal"
                                         data-target="#asignarPacienteModal"
                                         data-cama-id="{{ $cama->id }}">
@@ -114,15 +113,17 @@
                             @endif
 
                             <a href="{{ route('camas.edit', ['cama' => $cama->id]) }}"
-                               class="btn btn-outline-warning btn-sm mt-1">
-                               Editar cama
+                               class="btn btn-outline-warning btn-sm">
+                                Editar cama
                             </a>
                         </div>
                     </div>
-                @endforeach
-            </div>
+                </div>
+            @endforeach
         </div>
     </div>
+</div>
+
 </div>
 
 {{-- Modal --}}
