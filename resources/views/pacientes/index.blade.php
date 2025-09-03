@@ -82,7 +82,7 @@
                                     <form action="{{ route('pacientes.asignar', $paciente) }}" method="GET"
                                         class="inline-block form-asignar">
                                         <button type="submit"
-                                            class="text-blue-700 hover:underline font-medium">Asignar</button>
+                                            class="btn btn-outline-secondary btn-sm me-1"> Asignar </button>
                                     </form>
                                 @endif
                                 <form action="{{ route('pacientes.destroy', $paciente) }}" method="POST"

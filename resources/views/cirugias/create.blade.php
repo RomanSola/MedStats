@@ -4,9 +4,15 @@
 
 @section('contenido')
     <div class="container mt-4">
-        <h2 class="mb-4">Registrar Nueva Cirugía</h2>
+        <div class="flex justify-between items-center mb-6">
+            <h1
+                class="text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent  bg-clip-text drop-shadow-md  flex items-center gap-2 px-2">
+                Agregar Nueva Cirugía</h1>
+        </div>
 
-        <div class="card border-warning">
+
+        {{-- Contenedor con borde verde institucional --}}
+        <div class="card  shadow-sm">
             <div class="card-body">
                 <form action="{{ route('cirugias.store') }}" method="POST">
                     @csrf
@@ -254,8 +260,22 @@
                             <small class="text-danger"> {{ $message }} </small>
                         @enderror
                     </div>
-                    <button class="btn btn-warning">Agregar</button>
-                    <a href="{{ route('cirugias.index') }}" class="btn btn-outline-secondary">Cancelar</a>
+                    <!-- Botón -->
+                    <div class="flex justify-between pt-4">
+
+
+                        <a href="{{ route('cirugias.index') }}"
+                            class="btn btn-outline-danger px-5 py-2 rounded shadow-sm">
+                             Cancelar
+                        </a>
+
+
+                        <button type="submit"
+                            class="inline-block bg-neutral-700 hover:bg-neutral-800 text-white font-medium py-2 px-6 rounded-full shadow-md cursor-pointer transition duration-300"
+                            style="text-decoration: none;">
+                            Registrar Cirugía
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>
@@ -265,7 +285,7 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    
+
     <style>
         /* Estilo para los combos de búsqueda */
         .select2-container--default .select2-selection--single {
@@ -274,11 +294,11 @@
             height: 38px;
             padding: 5px;
         }
-        
+
         .select2-container--default .select2-selection--single .select2-selection__arrow {
             height: 36px;
         }
-        
+
         /* Estilo para el checkbox moderno */
         .switch {
             position: relative;
@@ -286,13 +306,13 @@
             width: 60px;
             height: 34px;
         }
-        
+
         .switch input {
             opacity: 0;
             width: 0;
             height: 0;
         }
-        
+
         .slider {
             position: absolute;
             cursor: pointer;
@@ -303,7 +323,7 @@
             background-color: #ccc;
             transition: .4s;
         }
-        
+
         .slider:before {
             position: absolute;
             content: "";
@@ -314,28 +334,28 @@
             background-color: white;
             transition: .4s;
         }
-        
-        input:checked + .slider {
+
+        input:checked+.slider {
             background-color: #ffc107;
         }
-        
-        input:focus + .slider {
+
+        input:focus+.slider {
             box-shadow: 0 0 1px #ffc107;
         }
-        
-        input:checked + .slider:before {
+
+        input:checked+.slider:before {
             transform: translateX(26px);
         }
-        
+
         .slider.round {
             border-radius: 34px;
         }
-        
+
         .slider.round:before {
             border-radius: 50%;
         }
     </style>
-    
+
     <script>
         $(document).ready(function() {
             // Inicializar Select2 en todos los selects con la clase 'select2'

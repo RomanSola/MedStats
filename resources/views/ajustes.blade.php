@@ -67,12 +67,11 @@
                                 'route' => route('empleados.index'),
                                 'btn' => 'Ir a Empleados',
                             ],
-                            [
-                                'title' => 'Cirugías',
-                                'text' => 'Ver o agregar nombres de cirugías.',
-                                'route' => route('cirugias.index'),
-                                'btn' => 'Ir a Cirugías',
-                            ],
+                            //[
+                                //'title' => 'Cirugías',
+                               ////'route' => route('cirugias.index'),
+                                //'btn' => 'Ir a Cirugías',
+                            //],//--}}
                             [
                                 'title' => 'Roles de Usuario',
                                 'text' => 'Gestionar los perfiles y permisos del sistema.',

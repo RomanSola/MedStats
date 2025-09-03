@@ -21,7 +21,7 @@
 
             <div class="card border">
                 <div class="card-body">
-                    <p class="card-text">Administrá las cirugías registradas en el sistema. Podés ver detalles y editarlos.
+                    <p class="mb-3 text-secondary fw-semibold">Administrá las cirugías registradas en el sistema. Podés ver detalles y editarlos.
                     </p>
                     <br>
                     <div class="bg-white shadow rounded-lg border border-gray-200 overflow-auto">
