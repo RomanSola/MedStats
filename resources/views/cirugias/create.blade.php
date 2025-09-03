@@ -69,13 +69,15 @@
                             <select name="cirujano_id" id="cirujano_id" class="form-control select2">
                                 <option value="">Seleccione el Cirujano</option>
                                 @php
-                                    $profesionesPermitidas = [1, 2, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
+                                    $profesionesPermitidas = [1]; //Solo Cirujanos
                                 @endphp
-                                @foreach ($empleados->filter(fn($e) => in_array($e->profesion_id, $profesionesPermitidas)) as $empleado)
+                                @foreach ($empleados as $empleado)
+                                @if ( in_array( $empleado->get_profesion->rol_id, $profesionesPermitidas ) )
                                     <option value="{{ $empleado->id }}"
                                         {{ old('cirujano_id') == $empleado->id ? 'selected' : '' }}>
                                         {{ $empleado->nombre }} {{ $empleado->apellido }}
                                     </option>
+                                @endif
                                 @endforeach
                             </select>
                             @error('cirujano_id')
@@ -88,13 +90,15 @@
                             <select name="ayudante_1_id" id="ayudante_1_id" class="form-control select2">
                                 <option value="">Seleccione el Ayudante 1</option>
                                 @php
-                                    $profesionesPermitidas = [1, 2, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
+                                    $profesionesPermitidas = [2]; //Solo Ayudantes
                                 @endphp
-                                @foreach ($empleados->filter(fn($e) => in_array($e->profesion_id, $profesionesPermitidas)) as $empleado)
+                                @foreach ($empleados as $empleado)
+                                @if ( in_array( $empleado->get_profesion->rol_id, $profesionesPermitidas ) )
                                     <option value="{{ $empleado->id }}"
                                         {{ old('ayudante_1_id') == $empleado->id ? 'selected' : '' }}>
                                         {{ $empleado->nombre }} {{ $empleado->apellido }}
                                     </option>
+                                @endif
                                 @endforeach
                             </select>
                             @error('ayudante_1_id')
@@ -107,13 +111,15 @@
                             <select name="ayudante_2_id" id="ayudante_2_id" class="form-control select2">
                                 <option value="">Seleccione el Ayudante 2</option>
                                 @php
-                                    $profesionesPermitidas = [1, 2, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
+                                    $profesionesPermitidas = [2]; //Solo Ayudantes
                                 @endphp
-                                @foreach ($empleados->filter(fn($e) => in_array($e->profesion_id, $profesionesPermitidas)) as $empleado)
+                                @foreach ($empleados as $empleado)
+                                @if ( in_array( $empleado->get_profesion->rol_id, $profesionesPermitidas ) )
                                     <option value="{{ $empleado->id }}"
                                         {{ old('ayudante_2_id') == $empleado->id ? 'selected' : '' }}>
                                         {{ $empleado->nombre }} {{ $empleado->apellido }}
                                     </option>
+                                @endif
                                 @endforeach
                             </select>
                             @error('ayudante_2_id')
@@ -126,13 +132,15 @@
                             <select name="ayudante_3_id" id="ayudante_3_id" class="form-control select2">
                                 <option value="">Seleccione el Ayudante 3</option>
                                 @php
-                                    $profesionesPermitidas = [1, 2, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
+                                    $profesionesPermitidas = [2]; //Solo Ayudantes
                                 @endphp
-                                @foreach ($empleados->filter(fn($e) => in_array($e->profesion_id, $profesionesPermitidas)) as $empleado)
+                                @foreach ($empleados as $empleado)
+                                @if ( in_array( $empleado->get_profesion->rol_id, $profesionesPermitidas ) )
                                     <option value="{{ $empleado->id }}"
                                         {{ old('ayudante_3_id') == $empleado->id ? 'selected' : '' }}>
                                         {{ $empleado->nombre }} {{ $empleado->apellido }}
                                     </option>
+                                @endif
                                 @endforeach
                             </select>
                             @error('ayudante_3_id')
@@ -145,13 +153,15 @@
                             <select name="anestesista_id" id="anestesista_id" class="form-control select2">
                                 <option value="">Seleccione el Anestesista</option>
                                 @php
-                                    $profesionesPermitidas = [4, 5];
+                                    $profesionesPermitidas = [3]; //Solo Anestesistas
                                 @endphp
-                                @foreach ($empleados->filter(fn($e) => in_array($e->profesion_id, $profesionesPermitidas)) as $empleado)
+                                @foreach ($empleados as $empleado)
+                                @if ( in_array( $empleado->get_profesion->rol_id, $profesionesPermitidas ) )
                                     <option value="{{ $empleado->id }}"
                                         {{ old('anestesista_id') == $empleado->id ? 'selected' : '' }}>
                                         {{ $empleado->nombre }} {{ $empleado->apellido }}
                                     </option>
+                                @endif
                                 @endforeach
                             </select>
                             @error('anestesista_id')
@@ -180,13 +190,15 @@
                             <select name="instrumentador_id" id="instrumentador_id" class="form-control select2">
                                 <option value="">Seleccione el Instrumentador</option>
                                 @php
-                                    $profesionesPermitidas = [3];
+                                    $profesionesPermitidas = [4]; //Solo Instrumentadores
                                 @endphp
-                                @foreach ($empleados->filter(fn($e) => in_array($e->profesion_id, $profesionesPermitidas)) as $empleado)
+                                @foreach ($empleados as $empleado)
+                                @if ( in_array( $empleado->get_profesion->rol_id, $profesionesPermitidas ) )
                                     <option value="{{ $empleado->id }}"
                                         {{ old('instrumentador_id') == $empleado->id ? 'selected' : '' }}>
                                         {{ $empleado->nombre }} {{ $empleado->apellido }}
                                     </option>
+                                @endif
                                 @endforeach
                             </select>
                             @error('instrumentador_id')
@@ -199,13 +211,15 @@
                             <select name="enfermero_id" id="enfermero_id" class="form-control select2">
                                 <option value="">Seleccione el Enfermero</option>
                                 @php
-                                    $profesionesPermitidas = [4];
+                                    $profesionesPermitidas = [5]; //Solo Enfermeros
                                 @endphp
-                                @foreach ($empleados->filter(fn($e) => in_array($e->profesion_id, $profesionesPermitidas)) as $empleado)
+                                @foreach ($empleados as $empleado)
+                                @if ( in_array( $empleado->get_profesion->rol_id, $profesionesPermitidas ) )
                                     <option value="{{ $empleado->id }}"
                                         {{ old('enfermero_id') == $empleado->id ? 'selected' : '' }}>
                                         {{ $empleado->nombre }} {{ $empleado->apellido }}
                                     </option>
+                                @endif
                                 @endforeach
                             </select>
                             @error('enfermero_id')
