@@ -25,7 +25,7 @@
                     </p>
                     <br>
                     <div class="bg-white shadow rounded-lg border border-gray-200 overflow-auto">
-                        <table class=" table table-hover table-bordered shadow-sm text-center rounded">
+                        <table id="miTabla" class=" table table-hover table-bordered shadow-sm text-center rounded">
                             <thead>
                                 <tr>
                                     <th>Paciente</th>
@@ -44,7 +44,7 @@
                                     <th>Fecha</th>
                                     <th>Hora</th>
                                     <th>Urgencia</th>
-                                    <th class="text-center">Acciones</th>
+                                    <th class="text-center no print">Acciones</th>
                                 </tr>
                                 <style>
                                     @media print {
@@ -114,7 +114,7 @@
                                         <td>
                                             {{ $cirugia->urgencia ? 'Si' : 'No' }}
                                         </td>
-                                        <td class="text-center">
+                                        <td class="text-center no-print">
                                             <a href="{{ route('cirugias.show', $cirugia) }}"
                                                 class="btn btn-outline-primary btn-sm me-1">Ver</a>
                                             <br>
@@ -191,7 +191,7 @@
                 });
 
                 function imprimirTablaCompleta() {
-                    const tablaOriginal = document.querySelector('.table-responsive table');
+                    const tablaOriginal = document.querySelector('.overflow-auto table');
                     const encabezado = tablaOriginal.querySelector('thead').outerHTML;
                     const cuerpo = tablaOriginal.querySelector('tbody').outerHTML;
 
