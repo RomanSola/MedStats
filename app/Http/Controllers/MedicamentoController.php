@@ -53,7 +53,15 @@ class MedicamentoController extends Controller
 
     public function destroy(Medicamento $medicamento)
     {
+        // Verificar si tiene o tuvo stock
+        if ($medicamento->stocks()->exists()) {
+            return redirect()->route('medicamentos.index')
+                ->with('error', 'No se puede eliminar un medicamento que tiene o tuvo stock.');
+        }
+    
         $medicamento->delete();
-        return redirect()->route('medicamentos.index');
+    
+        return redirect()->route('medicamentos.index')
+            ->with('success', 'Medicamento eliminado correctamente.');
     }
 }
