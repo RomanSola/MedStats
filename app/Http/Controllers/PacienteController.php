@@ -248,12 +248,19 @@ public function darDeAlta(Paciente $paciente)
     $paciente->habitacion_id = null;
     $paciente->save();
 
+    $origen = request()->input('from');
+
+    if ($origen === 'pacientes.index') {
+        return redirect()->route('pacientes.index')->with('success', 'Paciente dado de alta y cama liberada.');
+    } elseif ($origen === 'camas.index') {
+        return redirect()->route('camas.index')->with('success', 'Paciente dado de alta y cama liberada.');
+    }
+
     return redirect()->route('pacientes.index')->with('success', 'Paciente dado de alta y cama liberada.');
 }
 
 
-
-    
+ 
   public function liveSearch(Request $request)
 {
     $buscar = $request->input('buscar');
