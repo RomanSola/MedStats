@@ -36,11 +36,11 @@
                 </div>
 
                 <div>
-                    <label for="fecha_nacimiento" class="block text-sm font-semibold text-gray-700 mb-1">Fecha de
-                        Nacimiento</label>
+                    <label for="fecha_nacimiento" class="block text-sm font-semibold text-gray-700 mb-1">Fecha de Nacimiento</label>
                     <input type="date" name="fecha_nacimiento" id="fecha_nacimiento"
                         class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500"
-                        value="{{ old('fecha_nacimiento') }}" required>
+                        value="{{ old('fecha_nacimiento') }}"
+                        min="1900-01-01" max="{{ \Carbon\Carbon::now()->format('Y-m-d') }}" required>
                     @error('fecha_nacimiento')
                         <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                     @enderror
