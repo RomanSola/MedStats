@@ -196,37 +196,56 @@ class PacienteController extends Controller
         return redirect()->route('pacientes.index')->with('success', 'Paciente asignado correctamente.');
     }
 
-    public function asignarDirecta(Request $request, Paciente $paciente)
+    public function asignarDirecta(Request $request, $id)
 {
+    $paciente = Paciente::findOrFail($id); // 🔒 Esto garantiza que el paciente exista
+
     $request->validate([
         'cama_id' => 'required|exists:camas,id',
     ]);
 
-    $cama = Cama::findOrFail($request->cama_id);
+    $nuevaCama = Cama::findOrFail($request->cama_id);
 
-    if ($cama->ocupada) {
+    if ($nuevaCama->ocupada) {
         return back()->with('error', 'La cama seleccionada ya está ocupada.');
     }
 
+    // Si el paciente ya tiene una cama, liberamos la anterior
     if ($paciente->cama_id) {
-        return back()->with('error', 'Este paciente ya tiene una cama asignada.');
+        $camaAnterior = Cama::find($paciente->cama_id);
+        if ($camaAnterior) {
+            $camaAnterior->ocupada = false;
+            $camaAnterior->save();
+        }
+
+        $ocupacionAnterior = Ocupacion_cama::where('paciente_id', $paciente->id)
+            ->whereNull('fecha_egreso')
+            ->latest('fecha_ingreso')
+            ->first();
+
+        if ($ocupacionAnterior) {
+            $ocupacionAnterior->fecha_egreso = now();
+            $ocupacionAnterior->save();
+        }
     }
 
-    $paciente->habitacion_id = $cama->habitacion_id;
-    $paciente->cama_id = $cama->id;
+    // Asignamos la nueva cama
+    $paciente->habitacion_id = $nuevaCama->habitacion_id;
+    $paciente->cama_id = $nuevaCama->id;
     $paciente->save();
 
-    $cama->ocupada = true;
-    $cama->save();
+    $nuevaCama->ocupada = true;
+    $nuevaCama->save();
 
     Ocupacion_cama::create([
         'paciente_id' => $paciente->id,
-        'cama_id' => $cama->id,
+        'cama_id' => $nuevaCama->id,
         'fecha_ingreso' => now()
     ]);
 
-    return redirect()->route('camas.index')->with('success', 'Paciente asignado a la cama correctamente.');
+    return redirect()->route('camas.index')->with('success', 'Paciente reasignado correctamente a la nueva cama.');
 }
+
 public function darDeAlta(Paciente $paciente)
 {
     if ($paciente->cama) {

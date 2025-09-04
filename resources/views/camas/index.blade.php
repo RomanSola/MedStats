@@ -138,12 +138,34 @@
     </div>
   </div>
 </div>
+{{--Modal Script--}}
+<div class="modal fade" id="confirmarReasignacionModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirmar reasignación</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ¿Estás seguro de que querés reasignar a este paciente a otra cama?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-danger" id="btnConfirmarReasignacion">Confirmar</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 {{-- Script --}}
 @push('scripts')
 <script>
 document.addEventListener("DOMContentLoaded", function () {
     let camaSeleccionada = null;
+    let formPendiente = null;
+
     const inputBusqueda = document.getElementById('buscarPaciente');
     const listaPacientes = document.getElementById('listaPacientes');
     const csrfToken = "{{ csrf_token() }}";
@@ -184,9 +206,12 @@ document.addEventListener("DOMContentLoaded", function () {
                         <div class="d-flex justify-content-between align-items-center border rounded p-2 mb-2">
                             <div>
                                 <strong>${p.nombre} ${p.apellido}</strong> (DNI: ${p.dni})
-                                ${yaAsignado ? '<br><span class="text-warning">⚠️ Ya asignado a una cama</span>' : ''}
+                                ${yaAsignado ? '<br><span class="text-danger">⚠️ Ya asignado a una cama</span>' : ''}
                             </div>
-                            <button type="submit" class="btn btn-sm btn-outline-success">Asignar</button>
+                            ${yaAsignado
+                                ? `<button type="button" class="btn btn-sm btn-outline-danger" onclick="confirmarReasignacion(this.form)">Reasignar</button>`
+                                : `<button type="submit" class="btn btn-sm btn-outline-success">Asignar</button>`
+                            }
                         </div>`;
                     listaPacientes.appendChild(form);
                 });
@@ -195,6 +220,19 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.error(err);
                 listaPacientes.innerHTML = "<p class='text-danger'>Error al buscar pacientes.</p>";
             });
+    });
+
+    window.confirmarReasignacion = function (form) {
+        formPendiente = form;
+        $('#confirmarReasignacionModal').modal('show');
+    };
+
+    document.getElementById('btnConfirmarReasignacion').addEventListener('click', function () {
+        if (formPendiente) {
+            formPendiente.submit();
+            formPendiente = null;
+            $('#confirmarReasignacionModal').modal('hide');
+        }
     });
 });
 </script>
