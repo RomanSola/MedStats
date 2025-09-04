@@ -89,21 +89,18 @@ Route::get('/pacientes/{paciente}', [PacienteController::class, 'show'])->name('
 Route::put('/pacientes/{paciente}', [PacienteController::class, 'update'])->name('pacientes.update');
 Route::delete('/pacientes/{paciente}', [PacienteController::class, 'destroy'])->name('pacientes.destroy');
 
-// Asignación directa (con ID del paciente)
-Route::post('/pacientes/{id}/asignar-directa', [PacienteController::class, 'asignarDirecta'])->name('pacientes.asignarDirecta');
-
 // Asignación desde vista detallada
 Route::get('/pacientes/{paciente}/asignar', [PacienteController::class, 'asignar'])->name('pacientes.asignar');
 Route::post('/pacientes/{paciente}/asignar', [PacienteController::class, 'guardarAsignacion'])->name('pacientes.asignar.guardar');
 
-// Alta
-Route::post('/pacientes/{paciente}/alta', [PacienteController::class, 'darDeAlta'])->name('pacientes.darDeAlta');
+// Asignación directa (con ID del paciente)
+Route::post('/pacientes/{paciente}/asignar-directa', [PacienteController::class, 'asignarDirecta'])->name('pacientes.asignarDirecta');
 
-// Live search
+// Alta de paciente
+Route::post('/pacientes/{paciente}/dar-de-alta', [PacienteController::class, 'darDeAlta'])->name('pacientes.darDeAlta');
+
+// Live search para el buscador del modal
 Route::get('/pacientes/live-search', [PacienteController::class, 'liveSearch'])->name('pacientes.liveSearch');
-// Asignación directa (paciente y cama desde el formulario)
-Route::post('/pacientes/asignar-directa', [PacienteController::class, 'asignarDirecta'])
-    ->name('pacientes.asignarDirecta');
 
 
 

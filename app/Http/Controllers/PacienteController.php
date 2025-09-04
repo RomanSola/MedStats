@@ -280,16 +280,16 @@ public function darDeAlta(Paciente $paciente)
 
 
  
-  public function liveSearch(Request $request)
+public function liveSearch(Request $request)
 {
     $buscar = $request->input('buscar');
 
-    $pacientes = \App\Models\Paciente::query()
+    $pacientes = Paciente::query()
         ->where('nombre', 'like', "%{$buscar}%")
         ->orWhere('apellido', 'like', "%{$buscar}%")
         ->orWhere('dni', 'like', "%{$buscar}%")
         ->limit(10)
-        ->get(['id', 'nombre', 'apellido', 'dni']); // Solo columnas necesarias
+        ->get(['id', 'nombre', 'apellido', 'dni', 'cama_id']); // ✅ cama_id incluido
 
     return response()->json($pacientes);
 }

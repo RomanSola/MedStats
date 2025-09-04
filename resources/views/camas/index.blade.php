@@ -199,20 +199,26 @@ document.addEventListener("DOMContentLoaded", function () {
                     form.action = `/pacientes/${p.id}/asignar-directa`;
 
                     const yaAsignado = p.cama_id !== null;
-
                     form.innerHTML = `
-                        <input type="hidden" name="_token" value="${csrfToken}">
-                        <input type="hidden" name="cama_id" value="${camaSeleccionada}">
-                        <div class="d-flex justify-content-between align-items-center border rounded p-2 mb-2">
-                            <div>
-                                <strong>${p.nombre} ${p.apellido}</strong> (DNI: ${p.dni})
-                                ${yaAsignado ? '<br><span class="text-danger">⚠️ Ya asignado a una cama</span>' : ''}
-                            </div>
-                            ${yaAsignado
-                                ? `<button type="button" class="btn btn-sm btn-outline-danger" onclick="confirmarReasignacion(this.form)">Reasignar</button>`
-                                : `<button type="submit" class="btn btn-sm btn-outline-success">Asignar</button>`
-                            }
-                        </div>`;
+    <input type="hidden" name="_token" value="${csrfToken}">
+    <input type="hidden" name="cama_id" value="${camaSeleccionada}">
+    <div class="border rounded p-2 mb-2 ${yaAsignado ? 'bg-light' : ''}">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <strong>${p.nombre} ${p.apellido}</strong> (DNI: ${p.dni})
+                ${yaAsignado 
+                    ? `<br><span class="text-danger">⚠️ Este paciente ya tiene una cama asignada</span>` 
+                    : ''
+                }
+            </div>
+            <div>
+                ${yaAsignado
+                    ? `<button type="button" class="btn btn-sm btn-outline-danger" onclick="confirmarReasignacion(this.form)">Reasignar</button>`
+                    : `<button type="submit" class="btn btn-sm btn-outline-success">Asignar</button>`
+                }
+            </div>
+        </div>
+    </div>`;
                     listaPacientes.appendChild(form);
                 });
             })
