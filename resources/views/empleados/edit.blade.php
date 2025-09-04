@@ -3,81 +3,83 @@
 @section('title', 'Editar Empleado')
 
 @section('contenido')
-<div class="max-w-5xl mx-auto px-4 py-4">
+<div class="container mt-4">
 
-    {{-- Título institucional amarillo --}}
-    <h2 class="text-warning fw-bold border-bottom border-warning pb-2 mb-4">
-        Editar Empleado
-    </h2>
+    <div class="flex justify-between items-center mb-6">
+        <h1
+            class="text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent bg-clip-text drop-shadow-md flex items-center gap-2 px-2">
+            Editar Empleado
+        </h1>
+    </div>
 
-    {{-- Contenedor con borde amarillo institucional --}}
-    <div class="card border-warning shadow-sm">
+    <div class="card border">
         <div class="card-body">
-
             <form action="{{ route('empleados.update', $empleado) }}" method="POST">
                 @csrf
                 @method('PUT')
 
-                {{-- Datos personales --}}
-                <div class="row mb-3 text-dark">
+                <div class="row mb-3">
                     <div class="col-md-4">
                         <label for="dni" class="form-label">DNI</label>
-                        <input type="text" name="dni" id="dni"
-                               class="form-control border border-warning shadow-sm"
-                               value="{{ $empleado->dni }}" required>
-                        @error('dni') <small class="text-danger">{{ $message }}</small> @enderror
+                        <input type="text" name="dni" id="dni" class="form-control" value="{{ $empleado->dni }}"
+                            required>
+                        @error('dni')
+                            <small class="text-danger"> {{ $message }} </small>
+                        @enderror
                     </div>
 
                     <div class="col-md-4">
                         <label for="nombre" class="form-label">Nombre</label>
-                        <input type="text" name="nombre" id="nombre"
-                               class="form-control border border-warning shadow-sm"
-                               value="{{ $empleado->nombre }}" required>
-                        @error('nombre') <small class="text-danger">{{ $message }}</small> @enderror
+                        <input type="text" name="nombre" id="nombre" class="form-control"
+                            value="{{ $empleado->nombre }}" required>
+                        @error('nombre')
+                            <small class="text-danger"> {{ $message }} </small>
+                        @enderror
                     </div>
 
                     <div class="col-md-4">
                         <label for="apellido" class="form-label">Apellido</label>
-                        <input type="text" name="apellido" id="apellido"
-                               class="form-control border border-warning shadow-sm"
-                               value="{{ $empleado->apellido }}" required>
-                        @error('apellido') <small class="text-danger">{{ $message }}</small> @enderror
+                        <input type="text" name="apellido" id="apellido" class="form-control"
+                            value="{{ $empleado->apellido }}" required>
+                        @error('apellido')
+                            <small class="text-danger"> {{ $message }} </small>
+                        @enderror
                     </div>
                 </div>
 
-                {{-- Contacto y nacimiento --}}
-                <div class="row mb-3 text-dark">
+                <div class="row mb-3">
                     <div class="col-md-4">
                         <label for="fecha_nacimiento" class="form-label">Fecha de nacimiento</label>
-                        <input type="date" name="fecha_nacimiento" id="fecha_nacimiento"
-                               class="form-control border border-warning shadow-sm"
-                               value="{{ $empleado->fecha_nacimiento }}" required>
-                        @error('fecha_nacimiento') <small class="text-danger">{{ $message }}</small> @enderror
+                        <input type="date" name="fecha_nacimiento" id="fecha_nacimiento" class="form-control"
+                            value="{{ $empleado->fecha_nacimiento }}" required>
+                        @error('fecha_nacimiento')
+                            <small class="text-danger"> {{ $message }} </small>
+                        @enderror
                     </div>
 
                     <div class="col-md-4">
                         <label for="telefono" class="form-label">Teléfono</label>
-                        <input type="text" name="telefono" id="telefono"
-                               class="form-control border border-warning shadow-sm"
-                               value="{{ $empleado->telefono }}">
-                        @error('telefono') <small class="text-danger">{{ $message }}</small> @enderror
+                        <input type="text" name="telefono" id="telefono" class="form-control"
+                            value="{{ $empleado->telefono }}">
+                        @error('telefono')
+                            <small class="text-danger"> {{ $message }} </small>
+                        @enderror
                     </div>
 
                     <div class="col-md-4">
                         <label for="direccion" class="form-label">Dirección</label>
-                        <input type="text" name="direccion" id="direccion"
-                               class="form-control border border-warning shadow-sm"
-                               value="{{ $empleado->direccion }}">
-                        @error('direccion') <small class="text-danger">{{ $message }}</small> @enderror
+                        <input type="text" name="direccion" id="direccion" class="form-control"
+                            value="{{ $empleado->direccion }}">
+                        @error('direccion')
+                            <small class="text-danger"> {{ $message }} </small>
+                        @enderror
                     </div>
                 </div>
 
-                {{-- Ubicación --}}
-                <div class="row mb-3 text-dark">
+                <div class="row mb-3">
                     <div class="col-md-4">
                         <label for="pais" class="form-label">País</label>
-                        <select id="pais" name="pais_id"
-                                class="form-select border border-warning shadow-sm">
+                        <select id="pais" name="pais_id" class="form-control">
                             <option value="">Seleccione un país</option>
                             @foreach ($paises as $pais)
                                 <option value="{{ $pais->id }}"
@@ -90,22 +92,18 @@
 
                     <div class="col-md-4">
                         <label for="provincia" class="form-label">Provincia</label>
-                        <select id="provincia" name="provincia_id"
-                                class="form-select border border-warning shadow-sm"></select>
+                        <select id="provincia" name="provincia_id" class="form-control"></select>
                     </div>
 
                     <div class="col-md-4">
                         <label for="codigo_postal" class="form-label">Código Postal</label>
-                        <select id="codigo_postal" name="cod_postal_id"
-                                class="form-select border border-warning shadow-sm"></select>
+                        <select id="codigo_postal" name="cod_postal_id" class="form-control"></select>
                     </div>
                 </div>
 
-                {{-- Profesión --}}
-                <div class="mb-3 text-dark">
+                <div class="mb-3">
                     <label for="profesion" class="form-label">Profesión</label>
-                    <select name="profesion_id" id="profesion"
-                            class="form-select border border-warning shadow-sm">
+                    <select name="profesion_id" id="profesion" class="form-control">
                         @foreach ($profesiones as $profesion)
                             <option value="{{ $profesion->id }}"
                                 {{ $empleado->profesion_id == $profesion->id ? 'selected' : '' }}>
@@ -113,20 +111,26 @@
                             </option>
                         @endforeach
                     </select>
-                    @error('profesion_id') <small class="text-danger">{{ $message }}</small> @enderror
+                    @error('profesion_id')
+                        <small class="text-danger"> {{ $message }} </small>
+                    @enderror
                 </div>
 
-                {{-- Botones --}}
-                <div class="pt-2 d-flex justify-content-between">
-                    <button class="btn btn-outline-warning fw-semibold px-4">Guardar Cambios</button>
-                    <a href="{{ route('empleados.index') }}" class="btn btn-outline-warning fw-semibold px-4">Cancelar</a>
+                <div class="flex justify-between pt-4">
+                    <a href="{{ route('empleados.index') }}"
+                        class="btn btn-outline-danger px-5 py-2 rounded shadow-sm">
+                        Cancelar
+                    </a>
+                    <button type="submit"
+                        class="bg-neutral-700 hover:bg-neutral-800 text-white font-semibold px-6 py-2 rounded-full shadow-md transition">
+                        Guardar Cambios
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 
-{{-- Scripts para combos dinámicos --}}
 <script>
     const paisSelect = document.getElementById('pais');
     const provinciaSelect = document.getElementById('provincia');
