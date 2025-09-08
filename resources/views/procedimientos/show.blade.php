@@ -3,40 +3,44 @@
 @section('title', 'Ver Procedimiento')
 
 @section('contenido')
-<div class="max-w-xl mx-auto px-4 py-4">
+<div class="container mt-4">
+    <div class="max-w-xl mx-auto px-4 py-8">
 
-    {{-- Título institucional rojo --}}
-    <h2 class="text-danger fw-bold border-bottom border-danger pb-2 mb-4 text-center">
-        Detalle del Procedimiento
-    </h2>
+        {{-- Título con degradado y estilo igual al show de empleados --}}
+        <h2
+            class="text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent bg-clip-text drop-shadow-md text-center mb-6">
+            Detalle del Procedimiento
+        </h2>
 
-    {{-- Contenedor con borde rojo institucional --}}
-    <div class="card border-danger shadow-sm">
-        <div class="card-body text-dark">
+        {{-- Contenedor principal con borde secundario (gris) y sombra --}}
+        <div class="card border-secondary shadow-sm">
+            <div class="card-body">
 
-            <form>
-                {{-- Campo nombre --}}
-                <div class="mb-3">
-                    <label class="form-label fw-semibold text-dark">Procedimiento</label>
-                    <input type="text" class="form-control border border-danger shadow-sm"
-                           value="{{ $procedimiento->nombre_procedimiento }}" readonly>
-                </div>
+                <form>
+                    {{-- Campo nombre --}}
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold text-secondary">Procedimiento</label>
+                        <input type="text" class="form-control border border-gray-300 shadow-sm"
+                               value="{{ $procedimiento->nombre_procedimiento }}" readonly>
+                    </div>
 
-                {{-- Campo descripción --}}
-                <div class="mb-3">
-                    <label class="form-label fw-semibold text-dark">Descripción</label>
-                    <input type="text" class="form-control border border-danger shadow-sm"
-                           value="{{ $procedimiento->descripcion }}" readonly>
-                </div>
+                    {{-- Campo descripción --}}
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold text-secondary">Descripción</label>
+                        <input type="text" class="form-control border border-gray-300 shadow-sm"
+                               value="{{ $procedimiento->descripcion }}" readonly>
+                    </div>
 
-                {{-- Botón de volver --}}
-                <div class="text-center mt-4">
-                    <a href="{{ route('procedimientos.index') }}" class="btn btn-outline-danger fw-semibold px-4">
-                        ← Volver al listado
-                    </a>
-                </div>
-            </form>
+                    {{-- Botón volver con el mismo estilo que empleados --}}
+                    <div class="text-center mt-4">
+                        <a href="{{ route('procedimientos.index') }}"
+                           class="btn btn-outline-info fw-semibold px-4">
+                             Volver al listado
+                        </a>
+                    </div>
+                </form>
 
+            </div>
         </div>
     </div>
 </div>
