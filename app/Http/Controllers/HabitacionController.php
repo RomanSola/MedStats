@@ -65,7 +65,14 @@ class HabitacionController extends Controller
 
     public function destroy(Habitacion $habitacion)
     {
+        if ($habitacion->camas()->exists()) {
+            return redirect()->route('habitaciones.index')
+                ->with('error', 'No se puede eliminar una habitación que tiene camas asignadas.');
+        }
+    
         $habitacion->delete();
-        return redirect()->route('habitaciones.index');
+    
+        return redirect()->route('habitaciones.index')
+            ->with('success', 'Habitación eliminada correctamente.');
     }
 }

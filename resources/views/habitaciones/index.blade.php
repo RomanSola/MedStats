@@ -41,13 +41,20 @@
                                         <!-- Botón Editar -->
                                         <a href="{{ route('habitaciones.edit', $habitacion) }}"
                                             class="btn btn-outline-warning btn-sm me-1">Editar</a>
-                                        <form action="{{ route('habitaciones.destroy', $habitacion) }}" method="POST"
-                                            class="d-inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class="btn btn-outline-danger btn-sm"
-                                            onclick="return confirm('¿Estás seguro de que querés eliminar esta habitación?')">Eliminar</button>
-                                        </form>
+                                            @if (!$habitacion->camas()->exists())
+                                            <form action="{{ route('habitaciones.destroy', $habitacion) }}" method="POST" class="d-inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="btn btn-outline-danger btn-sm"
+                                                        onclick="return confirm('¿Estás seguro de que querés eliminar esta habitación?')">
+                                                    Eliminar
+                                                </button>
+                                            </form>
+                                        @else
+                                            <button class="btn btn-outline-secondary btn-sm" disabled title="Esta habitación no se puede eliminar">
+                                                No eliminable
+                                            </button>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach
