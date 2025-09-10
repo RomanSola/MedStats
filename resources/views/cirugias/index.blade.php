@@ -161,29 +161,38 @@
 
             <!-- Funciones de impresión y exportación -->
             <script>
-                $(document).ready(function() {
-                    $('#miTabla').DataTable({
-                        dom: 'Bfrtip',
-                        buttons: [{
-                                extend: 'excelHtml5',
-                                text: 'Exportar a Excel',
-                                className: 'btn btn-success btn-sm'
-                            },
-                            {
-                                extend: 'pdfHtml5',
-                                text: 'Exportar a PDF',
-                                className: 'btn btn-danger btn-sm',
-                                orientation: 'landscape',
-                                pageSize: 'A4',
-                                customize: function(doc) {
-                                    doc.defaultStyle.fontSize = 8;
-                                }
-                            }
-                        ],
-                        language: {
-                            url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
+                $(document).ready(function () {
+                $('#miTabla').DataTable({
+                    dom: '<"top-controls"lf>rt<"bottom-controls"ip>',
+                    buttons: [
+                    {
+                        extend: 'excelHtml5',
+                        text: 'Exportar a Excel',
+                        className: 'btn btn-success btn-sm'
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        text: 'Exportar a PDF',
+                        className: 'btn btn-danger btn-sm',
+                        orientation: 'landscape',
+                        pageSize: 'A4',
+                        customize: function (doc) {
+                            doc.defaultStyle.fontSize = 8;
                         }
-                    });
+                    }
+                ],
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json',
+                    search: "Filtrar cirugías:",
+                    lengthMenu: "Mostrar _MENU_ cirugías por página",
+                    info: "Mostrando _START_ a _END_ de _TOTAL_ cirugías",
+                    infoEmpty: "No hay cirugías para mostrar",
+                    infoFiltered: "(filtrado de _MAX_ cirugías en total)"
+                },
+                columnDefs: [
+                    { orderable: false, targets: [16] } // Desactiva orden en columna Acciones
+                ]
+                });
                 });
 
                 function imprimirTablaCompleta() {

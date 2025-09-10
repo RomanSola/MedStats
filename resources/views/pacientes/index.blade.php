@@ -1,7 +1,5 @@
 @extends('layouts.app')
-
 @section('titulo', 'Gestión de Pacientes')
-
 @section('contenido')
     <div class="max-w-7xl mx-auto px-4 py-8">
         <div class="flex justify-between items-center mb-6">
@@ -14,21 +12,6 @@
                 Ingresar Nuevo Paciente
             </a>
         </div>
-
-        <!-- Buscador -->
-        <form action="{{ route('pacientes.index') }}" method="GET" class="mb-4 flex space-x-2">
-            <input type="text" name="buscar" value="{{ request('buscar') }}"
-                placeholder="Buscar paciente por DNI, nombre o apellido"
-                class="border border-gray-300 rounded px-3 py-2 w-1/3">
-            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-                Buscar
-            </button>
-            <button href="{{ route('pacientes.index') }}"
-                class="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300">
-                Limpiar
-            </button>
-        </form>
-
 
         @if (session('success'))
             <div class="alert alert-success">
@@ -43,7 +26,7 @@
         @endif
 
         <div class="bg-white shadow rounded-lg border border-gray-200 overflow-auto">
-            <table class=" table table-hover table-bordered shadow-sm text-center rounded">
+            <table id="tablaPacientes" class="table table-hover table-bordered shadow-sm text-center rounded">
                 <thead>
                     <tr>
                         <th class="px-4 py-2 border">DNI</th>
@@ -162,6 +145,7 @@
             color: white;
         }
     </style>
+    @push('scripts')
 
     <!-- SCRIPT PARA MANEJAR LOS MODALES -->
     <script src="{{ asset('js/modal.js') }}">
@@ -230,4 +214,41 @@
                 });
             */
     </script>
+    <script>
+        $(document).ready(function () {
+        $('#tablaPacientes').DataTable({
+            dom: '<"top-controls"Blf>rt<"bottom-controls"ip>',
+            buttons: [
+                {
+                    extend: 'excelHtml5',
+                    text: 'Exportar a Excel',
+                    className: 'btn btn-success btn-sm'
+                },
+                {
+                    extend: 'pdfHtml5',
+                    text: 'Exportar a PDF',
+                    className: 'btn btn-danger btn-sm',
+                    orientation: 'landscape',
+                    pageSize: 'A4',
+                    customize: function (doc) {
+                        doc.defaultStyle.fontSize = 8;
+                    }
+                }
+                ],
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json',
+                search: "Buscar paciente:",
+                lengthMenu: "Mostrar _MENU_ pacientes por página",
+                info: "Mostrando _START_ a _END_ de _TOTAL_ pacientes",
+                infoEmpty: "No hay pacientes para mostrar",
+                infoFiltered: "(filtrado de _MAX_ pacientes en total)"
+            },
+            order: [[1, 'asc']], // Orden por nombre
+            columnDefs: [
+                { orderable: false, targets: [7] } // Desactiva orden en columna Acciones
+            ]
+        });
+    });
+    </script>
+@endpush
 @endsection
