@@ -125,13 +125,13 @@
             <div class="flex justify-between pt-4">
 
                 <a href="{{ route('stocks.index') }}" class="btn btn-outline-danger px-5 py-2 rounded shadow-sm">
-                    ← Cancelar
+                     Cancelar
                 </a>
 
                 <button type="submit"
                     class="inline-block bg-neutral-700 hover:bg-neutral-800 text-white font-medium py-2 px-6 rounded-full shadow-md cursor-pointer transition duration-300"
                     style="text-decoration: none;">
-                    Guardar Cambios
+                    Guardar
                 </button>
             </div>
         </form>
