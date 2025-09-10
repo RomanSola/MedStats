@@ -3,6 +3,17 @@
 @section('titulo', 'Lista de Salas')
 
 @section('contenido')
+@if (session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
+
+@if (session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
 <div class="container mt-4">
 
         <div class="max-w-7xl mx-auto px-4 py-8">
@@ -44,6 +55,7 @@
                                 <a href="{{ route('salas.edit', $sala) }}" class="btn btn-outline-warning btn-sm me-1">
                                     Editar
                                 </a>
+                                @if (!$sala->habitaciones()->exists())
                                 <form action="{{ route('salas.destroy', $sala) }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')
@@ -52,6 +64,11 @@
                                         Eliminar
                                     </button>
                                 </form>
+                            @else
+                                <button class="btn btn-outline-secondary btn-sm" disabled title="Esta sala no se puede eliminar">
+                                    No eliminable
+                                </button>
+                            @endif
                             </td>
                         </tr>
                         @empty
