@@ -34,7 +34,7 @@ class EmpleadoController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([ //Si el titulo esta vacion no hace nada 
+        $request->validate([ //Si el titulo esta vacion no hace nada
             'dni' => 'required|int',
             'nombre' => 'required',
             'apellido' => 'required',
@@ -45,6 +45,15 @@ class EmpleadoController extends Controller
             'cod_postal_id' => 'required|exists:codigo_postals,id',
             'profesion_id' => 'required|exists:profesions,id',
         ]);
+        // Validar que el empleado no tenga ya esta profesión
+        $existe = Empleado::where('dni', $request->dni)
+        ->where('profesion_id', $request->profesion_id)->exists();
+
+        if ($existe) {
+            return redirect()->back()
+            ->withInput()
+            ->withErrors(['profesion_id' => 'Este empleado ya tiene asignada esta profesión.']);
+        }
 
         $empleado = new Empleado();
         //Datos del POST se obtiene en request
@@ -72,7 +81,7 @@ class EmpleadoController extends Controller
 
     public function update(Request $request, Empleado $empleado)
     {
-        $request->validate([ //Si el titulo esta vacion no hace nada 
+        $request->validate([ //Si el titulo esta vacion no hace nada
             'dni' => 'required|int',
             'nombre' => 'required|string',
             'apellido' => 'required|string',
@@ -120,7 +129,7 @@ class EmpleadoController extends Controller
     }
 
     public function destroy(Empleado $empleado)
-    {   
+    {
         //Verifico que el empleado no exista en otras tablas antes de borrarlo
         if ($empleado->get_cirujano()->exists() ||
             $empleado->get_ayudante1()->exists() ||
