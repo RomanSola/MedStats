@@ -27,7 +27,7 @@
 
     <main class="flex-1">
         @yield('contenido')
-        <div class="container mt-2">
+        {{-- <div class="container mt-2">
             @if ($rutaActual !== 'inicio')
                 <div class="boton-volver mt-3" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999;">
                     <a href="{{ route($rutaAnterior) }}"
@@ -44,7 +44,7 @@
             @endif
 
             <!-- I begin to speak only when I am certain what I will say is not better left unsaid. - Cato the Younger -->
-        </div>
+        </div> --}}
 
     </main>
 
