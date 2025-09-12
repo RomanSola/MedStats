@@ -16,158 +16,18 @@
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-
-
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
 </head>
 
 <body class="flex flex-col min-h-screen">
     @include('layouts._partials.menu')
+    @include('components.boton-volver')
 
-    <div class="flex justify-start px-4 mt-3">
-        {{-- Solo mostramos "Volver" si NO estamos en la ruta 'inicio' --}}
-        @unless (request()->routeIs('inicio'))
-            <button type="button" onclick="history.back()"
-                class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium py-2 px-4 rounded">
-                ← Volver
-            </button>
-        @endunless
-    </div>
 
     <main class="flex-1">
         @yield('contenido')
         <div class="container mt-2">
-
-            @php
-                $rutaActual = request()->route()->getName();
-
-                switch ($rutaActual) {
-                    //Todos los que deben volver al inicio
-                    case 'stocks.index':
-                    case 'pacientes.index':
-                    case 'estadisticas':
-                    case 'camas.index':
-                    //case 'cirugias.index':
-                    case 'ajustes':
-                        $rutaAnterior = 'inicio';
-                        break;
-
-                    //Todos los que deben volver a Ajustes
-                    case 'usuarios.index':
-                    case 'empleados.index':
-                    case 'medicamentos.index':
-                    case 'cirugias.index':
-                    case 'habitaciones.index':
-                    case 'quirofanos.index':
-                    case 'camas.index':
-                    case 'procedimientos.index':
-                    case 'profesion.index':
-                    case 'tipoAnestesias.index':
-                    case 'ocupacionCamas.index':
-                    case 'UsuarioPerfil.index':
-                    case 'salas.index':
-                        $rutaAnterior = 'ajustes';
-                        break;
-
-                    case 'profesion.create':
-                    case 'profesion.edit':
-                    case 'profesion.show':
-                        $rutaAnterior = 'profesion.index';
-                        break;
-
-                    case 'procedimientos.create':
-                    case 'procedimientos.edit':
-                    case 'procedimientos.show':
-                        $rutaAnterior = 'procedimientos.index';
-                        break;
-
-                    case 'camas.create':
-                    case 'camas.edit':
-                    case 'camas.show':
-                        $rutaAnterior = 'camas.index';
-                        break;
-
-                    case 'empleados.create':
-                    case 'empleados.edit':
-                    case 'empleados.show':
-                        $rutaAnterior = 'empleados.index';
-                        break;
-
-                    case 'stocks.create':
-                    case 'stocks.edit':
-                    case 'stocks.show':
-                        $rutaAnterior = 'stocks.index';
-                        break;
-
-                    case 'tipoAnestesias.create':
-                    case 'tipoAnestesias.edit':
-                        $rutaAnterior = 'tipoAnestesias.index';
-                        break;
-
-                    case 'profesion.create':
-                    case 'profesion.edit':
-                    case 'profesion.show':
-                        $rutaAnterior = 'profesion.index';
-                        break;
-
-                    case 'pacientes.create':
-                    case 'pacientes.edit':
-                    case 'pacientes.show':
-                        $rutaAnterior = 'pacientes.index';
-                        break;
-
-                    case 'ocupacionCamas.create':
-                    case 'ocupacionCamas.edit':
-                    case 'ocupacionCamas.show':
-                    case 'ocupacionCamas.darAlta':
-                        $rutaAnterior = 'ocupacionCamas.index';
-                        break;
-
-                    case 'medicamentos.create':
-                    case 'medicamentos.edit':
-                        $rutaAnterior = 'medicamentos.index';
-                        break;
-
-                    case 'procedimientos.create':
-                    case 'procedimientos.edit':
-                    case 'procedimientos.show':
-                        $rutaAnterior = 'procedimientos.index';
-                        break;
-
-                    case 'habitaciones.create':
-                    case 'habitaciones.edit':
-                        $rutaAnterior = 'habitaciones.index';
-                        break;
-
-                    case 'UsuarioPerfil.create':
-                    case 'UsuarioPerfil.edit':
-                        $rutaAnterior = 'UsuarioPerfil.index';
-                        break;
-
-                    case 'salas.create':
-                    case 'salas.edit':
-                        $rutaAnterior = 'salas.index';
-                        break;
-
-                    case 'cirugias.create':
-                    case 'cirugias.edit':
-                    case 'cirugias.show':
-                    case 'cirugias.estadisticas':
-                        $rutaAnterior = 'cirugias.index';
-                        break;
-
-                    case 'quirofanos.create':
-                    case 'quirofanos.edit':
-                    case 'quirofanos.show':
-                        $rutaAnterior = 'quirofanos.index';
-                        break;
-
-                    // Por default vuelve al inicio
-                    default:
-                        $rutaAnterior = 'inicio';
-                        break;
-                }
-            @endphp
-
             @if ($rutaActual !== 'inicio')
                 <div class="boton-volver mt-3" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999;">
                     <a href="{{ route($rutaAnterior) }}"
@@ -200,6 +60,12 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Select2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <!-- AOS CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
     <!-- Lucide Iconos -->
     <script>
         if (window.lucide) {
@@ -209,7 +75,7 @@
         }
     </script>
 
-    
+
     <script>
       window.addEventListener('scroll', () => {
         const footer = document.querySelector('footer');
@@ -242,11 +108,8 @@
         });
     </script>
 
-    <!-- AOS CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
 
     <!-- Scripts adicionales desde las vistas -->
     @stack('scripts')
 </body>
-
 </html>

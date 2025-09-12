@@ -43,4 +43,146 @@ thead{
   color: white;
 }
 
+.dataTables_filter {
+    margin-top: 0.5rem;
+    margin-right: 0.5rem;
+    padding-top: 0.5rem;
+}
 
+.dataTables_filter label {
+    font-weight: 500;
+    font-size: 1rem;
+    color: #333;
+}
+
+.dataTables_filter input {
+    border-radius: 6px;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    margin-left: 0.5rem;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.dataTables_length {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    margin-left: 0.5rem;
+    font-size: 1rem;
+    color: #333;
+}
+
+.dataTables_length label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.dataTables_length select {
+    border-radius: 6px;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    font-size: 0.95rem;
+}
+
+.dataTables_wrapper {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.dataTables_wrapper .dataTables_length {
+    margin-right: 1rem;
+}
+
+.dataTables_length select:focus {
+    outline: none;
+    border-color: #2BA8A0;
+    box-shadow: 0 0 0 2px rgba(43, 168, 160, 0.2);
+}
+
+.dataTables_info {
+    font-size: 0.95rem;
+    color: #555;
+    margin-left: 0.5rem;
+    margin-bottom: 1rem;
+    padding-top: 0.5rem;
+}
+
+/* PAGINACIÓN */
+.dataTables_paginate {
+    margin-top: 0.5rem;
+    margin-right: 0.5rem;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.dataTables_paginate .paginate_button {
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    color: #333;
+    font-size: 0.9rem;
+    transition: all 0.2s ease-in-out;
+}
+
+.dataTables_paginate .paginate_button:hover {
+    background-color: #e0f7fa;
+    border-color: #2BA8A0;
+    color: #2BA8A0;
+}
+
+.dataTables_paginate .paginate_button.current {
+    background-color: #2BA8A0;
+    color: #fff !important;
+    border-color: #2BA8A0;
+    font-weight: bold;
+}
+/* Contenedor superior: buscador + selector */
+.dataTables_wrapper .top-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-right: 0.5rem;
+    padding-left: 0.5rem;
+}
+
+/* Reubicar los elementos dentro del contenedor */
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter {
+    margin: 0;
+    padding: 0;
+}
+
+/* Contenedor inferior: info + paginación */
+.dataTables_wrapper .bottom-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+/* Ajustes individuales */
+.dataTables_info {
+    margin: 0;
+    padding-left: 0.5rem;
+    font-size: 0.95rem;
+    color: #555;
+}
+
+.dataTables_paginate {
+    margin: 0;
+    padding-right: 0.5rem;
+    display: flex;
+    gap: 0.25rem;
+}

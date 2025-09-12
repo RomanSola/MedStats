@@ -71,6 +71,8 @@ class PacienteController extends Controller
         ], [
             'dni.digits_between' => 'El DNI debe contener solo números entre 6 y 15 dígitos.',
             'dni.unique' => 'Ya existe otro paciente con ese DNI.',
+            'cod_postal_id.required' => 'Por favor, seleccioná un código postal antes de continuar.',
+            'cod_postal_id.exists' => 'El código postal seleccionado no es válido.',
         ]);
 
         $paciente = new Paciente();
@@ -90,7 +92,7 @@ class PacienteController extends Controller
 
         return redirect()->route('pacientes.asignar', $paciente->id)
             ->with('success', 'Paciente registrado. Ahora puede asignarle una cama.');
-    }
+        }
 
     public function edit(Paciente $paciente)
     {
@@ -117,38 +119,39 @@ class PacienteController extends Controller
         ], [
             'dni.digits_between' => 'El DNI debe contener solo números entre 6 y 15 dígitos.',
             'dni.unique' => 'Ya existe otro paciente con ese DNI.',
+            'cod_postal_id.required' => 'Por favor, seleccioná un código postal antes de continuar.',
+            'cod_postal_id.exists' => 'El código postal seleccionado no es válido.',
         ]);
 
-        if ($request->input('dni') != null) {
+        if ($request->filled('dni')) {
             $paciente->dni = $request->input('dni');
         }
-        if ($request->input('nombre') != null) {
+        if ($request->filled('nombre')) {
             $paciente->nombre = $request->input('nombre');
         }
-        if ($request->input('apellido') != null) {
+        if ($request->filled('apellido')) {
             $paciente->apellido = $request->input('apellido');
         }
-        if ($request->input('fecha_nacimiento') != null) {
+        if ($request->filled('fecha_nacimiento')) {
             $paciente->fecha_nacimiento = $request->input('fecha_nacimiento');
         }
-        if ($request->input('genero') != null) {
+        if ($request->filled('genero')) {
             $paciente->genero = $request->input('genero');
         }
 
         $paciente->telefono = $request->input('telefono');
 
-        if ($request->input('pais_id') != null) {
+        if ($request->filled('pais_id')) {
             $paciente->pais_id = $request->input('pais_id');
         }
-        if ($request->input('provincia_id') != null) {
+        if ($request->filled('provincia_id')) {
             $paciente->provincia_id = $request->input('provincia_id');
         }
-        if ($request->input('cod_postal_id') != null) {
+        if ($request->filled('cod_postal_id')) {
             $paciente->cod_postal_id = $request->input('cod_postal_id');
         }
 
         $paciente->direccion = $request->input('direccion');
-
         $paciente->save();
         return redirect()->route('pacientes.index');
     }

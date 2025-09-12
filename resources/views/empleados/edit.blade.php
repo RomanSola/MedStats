@@ -13,7 +13,7 @@
     </div>
 
     <div class="card border">
-        <div class="card-body">
+        <div class="bg-white shadow rounded-lg p-6 border border-gray-200 space-y-6">
             <form action="{{ route('empleados.update', $empleado) }}" method="POST">
                 @csrf
                 @method('PUT')

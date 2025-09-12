@@ -28,7 +28,7 @@
                 <div>
                     <label for="{{ $field }}" class="block text-sm font-medium text-gray-700 mb-1">{{ $label }}</label>
                     <input type="{{ $type }}" name="{{ $field }}" id="{{ $field }}"
-                        class="w-full rounded-md border-gray-300 px-4 py-2"
+                        class="w-full rounded-md border-gray-300 px-4 py-2 @error($field) is-invalid @enderror"
                         value="{{ old($field, $paciente->$field) }}" {{ $field !== 'telefono' ? 'required' : '' }}>
                     @error($field)
                         <p class="text-red-600 text-sm mt-1">{{ $message }}</p>

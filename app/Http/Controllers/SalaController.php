@@ -55,7 +55,14 @@ class SalaController extends Controller
 
     public function destroy(Sala $sala)
     {
+        if ($sala->habitaciones()->exists()) {
+            return redirect()->route('salas.index')
+                ->with('error', 'No se puede eliminar una sala que tiene habitaciones asignadas.');
+        }
+    
         $sala->delete();
-        return redirect()->route('salas.index');
+    
+        return redirect()->route('salas.index')
+            ->with('success', 'Sala eliminada correctamente.');
     }
 }

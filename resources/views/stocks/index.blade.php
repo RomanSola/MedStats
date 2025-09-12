@@ -1,7 +1,5 @@
 @extends('layouts.app')
-
 @section('titulo', 'Medicamentos en Stock')
-
 @section('contenido')
 
     @if (session('success'))
@@ -9,8 +7,6 @@
             {{ session('success') }}
         </div>
     @endif
-
-
 
     <div class="max-w-7xl mx-auto px-4 py-8">
         <div class="flex justify-between items-center mb-6">
@@ -79,5 +75,27 @@
 
             </table>
         </div>
-    </div>
+    </div>    
 @endsection
+@push('scripts')
+<script>
+$(document).ready(function () {
+    const tabla = $('.table').DataTable({
+        dom: '<"top-controls"lf>rt<"bottom-controls"ip>',
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json',
+            search: "Buscar medicamento:",
+            lengthMenu: "Mostrar _MENU_ medicamentos por página",
+            info: "Mostrando _START_ a _END_ de _TOTAL_ medicamentos",
+            infoEmpty: "No hay medicamentos para mostrar",
+            infoFiltered: "(filtrado de _MAX_ medicamentos en total)"
+        },
+        order: [[2, 'asc']],
+        columnDefs: [
+            { orderable: false, targets: 4 }
+        ]
+    });
+});
+</script>
+
+@endpush
