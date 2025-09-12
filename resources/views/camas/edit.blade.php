@@ -26,7 +26,10 @@
                         </label>
                         <input type="text" name="codigo" id="codigo"
                             class="w-full rounded-md border border-gray-400 shadow-sm focus:ring-2 focus:ring-green-500 px-4 py-2"
-                            value="{{ old('codigo', $cama->codigo) }}" required>
+                            value="{{ old('codigo', $cama->codigo) }}">
+                        @error('codigo')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
                     </div>
 
                     {{-- Habitación --}}

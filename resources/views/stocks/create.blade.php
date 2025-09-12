@@ -22,9 +22,9 @@
                 <label for="medicamento_input" class="block text-sm font-medium text-gray-700 mb-1">Medicamento</label>
                 <input type="text" id="medicamento_input" name="medicamento_id"
                     class="w-full border-2 border-gray-400 rounded-md shadow-sm px-4 py-2 focus:ring-2 focus:ring-gray-200 focus:border-gray-700"
-                    placeholder="Escriba para buscar un medicamento..." required>
+                    placeholder="Escriba para buscar un medicamento...">
                 @error('medicamento_id')
-                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                    <small class="text-danger">{{ $message }}</small>
                 @enderror
             </div>
 
@@ -34,16 +34,19 @@
                     <label for="cantidad_act" class="block text-sm font-medium text-gray-700 mb-1">Cantidad</label>
                     <input type="number" name="cantidad_act" id="cantidad_act"
                         class="w-full border-2 border-gray-400 rounded-md shadow-sm px-4 py-2 focus:ring-2 focus:ring-gray-500 focus:border-gray-700"
-                        value="{{ old('cantidad_act') }}" required>
+                        value="{{ old('cantidad_act') }}">
+                    @error('cantidad_act')
+                        <small class="text-danger">{{ $message }}</small>
+                    @enderror
                 </div>
 
                 <div>
                     <label for="lote" class="block text-sm font-medium text-gray-700 mb-1">Lote</label>
                     <input type="text" name="lote" id="lote"
-                        class="w-full border-2 border-gray-400 rounded-md shadow-sm px-4 py-2 focus:ring-2 focus:ring-gray-500 focus:border-gray-700 @error('lote') border-red-500 @enderror"
-                        value="{{ old('lote') }}" required>
+                        class="w-full border-2 border-gray-400 rounded-md shadow-sm px-4 py-2 focus:ring-2 focus:ring-gray-500 focus:border-gray-700"
+                        value="{{ old('lote') }}">
                     @error('lote')
-                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                        <small class="text-danger">{{ $message }}</small>
                     @enderror
                 </div>
             </div>
@@ -53,7 +56,10 @@
                     vencimiento</label>
                 <input type="date" name="fecha_vencimiento" id="fecha_vencimiento"
                     class="w-full border-2 border-gray-400 rounded-md shadow-sm px-4 py-2 focus:ring-2 focus:ring-gray-500 focus:border-gray-700"
-                    value="{{ old('fecha_vencimiento') }}" required>
+                    value="{{ old('fecha_vencimiento') }}">
+                @error('fecha_vencimiento')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
             </div>
 
 

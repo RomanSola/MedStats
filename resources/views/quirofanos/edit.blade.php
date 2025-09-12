@@ -28,7 +28,7 @@
                             </label>
                             <input type="text" name="nombre" id="nombre"
                                    class="form-control border shadow-sm"
-                                   value="{{ $quirofano->nombre }}" required>
+                                   value="{{ $quirofano->nombre }}">
                             @error('nombre')
                                 <small class="text-danger"> {{ $message }} </small>
                             @enderror

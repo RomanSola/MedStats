@@ -25,7 +25,7 @@
                         <label for="nombre" class="form-label fw-semibold">
                             Nombre del Quirófano
                         </label>
-                        <input type="text" name="nombre" id="nombre" class="form-control border shadow-sm" required>
+                        <input type="text" name="nombre" id="nombre" class="form-control border shadow-sm">
                         @error('nombre')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror

@@ -24,7 +24,10 @@
                         <label for="numero" class="form-label fw-semibold ">
                             Número de habitación
                         </label>
-                        <input type="text" name="numero" id="numero" class="form-control border  shadow-sm" required>
+                        <input type="text" name="numero" id="numero" class="form-control border shadow-sm">
+                        @error('numero')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
                     </div>
 
                     {{-- Sala --}}
@@ -40,10 +43,10 @@
                                 </option>
                             @endforeach
                         </select>
-                        @error('sala_id')
-                            <small class="text-danger"> {{ $message }} </small>
-                        @enderror
                     </div>
+                    @error('sala_id')
+                        <small class="text-danger">{{ $message }}</small>
+                    @enderror
 
                     {{-- Botón --}}
                     <div class="flex justify-between pt-4">

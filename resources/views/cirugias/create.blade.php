@@ -34,7 +34,7 @@
                                 @endforeach
                             </select>
                             @error('paciente_id')
-                                <small class="text-danger"> {{ $message }} </small>
+                                <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
 
@@ -50,7 +50,7 @@
                                 @endforeach
                             </select>
                             @error('procedimiento_id')
-                                <small class="text-danger"> {{ $message }} </small>
+                                <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
 
@@ -66,7 +66,7 @@
                                 @endforeach
                             </select>
                             @error('quirofano_id')
-                                <small class="text-danger"> {{ $message }} </small>
+                                <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
 
@@ -87,7 +87,7 @@
                                 @endforeach
                             </select>
                             @error('cirujano_id')
-                                <small class="text-danger"> {{ $message }} </small>
+                                <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
 
@@ -108,7 +108,7 @@
                                 @endforeach
                             </select>
                             @error('ayudante_1_id')
-                                <small class="text-danger"> {{ $message }} </small>
+                                <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
 
@@ -129,7 +129,7 @@
                                 @endforeach
                             </select>
                             @error('ayudante_2_id')
-                                <small class="text-danger"> {{ $message }} </small>
+                                <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
 
@@ -150,7 +150,7 @@
                                 @endforeach
                             </select>
                             @error('ayudante_3_id')
-                                <small class="text-danger"> {{ $message }} </small>
+                                <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
 
@@ -171,7 +171,7 @@
                                 @endforeach
                             </select>
                             @error('anestesista_id')
-                                <small class="text-danger"> {{ $message }} </small>
+                                <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
 
@@ -187,7 +187,7 @@
                                 @endforeach
                             </select>
                             @error('tipo_anestesia_id')
-                                <small class="text-danger"> {{ $message }} </small>
+                                <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
 
@@ -208,7 +208,7 @@
                                 @endforeach
                             </select>
                             @error('instrumentador_id')
-                                <small class="text-danger"> {{ $message }} </small>
+                                <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
 
@@ -229,25 +229,25 @@
                                 @endforeach
                             </select>
                             @error('enfermero_id')
-                                <small class="text-danger"> {{ $message }} </small>
+                                <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
 
                         <div class="col-md-4">
                             <label for="fecha_cirugia" class="form-label">Fecha de la cirugía</label>
-                            <input type="date" name="fecha_cirugia" id="fecha_cirugia" class="form-control" required>
+                            <input type="date" name="fecha_cirugia" id="fecha_cirugia" class="form-control">
+                            @error('fecha_cirugia')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
                         </div>
-                        @error('fecha_cirugia')
-                            <small class="text-danger"> {{ $message }} </small>
-                        @enderror
 
                         <div class="col-md-4">
                             <label for="hora_cirugia" class="form-label">Hora de la cirugia</label>
-                            <input type="time" name="hora_cirugia" id="hora_cirugia" class="form-control" required>
+                            <input type="time" name="hora_cirugia" id="hora_cirugia" class="form-control">
+                            @error('hora_cirugia')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
                         </div>
-                        @error('hora_cirugia')
-                            <small class="text-danger"> {{ $message }} </small>
-                        @enderror
 
                         <div class="col-md-4">
                             <label class="form-label d-block">Urgencia</label>
@@ -255,10 +255,10 @@
                                 <input type="checkbox" name="urgencia" id="urgencia">
                                 <span class="slider round"></span>
                             </label>
+                            @error('urgencia')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
                         </div>
-                        @error('urgencia')
-                            <small class="text-danger"> {{ $message }} </small>
-                        @enderror
                     </div>
                     <!-- Botón -->
                     <div class="flex justify-between pt-4">

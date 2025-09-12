@@ -27,7 +27,10 @@
                                 Sala
                             </label>
                             <input type="text" name="nombre" id="nombre"
-                                class="form-control border  shadow-sm" value="{{ $sala->nombre }}" required>
+                                class="form-control border  shadow-sm" value="{{ $sala->nombre }}" >
+                            @error('nombre')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
                         </div>
 
                         {{-- Campo descripción --}}

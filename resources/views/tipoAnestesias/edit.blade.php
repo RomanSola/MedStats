@@ -25,7 +25,10 @@
                     </label>
                     <input type="text" name="nombre" id="nombre"
                         class="form-control border shadow-sm"
-                        value="{{ $anestesia->nombre }}" required>
+                        value="{{ $anestesia->nombre }}">
+                    @error('nombre')
+                        <small class="text-danger">{{ $message }}</small>
+                    @enderror
                 </div>
 
                 <div class="flex justify-between pt-4">

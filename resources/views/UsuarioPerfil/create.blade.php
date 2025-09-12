@@ -23,8 +23,10 @@
                         Perfil
                     </label>
                     <input type="text" name="perfil" id="perfil"
-                           class="form-control border border-dark shadow-sm"
-                           required>
+                           class="form-control border border-dark shadow-sm">
+                    @error('perfil')
+                        <small class="text-danger">{{ $message }}</small>
+                    @enderror
                 </div>
 
                 {{-- Botón --}}

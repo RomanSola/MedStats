@@ -27,7 +27,10 @@
                                 Número de Habitación
                             </label>
                             <input type="text" name="numero" id="numero" class="form-control border  shadow-sm"
-                                value="{{ $habitacion->numero }}" required>
+                                value="{{ $habitacion->numero }}">
+                            @error('numero')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
                         </div>
 
                         {{-- Sala --}}

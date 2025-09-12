@@ -27,7 +27,7 @@
                         </label>
                         <input type="text" name="perfil" id="perfil"
                                class="form-control border shadow-sm"
-                               value="{{ old('perfil', $perfil->perfil) }}" required>
+                               value="{{ old('perfil', $perfil->perfil) }}">
                         @error('perfil')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror

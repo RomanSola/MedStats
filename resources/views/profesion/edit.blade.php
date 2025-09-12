@@ -21,7 +21,7 @@
                 <div class="mb-3">
                     <label for="nombre_profesion" class="form-label">Profesión</label>
                     <input type="text" name="nombre_profesion" id="nombre_profesion" class="form-control"
-                           value="{{ old('nombre_profesion', $profesion->nombre_profesion) }}" required>
+                           value="{{ old('nombre_profesion', $profesion->nombre_profesion) }}">
                     @error('nombre_profesion')
                         <small class="text-danger">{{ $message }}</small>
                     @enderror

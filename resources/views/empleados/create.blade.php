@@ -5,6 +5,8 @@
 @section('contenido')
     <div class="container mt-4">
 
+        
+
         <div class="flex justify-between items-center mb-6">
             <h1
                 class="text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent  bg-clip-text drop-shadow-md  flex items-center gap-2 px-2">
@@ -20,41 +22,41 @@
                         <div class="col-md-4">
                             <label for="dni" class="form-label">DNI</label>
                             <input type="text" name="dni" id="dni" class="form-control" maxlength="8"
-                                value="{{ old('dni') }}" required pattern="\d{6,8}"
+                                value="{{ old('dni') }}" pattern="\d{6,8}"
                                 title="Debe tener entre 6 y 8 dígitos numéricos">
                             <div id="dni-error-js" class="form-text text-danger"></div>
+                            @error('dni')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
                         </div>
-                        @error('dni')
-                            <small class="text-danger"> {{ $message }} </small>
-                        @enderror
                         <div class="col-md-4">
                             <label for="nombre" class="form-label">Nombre</label>
-                            <input type="text" name="nombre" id="nombre" class="form-control" required>
+                            <input type="text" name="nombre" id="nombre" class="form-control" >
+                            @error('nombre')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
                         </div>
-                        @error('nombre')
-                            <small class="text-danger"> {{ $message }} </small>
-                        @enderror
                         <div class="col-md-4">
                             <label for="apellido" class="form-label">Apellido</label>
-                            <input type="text" name="apellido" id="apellido" class="form-control" required>
+                            <input type="text" name="apellido" id="apellido" class="form-control" >
+                            @error('apellido')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
                         </div>
-                        @error('apellido')
-                            <small class="text-danger"> {{ $message }} </small>
-                        @enderror
                     </div>
 
                     <div class="row mb-3">
                         <div class="col-md-4">
                             <label for="fecha_nacimiento" class="form-label">Fecha de nacimiento</label>
                             <input type="date" name="fecha_nacimiento" id="fecha_nacimiento" class="form-control"
-                                required>
+                                >
                         </div>
                         <div class="col-md-4">
                             <label for="telefono" class="form-label">Teléfono</label>
                             <input type="text" name="telefono" id="telefono" class="form-control" maxlength="15"
-                                pattern="^\d{1,15}$" required inputmode="numeric" autocomplete="tel">
+                                pattern="^\d{1,15}$"  inputmode="numeric" autocomplete="tel">
                             @error('telefono')
-                                <small class="text-danger"> {{ $message }} </small>
+                                <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
 
@@ -76,7 +78,7 @@
                                 @endforeach
                             </select>
                             @error('pais_id')
-                                <small class="text-danger"> {{ $message }} </small>
+                                <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
 
@@ -84,7 +86,7 @@
                             <label for="provincia" class="form-label">Provincia</label>
                             <select name="provincia_id" id="provincia" class="form-control"></select>
                             @error('provincia_id')
-                                <small class="text-danger"> {{ $message }} </small>
+                                <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
 
@@ -92,7 +94,7 @@
                             <label for="codigo_postal" class="form-label">Código Postal</label>
                             <select name="cod_postal_id" id="codigo_postal" class="form-control"></select>
                             @error('cod_postal_id')
-                                <small class="text-danger"> {{ $message }} </small>
+                                <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
                     </div>
@@ -109,7 +111,7 @@
                             @endforeach
                         </select>
                         @error('profesion_id')
-                            <small class="text-danger"> {{ $message }} </small>
+                            <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
 

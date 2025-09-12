@@ -29,9 +29,9 @@
                     <label for="dni" class="block text-sm font-semibold text-gray-700 mb-1">DNI</label>
                     <input type="text" name="dni" id="dni" maxlength="15"
                         class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500 @error('dni') is-invalid @enderror"
-                        value="{{ old('dni') }}" required>
+                        value="{{ old('dni') }}">
                     @error('dni')
-                        <div class="invalid-feedback">{{ $message }}</div>
+                        <small class="text-danger">{{ $message }}</small>
                     @enderror
                 </div>
 
@@ -40,9 +40,9 @@
                     <input type="date" name="fecha_nacimiento" id="fecha_nacimiento"
                         class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500 @error('fecha_nacimiento') is-invalid @enderror"
                         value="{{ old('fecha_nacimiento') }}"
-                         required>
+                        >
                     @error('fecha_nacimiento')
-                        <div class="invalid-feedback">{{ $message }}</div>
+                        <small class="text-danger">{{ $message }}</small>
                     @enderror
                 </div>
 
@@ -50,9 +50,9 @@
                     <label for="nombre" class="block text-sm font-semibold text-gray-700 mb-1">Nombre</label>
                     <input type="text" name="nombre" id="nombre"
                         class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500"
-                        value="{{ old('nombre') }}" required>
+                        value="{{ old('nombre') }}">
                     @error('apellido')
-                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                        <small class="text-danger">{{ $message }}</small>
                     @enderror
                 </div>
 
@@ -60,9 +60,9 @@
                     <label for="apellido" class="block text-sm font-semibold text-gray-700 mb-1">Apellido</label>
                     <input type="text" name="apellido" id="apellido"
                         class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500"
-                        value="{{ old('apellido') }}" required>
+                        value="{{ old('apellido') }}">
                     @error('apellido')
-                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                        <small class="text-danger">{{ $message }}</small>
                     @enderror
                 </div>
 
@@ -72,7 +72,7 @@
                         class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500"
                         value="{{ old('telefono') }}">
                     @error('telefono')
-                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                        <small class="text-danger">{{ $message }}</small>
                     @enderror
                 </div>
 
@@ -104,7 +104,7 @@
                             @endforeach
                         </select>
                         @error('pais_id')
-                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                            <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
 
@@ -114,7 +114,7 @@
                             class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500">
                         </select>
                         @error('provincia_id')
-                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                            <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
 
@@ -125,7 +125,7 @@
                             class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500">
                         </select>
                         @error('cod_postal_id')
-                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                            <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
 

@@ -25,10 +25,10 @@
                             Nombre del procedimiento
                         </label>
                         <input type="text" name="nombre_procedimiento" id="nombre_procedimiento"
-                               class="form-control border shadow-sm @error('nombre_procedimiento') is-invalid @enderror"
-                               value="{{ old('nombre_procedimiento') }}" required>
+                               class="form-control border shadow-sm"
+                               value="{{ old('nombre_procedimiento') }}">
                         @error('nombre_procedimiento')
-                            <div class="invalid-feedback">{{ $message }}</div>
+                            <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
 
@@ -41,7 +41,7 @@
                                class="form-control border shadow-sm @error('descripcion') is-invalid @enderror"
                                value="{{ old('descripcion') }}">
                         @error('descripcion')
-                            <div class="invalid-feedback">{{ $message }}</div>
+                            <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
 

@@ -23,8 +23,10 @@
                         Tipo de Anestesia
                     </label>
                     <input type="text" name="nombre" id="nombre"
-                        class="form-control border shadow-sm"
-                        required>
+                        class="form-control border shadow-sm">
+                    @error('nombre')
+                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <div class="flex justify-between pt-4">

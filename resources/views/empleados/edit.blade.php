@@ -21,28 +21,27 @@
                 <div class="row mb-3">
                     <div class="col-md-4">
                         <label for="dni" class="form-label">DNI</label>
-                        <input type="text" name="dni" id="dni" class="form-control" value="{{ $empleado->dni }}"
-                            required>
+                        <input type="text" name="dni" id="dni" class="form-control" value="{{ $empleado->dni }}">
                         @error('dni')
-                            <small class="text-danger"> {{ $message }} </small>
+                            <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
 
                     <div class="col-md-4">
                         <label for="nombre" class="form-label">Nombre</label>
                         <input type="text" name="nombre" id="nombre" class="form-control"
-                            value="{{ $empleado->nombre }}" required>
+                            value="{{ $empleado->nombre }}">
                         @error('nombre')
-                            <small class="text-danger"> {{ $message }} </small>
+                            <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
 
                     <div class="col-md-4">
                         <label for="apellido" class="form-label">Apellido</label>
                         <input type="text" name="apellido" id="apellido" class="form-control"
-                            value="{{ $empleado->apellido }}" required>
+                            value="{{ $empleado->apellido }}">
                         @error('apellido')
-                            <small class="text-danger"> {{ $message }} </small>
+                            <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
                 </div>
@@ -51,9 +50,9 @@
                     <div class="col-md-4">
                         <label for="fecha_nacimiento" class="form-label">Fecha de nacimiento</label>
                         <input type="date" name="fecha_nacimiento" id="fecha_nacimiento" class="form-control"
-                            value="{{ $empleado->fecha_nacimiento }}" required>
+                            value="{{ $empleado->fecha_nacimiento }}">
                         @error('fecha_nacimiento')
-                            <small class="text-danger"> {{ $message }} </small>
+                            <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
 
@@ -62,7 +61,7 @@
                         <input type="text" name="telefono" id="telefono" class="form-control"
                             value="{{ $empleado->telefono }}">
                         @error('telefono')
-                            <small class="text-danger"> {{ $message }} </small>
+                            <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
 
@@ -71,7 +70,7 @@
                         <input type="text" name="direccion" id="direccion" class="form-control"
                             value="{{ $empleado->direccion }}">
                         @error('direccion')
-                            <small class="text-danger"> {{ $message }} </small>
+                            <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
                 </div>
@@ -112,7 +111,7 @@
                         @endforeach
                     </select>
                     @error('profesion_id')
-                        <small class="text-danger"> {{ $message }} </small>
+                        <small class="text-danger">{{ $message }}</small>
                     @enderror
                 </div>
 
