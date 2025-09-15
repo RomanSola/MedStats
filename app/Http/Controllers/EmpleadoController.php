@@ -139,7 +139,7 @@ class EmpleadoController extends Controller
             $empleado->get_instrumentador()->exists() ||
             $empleado->get_enfermero()->exists() )
         {
-            return redirect()->route('empleado.index')
+            return redirect()->route('empleados.index')
                 ->with('error', 'No se puede eliminar el empleado porque tiene registros asociados.');
         }
         $empleado->delete();
