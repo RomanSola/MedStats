@@ -84,6 +84,8 @@ class CirugiaController extends Controller
         $cirugia->tipo_anestesia_id = $request->input('tipo_anestesia_id');
         $cirugia->instrumentador_id = $request->input('instrumentador_id');
         $cirugia->enfermero_id = $request->input('enfermero_id');
+        $cirugia->fecha_cirugia = $request->input('fecha_cirugia');
+        $cirugia->hora_cirugia = $request->input('hora_cirugia');
         //Reemplazar cuando tengamos los usuarios
         $cirugia->creado_por = '1';
         $cirugia->modificado_por = '1';
@@ -102,11 +104,11 @@ class CirugiaController extends Controller
     public function edit(Cirugia $cirugia)
     {
         $pacientes = Paciente::all();
-        $empleados = Empleado::all();
+        $empleados = Empleado::with('get_profesion')->get();
         $procedimientos = Procedimiento::all();
         $quirofanos = Quirofano::all();
         $tipoAnestesias = Tipo_anestesia::all();
-    
+        //dd($empleados);
         return view('cirugias.edit', compact('cirugia', 'pacientes', 'empleados', 'procedimientos', 'quirofanos', 'tipoAnestesias'));
     }
 
@@ -173,6 +175,10 @@ class CirugiaController extends Controller
         if ($request->input('enfermero_id') != null) {
             $cirugia->enfermero_id = $request->input('enfermero_id');
         }
+        
+        $cirugia->fecha_cirugia = $request->input('fecha_cirugia');
+        $cirugia->hora_cirugia = $request->input('hora_cirugia');
+        
         if ($request->input('urgencia') != null) {
             $cirugia->urgencia = true;
         } else {

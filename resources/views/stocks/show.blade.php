@@ -54,11 +54,6 @@
         {{ $hist_item->links() }}
     </div>
 
-    <div class="mt-8">
-        <a href="{{ route('stocks.index') }}"
-           class="btn btn-outline-secondary px-5 py-2 rounded shadow-sm">
-            Volver al stock
-        </a>
-    </div>
+
 </div>
 @endsection

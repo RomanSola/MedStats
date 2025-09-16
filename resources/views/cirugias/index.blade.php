@@ -21,11 +21,11 @@
 
             <div class="card border">
                 <div class="card-body">
-                    <p class="card-text">Administrá las cirugías registradas en el sistema. Podés ver detalles y editarlos.
+                    <p class="mb-3 text-secondary fw-semibold">Administrá las cirugías registradas en el sistema. Podés ver detalles y editarlos.
                     </p>
                     <br>
                     <div class="bg-white shadow rounded-lg border border-gray-200 overflow-auto">
-                        <table class=" table table-hover table-bordered shadow-sm text-center rounded">
+                        <table id="miTabla" class=" table table-hover table-bordered shadow-sm text-center rounded">
                             <thead>
                                 <tr>
                                     <th>Paciente</th>
@@ -44,7 +44,7 @@
                                     <th>Fecha</th>
                                     <th>Hora</th>
                                     <th>Urgencia</th>
-                                    <th class="text-center">Acciones</th>
+                                    <th class="text-center no print">Acciones</th>
                                 </tr>
                                 <style>
                                     @media print {
@@ -114,7 +114,7 @@
                                         <td>
                                             {{ $cirugia->urgencia ? 'Si' : 'No' }}
                                         </td>
-                                        <td class="text-center">
+                                        <td class="text-center no-print">
                                             <a href="{{ route('cirugias.show', $cirugia) }}"
                                                 class="btn btn-outline-primary btn-sm me-1">Ver</a>
                                             <br>
@@ -156,42 +156,47 @@
             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
             <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
             <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
-            <!-- Botones de DataTables -->
-            <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
-            <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
-            <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
             <!-- SheetJS para generar archivos Excel -->
             <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
             <!-- Funciones de impresión y exportación -->
             <script>
-                $(document).ready(function() {
-                    $('#miTabla').DataTable({
-                        dom: 'Bfrtip',
-                        buttons: [{
-                                extend: 'excelHtml5',
-                                text: 'Exportar a Excel',
-                                className: 'btn btn-success btn-sm'
-                            },
-                            {
-                                extend: 'pdfHtml5',
-                                text: 'Exportar a PDF',
-                                className: 'btn btn-danger btn-sm',
-                                orientation: 'landscape',
-                                pageSize: 'A4',
-                                customize: function(doc) {
-                                    doc.defaultStyle.fontSize = 8;
-                                }
-                            }
-                        ],
-                        language: {
-                            url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
+                $(document).ready(function () {
+                $('#miTabla').DataTable({
+                    dom: '<"top-controls"lf>rt<"bottom-controls"ip>',
+                    buttons: [
+                    {
+                        extend: 'excelHtml5',
+                        text: 'Exportar a Excel',
+                        className: 'btn btn-success btn-sm'
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        text: 'Exportar a PDF',
+                        className: 'btn btn-danger btn-sm',
+                        orientation: 'landscape',
+                        pageSize: 'A4',
+                        customize: function (doc) {
+                            doc.defaultStyle.fontSize = 8;
                         }
-                    });
+                    }
+                ],
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json',
+                    search: "Filtrar cirugías:",
+                    lengthMenu: "Mostrar _MENU_ cirugías por página",
+                    info: "Mostrando _START_ a _END_ de _TOTAL_ cirugías",
+                    infoEmpty: "No hay cirugías para mostrar",
+                    infoFiltered: "(filtrado de _MAX_ cirugías en total)"
+                },
+                columnDefs: [
+                    { orderable: false, targets: [16] } // Desactiva orden en columna Acciones
+                ]
+                });
                 });
 
                 function imprimirTablaCompleta() {
-                    const tablaOriginal = document.querySelector('.table-responsive table');
+                    const tablaOriginal = document.querySelector('.overflow-auto table');
                     const encabezado = tablaOriginal.querySelector('thead').outerHTML;
                     const cuerpo = tablaOriginal.querySelector('tbody').outerHTML;
 

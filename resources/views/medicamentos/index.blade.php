@@ -3,6 +3,17 @@
 @section('title', 'Gestión de Medicamentos')
 
 @section('contenido')
+@if (session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
+
+@if (session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
 <div class="container mt-4">
 
         <div class="max-w-7xl mx-auto px-4 py-8">
@@ -42,14 +53,20 @@
                                    class="btn btn-outline-warning btn-sm me-1">
                                      Editar
                                 </a>
+                                @if (!$medicamento->stocks()->exists())
                                 <form action="{{ route('medicamentos.destroy', $medicamento) }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')
                                     <button class="btn btn-outline-danger btn-sm"
                                             onclick="return confirm('¿Estás seguro de que querés eliminar este medicamento?')">
-                                         Eliminar
+                                        Eliminar
                                     </button>
                                 </form>
+                            @else
+                                <button class="btn btn-outline-secondary btn-sm" disabled title="Este medicamento no se puede eliminar">
+                                    No eliminable
+                                </button>
+                            @endif
                             </td>
                         </tr>
                         @empty

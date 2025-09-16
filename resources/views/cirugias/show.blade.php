@@ -130,13 +130,6 @@
         </div>
     </div>
 
-    {{-- Botón volver --}}
-    <div class="mt-6">
-        <a href="{{ route('cirugias.index') }}"
-           class="btn btn-outline-secondary px-4 py-2 text-sm rounded shadow-sm">
-            Volver
-        </a>
-    </div>
 
 </div>
 @endsection

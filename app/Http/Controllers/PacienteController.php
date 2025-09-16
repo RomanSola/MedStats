@@ -58,7 +58,12 @@ class PacienteController extends Controller
             'dni' => 'required|digits_between:6,15|unique:pacientes,dni,',
             'nombre' => 'required',
             'apellido' => 'required',
-            'fecha_nacimiento' => 'required',
+            'fecha_nacimiento' => [
+                'required',
+                'date',
+                'after_or_equal:1900-01-01',
+                'before_or_equal:' . now()->format('Y-m-d'),
+            ],
             'genero' => 'required',
             'pais_id' => 'required|exists:pais,id',
             'provincia_id' => 'required|exists:provincias,id',
@@ -66,6 +71,8 @@ class PacienteController extends Controller
         ], [
             'dni.digits_between' => 'El DNI debe contener solo números entre 6 y 15 dígitos.',
             'dni.unique' => 'Ya existe otro paciente con ese DNI.',
+            'cod_postal_id.required' => 'Por favor, seleccioná un código postal antes de continuar.',
+            'cod_postal_id.exists' => 'El código postal seleccionado no es válido.',
         ]);
 
         $paciente = new Paciente();
@@ -85,7 +92,7 @@ class PacienteController extends Controller
 
         return redirect()->route('pacientes.asignar', $paciente->id)
             ->with('success', 'Paciente registrado. Ahora puede asignarle una cama.');
-    }
+        }
 
     public function edit(Paciente $paciente)
     {
@@ -99,7 +106,12 @@ class PacienteController extends Controller
             'dni' => 'required|digits_between:6,15|unique:pacientes,dni,' . $paciente->id,
             'nombre' => 'required',
             'apellido' => 'required',
-            'fecha_nacimiento' => 'required',
+            'fecha_nacimiento' => [
+                'required',
+                'date',
+                'after_or_equal:1900-01-01',
+                'before_or_equal:' . now()->format('Y-m-d'),
+            ],
             'genero' => 'required',
             'pais_id' => 'required|exists:pais,id',
             'provincia_id' => 'required|exists:provincias,id',
@@ -107,38 +119,39 @@ class PacienteController extends Controller
         ], [
             'dni.digits_between' => 'El DNI debe contener solo números entre 6 y 15 dígitos.',
             'dni.unique' => 'Ya existe otro paciente con ese DNI.',
+            'cod_postal_id.required' => 'Por favor, seleccioná un código postal antes de continuar.',
+            'cod_postal_id.exists' => 'El código postal seleccionado no es válido.',
         ]);
 
-        if ($request->input('dni') != null) {
+        if ($request->filled('dni')) {
             $paciente->dni = $request->input('dni');
         }
-        if ($request->input('nombre') != null) {
+        if ($request->filled('nombre')) {
             $paciente->nombre = $request->input('nombre');
         }
-        if ($request->input('apellido') != null) {
+        if ($request->filled('apellido')) {
             $paciente->apellido = $request->input('apellido');
         }
-        if ($request->input('fecha_nacimiento') != null) {
+        if ($request->filled('fecha_nacimiento')) {
             $paciente->fecha_nacimiento = $request->input('fecha_nacimiento');
         }
-        if ($request->input('genero') != null) {
+        if ($request->filled('genero')) {
             $paciente->genero = $request->input('genero');
         }
 
         $paciente->telefono = $request->input('telefono');
 
-        if ($request->input('pais_id') != null) {
+        if ($request->filled('pais_id')) {
             $paciente->pais_id = $request->input('pais_id');
         }
-        if ($request->input('provincia_id') != null) {
+        if ($request->filled('provincia_id')) {
             $paciente->provincia_id = $request->input('provincia_id');
         }
-        if ($request->input('cod_postal_id') != null) {
+        if ($request->filled('cod_postal_id')) {
             $paciente->cod_postal_id = $request->input('cod_postal_id');
         }
 
         $paciente->direccion = $request->input('direccion');
-
         $paciente->save();
         return redirect()->route('pacientes.index');
     }
@@ -186,37 +199,56 @@ class PacienteController extends Controller
         return redirect()->route('pacientes.index')->with('success', 'Paciente asignado correctamente.');
     }
 
-    public function asignarDirecta(Request $request, Paciente $paciente)
+    public function asignarDirecta(Request $request, $id)
 {
+    $paciente = Paciente::findOrFail($id); // 🔒 Esto garantiza que el paciente exista
+
     $request->validate([
         'cama_id' => 'required|exists:camas,id',
     ]);
 
-    $cama = Cama::findOrFail($request->cama_id);
+    $nuevaCama = Cama::findOrFail($request->cama_id);
 
-    if ($cama->ocupada) {
+    if ($nuevaCama->ocupada) {
         return back()->with('error', 'La cama seleccionada ya está ocupada.');
     }
 
+    // Si el paciente ya tiene una cama, liberamos la anterior
     if ($paciente->cama_id) {
-        return back()->with('error', 'Este paciente ya tiene una cama asignada.');
+        $camaAnterior = Cama::find($paciente->cama_id);
+        if ($camaAnterior) {
+            $camaAnterior->ocupada = false;
+            $camaAnterior->save();
+        }
+
+        $ocupacionAnterior = Ocupacion_cama::where('paciente_id', $paciente->id)
+            ->whereNull('fecha_egreso')
+            ->latest('fecha_ingreso')
+            ->first();
+
+        if ($ocupacionAnterior) {
+            $ocupacionAnterior->fecha_egreso = now();
+            $ocupacionAnterior->save();
+        }
     }
 
-    $paciente->habitacion_id = $cama->habitacion_id;
-    $paciente->cama_id = $cama->id;
+    // Asignamos la nueva cama
+    $paciente->habitacion_id = $nuevaCama->habitacion_id;
+    $paciente->cama_id = $nuevaCama->id;
     $paciente->save();
 
-    $cama->ocupada = true;
-    $cama->save();
+    $nuevaCama->ocupada = true;
+    $nuevaCama->save();
 
     Ocupacion_cama::create([
         'paciente_id' => $paciente->id,
-        'cama_id' => $cama->id,
+        'cama_id' => $nuevaCama->id,
         'fecha_ingreso' => now()
     ]);
 
-    return redirect()->route('camas.index')->with('success', 'Paciente asignado a la cama correctamente.');
+    return redirect()->route('camas.index')->with('success', 'Paciente reasignado correctamente a la nueva cama.');
 }
+
 public function darDeAlta(Paciente $paciente)
 {
     if ($paciente->cama) {
@@ -238,22 +270,29 @@ public function darDeAlta(Paciente $paciente)
     $paciente->habitacion_id = null;
     $paciente->save();
 
+    $origen = request()->input('from');
+
+    if ($origen === 'pacientes.index') {
+        return redirect()->route('pacientes.index')->with('success', 'Paciente dado de alta y cama liberada.');
+    } elseif ($origen === 'camas.index') {
+        return redirect()->route('camas.index')->with('success', 'Paciente dado de alta y cama liberada.');
+    }
+
     return redirect()->route('pacientes.index')->with('success', 'Paciente dado de alta y cama liberada.');
 }
 
 
-
-    
-  public function liveSearch(Request $request)
+ 
+public function liveSearch(Request $request)
 {
     $buscar = $request->input('buscar');
 
-    $pacientes = \App\Models\Paciente::query()
+    $pacientes = Paciente::query()
         ->where('nombre', 'like', "%{$buscar}%")
         ->orWhere('apellido', 'like', "%{$buscar}%")
         ->orWhere('dni', 'like', "%{$buscar}%")
         ->limit(10)
-        ->get(['id', 'nombre', 'apellido', 'dni']); // Solo columnas necesarias
+        ->get(['id', 'nombre', 'apellido', 'dni', 'cama_id']); // ✅ cama_id incluido
 
     return response()->json($pacientes);
 }

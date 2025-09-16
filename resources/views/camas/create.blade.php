@@ -24,10 +24,9 @@
                     </label>
                     <input type="text" name="codigo" id="codigo"
                            value="{{ request('codigo') }}"
-                           class="w-full rounded-md border border-gray-400 shadow-sm focus:ring-2 focus:ring-green-500 px-4 py-2"
-                           required>
+                           class="w-full rounded-md border border-gray-400 shadow-sm focus:ring-2 focus:ring-green-500 px-4 py-2">
                     @error('codigo')
-                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                     @enderror
                 </div>
 
@@ -38,8 +37,7 @@
                     </label>
                     <select name="sala_id" id="sala_id"
                             onchange="location = '?sala_id=' + this.value + '&codigo=' + document.querySelector('[name=codigo]').value + '&habitacion_id=' + document.querySelector('[name=habitacion_id]').value;"
-                            class="w-full rounded-md border border-gray-400 shadow-sm focus:ring-2 focus:ring-green-500 px-4 py-2"
-                            required>
+                            class="w-full rounded-md border border-gray-400 shadow-sm focus:ring-2 focus:ring-green-500 px-4 py-2">
                         <option value="">Seleccione una sala</option>
                         @foreach ($salas as $sala)
                             <option value="{{ $sala->id }}"
@@ -56,8 +54,7 @@
                         Seleccionar Habitación
                     </label>
                     <select name="habitacion_id" id="habitacion_id"
-                            class="w-full rounded-md border border-gray-400 shadow-sm focus:ring-2 focus:ring-green-500 px-4 py-2"
-                            required>
+                            class="w-full rounded-md border border-gray-400 shadow-sm focus:ring-2 focus:ring-green-500 px-4 py-2">
                         <option value="">Seleccione una habitación</option>
                         @if(request('sala_id'))
                             @foreach($habitaciones as $habitacion)
@@ -69,7 +66,7 @@
                         @endif
                     </select>
                     @error('habitacion_id')
-                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                     @enderror
                 </div>
 
