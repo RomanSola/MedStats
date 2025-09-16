@@ -66,20 +66,28 @@
 
                     {{-- Acciones rápidas --}}
                     <div class="bg-gray-50 p-4 flex flex-wrap gap-3 justify-end">
-                        <a href="{{ route('pacientes.show', $persona) }}" class="px-3 py-2 border border-gray-200 text-gray-700 rounded-lg hover:bg-gray-200 hover:text-black transition">👁️ Ver</a>
+                        <a href="{{ route('pacientes.show', $persona) }}" 
+                           class="px-3 py-2 border border-gray-400 text-gray-700 rounded-lg hover:bg-gray-400 hover:text-white transition-colors">
+                           👁️ Ver
+                        </a>
                         
-                        <a href="{{ route('pacientes.edit', $persona) }}" class="px-3 py-2 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-600 hover:text-white transition">✏️ Editar</a>
+                        <a href="{{ route('pacientes.edit', $persona) }}" 
+                           class="px-3 py-2 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-600 hover:text-white transition-colors">
+                           ✏️ Editar
+                        </a>
                         
                         @if ($persona->cama_id)
                             <form action="{{ route('pacientes.darDeAlta', $persona) }}" method="POST" class="inline-block form-dar-de-alta">
                                 @csrf
-                                <button type="submit" class="px-3 py-2 border border-green-600 text-green-600 rounded-lg hover:bg-green-600 hover:text-white transition">
+                                <button type="submit" 
+                                        class="px-3 py-2 border border-green-600 text-green-600 rounded-lg hover:bg-green-600 hover:text-white transition-colors">
                                     ✅ Dar de alta
                                 </button>
                             </form>
                         @else
                             <form action="{{ route('pacientes.asignar', $persona) }}" method="GET" class="inline-block form-asignar">
-                                <button type="submit" class="px-3 py-2 border border-green-400 text-green-400 rounded-lg hover:bg-green-400 hover:text-white transition">
+                                <button type="submit" 
+                                        class="px-3 py-2 border border-green-400 text-green-400 rounded-lg hover:bg-green-400 hover:text-white transition-colors">
                                     🛏️ Asignar
                                 </button>
                             </form>
@@ -87,7 +95,8 @@
 
                         <form action="{{ route('pacientes.destroy', $persona) }}" method="POST" class="inline-block form-eliminar">
                             @csrf @method('DELETE')
-                            <button type="submit" class="px-3 py-2 border border-red-600 text-red-600 rounded-lg hover:bg-red-600 hover:text-white transition">
+                            <button type="submit" 
+                                    class="px-3 py-2 border border-red-600 text-red-600 rounded-lg hover:bg-red-600 hover:text-white transition-colors">
                                 🗑️ Eliminar
                             </button>
                         </form>
