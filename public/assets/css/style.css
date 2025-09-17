@@ -186,3 +186,9 @@ thead{
     display: flex;
     gap: 0.25rem;
 }
+
+@media (max-width: 412px){
+    #menuBtn{
+        margin: 15px;
+    }
+}
