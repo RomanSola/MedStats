@@ -1,11 +1,7 @@
 @extends('layouts.app')
-
 @section('title', 'Gestión de Cirugías')
-
 @section('contenido')
     <div class="container mt-4">
-
-
         <div class="max-w-7xl mx-auto px-4 py-8">
             <div class="flex justify-between items-center mb-6">
                 <h1
@@ -17,7 +13,6 @@
                     Ingresar Nueva Cirugía
                 </a>
             </div>
-            
 
             <div class="card border">
                 <div class="card-body">
@@ -164,6 +159,7 @@
                 $(document).ready(function () {
                 $('#miTabla').DataTable({
                     dom: '<"top-controls"lf>rt<"bottom-controls"ip>',
+                    order: [[0, 'desc']],
                     buttons: [
                     {
                         extend: 'excelHtml5',
