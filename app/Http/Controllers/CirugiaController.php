@@ -42,19 +42,45 @@ class CirugiaController extends Controller
     public function store(Request $request)
     {
         //dd($request->all());
-        $request->validate([
-            'paciente_id' => 'required|exists:pacientes,id',
-            'procedimiento_id' => 'required|exists:procedimientos,id',
-            'quirofano_id' => 'required|exists:quirofanos,id',
-            'cirujano_id' => 'required|exists:empleados,id',
-            'anestesista_id' => 'required|exists:empleados,id',
-            'tipo_anestesia_id' => 'required|exists:tipo_anestesias,id',
-            'instrumentador_id' => 'required|exists:empleados,id',
-            'enfermero_id' => 'required|exists:empleados,id',
-            'fecha_cirugia' => 'required',
-            'hora_cirugia' => 'required',
-        ]);
-
+    $request->validate([
+        'paciente_id' => 'required|exists:pacientes,id',
+        'procedimiento_id' => 'required|exists:procedimientos,id',
+        'quirofano_id' => 'required|exists:quirofanos,id',
+        'cirujano_id' => 'required|exists:empleados,id',
+        'anestesista_id' => 'required|exists:empleados,id',
+        'tipo_anestesia_id' => 'required|exists:tipo_anestesias,id',
+        'instrumentador_id' => 'required|exists:empleados,id',
+        'enfermero_id' => 'required|exists:empleados,id',
+        'fecha_cirugia' => 'required',
+        'hora_cirugia' => 'required',
+    ], [
+        'paciente_id.required' => 'Seleccioná un paciente antes de continuar.',
+        'paciente_id.exists' => 'El paciente seleccionado no existe en el sistema.',
+    
+        'procedimiento_id.required' => 'Indicá el procedimiento a realizar.',
+        'procedimiento_id.exists' => 'El procedimiento no está registrado.',
+    
+        'quirofano_id.required' => 'Seleccioná el quirófano asignado.',
+        'quirofano_id.exists' => 'Ese quirófano no está disponible o no existe.',
+    
+        'cirujano_id.required' => 'Asigná un cirujano para la cirugía.',
+        'cirujano_id.exists' => 'El cirujano seleccionado no está registrado.',
+    
+        'anestesista_id.required' => 'Asigná un anestesiologo para el procedimiento.',
+        'anestesista_id.exists' => 'El anestesiologo seleccionado no está registrado.',
+    
+        'tipo_anestesia_id.required' => 'Indicá el tipo de anestesia.',
+        'tipo_anestesia_id.exists' => 'Ese tipo de anestesia no está registrado.',
+    
+        'instrumentador_id.required' => 'Asigná un instrumentador quirúrgico.',
+        'instrumentador_id.exists' => 'El instrumentador seleccionado no está registrado.',
+    
+        'enfermero_id.required' => 'Asigná un enfermero/a para la cirugía.',
+        'enfermero_id.exists' => 'El enfermero/a seleccionado no está registrado.',
+    
+        'fecha_cirugia.required' => 'Indicá la fecha programada para la cirugía.',
+        'hora_cirugia.required' => 'Indicá la hora programada para la cirugía.',
+    ]);
         if ($request->input('ayudante_1_id') != null) {
             $request->validate([
                 'ayudante_1_id' => 'exists:empleados,id',
