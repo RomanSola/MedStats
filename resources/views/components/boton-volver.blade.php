@@ -9,6 +9,7 @@
             case 'pacientes.index':
             case 'estadisticas':
             case 'camas.index':
+            case 'cirugias.estadisticas':
             //case 'cirugias.index':
             case 'ajustes':
                 $rutaAnterior = 'inicio';
@@ -124,7 +125,7 @@
             case 'cirugias.create':
             case 'cirugias.edit':
             case 'cirugias.show':
-            case 'cirugias.estadisticas':
+           // case 'cirugias.estadisticas':
                 $rutaAnterior = 'cirugias.index';
                 break;
 
