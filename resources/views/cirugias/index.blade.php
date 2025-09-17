@@ -260,7 +260,8 @@
                     const cleanText = html => {
                         const temp = document.createElement('div');
                         temp.innerHTML = html;
-                        return temp.textContent || temp.innerText || '';
+                        const text = temp.textContent || temp.innerText || '';
+                        return text.replace(/\n/g, ' ').replace(/\r/g, '').replace(/\s+/g, ' ').trim();
                     };
 
                     const body = [];
