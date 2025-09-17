@@ -84,20 +84,26 @@ class CirugiaController extends Controller
         if ($request->input('ayudante_1_id') != null) {
             $request->validate([
                 'ayudante_1_id' => 'exists:empleados,id|nullable|different:cirujano_id',
+            ],[
+                'ayudante_1_id.different'=>'El ayudante 1 debe ser distinto a los demas.',
             ]);
         }
         if ($request->input('ayudante_2_id') != null) {
             $request->validate([
                 'ayudante_2_id' => 'exists:empleados,id|nullable|different:ayudante_1_id',
+            ],[
+                'ayudante_2_id.different'=>'El ayudante 2 debe ser distinto a los demas.',
             ]);
         }
         if ($request->input('ayudante_3_id') != null) {
             $request->validate([
                 'ayudante_3_id' => 'exists:empleados,id|nullable|different:ayudante_1_id|different:ayudante_2_id',
+            ],[
+                'ayudante_3_id.different'=>'El ayudante 3 debe ser distinto a los demas.',
             ]);
         }
 
-        
+
 
         $cirugia = new Cirugia();
         //Datos del POST se obtiene en request
