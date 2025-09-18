@@ -64,15 +64,14 @@
                                 @else
                                     <form action="{{ route('pacientes.asignar', $paciente) }}" method="GET"
                                         class="inline-block form-asignar">
-                                        <button type="submit"
-                                            class="btn btn-outline-secondary btn-sm me-1"> Asignar </button>
+                                        <button type="submit" class="btn btn-outline-secondary btn-sm me-1"> Asignar
+                                        </button>
                                     </form>
                                 @endif
                                 <form action="{{ route('pacientes.destroy', $paciente) }}" method="POST"
                                     class="inline-block form-eliminar">
                                     @csrf @method('DELETE')
-                                    <button type="submit"
-                                        class="btn btn-outline-danger btn-sm me-1">Eliminar</button>
+                                    <button type="submit" class="btn btn-outline-danger btn-sm me-1">Eliminar</button>
                                 </form>
                             </td>
                         </tr>
@@ -84,6 +83,7 @@
                     @endforelse
                 </tbody>
             </table>
+
         </div>
     </div>
     <!-- MODAL DE CONFIRMACIÓN PERSONALIZADO -->
@@ -146,109 +146,111 @@
         }
     </style>
     @push('scripts')
+        <!-- SCRIPT PARA MANEJAR LOS MODALES -->
+        <script src="{{ asset('js/modal.js') }}">
+            /*
+                        document.addEventListener('DOMContentLoaded', function() {
+                            const modal = document.getElementById('modal-confirmacion');
+                            const mensaje = document.getElementById('modal-mensaje');
+                            const btnCancelar = document.getElementById('modal-cancelar');
+                            const btnConfirmar = document.getElementById('modal-confirmar');
 
-    <!-- SCRIPT PARA MANEJAR LOS MODALES -->
-    <script src="{{ asset('js/modal.js') }}">
-        /*
-                document.addEventListener('DOMContentLoaded', function() {
-                    const modal = document.getElementById('modal-confirmacion');
-                    const mensaje = document.getElementById('modal-mensaje');
-                    const btnCancelar = document.getElementById('modal-cancelar');
-                    const btnConfirmar = document.getElementById('modal-confirmar');
+                            let formularioActual = null;
 
-                    let formularioActual = null;
+                            // Abre el modal con el mensaje deseado y referencia al formulario
+                            function abrirModal(texto, form) {
+                                mensaje.textContent = texto;
+                                formularioActual = form;
+                                modal.style.display = 'block';
+                            }
 
-                    // Abre el modal con el mensaje deseado y referencia al formulario
-                    function abrirModal(texto, form) {
-                        mensaje.textContent = texto;
-                        formularioActual = form;
-                        modal.style.display = 'block';
-                    }
+                            // Cierra el modal si el usuario cancela
+                            btnCancelar.addEventListener('click', () => {
+                                modal.style.display = 'none';
+                                formularioActual = null;
+                            });
 
-                    // Cierra el modal si el usuario cancela
-                    btnCancelar.addEventListener('click', () => {
-                        modal.style.display = 'none';
-                        formularioActual = null;
-                    });
+                            // Envía el formulario si el usuario confirma
+                            btnConfirmar.addEventListener('click', () => {
+                                if (formularioActual) formularioActual.submit();
+                            });
 
-                    // Envía el formulario si el usuario confirma
-                    btnConfirmar.addEventListener('click', () => {
-                        if (formularioActual) formularioActual.submit();
-                    });
+                            // CONFIRMACIÓN PARA DAR DE ALTA
+                            document.querySelectorAll('.form-dar-de-alta').forEach(form => {
+                                form.addEventListener('submit', function(e) {
+                                    e.preventDefault();
+                                    abrirModal(
+                                        '¿Estás seguro que querés dar de alta a este paciente? Esta acción liberará la cama asignada.',
+                                        form);
+                                });
+                            });
 
-                    // CONFIRMACIÓN PARA DAR DE ALTA
-                    document.querySelectorAll('.form-dar-de-alta').forEach(form => {
-                        form.addEventListener('submit', function(e) {
-                            e.preventDefault();
-                            abrirModal(
-                                '¿Estás seguro que querés dar de alta a este paciente? Esta acción liberará la cama asignada.',
-                                form);
+                            // CONFIRMACIÓN PARA ELIMINAR
+                            document.querySelectorAll('.form-eliminar').forEach(form => {
+                                form.addEventListener('submit', function(e) {
+                                    e.preventDefault();
+                                    abrirModal(
+                                        '¿Seguro que querés eliminar este paciente? Esta acción no se puede deshacer.',
+                                        form);
+                                });
+                            });
+
+                            // CONFIRMACIÓN PARA ASIGNAR
+                            document.querySelectorAll('.form-asignar').forEach(form => {
+                                form.addEventListener('submit', function(e) {
+                                    e.preventDefault();
+                                    abrirModal('¿Querés asignar una cama a este paciente?', form);
+                                });
+                            });
+
+                            // Cierra el modal si se hace clic fuera del contenido
+                            window.onclick = function(event) {
+                                if (event.target == modal) {
+                                    modal.style.display = "none";
+                                    formularioActual = null;
+                                }
+                            };
                         });
-                    });
-
-                    // CONFIRMACIÓN PARA ELIMINAR
-                    document.querySelectorAll('.form-eliminar').forEach(form => {
-                        form.addEventListener('submit', function(e) {
-                            e.preventDefault();
-                            abrirModal(
-                                '¿Seguro que querés eliminar este paciente? Esta acción no se puede deshacer.',
-                                form);
-                        });
-                    });
-
-                    // CONFIRMACIÓN PARA ASIGNAR
-                    document.querySelectorAll('.form-asignar').forEach(form => {
-                        form.addEventListener('submit', function(e) {
-                            e.preventDefault();
-                            abrirModal('¿Querés asignar una cama a este paciente?', form);
-                        });
-                    });
-
-                    // Cierra el modal si se hace clic fuera del contenido
-                    window.onclick = function(event) {
-                        if (event.target == modal) {
-                            modal.style.display = "none";
-                            formularioActual = null;
+                    */
+        </script>
+        <script>
+            $(document).ready(function() {
+                $('#tablaPacientes').DataTable({
+                    dom: '<"top-controls"Blf>rt<"bottom-controls"ip>',
+                    buttons: [{
+                            extend: 'excelHtml5',
+                            text: 'Exportar a Excel',
+                            className: 'btn btn-success btn-sm'
+                        },
+                        {
+                            extend: 'pdfHtml5',
+                            text: 'Exportar a PDF',
+                            className: 'btn btn-danger btn-sm',
+                            orientation: 'landscape',
+                            pageSize: 'A4',
+                            customize: function(doc) {
+                                doc.defaultStyle.fontSize = 8;
+                            }
                         }
-                    };
+                    ],
+                    language: {
+                        url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json',
+                        search: "Buscar paciente:",
+                        lengthMenu: "Mostrar _MENU_ pacientes por página",
+                        info: "Mostrando _START_ a _END_ de _TOTAL_ pacientes",
+                        infoEmpty: "No hay pacientes para mostrar",
+                        infoFiltered: "(filtrado de _MAX_ pacientes en total)"
+                    },
+                    order: [
+                        [1, 'asc']
+                    ], // Orden por nombre
+                    columnDefs: [{
+                            orderable: false,
+                            targets: [7]
+                        } // Desactiva orden en columna Acciones
+                    ]
                 });
-            */
-    </script>
-    <script>
-        $(document).ready(function () {
-        $('#tablaPacientes').DataTable({
-            dom: '<"top-controls"Blf>rt<"bottom-controls"ip>',
-            buttons: [
-                {
-                    extend: 'excelHtml5',
-                    text: 'Exportar a Excel',
-                    className: 'btn btn-success btn-sm'
-                },
-                {
-                    extend: 'pdfHtml5',
-                    text: 'Exportar a PDF',
-                    className: 'btn btn-danger btn-sm',
-                    orientation: 'landscape',
-                    pageSize: 'A4',
-                    customize: function (doc) {
-                        doc.defaultStyle.fontSize = 8;
-                    }
-                }
-                ],
-            language: {
-                url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json',
-                search: "Buscar paciente:",
-                lengthMenu: "Mostrar _MENU_ pacientes por página",
-                info: "Mostrando _START_ a _END_ de _TOTAL_ pacientes",
-                infoEmpty: "No hay pacientes para mostrar",
-                infoFiltered: "(filtrado de _MAX_ pacientes en total)"
-            },
-            order: [[1, 'asc']], // Orden por nombre
-            columnDefs: [
-                { orderable: false, targets: [7] } // Desactiva orden en columna Acciones
-            ]
-        });
-    });
-    </script>
-@endpush
+            });
+        </script>
+    @endpush
 @endsection
