@@ -55,14 +55,21 @@
                                        class="btn btn-outline-warning btn-sm me-1">
                                         Editar
                                     </a>
-                                    <form action="{{ route('tipoAnestesias.destroy', $anestesia) }}" method="POST" class="d-inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button class="btn btn-outline-danger btn-sm"
-                                                onclick="return confirm('¿Estás seguro de que querés eliminar este tipo de anestesia?')">
-                                            Eliminar
-                                        </button>
-                                    </form>
+                                
+                                    @if (!$anestesia->cirugias()->exists())
+                                        <form action="{{ route('tipoAnestesias.destroy', $anestesia) }}" method="POST" class="d-inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="btn btn-outline-danger btn-sm"
+                                                    onclick="return confirm('¿Estás seguro de que querés eliminar este tipo de anestesia?')">
+                                                Eliminar
+                                            </button>
+                                        </form>
+                                    @else
+                                    <button class="btn btn-outline-secondary btn-sm" disabled title="Esta anestesia no se puede eliminar">
+                                        No eliminable
+                                    </button>
+                                    @endif
                                 </td>
                             </tr>
                             @empty

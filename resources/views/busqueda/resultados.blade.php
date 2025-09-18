@@ -51,7 +51,8 @@
                     {{-- Datos personales en grilla --}}
                     <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="space-y-2">
-                            <p class="text-gray-700"><strong>Fecha de Nacimiento:</strong> {{ \Carbon\Carbon::parse($persona->fecha_nacimiento)->format('d/m/Y') }}</p>
+                            <p class="text-gray-700"><strong>Fecha de Nacimiento:</strong>
+                                {{ \Carbon\Carbon::parse($persona->fecha_nacimiento)->format('d/m/Y') }}</p>
                             <p class="text-gray-700"><strong>Teléfono:</strong> {{ $persona->telefono }}</p>
                         </div>
                         <div class="space-y-2">
@@ -134,16 +135,40 @@
                     </div>
                 </div>
             </div>
+
+        {{-- Fin isset($persona) --}}
         @elseif(isset($resultados))
             {{-- Si hay una búsqueda con múltiples resultados --}}
-            <h2>Resultados para "{{ $busqueda }}"</h2>
+            <h2 class="text-lg font-semibold mb-4">Resultados para "{{ $busqueda }}"</h2>
+
             @if($resultados->isEmpty())
-                <p>No se encontraron coincidencias.</p>
+                {{-- NUEVA VISTA "SIN RESULTADOS" --}}
+                <div class="max-w-lg mx-auto mb-6">
+                    <div class="bg-white shadow-xl rounded-2xl overflow-hidden border border-gray-200 text-center p-8">
+                        <div class="flex flex-col items-center space-y-4">
+                            {{-- Icono representativo --}}
+                            <div class="w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center shadow">
+                                <svg xmlns="http://www.w3.org/2000/svg" 
+                                     class="h-10 w-10 text-gray-400" 
+                                     fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm1 15h-2v-2h2v2zm1.07-7.75l-.9.92C12.45 10.9 12 11.5 12 13h-2v-.5c0-.83.45-1.5 1.17-2.18l1.24-1.26c.37-.36.59-.86.59-1.41A2.5 2.5 0 0010.5 5c-1.38 0-2.5 1.12-2.5 2.5H6A4.5 4.5 0 0110.5 3c2.48 0 4.5 2.02 4.5 4.5 0 .88-.36 1.68-.93 2.25z"/>
+                                </svg>
+                            </div>
+                            <h2 class="text-xl font-bold text-gray-700">Sin resultados</h2>
+                            <p class="text-gray-500">No se encontraron pacientes que coincidan con la búsqueda.</p>
+                            <a href="{{ route('buscar') }}" 
+                               class="mt-4 px-4 py-2 bg-[#1B7D8F] text-white rounded-lg hover:bg-[#176d7b] transition">
+                                🔄 Intentar de nuevo
+                            </a>
+                        </div>
+                    </div>
+                </div>
             @else
-                <ul>
+                <ul class="space-y-2">
                     @foreach ($resultados as $persona)
                         <li>
-                            <a href="{{ route('persona.ver', $persona->id) }}">
+                            <a href="{{ route('persona.ver', $persona->id) }}" 
+                               class="text-[#1B7D8F] hover:underline">
                                 {{ $persona->nombre }} {{ $persona->apellido }} - DNI: {{ $persona->dni }}
                             </a>
                         </li>

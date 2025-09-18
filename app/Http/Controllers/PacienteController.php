@@ -158,7 +158,7 @@ class PacienteController extends Controller
 
     public function destroy(Paciente $paciente)
     {
-        if ($paciente->get_cirugias()->exists() || $paciente->get_historial_stock()->exists() || $paciente->get_ocupacion_cama()->exists()) {
+        if ($paciente->cirugias()->exists() || $paciente->get_historial_stock()->exists() || $paciente->get_ocupacion_cama()->exists()) {
             return redirect()->route('pacientes.index')
                 ->with('error', 'No se puede eliminar el paciente porque tiene registros asociados.');
         }

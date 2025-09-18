@@ -146,11 +146,11 @@ Route::post('/camas', [CamaController::class, 'store'])->name('camas.store');
 Route::get('/camas/{cama}/edit', [CamaController::class, 'edit'])->name('camas.edit');
 Route::put('/camas/{cama}', [CamaController::class, 'update'])->name('camas.update');
 Route::delete('/camas/{cama}', [CamaController::class, 'destroy'])->name('camas.destroy');
+Route::get('/camas/listar', [CamaController::class, 'index'])->name('camas.listar');
+
 // Dar de alta un paciente
 Route::post('/pacientes/{paciente}/dar-de-alta', [PacienteController::class, 'darDeAlta'])
     ->name('pacientes.darDeAlta');
-
-
 
 //Ocupación Camas
 Route::get('/ocupacionCamas', [OcupacionCamaController::class, 'index'])->name('ocupacionCamas.index');

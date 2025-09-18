@@ -11,7 +11,8 @@ class Procedimiento extends Model
 
     protected $fillable = ['nombre_procedimiento', 'descripcion'];
 
-    public function get_cirugias()
+
+    public function cirugias()
     {
         return $this->hasMany(Cirugia::class);
     }
