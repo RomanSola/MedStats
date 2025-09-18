@@ -1,7 +1,5 @@
 @extends('layouts.app')
-
 @section('title', 'Gestión de Medicamentos')
-
 @section('contenido')
 @if (session('error'))
     <div class="alert alert-danger">
@@ -37,7 +35,7 @@
             </p>
             {{-- Tabla de medicamentos --}}
         <div class="bg-white shadow rounded-lg border border-gray-200 overflow-auto">
-            <table class=" table table-hover table-bordered shadow-sm text-center rounded">
+            <table id="tablaMedicamentos" class="table table-hover table-bordered shadow-sm text-center rounded">
                 <thead>
                         <tr>
                             <th>Nombre del Medicamento</th>
@@ -79,17 +77,51 @@
                     </tbody>
                 </table>
             </div>
-
         </div>
     </div>
 </div>
 @endsection
-
-        <style>
-            .btn-acciones {
-            min-width: 110px;
-            /* ajusta hasta que quede igual al "Dar de alta" */
-            text-align: center;
-        }
-        </style>
-
+@push('scripts')
+<script>
+$(document).ready(function () {
+    $('#tablaMedicamentos').DataTable({
+        dom: '<"top-controls"Blf>rt<"bottom-controls"ip>',
+        buttons: [
+            {
+                extend: 'excelHtml5',
+                text: 'Exportar a Excel',
+                className: 'btn btn-success btn-sm'
+            },
+            {
+                extend: 'pdfHtml5',
+                text: 'Exportar a PDF',
+                className: 'btn btn-danger btn-sm',
+                orientation: 'landscape',
+                pageSize: 'A4',
+                customize: function (doc) {
+                    doc.defaultStyle.fontSize = 8;
+                }
+            }
+        ],
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json',
+            search: "Buscar medicamento:",
+            lengthMenu: "Mostrar _MENU_ medicamentos por página",
+            info: "Mostrando _START_ a _END_ de _TOTAL_ medicamentos",
+            infoEmpty: "No hay medicamentos para mostrar",
+            infoFiltered: "(filtrado de _MAX_ medicamentos en total)"
+        },
+        order: [[0, 'asc']], // Orden por nombre del medicamento
+        columnDefs: [
+            { orderable: false, targets: [1] } // Desactiva orden en columna Acciones
+        ]
+    });
+});
+</script>
+@endpush
+<style>
+    .btn-acciones {
+    min-width: 110px;
+    text-align: center;
+    }
+</style>
