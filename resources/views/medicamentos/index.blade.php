@@ -50,20 +50,20 @@
                             <td class="fw-medium">{{ $medicamento->nombre }}</td>
                             <td class="text-center">
                                 <a href="{{ route('medicamentos.edit', $medicamento) }}"
-                                   class="btn btn-outline-warning btn-sm me-1">
+                                   class="btn btn-outline-warning btn-sm me-1 btn-acciones">
                                      Editar
                                 </a>
                                 @if (!$medicamento->stocks()->exists())
                                 <form action="{{ route('medicamentos.destroy', $medicamento) }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="btn btn-outline-danger btn-sm"
+                                    <button class="btn btn-outline-danger btn-sm btn-acciones"
                                             onclick="return confirm('¿Estás seguro de que querés eliminar este medicamento?')">
                                         Eliminar
                                     </button>
                                 </form>
                             @else
-                                <button class="btn btn-outline-secondary btn-sm" disabled title="Este medicamento no se puede eliminar">
+                                <button class="btn btn-outline-secondary btn-sm btn-acciones" disabled title="Este medicamento no se puede eliminar">
                                     No eliminable
                                 </button>
                             @endif
@@ -84,3 +84,12 @@
     </div>
 </div>
 @endsection
+
+        <style>
+            .btn-acciones {
+            min-width: 110px;
+            /* ajusta hasta que quede igual al "Dar de alta" */
+            text-align: center;
+        }
+        </style>
+

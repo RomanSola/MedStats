@@ -111,10 +111,10 @@
                                         </td>
                                         <td class="text-center no-print">
                                             <a href="{{ route('cirugias.show', $cirugia) }}"
-                                                class="btn btn-outline-primary btn-sm me-1">Ver</a>
+                                                class="btn btn-outline-primary btn-sm me-1 btn-acciones">Ver</a>
                                             <br>
                                             <a href="{{ route('cirugias.edit', $cirugia) }}"
-                                                class="btn btn-outline-warning btn-sm me-1">Editar</a>
+                                                class="btn btn-outline-warning btn-sm me-1 btn-acciones">Editar</a>
                                         </td>
                                     </tr>
                                 @empty
@@ -143,6 +143,13 @@
                 </button>
             </div>
         @endsection
+        <style>
+            .btn-acciones {
+            min-width: 110px;
+            /* ajusta hasta que quede igual al "Dar de alta" */
+            text-align: center;
+        }
+        </style>
 
         @push('scripts')
             <!-- jsPDF y autoTable -->
