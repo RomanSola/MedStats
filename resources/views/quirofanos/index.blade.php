@@ -59,14 +59,20 @@
                                     <a href="{{ route('quirofanos.edit', $quirofano) }}" class="btn btn-outline-warning btn-sm me-1">
                                         Editar
                                     </a>
+                                    @if (!$quirofano->cirugias()->exists())
                                     <form action="{{ route('quirofanos.destroy', $quirofano) }}" method="POST" class="d-inline">
                                         @csrf
                                         @method('DELETE')
                                         <button class="btn btn-outline-danger btn-sm"
-                                            onclick="return confirm('¿Estás seguro de que querés eliminar este quirófano?')">
+                                                onclick="return confirm('¿Estás seguro de que querés eliminar este quirófano?')">
                                             Eliminar
                                         </button>
                                     </form>
+                                @else
+                                <button class="btn btn-outline-secondary btn-sm" disabled title="Esta profesión no se puede eliminar">
+                                    No eliminable
+                                </button>
+                                @endif
                                 </td>
                             </tr>
                             @empty

@@ -62,8 +62,15 @@ class QuirofanoController extends Controller
 
     public function destroy(Quirofano $quirofano)
     {
+        if ($quirofano->cirugias()->exists()) {
+            return redirect()->route('quirofanos.index')
+                ->with('error', 'No se puede eliminar: este quirófano está asignado a cirugías.');
+        }
+    
         $quirofano->delete();
-        return redirect()->route('quirofanos.index');
+    
+        return redirect()->route('quirofanos.index')
+            ->with('success', 'Quirófano eliminado correctamente.');
     }
 
 }

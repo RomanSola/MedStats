@@ -8,6 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Quirofano extends Model
 {
     use HasFactory;
+    public function cirugias()
+    {
+        return $this->hasMany(Cirugia::class, 'quirofano_id');
+    }
     
     protected $fillable = ['nombre', 'descripcion'];
 
