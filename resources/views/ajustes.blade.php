@@ -52,7 +52,7 @@
                             [
                                 'title' => 'Camas',
                                 'text' => 'Agregar Nueva Cama.',
-                                'route' => route('camas.create'),
+                                'route' => route('camas.listar'),
                                 'btn' => 'Gestionar Camas',
                             ],
                             [
