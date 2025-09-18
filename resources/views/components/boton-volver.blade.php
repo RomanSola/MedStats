@@ -1,5 +1,4 @@
 <div class="container mt-2">
-
     @php
         $rutaActual = request()->route()->getName();
 
@@ -29,10 +28,13 @@
             case 'perfiles.index':
                 $rutaAnterior = 'ajustes';
                 break;
+
             //Perfiles
             case 'perfiles.create':
             case 'perfiles.edit':
                 $rutaAnterior = 'perfiles.index';
+                break;
+
             // Profesión
             case 'profesion.create':
             case 'profesion.edit':
@@ -143,11 +145,42 @@
         }
     @endphp
 
- @if ($rutaActual !== 'inicio')
-        <a href="{{ route($rutaAnterior) }}" class="btn btn-outline-primary mt-1">
-            ← Volver atrás
-        </a>
+    @if ($rutaActual !== 'inicio')
+        <form action="{{ route($rutaAnterior) }}" method="GET">
+            <button type="submit" class="btn btn-outline-secondary btn-sm btn-volver-fijo" title="Volver">
+                🡐
+            </button>
+        </form>
     @endif
 
     <!-- I begin to speak only when I am certain what I will say is not better left unsaid. - Cato the Younger -->
 </div>
+
+<style>
+    .btn-volver-fijo {
+        position: fixed;
+        upper: 70px;
+        left: 7px;
+        z-index: 9999;
+        font-size: 1.2rem;
+
+        border-radius: 50px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        padding: 18px 22px;
+    }
+
+    .btn-volver-fijo:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    @media (max-width: 768px) {
+        .btn-volver-fijo {
+            bottom: 100px;
+            left: 10px;
+            font-size: 13px;
+            padding: 5px 12px;
+        }
+    }
+</style>
