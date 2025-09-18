@@ -35,6 +35,19 @@
       </div>
     </div>
   </form>
+  @if ($errors->has('desde') || $errors->has('hasta'))
+    <div class="alert alert-warning mt-2">
+      <strong>⚠️ Atención:</strong> Hubo un problema con las fechas ingresadas.
+      <ul class="mb-0">
+        @foreach ($errors->get('desde') as $error)
+          <li>{{ $error }}</li>
+        @endforeach
+        @foreach ($errors->get('hasta') as $error)
+          <li>{{ $error }}</li>
+        @endforeach
+      </ul>
+    </div>
+  @endif
 
   {{-- Período activo --}}
   @if(request('desde') && request('hasta'))
@@ -164,7 +177,7 @@
     <i class="bi bi-hourglass-split me-2"></i> Proyección de agotamiento (basado en últimos 30 días)
   </div>
   <div class="card-body">
-    <table class="table table-bordered table-hover">
+    <table id="tablaProyeccion" class="table table-bordered table-hover">
       <thead class="bg-warning text-dark text-center">
         <tr>
           <th>Medicamento</th>
@@ -204,26 +217,62 @@
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    const canvas = document.getElementById('graficoInsumos');
-    canvas.height = 250;
-    const ctx = document.getElementById('graficoInsumos').getContext('2d');
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: {!! json_encode($insumoLabels) !!},
-            datasets: [{
-            label: 'Cantidad extraída',
-            data: {!! json_encode($insumoValores) !!},
-            backgroundColor: 'rgba(13, 110, 253, 0.5)',
-            borderColor: 'rgba(13, 110, 253, 1)',
-            borderWidth: 1
-            }]
+  const canvas = document.getElementById('graficoInsumos');
+  canvas.height = 250;
+  const ctx = document.getElementById('graficoInsumos').getContext('2d');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: {!! json_encode($insumoLabels) !!},
+      datasets: [{
+      label: 'Cantidad extraída',
+      data: {!! json_encode($insumoValores) !!},
+      backgroundColor: 'rgba(13, 110, 253, 0.5)',
+      borderColor: 'rgba(13, 110, 253, 1)',
+      borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {y: { beginAtZero: true }}
+    }
+  });
+</script>
+<script>
+  $(document).ready(function () {
+    $('#tablaProyeccion').DataTable({
+      dom: '<"top-controls"Blf>rt<"bottom-controls"ip>',
+      buttons: [
+        {
+          extend: 'excelHtml5',
+          text: 'Exportar a Excel',
+          className: 'btn btn-success btn-sm'
         },
-        options: {
-            responsive: true,
-            scales: {y: { beginAtZero: true }}
+        {
+          extend: 'pdfHtml5',
+          text: 'Exportar a PDF',
+          className: 'btn btn-danger btn-sm',
+          orientation: 'landscape',
+          pageSize: 'A4',
+          customize: function (doc) {
+            doc.defaultStyle.fontSize = 8;
+          }
         }
-    });
+      ],
+      language: {
+        url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json',
+        search: "Buscar medicamento:",
+        lengthMenu: "Mostrar _MENU_ registros por página",
+        info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+        infoEmpty: "No hay datos para mostrar",
+        infoFiltered: "(filtrado de _MAX_ registros en total)"
+      },
+      order: [[4, 'asc']], // Orden por días restantes
+      columnDefs: [
+        { orderable: false, targets: [] } // Todas las columnas son ordenables
+      ]
+  });
+});
 </script>
 @endpush
 

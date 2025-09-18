@@ -152,7 +152,7 @@
                 @foreach ($porCirujano->sortByDesc('total')->take(5) as $item)
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         {{ optional($item->get_cirujano)->apellido }}, {{ optional($item->get_cirujano)->nombre }}
-                    <span class="badge bg-secondary rounded-pill">{{ $item->total }}</span>
+                    <span class="badge bg-primary text-light rounded-pill">{{ $item->total }}</span>
                     </li>
                 @endforeach
                 </ul>
@@ -326,7 +326,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 datasets: [{
                     label: 'Cirugías por mes',
                     data: {!! json_encode($porMesValores) !!},
-                    backgroundColor: '#3b82f6'
+                    backgroundColor: '#0dcaf0'
                 }]
             },
             options: {
