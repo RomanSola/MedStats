@@ -66,7 +66,9 @@
                                             </button>
                                         </form>
                                     @else
-                                        <span class="text-muted small fst-italic">No se puede eliminar</span>
+                                    <button class="btn btn-outline-secondary btn-sm" disabled title="Esta anestesia no se puede eliminar">
+                                        No eliminable
+                                    </button>
                                     @endif
                                 </td>
                             </tr>

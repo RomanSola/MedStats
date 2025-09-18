@@ -61,15 +61,20 @@
                                                class="btn btn-outline-primary btn-sm me-1">Ver</a>
                                             <a href="{{ route('profesion.edit', $profesion) }}"
                                                class="btn btn-outline-warning btn-sm me-1">Editar</a>
-                                            <form action="{{ route('profesion.destroy', $profesion) }}" method="POST"
-                                                  class="d-inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button class="btn btn-outline-danger btn-sm"
-                                                        onclick="return confirm('¿Estás seguro de que querés eliminar esta profesión?')">
-                                                    Eliminar
-                                                </button>
-                                            </form>
+                                               @if (!$profesion->empleados()->exists())
+                                               <form action="{{ route('profesion.destroy', $profesion) }}" method="POST" class="d-inline">
+                                                   @csrf
+                                                   @method('DELETE')
+                                                   <button class="btn btn-outline-danger btn-sm"
+                                                           onclick="return confirm('¿Estás seguro de que querés eliminar esta profesión?')">
+                                                       Eliminar
+                                                   </button>
+                                               </form>
+                                           @else
+                                           <button class="btn btn-outline-secondary btn-sm" disabled title="Esta profesión no se puede eliminar">
+                                            No eliminable
+                                        </button>
+                                           @endif
                                         </td>
                                     </tr>
                                 @empty
