@@ -13,7 +13,7 @@ class Tipo_anestesia extends Model
         'nombre'
     ];
 
-    public function get_cirugias()
+    public function cirugias()
     {
         return $this->hasMany(Cirugia::class);
     }

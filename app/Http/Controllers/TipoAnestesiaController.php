@@ -53,7 +53,15 @@ class TipoAnestesiaController extends Controller
 
     public function destroy(Tipo_anestesia $anestesia)
     {
+        // Verificar si está asociada a alguna cirugía
+        if ($anestesia->cirugias()->exists()) {
+            return redirect()->route('tipoAnestesias.index')
+                ->with('error', 'No se puede eliminar: esta anestesia está asociada a cirugías.');
+        }
+    
         $anestesia->delete();
-        return redirect()->route('tipoAnestesias.index');
+    
+        return redirect()->route('tipoAnestesias.index')
+            ->with('success', 'Tipo de anestesia eliminado correctamente.');
     }
 }
