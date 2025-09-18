@@ -16,8 +16,9 @@
 
             // Rutas que vuelven a Ajustes
             case 'usuarios.index':
-            case 'empleados.index':
             case 'medicamentos.index':
+            case 'UsuarioPerfil.index':
+            case 'empleados.index':
             case 'salas.index':
             case 'habitaciones.index':
             case 'quirofanos.index':

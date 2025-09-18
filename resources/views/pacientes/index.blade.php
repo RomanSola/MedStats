@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('titulo', 'Gestión de Pacientes')
 @section('contenido')
+<div class="container mt-4">
     <div class="max-w-7xl mx-auto px-4 py-12">
         <div class="flex justify-between items-center mb-6">
             <h1
@@ -86,6 +87,7 @@
 
         </div>
     </div>
+</div>
     <!-- MODAL DE CONFIRMACIÓN PERSONALIZADO -->
     <div id="modal-confirmacion" class="modal">
         <div class="modal-content">
