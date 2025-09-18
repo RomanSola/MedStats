@@ -56,13 +56,22 @@
                                                 class="btn btn-outline-primary btn-sm me-1">Ver</a>
                                             <a href="{{ route('procedimientos.edit', $procedimiento) }}"
                                                 class="btn btn-outline-warning btn-sm me-1">Editar</a>
-                                            <form action="{{ route('procedimientos.destroy', $procedimiento) }}" method="POST"
-                                                class="d-inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button class="btn btn-outline-danger btn-sm"
-                                                    onclick="return confirm('¿Estás seguro de que querés eliminar este procedimiento?')">Eliminar</button>
-                                            </form>
+
+                                            @if (empty($procedimiento->bloqueado) || !$procedimiento->bloqueado)
+                                                <form action="{{ route('procedimientos.destroy', $procedimiento) }}" method="POST"
+                                                    class="d-inline">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button class="btn btn-outline-danger btn-sm"
+                                                        onclick="return confirm('¿Estás seguro de que querés eliminar este procedimiento?')">
+                                                        Eliminar
+                                                    </button>
+                                                </form>
+                                            @else
+                                                <button class="btn btn-outline-secondary btn-sm" disabled title="Este procedimiento está bloqueado">
+                                                    No eliminable
+                                                </button>
+                                            @endif
                                         </td>
                                     </tr>
                                 @empty

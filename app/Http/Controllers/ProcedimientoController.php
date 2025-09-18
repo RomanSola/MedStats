@@ -59,8 +59,14 @@ class ProcedimientoController extends Controller
     }
 
     public function destroy(Procedimiento $procedimiento)
-    {
-        $procedimiento->delete();
-        return redirect()->route('procedimientos.index');
+{
+    // Validación: si está bloqueado, no se puede eliminar
+    if ($procedimiento->bloqueado) {
+        return back()->with('error', 'Este procedimiento está bloqueado y no puede eliminarse.');
     }
+
+    $procedimiento->delete();
+    return redirect()->route('procedimientos.index')->with('success', 'Procedimiento eliminado correctamente.');
+}
+
 }
