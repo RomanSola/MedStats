@@ -46,7 +46,7 @@
         <span class="text-muted">→</span>
         <span class="text-dark">{{ \Carbon\Carbon::parse(request('hasta'))->format('d/m/Y') }}</span>
       </div>
-      <a href="{{ route('stocks.estadisticas') }}" class="btn btn-sm btn-outline-light text-primary border-primary">
+      <a href="{{ route('stocks.estadisticasstock') }}" class="btn btn-sm btn-outline-light text-primary border-primary">
         <i class="bi bi-x-circle me-1"></i> Quitar filtro
       </a>
     </div>
