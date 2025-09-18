@@ -50,7 +50,7 @@
                                 <td class="px-4 py-2 border">{{ $paciente->genero }}</td>
                                 <td class="px-4 py-2 border">{{ $paciente->habitacion?->numero ?? '—' }}</td>
                                 <td class="px-4 py-2 border">{{ $paciente->cama?->codigo ?? '—' }}</td>
-                                <td class="px-4 py-2 border text-center space-x-2">
+                                <td class="px-4 py-2 border text-center">
                                     <a href="{{ route('pacientes.show', $paciente) }}"
                                         class="btn btn-outline-primary btn-sm me-1 btn-acciones">Ver</a>
                                     <a href="{{ route('pacientes.edit', $paciente) }}"
