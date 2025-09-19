@@ -253,7 +253,8 @@
                         <div class="col-md-4">
                             <label class="form-label d-block">Urgencia</label>
                             <label class="switch">
-                                <input type="checkbox" name="urgencia" id="urgencia">
+                                <input type="checkbox" name="urgencia" id="urgencia" value="1"
+                                {{old('urgencia',$registro->urgencia ?? 0 )? 'checked':''}}>
                                 <span class="slider round"></span>
                             </label>
                             @error('urgencia')
