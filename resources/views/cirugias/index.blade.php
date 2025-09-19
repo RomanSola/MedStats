@@ -13,7 +13,6 @@
                     Ingresar Nueva Cirugía
                 </a>
             </div>
-
             <div class="card border">
                 <div class="card-body">
                     <p class="mb-3 text-secondary fw-semibold">Administrá las cirugías registradas en el sistema. Podés ver detalles y editarlos.
@@ -21,6 +20,21 @@
                     <br>
                     <div class="bg-white shadow rounded-lg border border-gray-200 overflow-auto">
                         <table id="miTabla" class=" table table-hover table-bordered shadow-sm text-center rounded">
+                            <div class="d-flex justify-content-start align-items-center gap-3 mb-3">
+<div class="d-flex gap-3 mb-3">
+    <div>
+        <label for="fechaDesde" class="form-label mb-0">Desde:</label>
+        <input type="date" id="fechaDesde" class="form-control form-control-sm">
+    </div>
+    <div>
+        <label for="fechaHasta" class="form-label mb-0">Hasta:</label>
+        <input type="date" id="fechaHasta" class="form-control form-control-sm">
+    </div>
+    <div class="align-self-end">
+        <button id="limpiarFechas" class="btn btn-outline-secondary btn-sm">Limpiar filtro</button>
+    </div>
+</div>
+
                             <thead>
                                 <tr>
                                     <th>Paciente</th>
@@ -164,39 +178,77 @@
             <!-- Funciones de impresión y exportación -->
             <script>
                 $(document).ready(function () {
-                $('#miTabla').DataTable({
-                    dom: '<"top-controls"lf>rt<"bottom-controls"ip>',
-                    order: [[0, 'desc']],
-                    buttons: [
-                    {
-                        extend: 'excelHtml5',
-                        text: 'Exportar a Excel',
-                        className: 'btn btn-success btn-sm'
-                    },
-                    {
-                        extend: 'pdfHtml5',
-                        text: 'Exportar a PDF',
-                        className: 'btn btn-danger btn-sm',
-                        orientation: 'landscape',
-                        pageSize: 'A4',
-                        customize: function (doc) {
-                            doc.defaultStyle.fontSize = 8;
-                        }
-                    }
-                ],
-                language: {
-                    url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json',
-                    search: "Filtrar cirugías:",
-                    lengthMenu: "Mostrar _MENU_ cirugías por página",
-                    info: "Mostrando _START_ a _END_ de _TOTAL_ cirugías",
-                    infoEmpty: "No hay cirugías para mostrar",
-                    infoFiltered: "(filtrado de _MAX_ cirugías en total)"
-                },
-                columnDefs: [
-                    { orderable: false, targets: [16] } // Desactiva orden en columna Acciones
-                ]
-                });
-                });
+    const tabla = $('#miTabla').DataTable({
+        dom: '<"top-controls d-flex justify-content-between align-items-center flex-wrap gap-3"<"filtros-fecha d-flex align-items-end gap-2"f><"cantidad"l>>rt<"bottom-controls"ip>',
+        order: [[0, 'desc']],
+        buttons: [
+            {
+                extend: 'excelHtml5',
+                text: 'Exportar a Excel',
+                className: 'btn btn-success btn-sm'
+            },
+            {
+                extend: 'pdfHtml5',
+                text: 'Exportar a PDF',
+                className: 'btn btn-danger btn-sm',
+                orientation: 'landscape',
+                pageSize: 'A4',
+                customize: function (doc) {
+                    doc.defaultStyle.fontSize = 8;
+                }
+            }
+        ],
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json',
+            search: "Filtrar cirugías:",
+            lengthMenu: "Mostrar _MENU_ cirugías por página",
+            info: "Mostrando _START_ a _END_ de _TOTAL_ cirugías",
+            infoEmpty: "No hay cirugías para mostrar",
+            infoFiltered: "(filtrado de _MAX_ cirugías en total)"
+        },
+        columnDefs: [
+            { orderable: false, targets: [16] }
+        ]
+    });
+    $('.filtros-fecha').prepend($('#filtros-fecha-html').html());
+    
+    // Filtro personalizado por fecha (formato MM/DD/YYYY)
+    $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+        const fechaDesde = $('#fechaDesde').val();
+        const fechaHasta = $('#fechaHasta').val();
+        const fechaTexto = data[13]; // Columna 13 = Fecha
+
+        if (!fechaDesde && !fechaHasta) return true;
+
+        const partes = fechaTexto.split(/[-\/]/);
+        if (partes.length !== 3) return true;
+
+        const mes = parseInt(partes[0], 10) - 1;
+        const dia = parseInt(partes[1], 10);
+        const año = parseInt(partes[2], 10);
+        const fechaCirugia = new Date(año, mes, dia);
+
+        const desde = fechaDesde ? new Date(fechaDesde) : null;
+        const hasta = fechaHasta ? new Date(fechaHasta) : null;
+
+        if ((desde === null || fechaCirugia >= desde) && (hasta === null || fechaCirugia <= hasta)) {
+            return true;
+        }
+        return false;
+    });
+
+    // Refiltrar al cambiar fechas
+    $('#fechaDesde, #fechaHasta').on('change', function () {
+        tabla.draw();
+    });
+
+    // Botón para limpiar filtro
+    $('#limpiarFechas').on('click', function () {
+        $('#fechaDesde').val('');
+        $('#fechaHasta').val('');
+        tabla.draw();
+    });
+});
 
                 function imprimirTablaCompleta() {
                     const tablaOriginal = document.querySelector('.overflow-auto table');
