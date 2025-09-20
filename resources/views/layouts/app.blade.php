@@ -18,15 +18,34 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <!-- DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <head>
+  <style>
+    #mainContent {
+      transform-origin: top left; /* para que el scale se haga desde la esquina */
+    }
+  </style>
 </head>
 
-<body class="flex flex-col min-h-screen">
+</head>
+
+<body class="min-h-screen bg-gray-100">
+    
     @include('layouts._partials.menu')
-    @include('components.boton-volver')
+    
+
+    <div class="flex min-h-screen">  <!-- Contenedor para sidebar + contenido -->
+        @include('layouts._partials.sidebar') <!-- Tu sidebar expandible -->
 
 
-    <main class="flex-1">
-        @yield('contenido')
+    
+    <!--<main class="flex-1 p-8 pb-20 transition-all duration-300 ease-in-out">
+
+    <div class="max-w-full mx-auto">-->
+
+        <main id="mainContent" class="flex-1 p-8 pb-20 transition-all duration-300 ease-in-out transform">
+    <div class="max-w-full mx-auto">
+
+       @yield('contenido')
         {{-- <div class="container mt-2">
             @if ($rutaActual !== 'inicio')
                 <div class="boton-volver mt-3" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999;">
@@ -45,8 +64,10 @@
 
             <!-- I begin to speak only when I am certain what I will say is not better left unsaid. - Cato the Younger -->
         </div> --}}
-
+    </div>
     </main>
+    </div>
+    @include('components.boton-volver')
 
     @include('layouts._partials.footer')
 
@@ -107,6 +128,77 @@
             }
         });
     </script>
+
+    <script>
+    function ajustarAlturaSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const footer = document.getElementById('footer');
+
+        if (!sidebar || !footer) return;
+
+        const footerHeight = footer.offsetHeight;
+        const windowHeight = window.innerHeight;
+        const headerHeight = 64; // top-16 = 4rem = 64px
+
+        const nuevaAltura = windowHeight - footerHeight - headerHeight;
+        sidebar.style.height = `${nuevaAltura}px`;
+    }
+
+    window.addEventListener('load', ajustarAlturaSidebar);
+    window.addEventListener('resize', ajustarAlturaSidebar);
+</script>
+
+<script> 
+    const sidebar = document.getElementById('sidebar');
+    const toggleBtn = document.getElementById('toggleSidebar');
+    const linkTexts = document.querySelectorAll('.link-text');
+    const sidebarTitle = document.getElementById('sidebar-title');
+    const mainContent = document.getElementById('mainContent');
+
+    // Recuperar estado inicial del sidebar
+    if (localStorage.getItem('sidebar-collapsed') === 'true') {
+        applyCollapsedState(false);
+    } else {
+        applyExpandedState(false);
+    }
+
+    toggleBtn.addEventListener('click', () => {
+        if (sidebar.classList.contains('w-64')) {
+            applyCollapsedState(true);
+            localStorage.setItem('sidebar-collapsed', 'true');
+        } else {
+            applyExpandedState(true);
+            localStorage.setItem('sidebar-collapsed', 'false');
+        }
+    });
+
+    function applyExpandedState(withAnim = true) {
+        sidebar.classList.remove('w-20'); 
+        sidebar.classList.add('w-64');
+        linkTexts.forEach(t => t.classList.remove('hidden'));
+        if (sidebarTitle) sidebarTitle.classList.remove('hidden');
+
+        // Sidebar expandido → contenido más chico
+        mainContent.style.marginLeft = "16rem"; 
+        mainContent.style.transform = "scale(0.95)";
+        mainContent.style.transition = withAnim ? "all 0.25s ease-in-out" : "none";
+    }
+
+    function applyCollapsedState(withAnim = true) {
+        sidebar.classList.remove('w-64'); 
+        sidebar.classList.add('w-20');
+        linkTexts.forEach(t => t.classList.add('hidden'));
+        if (sidebarTitle) sidebarTitle.classList.add('hidden');
+
+        // Sidebar colapsado → contenido a tamaño real, bien grande
+        mainContent.style.marginLeft = "5rem"; 
+        mainContent.style.transform = "scale(1)";
+        mainContent.style.transition = withAnim ? "all 0.25s ease-in-out" : "none";
+    }
+</script>
+
+
+
 
 
     <!-- Scripts adicionales desde las vistas -->

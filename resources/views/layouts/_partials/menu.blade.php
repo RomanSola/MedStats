@@ -1,4 +1,5 @@
-<header class="bg-white shadow-md border-b border-[#B4DCE2]">
+ <header class="fixed top-0 left-0 w-full h-16 bg-white z-50 shadow">
+
   <div class="max-w-7x1 mx-auto px-3 py-0 flex flex-col md:flex-row items-center justify-between gap-4">
 
     <!-- Centro: logos + título y subtítulo -->
@@ -36,29 +37,9 @@
         ⚙️ @lang('Ajustes')
       </a>
 
-      <!-- Menú -->
-      <div class="relative">
-        <button id="menuBtn"
-          class="bg-[#E2F3F6] hover:bg-[#cde7ec] text-[#1B7D8F] text-sm px-4 py-2 rounded-md shadow transition flex items-center gap-1">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
-            stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-          @lang('Menú')
-        </button>
-
-        <!-- Dropdown del menú -->
-        <div id="dropdownMenu"
-          class="hidden absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-50">
-          <a href="{{ route('inicio') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">@lang('Inicio')</a>
-          <a href="{{ route ('pacientes.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">@lang('Libro Pacientes')</a>
-          <a href="{{ route('medicamentos.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">@lang('Insumos Médicos')</a>
-          <a href="{{ route('camas.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">@lang('Camas')</a>
-          <a href="{{ route('cirugias.estadisticas') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">@lang('Estadísticas')</a>
-          <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">@lang('Perfil de Usuario')</a>
-          <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-100">@lang('Cerrar Sesión')</a>
-        </div>
-      </div>
     </div>
   </div>
 </header>
+<br>
+<br>
+<br>

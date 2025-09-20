@@ -1,164 +1,236 @@
 @extends('layouts.app')
-@section('titulo', 'inicio')
+@section('titulo', 'Inicio')
 @section('contenido')
 
+    <div class="flex min-h-screen bg-gray-100 transition-all duration-300 ease-in-out">
 
-    <!-- Formulario estilizado con funcionalidad autocomplete -->
-    <div class="w-full flex justify-center mt-6">
-        <form action="{{ route('buscar') }}" method="GET"
-            class="flex items-center justify-center gap-2 w-full max-w-5xl px-6">
+        <!-- Main -->
+        <main class="flex-1 p-1 max-w-full">
 
-            <input type="text" id="busqueda" autocomplete="off" name="busqueda"
-                placeholder="Buscar paciente por nombre, apellido o DNI"
-                class="flex-grow border border-[#B4DCE2] rounded-md px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-[#1B7D8F]">
 
-            <button type="submit"
-                class="bg-[#1B7D8F] hover:bg-[#176d7b] text-white text-base px-5 py-3 rounded-md shadow transition whitespace-nowrap">
-                🔍 Buscar
-            </button>
-        </form>
-    </div>
 
-    <!-- jQuery completo -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <!-- Header con búsqueda -->
+            <header class="flex justify-center mb-8 mt-16">
+                <form action="{{ route('buscar') }}" method="GET" class="relative w-full max-w-3xl">
+                    <input type="text" id="busqueda" name="busqueda" autocomplete="off"
+                        placeholder="Buscar paciente por nombre, apellido o DNI"
+                        class="w-full rounded-l-md border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#1B7D8F] transition" />
+                    <button type="submit"
+                        class="absolute right-0 top-0 bottom-0 px-6 bg-[#1B7D8F] hover:bg-[#176d7b] text-white rounded-r-md transition"
+                        aria-label="Buscar">
+                        🔍
+                    </button>
+                </form>
+            </header>
 
-    <!-- jQuery UI -->
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
 
-    <!-- Script autocomplete -->
-    <script>
-        $(function() {
-            $("#busqueda").autocomplete({
-                source: function(request, response) {
-                    $.ajax({
-                        url: "{{ route('buscar.ajax') }}",
-                        dataType: "json",
-                        data: {
-                            term: request.term
+            <!-- jQuery y autocomplete -->
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+            <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+            <script>
+                $(function() {
+                    $("#busqueda").autocomplete({
+                        source: function(request, response) {
+                            $.ajax({
+                                url: "{{ route('buscar.ajax') }}",
+                                dataType: "json",
+                                data: {
+                                    term: request.term
+                                },
+                                success: function(data) {
+                                    response($.map(data, function(item) {
+                                        return {
+                                            label: item.nombre + " " + item.apellido +
+                                                " (DNI: " + item.dni + ")",
+                                            value: item.nombre + item.apellido,
+                                            id: item.id
+                                        };
+                                    }));
+                                }
+                            });
                         },
-                        success: function(data) {
-                            response($.map(data, function(item) {
-                                return {
-                                    label: item.nombre + " " + item.apellido +
-                                        " (DNI: " + item.dni + ")",
-                                    value: item.nombre + item.apellido,
-                                    id: item.id
-                                };
-                            }));
+                        minLength: 2,
+                        select: function(event, ui) {
+                            window.location.href = "/persona/" + ui.item.id;
                         }
                     });
-                },
-                minLength: 2,
-                select: function(event, ui) {
-                    window.location.href = "/persona/" + ui.item.id;
-                }
-            });
-        });
-    </script>
+                });
+            </script>
 
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-8 bg-gray-100 min-h-screen">
-
-
-        <!-- CARD 1: Insumos -->
-        <a href="{{ route('stocks.index') }}"
-            class="flex h-52 rounded-2xl overflow-hidden transform hover:scale-[1.02]  transition duration-300 bg-white text-decoration-none">
-
-            <div class="w-1/2 p-6 flex flex-col justify-between">
-                <div>
-                    <h2
-                        class="text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent  bg-clip-text drop-shadow-md  flex items-center gap-2">
-                        <img src="{{ asset('assets/img/logo-san-felipe.png') }}" alt="Hospital San Felipe" class="w-6 h-6">
-                        Insumos
-                    </h2>
-
-                    <p class="text-gray-500 mt-2 text-sm">Gestión de insumos médicos y material hospitalario.</p>
+            <!-- KPIs rápidos -->
+            <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+                <div class="bg-white shadow rounded-lg p-6 flex items-center gap-4">
+                    <div class="p-3 bg-[#1B7D8F] rounded-full text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-gray-500">Insumos disponibles</p>
+                        <p class="text-2xl font-bold text-gray-900">1,245</p>
+                    </div>
                 </div>
-                <span class="text-blue-600 font-semibold mt-4">Ver más →</span>
-            </div>
-            <div class="w-1/2 h-full">
-                <img src="{{ asset('assets/img/card_insumos.jpg') }}" alt="Insumos" class="w-full h-full object-cover">
-            </div>
-        </a>
 
-        <!-- CARD 2: Estadísticas -->
-        <a href="{{ route('cirugias.estadisticas') }}"
-            class="flex h-52 rounded-2xl overflow-hidden transform hover:scale-[1.02]  transition duration-300 bg-white text-decoration-none">
-            <div class="w-1/2 p-6 flex flex-col justify-between">
-                <div>
-                    <h2
-                        class="text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent  bg-clip-text drop-shadow-md  flex items-center gap-2">
-                        <img src="{{ asset('assets/img/logo-san-felipe.png') }}" alt="Hospital San Felipe"
-                            class="w-6 h-6">Estadísticas
-                    </h2>
-                    <p class="text-gray-500 mt-2 text-sm">Informes visuales y análisis de datos médicos.</p>
+                <div class="bg-white shadow rounded-lg p-6 flex items-center gap-4">
+                    <div class="p-3 bg-[#2BA8A0] rounded-full text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12h6m2 0a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-gray-500">Pacientes activos</p>
+                        <p class="text-2xl font-bold text-gray-900">536</p>
+                    </div>
                 </div>
-                <span class="text-blue-600 font-semibold mt-4">Ver más →</span>
-            </div>
-            <div class="w-1/2 h-full">
-                <img src="{{ asset('assets/img/card_estadisticas.jpg') }}" alt="Estadísticas"
-                    class="w-full h-full object-cover">
-            </div>
-        </a>
 
-        <!-- CARD 3: Pacientes -->
-        <a href="/pacientes"
-            class="flex h-52 rounded-2xl overflow-hidden transform hover:scale-[1.02]  transition duration-300 bg-white text-decoration-none">
-            <div class="w-1/2 p-6 flex flex-col justify-between">
-                <div>
-                    <h2
-                        class="text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent  bg-clip-text drop-shadow-md  flex items-center gap-2">
-                        <img src="{{ asset('assets/img/logo-san-felipe.png') }}" alt="Hospital San Felipe"
-                            class="w-6 h-6">Pacientes
-                    </h2>
-                    <p class="text-gray-500 mt-2 text-sm">Registro, historial clínico y seguimiento.</p>
+                <div class="bg-white shadow rounded-lg p-6 flex items-center gap-4">
+                    <div class="p-3 bg-[#245360] rounded-full text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18" />
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-gray-500">Camas ocupadas</p>
+                        <p class="text-2xl font-bold text-gray-900">78%</p>
+                    </div>
                 </div>
-                <span class="text-blue-600 font-semibold mt-4">Ver más →</span>
-            </div>
-            <div class="w-1/2 h-full">
-                <img src="{{ asset('assets/img/card_pacientes.jpg') }}" alt="Pacientes" class="w-full h-full object-cover">
-            </div>
-        </a>
 
-        <!-- CARD 4: Camas -->
-        <a href="/camas"
-            class="flex h-52 rounded-2xl overflow-hidden transform hover:scale-[1.02]  transition duration-300 bg-white text-decoration-none">
-            <div class="w-1/2 p-6 flex flex-col justify-between">
-                <div>
-                    <h2
-                        class="text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent  bg-clip-text drop-shadow-md  flex items-center gap-2">
-                        <img src="{{ asset('assets/img/logo-san-felipe.png') }}" alt="Hospital San Felipe"
-                            class="w-6 h-6">Camas
-                    </h2>
-                    <p class="text-gray-500 mt-2 text-sm">Asignación, estado y control de camas.</p>
+                <div class="bg-white shadow rounded-lg p-6 flex items-center gap-4">
+                    <div class="p-3 bg-[#176d7b] rounded-full text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 17v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6m5 0v4m0-4H3m16-1v1a2 2 0 002 2h2a2 2 0 002-2v-1m-4 0v-4m0 4h-4m4-4h4" />
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-gray-500">Cirugías realizadas</p>
+                        <p class="text-2xl font-bold text-gray-900">134</p>
+                    </div>
                 </div>
-                <span class="text-blue-600 font-semibold mt-4">Ver más →</span>
-            </div>
-            <div class="w-1/2 h-full">
-                <img src="{{ asset('assets/img/gestion_camas.jpg') }}" alt="Camas" class="w-full h-full object-cover">
-            </div>
-        </a>
+            </section>
 
-        <!-- CARD 5: Libro de cirugias -->
-        <a href="/cirugias"
-            class="flex h-52 rounded-2xl overflow-hidden transform hover:scale-[1.02]  transition duration-300 bg-white text-decoration-none">
-            <div class="w-1/2 p-6 flex flex-col justify-between">
-                <div>
-                    <h2
-                        class="text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent  bg-clip-text drop-shadow-md  flex items-center gap-2">
-                        <img src="{{ asset('assets/img/logo-san-felipe.png') }}" alt="Hospital San Felipe"
-                            class="w-6 h-6">Libro de cirugías
-                    </h2>
-                    <p class="text-gray-500 mt-2 text-sm">Registro de cirugias realizadas en quirófano</p>
-                </div>
-                <span class="text-blue-600 font-semibold mt-4">Ver más →</span>
-            </div>
-            <div class="w-1/2 h-full">
-                <img src="{{ asset('assets/img/libro_cirugias.jpeg') }}" alt="Cirugias" class="w-full h-full object-cover">
-            </div>
-        </a>
+            <!-- Cards principales -->
 
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-8 bg-gray-100 min-h-screen">
+
+                <!-- CARD 1: Insumos -->
+                <a href="{{ route('stocks.index') }}"
+                    class="flex rounded-2xl overflow-hidden transform hover:scale-[1.02] transition duration-300 bg-white text-decoration-none h-40">
+                    <div class="w-1/2 p-6 flex flex-col justify-between">
+                        <div>
+                            <h2
+                                class="text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent bg-clip-text drop-shadow-md flex items-center gap-2">
+                                <img src="{{ asset('assets/img/logo-san-felipe.png') }}" alt="Hospital San Felipe"
+                                    class="w-6 h-6">
+                                Insumos
+                            </h2>
+                            <p class="text-gray-500 mt-2 text-sm">Gestión de insumos médicos y material hospitalario.</p>
+                        </div>
+                        <span class="text-blue-600 font-semibold mt-4">Ver más →</span>
+                    </div>
+                    <div class="w-1/2 flex items-center justify-center">
+                        <img src="{{ asset('assets/img/card_insumos.jpg') }}" alt="Insumos"
+                            class="h-24 w-32 object-cover rounded-lg">
+                    </div>
+                </a>
+
+                <!-- CARD 2: Estadísticas -->
+                <a href="{{ route('cirugias.estadisticas') }}"
+                    class="flex rounded-2xl overflow-hidden transform hover:scale-[1.02] transition duration-300 bg-white text-decoration-none h-40">
+                    <div class="w-1/2 p-6 flex flex-col justify-between">
+                        <div>
+                            <h2
+                                class="text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent bg-clip-text drop-shadow-md flex items-center gap-2">
+                                <img src="{{ asset('assets/img/logo-san-felipe.png') }}" alt="Hospital San Felipe"
+                                    class="w-6 h-6">
+                                Estadísticas
+                            </h2>
+                            <p class="text-gray-500 mt-2 text-sm">Informes visuales y análisis de datos médicos.</p>
+                        </div>
+                        <span class="text-blue-600 font-semibold mt-4">Ver más →</span>
+                    </div>
+                    <div class="w-1/2 flex items-center justify-center">
+                        <img src="{{ asset('assets/img/card_estadisticas.jpg') }}" alt="Estadísticas"
+                            class="h-24 w-32 object-cover rounded-lg">
+                    </div>
+                </a>
+
+                <!-- CARD 3: Pacientes -->
+                <a href="{{ route('pacientes.index') }}"
+                    class="flex rounded-2xl overflow-hidden transform hover:scale-[1.02] transition duration-300 bg-white text-decoration-none h-40">
+                    <div class="w-1/2 p-6 flex flex-col justify-between">
+                        <div>
+                            <h2
+                                class="text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent bg-clip-text drop-shadow-md flex items-center gap-2">
+                                <img src="{{ asset('assets/img/logo-san-felipe.png') }}" alt="Hospital San Felipe"
+                                    class="w-6 h-6">
+                                Pacientes
+                            </h2>
+                            <p class="text-gray-500 mt-2 text-sm">Registro, historial clínico y seguimiento.</p>
+                        </div>
+                        <span class="text-blue-600 font-semibold mt-4">Ver más →</span>
+                    </div>
+                    <div class="w-1/2 flex items-center justify-center">
+                        <img src="{{ asset('assets/img/card_pacientes.jpg') }}" alt="Pacientes"
+                            class="h-24 w-32 object-cover rounded-lg">
+                    </div>
+                </a>
+
+                <!-- CARD 4: Camas -->
+                <a href="{{ route('camas.index') }}"
+                    class="flex rounded-2xl overflow-hidden transform hover:scale-[1.02] transition duration-300 bg-white text-decoration-none h-40">
+                    <div class="w-1/2 p-6 flex flex-col justify-between">
+                        <div>
+                            <h2
+                                class="text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent bg-clip-text drop-shadow-md flex items-center gap-2">
+                                <img src="{{ asset('assets/img/logo-san-felipe.png') }}" alt="Hospital San Felipe"
+                                    class="w-6 h-6">
+                                Camas
+                            </h2>
+                            <p class="text-gray-500 mt-2 text-sm">Asignación, estado y control de camas.</p>
+                        </div>
+                        <span class="text-blue-600 font-semibold mt-4">Ver más →</span>
+                    </div>
+                    <div class="w-1/2 flex items-center justify-center">
+                        <img src="{{ asset('assets/img/gestion_camas.jpg') }}" alt="Camas"
+                            class="h-24 w-32 object-cover rounded-lg">
+                    </div>
+                </a>
+
+                <!-- CARD 5: Libro de cirugías -->
+                <a href="{{ route('cirugias.index') }}"
+                    class="flex rounded-2xl overflow-hidden transform hover:scale-[1.02] transition duration-300 bg-white h-40 text-decoration-none h-40">
+                    <div class="w-1/2 p-6 flex flex-col justify-between">
+                        <div>
+                            <h2
+                                class="text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent bg-clip-text drop-shadow-md flex items-center gap-2">
+                                <img src="{{ asset('assets/img/logo-san-felipe.png') }}" alt="Hospital San Felipe"
+                                    class="w-6 h-6">
+                                Libro de cirugías
+                            </h2>
+                            <p class="text-gray-500 mt-2 text-sm">Registro de cirugías realizadas en quirófano</p>
+                        </div>
+                        <span class="text-blue-600 font-semibold mt-4">Ver más →</span>
+                    </div>
+                    <div class="w-1/2 flex items-center justify-center">
+                        <img src="{{ asset('assets/img/libro_cirugias.jpeg') }}" alt="Cirugías"
+                            class="h-24 w-32 object-cover rounded-lg">
+                    </div>
+                </a>
+
+            </div>
+
+
+        </main>
     </div>
+
+    <!-- Script -->
+
 
 @endsection

@@ -1,8 +1,10 @@
 @extends('layouts.app')
 @section('titulo', 'Gestión de Pacientes')
 @section('contenido')
-    <div class="container mt-4">
-        <div class="max-w-7xl mx-auto px-4 py-12">
+    <div class="flex min-h-screen bg-gray-100 transition-all duration-300 ease-in-out">
+
+        <!-- Main -->
+        <main class="flex-1 p-5 max-w-full">
             <div class="flex justify-between items-center mb-6">
                 <h1
                     class="text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent  bg-clip-text drop-shadow-md  flex items-center gap-2 px-2">
@@ -59,20 +61,23 @@
                                         <form action="{{ route('pacientes.darDeAlta', $paciente) }}" method="POST"
                                             class="inline-block form-dar-de-alta">
                                             @csrf
-                                            <button type="submit" class="btn btn-outline-success btn-sm me-1 btn-acciones">Dar de
+                                            <button type="submit"
+                                                class="btn btn-outline-success btn-sm me-1 btn-acciones">Dar de
                                                 alta</button>
                                         </form>
                                     @else
                                         <form action="{{ route('pacientes.asignar', $paciente) }}" method="GET"
                                             class="inline-block form-asignar">
-                                            <button type="submit" class="btn btn-outline-secondary btn-sm me-1 btn-acciones"> Asignar
+                                            <button type="submit"
+                                                class="btn btn-outline-secondary btn-sm me-1 btn-acciones"> Asignar
                                             </button>
                                         </form>
                                     @endif
                                     <form action="{{ route('pacientes.destroy', $paciente) }}" method="POST"
                                         class="inline-block form-eliminar">
                                         @csrf @method('DELETE')
-                                        <button type="submit" class="btn btn-outline-danger btn-sm me-1 btn-acciones">Eliminar</button>
+                                        <button type="submit"
+                                            class="btn btn-outline-danger btn-sm me-1 btn-acciones">Eliminar</button>
                                     </form>
                                 </td>
                             </tr>
@@ -86,8 +91,9 @@
                 </table>
 
             </div>
-        </div>
+        </main>
     </div>
+
     <!-- MODAL DE CONFIRMACIÓN PERSONALIZADO -->
     <div id="modal-confirmacion" class="modal">
         <div class="modal-content">
@@ -157,69 +163,69 @@
         <!-- SCRIPT PARA MANEJAR LOS MODALES -->
         <script src="{{ asset('js/modal.js') }}">
             /*
-                                document.addEventListener('DOMContentLoaded', function() {
-                                    const modal = document.getElementById('modal-confirmacion');
-                                    const mensaje = document.getElementById('modal-mensaje');
-                                    const btnCancelar = document.getElementById('modal-cancelar');
-                                    const btnConfirmar = document.getElementById('modal-confirmar');
+                                        document.addEventListener('DOMContentLoaded', function() {
+                                            const modal = document.getElementById('modal-confirmacion');
+                                            const mensaje = document.getElementById('modal-mensaje');
+                                            const btnCancelar = document.getElementById('modal-cancelar');
+                                            const btnConfirmar = document.getElementById('modal-confirmar');
 
-                                    let formularioActual = null;
+                                            let formularioActual = null;
 
-                                    // Abre el modal con el mensaje deseado y referencia al formulario
-                                    function abrirModal(texto, form) {
-                                        mensaje.textContent = texto;
-                                        formularioActual = form;
-                                        modal.style.display = 'block';
-                                    }
+                                            // Abre el modal con el mensaje deseado y referencia al formulario
+                                            function abrirModal(texto, form) {
+                                                mensaje.textContent = texto;
+                                                formularioActual = form;
+                                                modal.style.display = 'block';
+                                            }
 
-                                    // Cierra el modal si el usuario cancela
-                                    btnCancelar.addEventListener('click', () => {
-                                        modal.style.display = 'none';
-                                        formularioActual = null;
-                                    });
+                                            // Cierra el modal si el usuario cancela
+                                            btnCancelar.addEventListener('click', () => {
+                                                modal.style.display = 'none';
+                                                formularioActual = null;
+                                            });
 
-                                    // Envía el formulario si el usuario confirma
-                                    btnConfirmar.addEventListener('click', () => {
-                                        if (formularioActual) formularioActual.submit();
-                                    });
+                                            // Envía el formulario si el usuario confirma
+                                            btnConfirmar.addEventListener('click', () => {
+                                                if (formularioActual) formularioActual.submit();
+                                            });
 
-                                    // CONFIRMACIÓN PARA DAR DE ALTA
-                                    document.querySelectorAll('.form-dar-de-alta').forEach(form => {
-                                        form.addEventListener('submit', function(e) {
-                                            e.preventDefault();
-                                            abrirModal(
-                                                '¿Estás seguro que querés dar de alta a este paciente? Esta acción liberará la cama asignada.',
-                                                form);
+                                            // CONFIRMACIÓN PARA DAR DE ALTA
+                                            document.querySelectorAll('.form-dar-de-alta').forEach(form => {
+                                                form.addEventListener('submit', function(e) {
+                                                    e.preventDefault();
+                                                    abrirModal(
+                                                        '¿Estás seguro que querés dar de alta a este paciente? Esta acción liberará la cama asignada.',
+                                                        form);
+                                                });
+                                            });
+
+                                            // CONFIRMACIÓN PARA ELIMINAR
+                                            document.querySelectorAll('.form-eliminar').forEach(form => {
+                                                form.addEventListener('submit', function(e) {
+                                                    e.preventDefault();
+                                                    abrirModal(
+                                                        '¿Seguro que querés eliminar este paciente? Esta acción no se puede deshacer.',
+                                                        form);
+                                                });
+                                            });
+
+                                            // CONFIRMACIÓN PARA ASIGNAR
+                                            document.querySelectorAll('.form-asignar').forEach(form => {
+                                                form.addEventListener('submit', function(e) {
+                                                    e.preventDefault();
+                                                    abrirModal('¿Querés asignar una cama a este paciente?', form);
+                                                });
+                                            });
+
+                                            // Cierra el modal si se hace clic fuera del contenido
+                                            window.onclick = function(event) {
+                                                if (event.target == modal) {
+                                                    modal.style.display = "none";
+                                                    formularioActual = null;
+                                                }
+                                            };
                                         });
-                                    });
-
-                                    // CONFIRMACIÓN PARA ELIMINAR
-                                    document.querySelectorAll('.form-eliminar').forEach(form => {
-                                        form.addEventListener('submit', function(e) {
-                                            e.preventDefault();
-                                            abrirModal(
-                                                '¿Seguro que querés eliminar este paciente? Esta acción no se puede deshacer.',
-                                                form);
-                                        });
-                                    });
-
-                                    // CONFIRMACIÓN PARA ASIGNAR
-                                    document.querySelectorAll('.form-asignar').forEach(form => {
-                                        form.addEventListener('submit', function(e) {
-                                            e.preventDefault();
-                                            abrirModal('¿Querés asignar una cama a este paciente?', form);
-                                        });
-                                    });
-
-                                    // Cierra el modal si se hace clic fuera del contenido
-                                    window.onclick = function(event) {
-                                        if (event.target == modal) {
-                                            modal.style.display = "none";
-                                            formularioActual = null;
-                                        }
-                                    };
-                                });
-                            */
+                                    */
         </script>
         <script>
             $(document).ready(function() {
