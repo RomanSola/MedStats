@@ -2,10 +2,10 @@
 @section('titulo', 'Inicio')
 @section('contenido')
 
-  <div class="flex min-h-screen bg-gray-100 transition-all duration-300 ease-in-out">
-    <!-- Main -->
+    <div class="flex min-h-screen bg-gray-100 transition-all duration-300 ease-in-out">
+        <!-- Main -->
         <main class="flex-1 p-1 max-w-full">
- <!-- Header con búsqueda -->
+            <!-- Header con búsqueda -->
             <header class="flex justify-center mb-8 mt-16">
                 <form action="{{ route('buscar') }}" method="GET" class="relative w-full max-w-3xl">
                     <input type="text" id="busqueda" name="busqueda" autocomplete="off"
@@ -56,60 +56,64 @@
 
             <!-- KPIs rápidos -->
             <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-                <div class="bg-white shadow rounded-lg p-6 flex items-center gap-4">
-                    <div class="p-3 bg-[#1B7D8F] rounded-full text-white">
-                        <img src="{{ asset('assets/img/insumos.jpeg') }}" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                        </svg>
+
+                <!-- Insumos disponibles -->
+                <div
+                    class="bg-white rounded-xl p-6 flex items-center gap-4 shadow-sm hover:shadow-lg transition-all duration-300">
+                    <div class="p-3 bg-[#1B7D8F] rounded-xl flex items-center justify-center">
+                        <img src="{{ asset('assets/img/insumos.jpeg') }}" alt="Insumos"
+                            class="h-10 w-10 object-cover rounded-md border border-white/40 shadow-sm" />
                     </div>
                     <div>
-                        <p class="text-gray-500">Insumos disponibles</p>
-                        <p class="text-2xl font-bold text-gray-900">1,245</p>
+                        <p class="text-sm text-gray-500">Insumos disponibles</p>
+                        <p class="text-2xl font-semibold text-gray-900">1,245</p>
                     </div>
                 </div>
 
-                <div class="bg-white shadow rounded-lg p-6 flex items-center gap-4">
-                    <div class="p-3 bg-[#2BA8A0] rounded-full text-white">
-                        <img src="{{ asset('assets/img/pacientes.jpeg') }}" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 12h6m2 0a4 4 0 11-8 0 4 4 0 018 0z" />
-                        </svg>
+                <!-- Pacientes activos -->
+                <div
+                    class="bg-white rounded-xl p-6 flex items-center gap-4 shadow-sm hover:shadow-lg transition-all duration-300">
+                    <div class="p-3 bg-[#2BA8A0] rounded-xl flex items-center justify-center">
+                        <img src="{{ asset('assets/img/pacientes.jpeg') }}" alt="Pacientes"
+                            class="h-10 w-10 object-cover rounded-md border border-white/40 shadow-sm" />
                     </div>
                     <div>
-                        <p class="text-gray-500">Pacientes activos</p>
-                        <p class="text-2xl font-bold text-gray-900">536</p>
+                        <p class="text-sm text-gray-500">Pacientes activos</p>
+                        <p class="text-2xl font-semibold text-gray-900">536</p>
                     </div>
                 </div>
 
-                <div class="bg-white shadow rounded-lg p-6 flex items-center gap-4">
-                    <div class="p-3 bg-[#245360] rounded-full text-white">
-                        <img src="{{ asset('assets/img/camas.jpeg') }}"  class="h-8 w-8" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18" />
-                        </svg>
+                <!-- Camas ocupadas -->
+                <div
+                    class="bg-white rounded-xl p-6 flex items-center gap-4 shadow-sm hover:shadow-lg transition-all duration-300">
+                    <div class="p-3 bg-[#245360] rounded-xl flex items-center justify-center">
+                        <img src="{{ asset('assets/img/camas.jpeg') }}" alt="Camas"
+                            class="h-10 w-10 object-cover rounded-md border border-white/40 shadow-sm" />
                     </div>
                     <div>
-                        <p class="text-gray-500">Camas ocupadas</p>
-                        <p class="text-2xl font-bold text-gray-900">78%</p>
+                        <p class="text-sm text-gray-500">Camas ocupadas</p>
+                        <p class="text-2xl font-semibold text-gray-900">78%</p>
                     </div>
                 </div>
 
-                <div class="bg-white shadow rounded-lg p-6 flex items-center gap-4">
-                    <div class="p-3 bg-[#176d7b] rounded-full text-white">
-                        <img src="{{ asset('assets/img/cirugias.jpeg') }}" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 17v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6m5 0v4m0-4H3m16-1v1a2 2 0 002 2h2a2 2 0 002-2v-1m-4 0v-4m0 4h-4m4-4h4" />
-                        </svg>
+                <!-- Cirugías realizadas -->
+                <div
+                    class="bg-white rounded-xl p-6 flex items-center gap-4 shadow-sm hover:shadow-lg transition-all duration-300">
+                    <div class="p-3 bg-[#176d7b] rounded-xl flex items-center justify-center">
+                        <img src="{{ asset('assets/img/cirugias.jpeg') }}" alt="Cirugías"
+                            class="h-10 w-10 object-cover rounded-md border border-white/40 shadow-sm" />
                     </div>
                     <div>
-                        <p class="text-gray-500">Cirugías realizadas</p>
-                        <p class="text-2xl font-bold text-gray-900">134</p>
+                        <p class="text-sm text-gray-500">Cirugías realizadas</p>
+                        <p class="text-2xl font-semibold text-gray-900">134</p>
                     </div>
                 </div>
+
             </section>
+
+
+
+
 
             <!-- Cards principales -->
 

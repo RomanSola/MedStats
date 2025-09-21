@@ -2,8 +2,11 @@
 @section('titulo', 'Estadísticas de Stock')
 @section('contenido')
 
-<div class="container">
+<div class="container" style="margin-top: 80px;">
+
+  
     <div class="text-center mb-4">
+     
     <div class="inline-flex items-center gap-4">
         <h2 class="bg-light d-inline-block px-4 py-2 rounded shadow-sm text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent bg-clip-text drop-shadow-md flex items-center gap-2 px-2">
         Estadísticas de Insumos
@@ -274,5 +277,10 @@
   });
 });
 </script>
+<style>
+  .container {
+  padding-top: 60px; /* o más si el header es más alto */
+}
+</style>
 @endpush
 

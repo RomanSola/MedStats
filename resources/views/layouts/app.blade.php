@@ -198,6 +198,22 @@
 </script>
 
 
+@push('scripts')
+<script>
+  window.addEventListener('load', ajustarPadding);
+  window.addEventListener('resize', ajustarPadding);
+
+  function ajustarPadding() {
+    const header = document.querySelector('header'); // Cambia selector si tu header no es <header>
+    const container = document.querySelector('.container');
+
+    if (header && container) {
+      const alturaHeader = header.offsetHeight;
+      container.style.paddingTop = alturaHeader + 'px';
+    }
+  }
+</script>
+@endpush
 
 
 
