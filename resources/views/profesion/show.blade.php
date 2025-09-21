@@ -44,7 +44,7 @@
                     {{-- Botón volver --}}
                     <div class="text-center mt-4">
                         <a href="{{ route('profesion.index') }}"
-                           class="btn btn-outline-secondary fw-semibold px-4">
+                           class="btn btn-outline-primary fw-semibold px-4">
                             Volver al listado
                         </a>
                     </div>

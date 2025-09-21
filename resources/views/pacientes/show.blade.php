@@ -64,6 +64,13 @@
                 <p class="text-sm text-gray-500 uppercase tracking-wide">Dirección</p>
                 <p class="text-base font-semibold text-gray-800">{{ $paciente->direccion }}</p>
             </div>
+
+            <div class="flex justify-between pt-4">
+            <a href="{{ route('pacientes.index') }}"
+                class="btn btn-outline-danger px-5 py-2 rounded shadow-sm">
+                Cancelar
+            </a>
+            </div>
         </div>
     </div>
 </div>

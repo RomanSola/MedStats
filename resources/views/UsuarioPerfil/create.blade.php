@@ -4,37 +4,48 @@
 
 @section('contenido')
 <div class="max-w-xl mx-auto px-4 py-4">
+    
 
     {{-- Título institucional negro --}}
-    <h1 class="text-dark fw-bold border-bottom border-dark pb-2 mb-4">
-        Agregar Nuevo Perfil
-    </h1>
+
+    <div class="flex justify-between items-center mb-6">
+            <h1
+                class="text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent bg-clip-text drop-shadow-md flex items-center gap-2 px-2">
+                Agregar Nuevo Perfil
+            </h1>
+        </div>
 
     {{-- Contenedor con borde negro institucional --}}
-    <div class="card border-dark shadow-sm">
-        <div class="card-body text-dark">
+    <div class="card border shadow-sm">
+        <div class="card-body">
 
             <form action="{{ route('UsuarioPerfil.store') }}" method="POST" class="space-y-4">
                 @csrf
 
                 {{-- Campo perfil --}}
                 <div>
-                    <label for="perfil" class="form-label fw-semibold text-dark">
-                        Perfil
-                    </label>
+                    <label for="perfil" class="form-label fw-semibold text-secondary">
+                            Perfil
+                        </label>
                     <input type="text" name="perfil" id="perfil"
-                           class="form-control border border-dark shadow-sm">
+                               class="form-control border shadow-sm">
                     @error('perfil')
                         <small class="text-danger">{{ $message }}</small>
                     @enderror
                 </div>
 
                 {{-- Botón --}}
-                <div class="pt-2">
-                    <button type="submit" class="btn btn-outline-dark fw-semibold px-4">
-                        Agregar
-                    </button>
-                </div>
+                <div class="flex justify-between pt-4">
+                        <a href="{{ route('UsuarioPerfil.index') }}"
+                           class="btn btn-outline-danger px-5 py-2 rounded shadow-sm">
+                            Cancelar
+                        </a>
+                        <button type="submit"
+                                class="inline-block bg-neutral-700 hover:bg-neutral-800 text-white font-medium py-2 px-6 rounded-full shadow-md cursor-pointer transition duration-300"
+                                style="text-decoration: none;">
+                            Guardar
+                        </button>
+                    </div>
             </form>
 
         </div>

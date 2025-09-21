@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('titulo', 'Gestión de Pacientes')
 @section('contenido')
-    <div class="flex min-h-screen bg-gray-100 transition-all duration-300 ease-in-out">
+   <!-- <div class="flex min-h-screen bg-gray-100 transition-all duration-300 ease-in-out">-->
 
         <!-- Main -->
         <main class="flex-1 p-5 max-w-full">

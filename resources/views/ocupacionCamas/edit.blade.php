@@ -1,6 +1,8 @@
 @extends('layouts.app')
 @section('titulo', 'Editar Ocupación')
 @section('contenido')
+
+
     <h1 class="mb-4">Editar Ocupación de Cama</h1>
     <form action="{{ route('ocupacionCamas.update', $oc_cama) }}" method="POST">
         @csrf

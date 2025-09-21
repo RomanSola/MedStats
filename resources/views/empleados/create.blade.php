@@ -3,17 +3,15 @@
 @section('title', 'Crear Empleado')
 
 @section('contenido')
-    <div class="container mt-4">
 
-        
-
+    <div class="max-w-7xl mx-auto px-4 py-8">
         <div class="flex justify-between items-center mb-6">
             <h1
                 class="text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent  bg-clip-text drop-shadow-md  flex items-center gap-2 px-2">
                 Agregar Nuevo Empleado</h1>
         </div>
 
-        <div class="card border-primary">
+        <div class="card shadow-sm">
             <div class="card-body">
                 <form action="{{ route('empleados.store') }}" method="POST">
                     @csrf
@@ -31,14 +29,14 @@
                         </div>
                         <div class="col-md-4">
                             <label for="nombre" class="form-label">Nombre</label>
-                            <input type="text" name="nombre" id="nombre" class="form-control" >
+                            <input type="text" name="nombre" id="nombre" class="form-control">
                             @error('nombre')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
                         <div class="col-md-4">
                             <label for="apellido" class="form-label">Apellido</label>
-                            <input type="text" name="apellido" id="apellido" class="form-control" >
+                            <input type="text" name="apellido" id="apellido" class="form-control">
                             @error('apellido')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
@@ -48,13 +46,12 @@
                     <div class="row mb-3">
                         <div class="col-md-4">
                             <label for="fecha_nacimiento" class="form-label">Fecha de nacimiento</label>
-                            <input type="date" name="fecha_nacimiento" id="fecha_nacimiento" class="form-control"
-                                >
+                            <input type="date" name="fecha_nacimiento" id="fecha_nacimiento" class="form-control">
                         </div>
                         <div class="col-md-4">
                             <label for="telefono" class="form-label">Teléfono</label>
                             <input type="text" name="telefono" id="telefono" class="form-control" maxlength="15"
-                                pattern="^\d{1,15}$"  inputmode="numeric" autocomplete="tel">
+                                pattern="^\d{1,15}$" inputmode="numeric" autocomplete="tel">
                             @error('telefono')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror

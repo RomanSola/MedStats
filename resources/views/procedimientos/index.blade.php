@@ -3,7 +3,7 @@
 @section('title', 'Lista de Procedimientos')
 
 @section('contenido')
-    <div class="container mt-4">
+    <!--<div class="container mt-4">-->
         <div class="max-w-7xl mx-auto px-4 py-8">
             <div class="flex justify-between items-center mb-6">
                 <h1
@@ -18,8 +18,8 @@
             </div>
 
             {{-- Contenedor principal con borde gris institucional --}}
-            <div class="card border-secondary shadow-sm mb-4">
-                <div class="card-body">
+            <div class="card border">
+        <div class="card-body">
 
                     <p class="mb-3 text-secondary fw-semibold">
                         Visualizá, editá o eliminá procedimientos quirúrgicos del sistema.
@@ -88,5 +88,5 @@
                 </div>
             </div>
         </div>
-    </div>
+    <!--</div>-->
 @endsection

@@ -3,7 +3,7 @@
 @section('title', 'Ver Procedimiento')
 
 @section('contenido')
-<div class="container mt-4">
+<!--<div class="container mt-4">-->
     <div class="max-w-xl mx-auto px-4 py-8">
 
         {{-- Título con degradado y estilo igual al show de empleados --}}
@@ -13,8 +13,8 @@
         </h2>
 
         {{-- Contenedor principal con borde secundario (gris) y sombra --}}
-        <div class="card border-secondary shadow-sm">
-            <div class="card-body">
+        <div class="card border">
+        <div class="card-body">
 
                 <form>
                     {{-- Campo nombre --}}

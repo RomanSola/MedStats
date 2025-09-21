@@ -18,8 +18,8 @@
             </div>
 
             {{-- Contenedor principal --}}
-            <div class="card border-secondary shadow-sm mb-4">
-                <div class="card-body">
+            <div class="card border">
+        <div class="card-body">
 
                     <p class="mb-3 text-secondary fw-semibold">
                         Administrá las profesiones disponibles en el sistema. Podés ver detalles, editarlas o eliminarlas.

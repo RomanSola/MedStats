@@ -3,7 +3,8 @@
 @section('title', 'Editar Cirugía')
 
 @section('contenido')
-    <div class="container mt-4">
+    <!--<div class="container mt-4">-->
+    <div class="max-w-6xl mx-auto px-4 py-8">
 
         <div class="flex justify-between items-center mb-6">
             <h1
@@ -76,11 +77,11 @@
                                     $profesionesPermitidas = [1]; //Solo Cirujanos
                                 @endphp
                                 @foreach ($empleados as $empleado)
-                                    @if ( in_array( $empleado->get_profesion->rol_id, $profesionesPermitidas ) )
-                                    <option value="{{ $empleado->id }}"
-                                        {{ $cirugia->cirujano_id == $empleado->id ? 'selected' : '' }}>
-                                        {{ $empleado->nombre }} {{ $empleado->apellido }}
-                                    </option>
+                                    @if (in_array($empleado->get_profesion->rol_id, $profesionesPermitidas))
+                                        <option value="{{ $empleado->id }}"
+                                            {{ $cirugia->cirujano_id == $empleado->id ? 'selected' : '' }}>
+                                            {{ $empleado->nombre }} {{ $empleado->apellido }}
+                                        </option>
                                     @endif
                                 @endforeach
                             </select>
@@ -97,11 +98,11 @@
                                     $profesionesPermitidas = [2]; //Solo Ayudantes
                                 @endphp
                                 @foreach ($empleados as $empleado)
-                                    @if ( in_array( $empleado->get_profesion->rol_id, $profesionesPermitidas ) )
-                                    <option value="{{ $empleado->id }}"
-                                        {{ $cirugia->ayudante_1_id == $empleado->id ? 'selected' : '' }}>
-                                        {{ $empleado->nombre }} {{ $empleado->apellido }}
-                                    </option>
+                                    @if (in_array($empleado->get_profesion->rol_id, $profesionesPermitidas))
+                                        <option value="{{ $empleado->id }}"
+                                            {{ $cirugia->ayudante_1_id == $empleado->id ? 'selected' : '' }}>
+                                            {{ $empleado->nombre }} {{ $empleado->apellido }}
+                                        </option>
                                     @endif
                                 @endforeach
                             </select>
@@ -118,11 +119,11 @@
                                     $profesionesPermitidas = [2]; //Solo Ayudantes
                                 @endphp
                                 @foreach ($empleados as $empleado)
-                                    @if ( in_array( $empleado->get_profesion->rol_id, $profesionesPermitidas ) )
-                                    <option value="{{ $empleado->id }}"
-                                        {{ $cirugia->ayudante_2_id == $empleado->id ? 'selected' : '' }}>
-                                        {{ $empleado->nombre }} {{ $empleado->apellido }}
-                                    </option>
+                                    @if (in_array($empleado->get_profesion->rol_id, $profesionesPermitidas))
+                                        <option value="{{ $empleado->id }}"
+                                            {{ $cirugia->ayudante_2_id == $empleado->id ? 'selected' : '' }}>
+                                            {{ $empleado->nombre }} {{ $empleado->apellido }}
+                                        </option>
                                     @endif
                                 @endforeach
                             </select>
@@ -139,11 +140,11 @@
                                     $profesionesPermitidas = [2]; //Solo Ayudantes
                                 @endphp
                                 @foreach ($empleados as $empleado)
-                                    @if ( in_array( $empleado->get_profesion->rol_id, $profesionesPermitidas ) )
-                                    <option value="{{ $empleado->id }}"
-                                        {{ $cirugia->ayudante_3_id == $empleado->id ? 'selected' : '' }}>
-                                        {{ $empleado->nombre }} {{ $empleado->apellido }}
-                                    </option>
+                                    @if (in_array($empleado->get_profesion->rol_id, $profesionesPermitidas))
+                                        <option value="{{ $empleado->id }}"
+                                            {{ $cirugia->ayudante_3_id == $empleado->id ? 'selected' : '' }}>
+                                            {{ $empleado->nombre }} {{ $empleado->apellido }}
+                                        </option>
                                     @endif
                                 @endforeach
                             </select>
@@ -160,11 +161,11 @@
                                     $profesionesPermitidas = [3]; //Solo Anestesistas
                                 @endphp
                                 @foreach ($empleados as $empleado)
-                                    @if ( in_array( $empleado->get_profesion->rol_id, $profesionesPermitidas ) )
-                                    <option value="{{ $empleado->id }}"
-                                        {{ $cirugia->anestesista_id == $empleado->id ? 'selected' : '' }}>
-                                        {{ $empleado->nombre }} {{ $empleado->apellido }}
-                                    </option>
+                                    @if (in_array($empleado->get_profesion->rol_id, $profesionesPermitidas))
+                                        <option value="{{ $empleado->id }}"
+                                            {{ $cirugia->anestesista_id == $empleado->id ? 'selected' : '' }}>
+                                            {{ $empleado->nombre }} {{ $empleado->apellido }}
+                                        </option>
                                     @endif
                                 @endforeach
                             </select>
@@ -197,11 +198,11 @@
                                     $profesionesPermitidas = [4]; //Solo Instrumentadores
                                 @endphp
                                 @foreach ($empleados as $empleado)
-                                    @if ( in_array( $empleado->get_profesion->rol_id, $profesionesPermitidas ) )
-                                    <option value="{{ $empleado->id }}"
-                                        {{ $cirugia->instrumentador_id == $empleado->id ? 'selected' : '' }}>
-                                        {{ $empleado->nombre }} {{ $empleado->apellido }}
-                                    </option>
+                                    @if (in_array($empleado->get_profesion->rol_id, $profesionesPermitidas))
+                                        <option value="{{ $empleado->id }}"
+                                            {{ $cirugia->instrumentador_id == $empleado->id ? 'selected' : '' }}>
+                                            {{ $empleado->nombre }} {{ $empleado->apellido }}
+                                        </option>
                                     @endif
                                 @endforeach
                             </select>
@@ -214,17 +215,17 @@
                             <label for="pais" class="form-label">Enfermero</label>
                             <select name="enfermero_id" id="enfermero_id" class="form-control">
                                 <option value="">Seleccione el Enfermero</option>
-                            @php
-                                $profesionesPermitidas = [5]; //Solo Enfermeros
-                            @endphp
-                            @foreach ($empleados as $empleado)
-                                @if ( in_array( $empleado->get_profesion->rol_id, $profesionesPermitidas ) )
-                                <option value="{{ $empleado->id }}"
-                                    {{ $cirugia->enfermero_id == $empleado->id ? 'selected' : '' }}>
-                                    {{ $empleado->nombre }} {{ $empleado->apellido }}
-                                </option>
-                                @endif
-                            @endforeach
+                                @php
+                                    $profesionesPermitidas = [5]; //Solo Enfermeros
+                                @endphp
+                                @foreach ($empleados as $empleado)
+                                    @if (in_array($empleado->get_profesion->rol_id, $profesionesPermitidas))
+                                        <option value="{{ $empleado->id }}"
+                                            {{ $cirugia->enfermero_id == $empleado->id ? 'selected' : '' }}>
+                                            {{ $empleado->nombre }} {{ $empleado->apellido }}
+                                        </option>
+                                    @endif
+                                @endforeach
                             </select>
                             @error('enfermero_id')
                                 <small class="text-danger"> {{ $message }} </small>
