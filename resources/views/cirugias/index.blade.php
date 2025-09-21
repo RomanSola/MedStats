@@ -1,8 +1,11 @@
 @extends('layouts.app')
 @section('title', 'Gestión de Cirugías')
 @section('contenido')
-    <div class="container mt-4">
-        <div class="max-w-7xl mx-auto px-4 py-8">
+
+
+
+    <div class="flex min-h-screen bg-gray-100 transition-all duration-300 ease-in-out">
+        <div class="max-w-6xl mx-auto px-4 py-8">
             <div class="flex justify-between items-center mb-6">
                 <h1
                     class="text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent  bg-clip-text drop-shadow-md  flex items-center gap-2 px-2">
@@ -15,132 +18,134 @@
             </div>
             <div class="card border">
                 <div class="card-body">
-                    <p class="mb-3 text-secondary fw-semibold">Administrá las cirugías registradas en el sistema. Podés ver detalles y editarlos.
+                    <p class="mb-3 text-secondary fw-semibold">Administrá las cirugías registradas en el sistema. Podés ver
+                        detalles y editarlos.
                     </p>
                     <br>
                     <div class="bg-white shadow rounded-lg border border-gray-200 overflow-auto">
-<div id="fechas-html">
-    <div class="top-controls d-flex flex-wrap align-items-center gap-3">
-        <div>
-            <label for="fechaDesde" class="form-label mb-0">Desde:</label>
-            <input type="date" id="fechaDesde" class="form-control form-control-sm">
-        </div>
-        <div>
-            <label for="fechaHasta" class="form-label mb-0">Hasta:</label>
-            <input type="date" id="fechaHasta" class="form-control form-control-sm">
-        </div>
-        <div>
-            <button id="limpiarFechas" class="btn btn-outline-secondary btn-sm">Limpiar</button>
-        </div>
-    </div>
-</div>
+                        <div id="fechas-html">
+                            <div class="top-controls d-flex flex-wrap align-items-center gap-3">
+                                <div>
+                                    <label for="fechaDesde" class="form-label mb-0">Desde:</label>
+                                    <input type="date" id="fechaDesde" class="form-control form-control-sm">
+                                </div>
+                                <div>
+                                    <label for="fechaHasta" class="form-label mb-0">Hasta:</label>
+                                    <input type="date" id="fechaHasta" class="form-control form-control-sm">
+                                </div>
+                                <div>
+                                    <button id="limpiarFechas" class="btn btn-outline-secondary btn-sm">Limpiar</button>
+                                </div>
+                            </div>
+                        </div>
                         <table id="miTabla" class=" table table-hover table-bordered shadow-sm text-center rounded">
                             <div class="d-flex justify-content-start align-items-center gap-3 mb-3">
-                            <thead>
-                                <tr>
-                                    <th>Paciente</th>
-                                    <th>DNI</th>
-                                    <th>Edad</th>
-                                    <th>Procedimiento</th>
-                                    <th>Quirófano</th>
-                                    <th>Cirujano</th>
-                                    <th class="no-print">Ayudante 1</th>
-                                    <th class="no-print">Ayudante 2</th>
-                                    <th class="no-print">Ayudante 3</th>
-                                    <th>Anestesista</th>
-                                    <th>Tipo de Anestesia</th>
-                                    <th>Instrumentador</th>
-                                    <th>Enfermero</th>
-                                    <th>Fecha</th>
-                                    <th>Hora</th>
-                                    <th>Urgencia</th>
-                                    <th class="text-center no print">Acciones</th>
-                                </tr>
-                                <style>
-                                    @media print {
-                                        .no-print {
-                                            display: none !important;
+                                <thead>
+                                    <tr>
+                                        <th>Paciente</th>
+                                        <th>DNI</th>
+                                        <th>Edad</th>
+                                        <th>Procedimiento</th>
+                                        <th>Quirófano</th>
+                                        <th>Cirujano</th>
+                                        <th class="no-print">Ayudante 1</th>
+                                        <th class="no-print">Ayudante 2</th>
+                                        <th class="no-print">Ayudante 3</th>
+                                        <th>Anestesista</th>
+                                        <th>Tipo de Anestesia</th>
+                                        <th>Instrumentador</th>
+                                        <th>Enfermero</th>
+                                        <th>Fecha</th>
+                                        <th>Hora</th>
+                                        <th>Urgencia</th>
+                                        <th class="text-center no print">Acciones</th>
+                                    </tr>
+                                    <style>
+                                        @media print {
+                                            .no-print {
+                                                display: none !important;
+                                            }
                                         }
-                                    }
-                                </style>
-                            </thead>
-                            <tbody>
-                                @forelse($cirugias as $cirugia)
-                                    <tr>
-                                        <td>
-                                            {{ $cirugia->get_paciente->nombre }}
-                                            {{ $cirugia->get_paciente->apellido }}
-                                        </td>
-                                        <td>
-                                            {{ $cirugia->get_paciente->dni }}
-                                        </td>
-                                        <td>
-                                            {{ optional($cirugia->get_paciente)->fecha_nacimiento
-                                                ? \Carbon\Carbon::parse($cirugia->get_paciente->fecha_nacimiento)->age
-                                                : '—' }}
-                                        </td>
-                                        <td>
-                                            {{ $cirugia->get_procedimiento->nombre_procedimiento }}
-                                        </td>
-                                        <td>
-                                            {{ $cirugia->get_quirofano->nombre ?? 'N/A' }}
-                                        </td>
-                                        <td>
-                                            {{ $cirugia->get_cirujano->nombre }}
-                                            {{ $cirugia->get_cirujano->apellido }}
-                                        </td>
-                                        <td class="no-print">
-                                            {{ $cirugia->get_ayudante1->nombre ?? 'N/A' }}
-                                            {{ $cirugia->get_ayudante1->apellido ?? '' }}
-                                        </td>
-                                        <td class="no-print">
-                                            {{ optional($cirugia->get_ayudante2)->nombre ?? 'N/A' }}
-                                            {{ optional($cirugia->get_ayudante2)->apellido ?? '' }}
-                                        </td>
-                                        <td class="no-print">
-                                            {{ optional($cirugia->get_ayudante3)->nombre ?? 'N/A' }}
-                                            {{ optional($cirugia->get_ayudante3)->apellido ?? '' }}
-                                        </td>
-                                        <td>
-                                            {{ $cirugia->get_anestesista->nombre }}
-                                            {{ $cirugia->get_anestesista->apellido }}
-                                        </td>
-                                        <td>
-                                            {{ $cirugia->get_tipo_anestesia->nombre }}
-                                        </td>
-                                        <td>{{ optional($cirugia->get_instrumentador)->nombre }}
-                                            {{ optional($cirugia->get_instrumentador)->apellido }}
-                                        </td>
-                                        <td>
-                                            {{ optional($cirugia->get_enfermero)->nombre }}
-                                            {{ optional($cirugia->get_enfermero)->apellido }}
-                                        </td>
-                                        <td data-fecha="{{ $cirugia->fecha_cirugia }}">
-    {{ \Carbon\Carbon::parse($cirugia->fecha_cirugia)->format('d/m/Y') }}
-</td>
-                                        <td>
-                                            {{ $cirugia->hora_cirugia ?? '' }}
-                                        </td>
-                                        <td>
-                                            {{ $cirugia->urgencia ? 'Si' : 'No' }}
-                                        </td>
-                                        <td class="text-center no-print">
-                                            <a href="{{ route('cirugias.show', $cirugia) }}"
-                                                class="btn btn-outline-primary btn-sm me-1 btn-acciones">Ver</a>
-                                            <br>
-                                            <a href="{{ route('cirugias.edit', $cirugia) }}"
-                                                class="btn btn-outline-warning btn-sm me-1 btn-acciones">Editar</a>
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="12" class="text-center text-muted">No hay cirugías registradas aún.
-                                        </td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
+                                    </style>
+                                </thead>
+                                <tbody>
+                                    @forelse($cirugias as $cirugia)
+                                        <tr>
+                                            <td>
+                                                {{ $cirugia->get_paciente->nombre }}
+                                                {{ $cirugia->get_paciente->apellido }}
+                                            </td>
+                                            <td>
+                                                {{ $cirugia->get_paciente->dni }}
+                                            </td>
+                                            <td>
+                                                {{ optional($cirugia->get_paciente)->fecha_nacimiento
+                                                    ? \Carbon\Carbon::parse($cirugia->get_paciente->fecha_nacimiento)->age
+                                                    : '—' }}
+                                            </td>
+                                            <td>
+                                                {{ $cirugia->get_procedimiento->nombre_procedimiento }}
+                                            </td>
+                                            <td>
+                                                {{ $cirugia->get_quirofano->nombre ?? 'N/A' }}
+                                            </td>
+                                            <td>
+                                                {{ $cirugia->get_cirujano->nombre }}
+                                                {{ $cirugia->get_cirujano->apellido }}
+                                            </td>
+                                            <td class="no-print">
+                                                {{ $cirugia->get_ayudante1->nombre ?? 'N/A' }}
+                                                {{ $cirugia->get_ayudante1->apellido ?? '' }}
+                                            </td>
+                                            <td class="no-print">
+                                                {{ optional($cirugia->get_ayudante2)->nombre ?? 'N/A' }}
+                                                {{ optional($cirugia->get_ayudante2)->apellido ?? '' }}
+                                            </td>
+                                            <td class="no-print">
+                                                {{ optional($cirugia->get_ayudante3)->nombre ?? 'N/A' }}
+                                                {{ optional($cirugia->get_ayudante3)->apellido ?? '' }}
+                                            </td>
+                                            <td>
+                                                {{ $cirugia->get_anestesista->nombre }}
+                                                {{ $cirugia->get_anestesista->apellido }}
+                                            </td>
+                                            <td>
+                                                {{ $cirugia->get_tipo_anestesia->nombre }}
+                                            </td>
+                                            <td>{{ optional($cirugia->get_instrumentador)->nombre }}
+                                                {{ optional($cirugia->get_instrumentador)->apellido }}
+                                            </td>
+                                            <td>
+                                                {{ optional($cirugia->get_enfermero)->nombre }}
+                                                {{ optional($cirugia->get_enfermero)->apellido }}
+                                            </td>
+                                            <td data-fecha="{{ $cirugia->fecha_cirugia }}">
+                                                {{ \Carbon\Carbon::parse($cirugia->fecha_cirugia)->format('d/m/Y') }}
+                                            </td>
+                                            <td>
+                                                {{ $cirugia->hora_cirugia ?? '' }}
+                                            </td>
+                                            <td>
+                                                {{ $cirugia->urgencia ? 'Si' : 'No' }}
+                                            </td>
+                                            <td class="text-center no-print">
+                                                <a href="{{ route('cirugias.show', $cirugia) }}"
+                                                    class="btn btn-outline-primary btn-sm me-1 btn-acciones">Ver</a>
+                                                <br>
+                                                <a href="{{ route('cirugias.edit', $cirugia) }}"
+                                                    class="btn btn-outline-warning btn-sm me-1 btn-acciones">Editar</a>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="12" class="text-center text-muted">No hay cirugías registradas
+                                                aún.
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
                         </table>
-                        
+
                     </div>
 
                 </div>
@@ -161,10 +166,10 @@
         @endsection
         <style>
             .btn-acciones {
-            min-width: 110px;
-            /* ajusta hasta que quede igual al "Dar de alta" */
-            text-align: center;
-        }
+                min-width: 110px;
+                /* ajusta hasta que quede igual al "Dar de alta" */
+                text-align: center;
+            }
         </style>
 
         @push('scripts')
@@ -178,42 +183,42 @@
             <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
             <!-- Funciones de impresión y exportación -->
             <script>
-            $(document).ready(function () {
-    // Inicializar la tabla
-    const tabla = $('#miTabla').DataTable({
-        dom: '<"top-controls d-flex flex-wrap align-items-end gap-3 justify-content-between"<"filtros-fecha d-flex align-items-end gap-2"f<"#fechas-html">l>>rt<"bottom-controls"ip>',
-        language: {
-            url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
-        }
-    });
+                $(document).ready(function() {
+                    // Inicializar la tabla
+                    const tabla = $('#miTabla').DataTable({
+                        dom: '<"top-controls d-flex flex-wrap align-items-end gap-3 justify-content-between"<"filtros-fecha d-flex align-items-end gap-2"f<"#fechas-html">l>>rt<"bottom-controls"ip>',
+                        language: {
+                            url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
+                        }
+                    });
 
-    $('.fechas').prepend($('#fechas-html').html());
+                    $('.fechas').prepend($('#fechas-html').html());
 
-    $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
-        const fechaDesde = $('#fechaDesde').val();
-        const fechaHasta = $('#fechaHasta').val();
-        const rowNode = tabla.row(dataIndex).node();
-        const fechaTexto = $('td', rowNode).eq(13).data('fecha'); // columna 13 = Fecha
+                    $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+                        const fechaDesde = $('#fechaDesde').val();
+                        const fechaHasta = $('#fechaHasta').val();
+                        const rowNode = tabla.row(dataIndex).node();
+                        const fechaTexto = $('td', rowNode).eq(13).data('fecha'); // columna 13 = Fecha
 
-        if (!fechaTexto) return true;
+                        if (!fechaTexto) return true;
 
-        const fechaCirugia = new Date(fechaTexto);
-        const desde = fechaDesde ? new Date(fechaDesde) : null;
-        const hasta = fechaHasta ? new Date(fechaHasta) : null;
+                        const fechaCirugia = new Date(fechaTexto);
+                        const desde = fechaDesde ? new Date(fechaDesde) : null;
+                        const hasta = fechaHasta ? new Date(fechaHasta) : null;
 
-        return (!desde || fechaCirugia >= desde) && (!hasta || fechaCirugia <= hasta);
-    });
+                        return (!desde || fechaCirugia >= desde) && (!hasta || fechaCirugia <= hasta);
+                    });
 
-    $('#fechaDesde, #fechaHasta').on('change', function () {
-        tabla.draw();
-    });
+                    $('#fechaDesde, #fechaHasta').on('change', function() {
+                        tabla.draw();
+                    });
 
-    $('#limpiarFechas').on('click', function () {
-        $('#fechaDesde').val('');
-        $('#fechaHasta').val('');
-        tabla.draw();
-    });
-});
+                    $('#limpiarFechas').on('click', function() {
+                        $('#fechaDesde').val('');
+                        $('#fechaHasta').val('');
+                        tabla.draw();
+                    });
+                });
 
                 function imprimirTablaCompleta() {
                     const tablaOriginal = document.querySelector('.overflow-auto table');
