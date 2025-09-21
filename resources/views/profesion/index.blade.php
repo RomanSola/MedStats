@@ -3,7 +3,6 @@
 @section('title', 'Gestión de Profesiones')
 
 @section('contenido')
-    <div class="container mt-4">
 
         <div class="max-w-7xl mx-auto px-4 py-8">
             <div class="flex justify-between items-center mb-6">

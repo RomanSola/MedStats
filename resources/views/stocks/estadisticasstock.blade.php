@@ -1,7 +1,6 @@
 @extends('layouts.app')
 @section('titulo', 'Estadísticas de Stock')
 @section('contenido')
-<div class="container">
   
     <div class="text-center mb-4">
      

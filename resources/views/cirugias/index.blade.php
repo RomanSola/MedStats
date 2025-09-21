@@ -4,7 +4,7 @@
 
 
 
-    <div class="flex min-h-screen bg-gray-100 transition-all duration-300 ease-in-out">
+    
         <div class="max-w-6xl mx-auto px-4 py-8">
             <div class="flex justify-between items-center mb-6">
                 <h1
