@@ -192,22 +192,26 @@ thead{
         margin: 15px;
     }
 }
-.filtros-fecha input[type="date"] {
-    border-radius: 6px;
-    padding: 6px 12px;
-    border: 1px solid #ccc;
-    background-color: #fff;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-    font-size: 0.95rem;
-    color: #333;
-}
-
-.filtros-fecha label {
+.top-controls .form-label {
     font-weight: 500;
     font-size: 0.95rem;
     color: #444;
 }
 
+.top-controls input[type="date"],
+.top-controls button {
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 0.9rem;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+.top-controls button:hover {
+    background-color: #e0f7fa;
+    border-color: #2BA8A0;
+    color: #2BA8A0;
+}
 #limpiarFechas {
     border-radius: 6px;
     padding: 6px 12px;
@@ -222,4 +226,11 @@ thead{
     background-color: #e0f7fa;
     border-color: #2BA8A0;
     color: #2BA8A0;
+}
+.dataTables_wrapper .fechas {
+    display: flex !important;
+    gap: 0.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 0.5rem;
 }

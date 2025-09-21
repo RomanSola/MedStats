@@ -19,22 +19,23 @@
                     </p>
                     <br>
                     <div class="bg-white shadow rounded-lg border border-gray-200 overflow-auto">
-                        <table id="miTabla" class=" table table-hover table-bordered shadow-sm text-center rounded">
-                            <div class="d-flex justify-content-start align-items-center gap-3 mb-3">
-<div class="d-flex gap-3 mb-3">
-    <div>
-        <label for="fechaDesde" class="form-label mb-0">Desde:</label>
-        <input type="date" id="fechaDesde" class="form-control form-control-sm">
-    </div>
-    <div>
-        <label for="fechaHasta" class="form-label mb-0">Hasta:</label>
-        <input type="date" id="fechaHasta" class="form-control form-control-sm">
-    </div>
-    <div class="align-self-end">
-        <button id="limpiarFechas" class="btn btn-outline-secondary btn-sm">Limpiar filtro</button>
+<div id="fechas-html">
+    <div class="top-controls d-flex flex-wrap align-items-center gap-3">
+        <div>
+            <label for="fechaDesde" class="form-label mb-0">Desde:</label>
+            <input type="date" id="fechaDesde" class="form-control form-control-sm">
+        </div>
+        <div>
+            <label for="fechaHasta" class="form-label mb-0">Hasta:</label>
+            <input type="date" id="fechaHasta" class="form-control form-control-sm">
+        </div>
+        <div>
+            <button id="limpiarFechas" class="btn btn-outline-secondary btn-sm">Limpiar</button>
+        </div>
     </div>
 </div>
-
+                        <table id="miTabla" class=" table table-hover table-bordered shadow-sm text-center rounded">
+                            <div class="d-flex justify-content-start align-items-center gap-3 mb-3">
                             <thead>
                                 <tr>
                                     <th>Paciente</th>
@@ -114,9 +115,9 @@
                                             {{ optional($cirugia->get_enfermero)->nombre }}
                                             {{ optional($cirugia->get_enfermero)->apellido }}
                                         </td>
-                                        <td>
-                                            {{ $cirugia->fecha_cirugia ?? '' }}
-                                        </td>
+                                        <td data-fecha="{{ $cirugia->fecha_cirugia }}">
+    {{ \Carbon\Carbon::parse($cirugia->fecha_cirugia)->format('d/m/Y') }}
+</td>
                                         <td>
                                             {{ $cirugia->hora_cirugia ?? '' }}
                                         </td>
@@ -139,6 +140,7 @@
                                 @endforelse
                             </tbody>
                         </table>
+                        
                     </div>
 
                 </div>
@@ -174,75 +176,38 @@
             <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
             <!-- SheetJS para generar archivos Excel -->
             <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-
             <!-- Funciones de impresión y exportación -->
             <script>
-                $(document).ready(function () {
+            $(document).ready(function () {
+    // Inicializar la tabla
     const tabla = $('#miTabla').DataTable({
-        dom: '<"top-controls d-flex justify-content-between align-items-center flex-wrap gap-3"<"filtros-fecha d-flex align-items-end gap-2"f><"cantidad"l>>rt<"bottom-controls"ip>',
-        order: [[0, 'desc']],
-        buttons: [
-            {
-                extend: 'excelHtml5',
-                text: 'Exportar a Excel',
-                className: 'btn btn-success btn-sm'
-            },
-            {
-                extend: 'pdfHtml5',
-                text: 'Exportar a PDF',
-                className: 'btn btn-danger btn-sm',
-                orientation: 'landscape',
-                pageSize: 'A4',
-                customize: function (doc) {
-                    doc.defaultStyle.fontSize = 8;
-                }
-            }
-        ],
+        dom: '<"top-controls d-flex flex-wrap align-items-end gap-3 justify-content-between"<"filtros-fecha d-flex align-items-end gap-2"f<"#fechas-html">l>>rt<"bottom-controls"ip>',
         language: {
-            url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json',
-            search: "Filtrar cirugías:",
-            lengthMenu: "Mostrar _MENU_ cirugías por página",
-            info: "Mostrando _START_ a _END_ de _TOTAL_ cirugías",
-            infoEmpty: "No hay cirugías para mostrar",
-            infoFiltered: "(filtrado de _MAX_ cirugías en total)"
-        },
-        columnDefs: [
-            { orderable: false, targets: [16] }
-        ]
+            url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
+        }
     });
-    $('.filtros-fecha').prepend($('#filtros-fecha-html').html());
-    
-    // Filtro personalizado por fecha (formato MM/DD/YYYY)
+
+    $('.fechas').prepend($('#fechas-html').html());
+
     $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
         const fechaDesde = $('#fechaDesde').val();
         const fechaHasta = $('#fechaHasta').val();
-        const fechaTexto = data[13]; // Columna 13 = Fecha
+        const rowNode = tabla.row(dataIndex).node();
+        const fechaTexto = $('td', rowNode).eq(13).data('fecha'); // columna 13 = Fecha
 
-        if (!fechaDesde && !fechaHasta) return true;
+        if (!fechaTexto) return true;
 
-        const partes = fechaTexto.split(/[-\/]/);
-        if (partes.length !== 3) return true;
-
-        const mes = parseInt(partes[0], 10) - 1;
-        const dia = parseInt(partes[1], 10);
-        const año = parseInt(partes[2], 10);
-        const fechaCirugia = new Date(año, mes, dia);
-
+        const fechaCirugia = new Date(fechaTexto);
         const desde = fechaDesde ? new Date(fechaDesde) : null;
         const hasta = fechaHasta ? new Date(fechaHasta) : null;
 
-        if ((desde === null || fechaCirugia >= desde) && (hasta === null || fechaCirugia <= hasta)) {
-            return true;
-        }
-        return false;
+        return (!desde || fechaCirugia >= desde) && (!hasta || fechaCirugia <= hasta);
     });
 
-    // Refiltrar al cambiar fechas
     $('#fechaDesde, #fechaHasta').on('change', function () {
         tabla.draw();
     });
 
-    // Botón para limpiar filtro
     $('#limpiarFechas').on('click', function () {
         $('#fechaDesde').val('');
         $('#fechaHasta').val('');
