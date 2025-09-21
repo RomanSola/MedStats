@@ -197,6 +197,17 @@
     }
 </script>
 
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const sidebar = document.getElementById('sidebar');
+        const toggleBtn = document.getElementById('toggleSidebar');
+
+        toggleBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('collapsed');
+        });
+    });
+</script>
+
 
 @push('scripts')
 <script>
@@ -219,5 +230,7 @@
 
     <!-- Scripts adicionales desde las vistas -->
     @stack('scripts')
+
+    
 </body>
 </html>

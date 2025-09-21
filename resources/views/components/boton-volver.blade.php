@@ -1,4 +1,4 @@
-<div class="container mt-2">
+{{--<div class="container mt-2">
     @php
         $rutaActual = request()->route()->getName();
 
@@ -202,7 +202,7 @@
 }
 </style>
 
-<script>
+<!--<script>
     document.addEventListener("DOMContentLoaded", function() {
         const sidebar = document.getElementById('sidebar');
         const botonVolver = document.querySelector('.btn-volver-fijo');
@@ -224,4 +224,5 @@
             setTimeout(ajustarBotonVolver, 300); // esperar transición
         });
     });
-</script>
+</script>-->
+--}}
