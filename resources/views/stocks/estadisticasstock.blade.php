@@ -1,9 +1,7 @@
 @extends('layouts.app')
 @section('titulo', 'Estadísticas de Stock')
 @section('contenido')
-
-<div class="container" style="margin-top: 80px;">
-
+<div class="container">
   
     <div class="text-center mb-4">
      
@@ -215,6 +213,7 @@
   </div>
 </div>
 
+</div>
 </div>
 @endsection
 @push('scripts')
