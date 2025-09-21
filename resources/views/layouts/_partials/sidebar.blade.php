@@ -17,29 +17,36 @@
     <!-- Links -->
     <nav class="flex-1 px-2 py-6 space-y-2 text-gray-700 overflow-y-auto overflow-x-hidden">
         <a href="{{ route('stocks.index') }}"
-            class="flex items-center gap-3 p-3 rounded-md hover:bg-[#1B7D8F] hover:text-white transition">
+            class="flex items-center gap-3 p-3 rounded-md hover:bg-[#1B7D8F] hover:text-white transition text-decoration-none">
             <img src="{{ asset('assets/img/insumos.jpeg') }}" class="h-6 w-6 flex-shrink-0">
             <span class="link-text">Insumos</span>
         </a>
         <a href="{{ route('cirugias.estadisticas') }}"
-            class="flex items-center gap-3 p-3 rounded-md hover:bg-[#1B7D8F] hover:text-white transition">
+            class="flex items-center gap-3 p-3 rounded-md hover:bg-[#1B7D8F] hover:text-white transition text-decoration-none">
             <img src="{{ asset('assets/img/estadisticas.jpeg') }}" class="h-6 w-6 flex-shrink-0">
             <span class="link-text">Estadísticas</span>
         </a>
         <a href="{{ route('pacientes.index') }}"
-            class="flex items-center gap-3 p-3 rounded-md hover:bg-[#1B7D8F] hover:text-white transition">
+            class="flex items-center gap-3 p-3 rounded-md hover:bg-[#1B7D8F] hover:text-white transition text-decoration-none">
             <img src="{{ asset('assets/img/pacientes.jpeg') }}" class="h-6 w-6 flex-shrink-0">
             <span class="link-text">Pacientes</span>
         </a>
         <a href="{{ route('camas.index') }}"
-            class="flex items-center gap-3 p-3 rounded-md hover:bg-[#1B7D8F] hover:text-white transition">
+            class="flex items-center gap-3 p-3 rounded-md hover:bg-[#1B7D8F] hover:text-white transition text-decoration-none">
             <img src="{{ asset('assets/img/camas.jpeg') }}" class="h-6 w-6 flex-shrink-0">
             <span class="link-text">Camas</span>
         </a>
         <a href="{{ route('cirugias.index') }}"
-            class="flex items-center gap-3 p-3 rounded-md hover:bg-[#1B7D8F] hover:text-white transition">
+            class="flex items-center gap-3 p-3 rounded-md hover:bg-[#1B7D8F] hover:text-white transition text-decoration-none">
             <img src="{{ asset('assets/img/cirugias.jpeg') }}" class="h-6 w-6 flex-shrink-0">
             <span class="link-text">Cirugías</span>
+        </a>
+
+        <!-- Ajustes -->
+        <a href="{{ route('ajustes') }}"
+            class="flex items-center gap-3 p-3 rounded-md hover:bg-[#1B7D8F] hover:text-white transition text-decoration-none">
+            <img src="{{ asset('assets/img/ajustes.jpeg') }}" class="h-6 w-6 flex-shrink-0">
+            <span class="link-text">Ajustes</span>
         </a>
     </nav>
 
@@ -47,4 +54,3 @@
 
 
 <!-- Script para colapsar/expandir el sidebar-->
-

@@ -2,14 +2,10 @@
 @section('titulo', 'Inicio')
 @section('contenido')
 
-    <div class="flex min-h-screen bg-gray-100 transition-all duration-300 ease-in-out">
-
-        <!-- Main -->
+  <div class="flex min-h-screen bg-gray-100 transition-all duration-300 ease-in-out">
+    <!-- Main -->
         <main class="flex-1 p-1 max-w-full">
-
-
-
-            <!-- Header con búsqueda -->
+ <!-- Header con búsqueda -->
             <header class="flex justify-center mb-8 mt-16">
                 <form action="{{ route('buscar') }}" method="GET" class="relative w-full max-w-3xl">
                     <input type="text" id="busqueda" name="busqueda" autocomplete="off"
@@ -62,7 +58,7 @@
             <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
                 <div class="bg-white shadow rounded-lg p-6 flex items-center gap-4">
                     <div class="p-3 bg-[#1B7D8F] rounded-full text-white">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
+                        <img src="{{ asset('assets/img/insumos.jpeg') }}" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                         </svg>
@@ -75,7 +71,7 @@
 
                 <div class="bg-white shadow rounded-lg p-6 flex items-center gap-4">
                     <div class="p-3 bg-[#2BA8A0] rounded-full text-white">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
+                        <img src="{{ asset('assets/img/pacientes.jpeg') }}" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M9 12h6m2 0a4 4 0 11-8 0 4 4 0 018 0z" />
@@ -89,7 +85,7 @@
 
                 <div class="bg-white shadow rounded-lg p-6 flex items-center gap-4">
                     <div class="p-3 bg-[#245360] rounded-full text-white">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
+                        <img src="{{ asset('assets/img/camas.jpeg') }}"  class="h-8 w-8" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18" />
                         </svg>
@@ -102,7 +98,7 @@
 
                 <div class="bg-white shadow rounded-lg p-6 flex items-center gap-4">
                     <div class="p-3 bg-[#176d7b] rounded-full text-white">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
+                        <img src="{{ asset('assets/img/cirugias.jpeg') }}" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M9 17v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6m5 0v4m0-4H3m16-1v1a2 2 0 002 2h2a2 2 0 002-2v-1m-4 0v-4m0 4h-4m4-4h4" />

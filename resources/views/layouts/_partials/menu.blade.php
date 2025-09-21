@@ -31,15 +31,6 @@
         @lang('Usuario Conectado')
       </div>
 
-      <!-- Ajustes -->
-      <a href="{{ route('ajustes') }}"
-        class="bg-[#1B7D8F] hover:bg-[#176d7b] text-white text-sm px-3 py-2 rounded-md shadow transition text-decoration-none">
-        ⚙️ @lang('Ajustes')
-      </a>
-
     </div>
   </div>
 </header>
-<br>
-<br>
-<br>
