@@ -21,23 +21,32 @@
                     <p class="mb-3 text-secondary fw-semibold">Administrá las cirugías registradas en el sistema. Podés ver
                         detalles y editarlos.
                     </p>
-                    <br>
+                    
                     <div class="bg-white shadow rounded-lg border border-gray-200 overflow-auto">
-                        <div id="fechas-html">
-                            <div class="top-controls d-flex flex-wrap align-items-center gap-3">
-                                <div>
-                                    <label for="fechaDesde" class="form-label mb-0">Desde:</label>
-                                    <input type="date" id="fechaDesde" class="form-control form-control-sm">
-                                </div>
-                                <div>
-                                    <label for="fechaHasta" class="form-label mb-0">Hasta:</label>
-                                    <input type="date" id="fechaHasta" class="form-control form-control-sm">
-                                </div>
-                                <div>
-                                    <button id="limpiarFechas" class="btn btn-outline-secondary btn-sm">Limpiar</button>
-                                </div>
-                            </div>
+                      <div class="dataTables_wrapper">
+                    <div class="top-controls d-flex flex-wrap align-items-center gap-3 justify-content-between">
+    
+                        {{-- Selector de cantidad --}}
+                        <div class="dataTables_length"></div>
+
+                        {{-- Buscador --}}
+                        <div class="dataTables_filter"></div>
+
+                        {{-- Filtros de fecha integrados --}}
+                        <div class="fechas d-flex align-items-center gap-3">
+                        <div>
+                            <label for="fechaDesde" class="form-label mb-0">Desde:</label>
+                            <input type="date" id="fechaDesde" class="form-control form-control-sm">
                         </div>
+                        <div>
+                            <label for="fechaHasta" class="form-label mb-0">Hasta:</label>
+                            <input type="date" id="fechaHasta" class="form-control form-control-sm">
+                        </div>
+                        <div>
+                            <button id="limpiarFechas" class="btn btn-outline-secondary btn-sm">Limpiar</button>
+                        </div>
+                        </div>
+                    </div>
                         <table id="miTabla" class=" table table-hover table-bordered shadow-sm text-center rounded">
                             <div class="d-flex justify-content-start align-items-center gap-3 mb-3">
                                 <thead>
@@ -145,7 +154,7 @@
                                     @endforelse
                                 </tbody>
                         </table>
-
+                      </div>
                     </div>
 
                 </div>
@@ -186,19 +195,19 @@
                 $(document).ready(function() {
                     // Inicializar la tabla
                     const tabla = $('#miTabla').DataTable({
-                        dom: '<"top-controls d-flex flex-wrap align-items-end gap-3 justify-content-between"<"filtros-fecha d-flex align-items-end gap-2"f<"#fechas-html">l>>rt<"bottom-controls"ip>',
+                        dom: '<"top-controls d-flex flex-wrap align-items-end gap-3"l<"#fechas-html">f>rt<"bottom-controls"ip>',
                         language: {
                             url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
                         }
                     });
 
-                    $('.fechas').prepend($('#fechas-html').html());
+                    $('.top-controls').find('div').eq(1).before($('#fechas-html'));
 
                     $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
                         const fechaDesde = $('#fechaDesde').val();
                         const fechaHasta = $('#fechaHasta').val();
                         const rowNode = tabla.row(dataIndex).node();
-                        const fechaTexto = $('td', rowNode).eq(13).data('fecha'); // columna 13 = Fecha
+                        const fechaTexto = $('td', rowNode).eq(13).data('fecha');
 
                         if (!fechaTexto) return true;
 
