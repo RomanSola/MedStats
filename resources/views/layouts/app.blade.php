@@ -234,11 +234,10 @@
         </script>
     @endpush
 
-
-
     <!-- Scripts adicionales desde las vistas -->
     @stack('scripts')
 
+      @stack('modales')
 
 </body>
 
