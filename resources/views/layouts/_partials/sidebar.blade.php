@@ -214,6 +214,14 @@
             <img src="{{ asset('assets/img/ajustes.jpeg') }}" class="h-6 w-6 flex-shrink-0">
             <span class="link-text">Ajustes</span>
         </a>
+
+        <!-- cerrar sesión-->
+        <a href="#"
+            title="Cerrar Sesión"
+            class="flex items-center gap-3 p-3 rounded-md hover:bg-[#1B7D8F] hover:text-white transition text-decoration-none">
+            <img src="{{ asset('assets/img/salir.jpeg') }}" class="h-6 w-6 flex-shrink-0">
+            <span class="link-text">Cerrar Sesión</span>
+        </a>
     </nav>
 
 </aside>

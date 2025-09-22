@@ -30,8 +30,8 @@
 
 </head>
 
-<body class="min-h-screen bg-gray-100">
-
+<!--<body class="min-h-screen bg-gray-100">-->
+<body class="bg-[#e6f4f3] text-gray-900">
     @include('layouts._partials.menu')
 
 
