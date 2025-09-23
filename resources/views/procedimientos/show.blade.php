@@ -31,6 +31,19 @@
                                value="{{ $procedimiento->descripcion }}" readonly>
                     </div>
 
+                    {{-- Campo Especialidad --}}
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold text-secondary">Especialidad</label>
+                        <input type="text" class="form-control border border-gray-300 shadow-sm"
+                               value="{{ $procedimiento->get_especialidad->nombre ?? '—' }}" readonly>
+                    </div>
+                    
+                    {{-- Campo Especialidad adicional --}}
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold text-secondary">Especialidad Adicional</label>
+                        <input type="text" class="form-control border border-gray-300 shadow-sm"
+                               value="{{ $procedimiento->get_especialidad_2->nombre ?? '—' }}" readonly>
+                    </div>
                     {{-- Botón volver con el mismo estilo que empleados --}}
                     <div class="text-center mt-4">
                         <a href="{{ route('procedimientos.index') }}"

@@ -96,6 +96,12 @@
                                 'route' => route('procedimientos.index'),
                                 'btn' => 'Ir a Procedimientos',
                             ],
+                            [
+                                'title' => 'Especialidades',
+                                'text' => 'Administrar Especialidades.',
+                                'route' => route('especialidades.index'),
+                                'btn' => 'Ir a Especialidades',
+                            ],
                         ];
                     @endphp
 

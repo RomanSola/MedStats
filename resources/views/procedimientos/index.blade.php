@@ -43,6 +43,8 @@
                                 <tr>
                                     <th>Procedimiento</th>
                                     <th>Descripción</th>
+                                    <th>Especialidad</th>
+                                    <th>Especialidad Adicional</th>
                                     <th class="text-center">Acciones</th>
                                 </tr>
                             </thead>
@@ -51,6 +53,8 @@
                                     <tr>
                                         <td>{{ $procedimiento->nombre_procedimiento }}</td>
                                         <td>{{ $procedimiento->descripcion }}</td>
+                                        <td>{{ $procedimiento->get_especialidad->nombre ?? '—'}}</td>
+                                        <td>{{ $procedimiento->get_especialidad_2->nombre ?? '—' }}</td>
                                         <td class="text-center">
                                             <a href="{{ route('procedimientos.show', $procedimiento) }}"
                                                 class="btn btn-outline-primary btn-sm me-1">Ver</a>

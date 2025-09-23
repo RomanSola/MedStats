@@ -27,6 +27,7 @@
             case 'tipoAnestesias.index':
             case 'ocupacionCamas.index':
             case 'perfiles.index':
+            case 'especialidades.index':
                 $rutaAnterior = 'ajustes';
                 break;
 

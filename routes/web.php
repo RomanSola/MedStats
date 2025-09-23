@@ -17,6 +17,7 @@ use App\Http\Controllers\QuirofanoController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BusquedaController;
 use App\Http\Controllers\PersonaController;
+use App\Http\Controllers\EspecialidadController;
 
 /*
 |--------------------------------------------------------------------------
@@ -194,3 +195,11 @@ Route::get('/quirofanos/{quirofano}/edit', [QuirofanoController::class, 'edit'])
 Route::get('/quirofanos/{quirofano}/show', [QuirofanoController::class, 'show'])->name('quirofanos.show');
 Route::put('/quirofanos/{quirofano}', [QuirofanoController::class, 'update'])->name('quirofanos.update');
 Route::delete('/quirofanos/{quirofano}', [QuirofanoController::class, 'destroy'])->name('quirofanos.destroy');
+
+//Especialidades
+Route::get('/especialidades', [EspecialidadController::class, 'index'])->name('especialidades.index');
+Route::get('/especialidades/create', [EspecialidadController::class, 'create'])->name('especialidades.create');
+Route::post('/especialidades', [EspecialidadController::class, 'store'])->name('especialidades.store');
+Route::get('/especialidades/{especialidad}/edit', [EspecialidadController::class, 'edit'])->name('especialidades.edit');
+Route::put('/especialidades/{especialidad}', [EspecialidadController::class, 'update'])->name('especialidades.update');
+Route::delete('/especialidades/{especialidad}', [EspecialidadController::class, 'destroy'])->name('especialidades.destroy');
