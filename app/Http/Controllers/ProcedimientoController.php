@@ -69,16 +69,15 @@ class ProcedimientoController extends Controller
 
     public function destroy(Procedimiento $procedimiento)
     {
-        // Validación: si está bloqueado, no se puede eliminar
-        if ($procedimiento->bloqueado) {
-            return back()->with('error', 'Este procedimiento está bloqueado y no puede eliminarse.');
+        // Si el procedimiento tiene cirugías asociadas, no se puede eliminar
+        if ($procedimiento->cirugias()->exists()) {
+            return redirect()->route('procedimientos.index')
+                ->with('error', 'No se puede eliminar el procedimiento porque está asignado a una cirugía.');
         }
-        //Verifico que la especialidad no exista en otras tablas antes de borrarlo
-        if ($procedimiento->get_cirugias()->exists()) {
-            return redirect()->route('procedimiento.index')
-                ->with('error', 'No se puede eliminar el procedimiento porque tiene registros asociados.');
-        }
+
         $procedimiento->delete();
+
         return redirect()->route('procedimientos.index')->with('success', 'Procedimiento eliminado correctamente.');
     }
+
 }

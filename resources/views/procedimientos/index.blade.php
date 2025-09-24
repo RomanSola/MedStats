@@ -61,9 +61,12 @@
                                             <a href="{{ route('procedimientos.edit', $procedimiento) }}"
                                                 class="btn btn-outline-warning btn-sm me-1">Editar</a>
 
-                                            @if (empty($procedimiento->bloqueado) || !$procedimiento->bloqueado)
-                                                <form action="{{ route('procedimientos.destroy', $procedimiento) }}" method="POST"
-                                                    class="d-inline">
+                                            @if ($procedimiento->cirugias()->exists())
+                                                <button class="btn btn-outline-secondary btn-sm" disabled title="Este procedimiento está asignado a una cirugía">
+                                                    No eliminable
+                                                </button>
+                                            @else
+                                                <form action="{{ route('procedimientos.destroy', $procedimiento) }}" method="POST" class="d-inline">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button class="btn btn-outline-danger btn-sm"
@@ -71,11 +74,8 @@
                                                         Eliminar
                                                     </button>
                                                 </form>
-                                            @else
-                                                <button class="btn btn-outline-secondary btn-sm" disabled title="Este procedimiento está bloqueado">
-                                                    No eliminable
-                                                </button>
                                             @endif
+
                                         </td>
                                     </tr>
                                 @empty
