@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\ProvinciaController;
 use App\Http\Controllers\Api\CodigoPostalController;
+use App\Http\Controllers\Api\ProcedimientoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,3 +26,6 @@ Route::get('/provincias/{pais_id}', [ProvinciaController::class, 'porPais']);
 
 //Codigo Postal
 Route::get('/cod_postal/{pais_id}/{provincia_id}', [CodigoPostalController::class, 'porPaisProvincia']);
+
+//Procedimientos
+Route::get('/procedimientos/{especialidad_id}', [ProcedimientoController::class, 'porEspecialidad']);

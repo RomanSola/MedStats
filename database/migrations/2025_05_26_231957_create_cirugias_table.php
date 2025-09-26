@@ -35,7 +35,7 @@ return new class extends Migration
             $table->foreign('tipo_anestesia_id')->references('id')->on('tipo_anestesias')->onDelete('cascade');
             $table->foreign('instrumentador_id')->references('id')->on('empleados')->onDelete('cascade');
             //FALTA LA TABLA DE USUARIOS
-            //$table->foreign('creado_p or')->references('id')->on('usuarios');
+            //$table->foreign('creado_por')->references('id')->on('usuarios');
             //$table->foreign('modificado_por')->references('id')->on('usuarios');
             
         });

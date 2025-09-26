@@ -50,7 +50,9 @@
                                         <th>Paciente</th>
                                         <th>DNI</th>
                                         <th>Edad</th>
+                                        <th>Especialidad</th>
                                         <th>Procedimiento</th>
+                                        <th>Procedimiento 2</th>
                                         <th>Quirófano</th>
                                         <th>Cirujano</th>
                                         <th class="no-print">Ayudante 1</th>
@@ -58,11 +60,14 @@
                                         <th class="no-print">Ayudante 3</th>
                                         <th>Anestesista</th>
                                         <th>Tipo de Anestesia</th>
+                                        <th>Tipo de Anestesia 2</th>
                                         <th>Instrumentador</th>
-                                        <th>Enfermero</th>
+                                        <th>Instrumentador 2</th>
+                                        <th>Enfermero 2</th>
                                         <th>Fecha</th>
                                         <th>Hora</th>
                                         <th>Urgencia</th>
+                                        <th>óbito</th>
                                         <th class="text-center no print">Acciones</th>
                                     </tr>
                                     <style>
@@ -89,25 +94,28 @@
                                                     : '—' }}
                                             </td>
                                             <td>
+                                                {{ $cirugia->get_especialidad->nombre ?? '-'}}
+                                            </td>
+                                            <td>
                                                 {{ $cirugia->get_procedimiento->nombre_procedimiento }}
                                             </td>
                                             <td>
-                                                {{ $cirugia->get_quirofano->nombre ?? 'N/A' }}
+                                                {{ $cirugia->get_quirofano->nombre ?? '-' }}
                                             </td>
                                             <td>
                                                 {{ $cirugia->get_cirujano->nombre }}
                                                 {{ $cirugia->get_cirujano->apellido }}
                                             </td>
                                             <td class="no-print">
-                                                {{ $cirugia->get_ayudante1->nombre ?? 'N/A' }}
+                                                {{ $cirugia->get_ayudante1->nombre ?? '-' }}
                                                 {{ $cirugia->get_ayudante1->apellido ?? '' }}
                                             </td>
                                             <td class="no-print">
-                                                {{ optional($cirugia->get_ayudante2)->nombre ?? 'N/A' }}
+                                                {{ optional($cirugia->get_ayudante2)->nombre ?? '-' }}
                                                 {{ optional($cirugia->get_ayudante2)->apellido ?? '' }}
                                             </td>
                                             <td class="no-print">
-                                                {{ optional($cirugia->get_ayudante3)->nombre ?? 'N/A' }}
+                                                {{ optional($cirugia->get_ayudante3)->nombre ?? '-' }}
                                                 {{ optional($cirugia->get_ayudante3)->apellido ?? '' }}
                                             </td>
                                             <td>
@@ -117,12 +125,22 @@
                                             <td>
                                                 {{ $cirugia->get_tipo_anestesia->nombre }}
                                             </td>
+                                            <td>
+                                                {{ $cirugia->get_tipo_anestesia2->nombre ?? '-'}}
+                                            </td>
                                             <td>{{ optional($cirugia->get_instrumentador)->nombre }}
                                                 {{ optional($cirugia->get_instrumentador)->apellido }}
+                                            </td>
+                                            <td>{{ optional($cirugia->get_instrumentador2)->nombre ?? '-'}}
+                                                {{ optional($cirugia->get_instrumentador2)->apellido ?? ''}}
                                             </td>
                                             <td>
                                                 {{ optional($cirugia->get_enfermero)->nombre }}
                                                 {{ optional($cirugia->get_enfermero)->apellido }}
+                                            </td>
+                                            <td>
+                                                {{ optional($cirugia->get_enfermero2)->nombre ?? '-'}}
+                                                {{ optional($cirugia->get_enfermero2)->apellido ?? ''}}
                                             </td>
                                             <td data-fecha="{{ $cirugia->fecha_cirugia }}">
                                                 {{ \Carbon\Carbon::parse($cirugia->fecha_cirugia)->format('d/m/Y') }}
@@ -132,6 +150,9 @@
                                             </td>
                                             <td>
                                                 {{ $cirugia->urgencia ? 'Si' : 'No' }}
+                                            </td>
+                                            <td>
+                                                {{ $cirugia->obito ? 'Si' : 'No' }}
                                             </td>
                                             <td class="text-center no-print">
                                                 <a href="{{ route('cirugias.show', $cirugia) }}"
