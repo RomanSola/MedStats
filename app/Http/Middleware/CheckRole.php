@@ -17,11 +17,11 @@ class CheckRole
     {
         $user = $request->user();
 
-        if (!$user && in_array('enfermero', $roles)) {
+        if (!$user && in_array('guest', $roles)) {
             return $next($request);
         }
 
-        if ($user && is_null($user->role) && in_array('enfermero', $roles)) {
+        if ($user && is_null($user->role) && in_array('guest', $roles)) {
             return $next($request);
         }
 
@@ -29,6 +29,10 @@ class CheckRole
             1 => 'administrador',
             2 => 'coordinador',
             3 => 'medico',
+            4 => 'enfermeroQ',// Quirofano
+            5 => 'enfermeroCI',// Cirugia
+            6 => 'enfermeroP',// Pediatria
+            7 => 'enfermeroCL'// Clinica
         ];
         //dd($roles,$rolMap,$user->role );
         $userRoleName = $rolMap[$user->role ?? 0] ?? null;

@@ -1,4 +1,4 @@
- <header class="fixed top-0 left-0 w-full h-16 bg-white z-50 shadow fixed">
+ <header class="fixed top-0 left-0 w-full h-16 bg-white z-50 shadow">
 
      <div class="max-w-7x1 mx-auto px-3 py-0 flex flex-col md:flex-row items-center justify-between gap-4">
 
@@ -32,10 +32,15 @@
                  @lang('Usuario Conectado')
              </div>
 
-             <a href="#" class="inline-block no-underline" title="Cerrar Sesión">
+
+             <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit"><img src="{{ asset('assets/img/salir.jpeg') }}" alt="cerrar sesion" class="h-8 w-auto"></button>
+             </form>
+             {{-- <a href="" class="inline-block no-underline" title="Cerrar Sesión">
                  <img src="{{ asset('assets/img/salir.jpeg') }}" alt="cerrar sesion" class="h-8 w-auto">
                  
-              </a>
+              </a> --}}
 
 
          </div>
