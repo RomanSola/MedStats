@@ -34,8 +34,11 @@
 
 
              <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button type="submit"><img src="{{ asset('assets/img/salir.jpeg') }}" alt="cerrar sesion" class="h-8 w-auto"></button>
+                 @csrf
+                 <button type="submit" class="boton-sin-borde">
+                     <img src="{{ asset('assets/img/salir.jpeg') }}" alt="cerrar sesion" class="h-8 w-auto">
+                 </button>
+
              </form>
              {{-- <a href="" class="inline-block no-underline" title="Cerrar Sesión">
                  <img src="{{ asset('assets/img/salir.jpeg') }}" alt="cerrar sesion" class="h-8 w-auto">
@@ -46,3 +49,20 @@
          </div>
      </div>
  </header>
+
+ <style>
+     .boton-sin-borde {
+         border: none;
+         background: none;
+         padding: 0;
+         cursor: pointer;
+         outline: none;
+     }
+
+     .boton-sin-borde:focus,
+     .boton-sin-borde:active {
+         outline: none;
+         box-shadow: none;
+         border: none;
+     }
+ </style>
