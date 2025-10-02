@@ -9,7 +9,7 @@
     @endif
 
 
-    <div class="flex min-h-screen bg-gray-100 transition-all duration-300 ease-in-out">
+    <div class="flex min-h-screen bg-gray-100 transition-all duration-300 ease-in-out pt-16">
 
         <!-- Main -->
         <main class="flex-1 p-5 max-w-full">

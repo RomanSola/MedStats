@@ -27,11 +27,27 @@
                 </div>
             </div>
 
+            {{-- Especialidad --}}
+            <div>
+                <p class="text-gray-500 uppercase text-sm">Especialidad</p>
+                <p class="text-gray-800 font-medium">
+                    {{ $cirugia->get_especialidad->nombre ?? '-'}} 
+                </p>
+            </div>
+
             {{-- Procedimiento --}}
             <div>
                 <p class="text-gray-500 uppercase text-sm">Procedimiento</p>
                 <p class="text-gray-800 font-medium">
                     {{ $cirugia->get_procedimiento->nombre_procedimiento }} - {{ $cirugia->get_procedimiento->descripcion }}
+                </p>
+            </div>
+
+            {{-- Procedimiento --}}
+            <div>
+                <p class="text-gray-500 uppercase text-sm">Procedimiento 2</p>
+                <p class="text-gray-800 font-medium">
+                    {{ $cirugia->get_procedimiento2->nombre_procedimiento ?? ''}} - {{ $cirugia->get_procedimiento2->descripcion ?? ''}}
                 </p>
             </div>
 
@@ -62,13 +78,13 @@
                     <div>
                         <p class="text-gray-500 uppercase text-sm">Ayudante {{ $num }}</p>
                         <p class="text-gray-800 font-medium">
-                            {{ $cirugia->{'get_ayudante' . $num}->nombre ?? '' }}
+                            {{ $cirugia->{'get_ayudante' . $num}->nombre ?? '-' }}
                             {{ $cirugia->{'get_ayudante' . $num}->apellido ?? '' }}
                         </p>
                     </div>
                     <div>
                         <p class="text-gray-500 uppercase text-sm">DNI</p>
-                        <p class="text-gray-800 font-medium">{{ $cirugia->{'get_ayudante' . $num}->dni ?? '' }}</p>
+                        <p class="text-gray-800 font-medium">{{ $cirugia->{'get_ayudante' . $num}->dni ?? '-' }}</p>
                     </div>
                 </div>
             @endforeach
@@ -77,6 +93,12 @@
             <div>
                 <p class="text-gray-500 uppercase text-sm">Tipo de Anestesia</p>
                 <p class="text-gray-800 font-medium">{{ $cirugia->get_tipo_anestesia->nombre }}</p>
+            </div>
+
+            {{-- Tipo de Anestesia 2 --}}
+            <div>
+                <p class="text-gray-500 uppercase text-sm">Tipo de Anestesia 2</p>
+                <p class="text-gray-800 font-medium">{{ $cirugia->get_tipo_anestesia2->nombre ?? '-'}}</p>
             </div>
 
             {{-- Instrumentador --}}
@@ -90,6 +112,20 @@
                 <div>
                     <p class="text-gray-500 uppercase text-sm">DNI</p>
                     <p class="text-gray-800 font-medium">{{ $cirugia->get_instrumentador->dni }}</p>
+                </div>
+            </div>
+
+            {{-- Instrumentador 2 --}}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <p class="text-gray-500 uppercase text-sm">Instrumentador 2</p>
+                    <p class="text-gray-800 font-medium">
+                        {{ $cirugia->get_instrumentador2->nombre ?? '-'}} {{ $cirugia->get_instrumentador2->apellido ?? ''}}
+                    </p>
+                </div>
+                <div>
+                    <p class="text-gray-500 uppercase text-sm">DNI</p>
+                    <p class="text-gray-800 font-medium">{{ $cirugia->get_instrumentador2->dni ?? '-'}}</p>
                 </div>
             </div>
 
@@ -107,6 +143,20 @@
                 </div>
             </div>
 
+            {{-- Enfermero 2 --}}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <p class="text-gray-500 uppercase text-sm">Enfermero 2</p>
+                    <p class="text-gray-800 font-medium">
+                        {{ $cirugia->get_enfermero2->nombre ?? '-'}} {{ $cirugia->get_enfermero2->apellido ?? ''}}
+                    </p>
+                </div>
+                <div>
+                    <p class="text-gray-500 uppercase text-sm">DNI</p>
+                    <p class="text-gray-800 font-medium">{{ $cirugia->get_enfermero2->dni ?? '-'}}</p>
+                </div>
+            </div>
+
             {{-- Urgencia como switch visual --}}
             <div>
                 <p class="text-gray-500 uppercase text-sm mb-1">Urgencia</p>
@@ -121,6 +171,21 @@
                     </span>
                 </label>
             </div>
+        
+             {{-- Óbito como switch visual --}}
+            <div>
+                <p class="text-gray-500 uppercase text-sm mb-1">Óbito</p>
+                <label class="inline-flex items-center cursor-default">
+                    <input type="checkbox" class="sr-only peer" disabled {{ $cirugia->obito ? 'checked' : '' }}>
+                    <div class="w-11 h-6 bg-gray-300 rounded-full peer-checked:bg-[#2BA8A0] relative transition-all">
+                        <span
+                            class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition peer-checked:translate-x-5"></span>
+                    </div>
+                    <span class="ml-3 text-base font-medium text-gray-800">
+                        {{ $cirugia->obito ? 'Sí' : 'No' }}
+                    </span>
+                </label>
+            </div>
 
             {{-- Fecha y hora --}}
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -131,6 +196,10 @@
                 <div>
                     <p class="text-gray-500 uppercase text-sm">Hora de la cirugía</p>
                     <p class="text-gray-800 font-medium">{{ $cirugia->hora_cirugia }}</p>
+                </div>
+                <div>
+                    <p class="text-gray-500 uppercase text-sm">Duración de la cirugía</p>
+                    <p class="text-gray-800 font-medium">{{ $cirugia->duracion }}</p>
                 </div>
             </div>
             <div class="flex justify-between pt-4">

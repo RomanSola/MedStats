@@ -4,7 +4,7 @@
 
 @section('contenido')
     <!--<div class="container mt-4">-->
-       <div class="max-w-7xl mx-auto px-4 py-8">
+    <div class="max-w-7xl mx-auto px-4 py-8">
         <div class="flex justify-between items-center mb-6">
             <h1
                 class="text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent bg-clip-text drop-shadow-md flex items-center gap-2 px-2">
@@ -38,19 +38,44 @@
                             @enderror
                         </div>
 
-                        {{-- Procedimiento --}}
+                        {{-- Especialidad --}}
                         <div class="col-md-4">
-                            <label for="procedimiento_id" class="form-label">Procedimiento</label>
-                            <select name="procedimiento_id" id="procedimiento_id" class="form-control select2">
-                                <option value="">Seleccione el procedimiento</option>
-                                @foreach ($procedimientos as $procedimiento)
-                                    <option value="{{ $procedimiento->id }}"
-                                        {{ old('procedimiento_id') == $procedimiento->id ? 'selected' : '' }}>
-                                        {{ $procedimiento->nombre_procedimiento }}
+                            <label for="especialidad" class="form-label">Especialidad</label>
+                            <select name="especialidad_id" id="especialidad" class="form-control select2">
+                                <option value="">Seleccione la especialidad</option>
+                                @foreach ($especialidades as $especialidad)
+                                    <option value="{{ $especialidad->id }}"
+                                        {{ old('especialidad_id') == $especialidad->id ? 'selected' : '' }}>
+                                        {{ $especialidad->nombre }}
                                     </option>
                                 @endforeach
                             </select>
+                            @error('especialidad_id')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        {{-- Procedimiento --}}
+                        <div class="col-md-4">
+                            <label for="procedimiento"
+                                class="block text-sm font-semibold text-gray-700 mb-1">Procedimiento</label>
+                            <select name="procedimiento_id" id="procedimiento"
+                                class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500">
+                            </select>
                             @error('procedimiento_id')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+
+                        {{-- Procedimiento 2 --}}
+                        <div class="col-md-4">
+                            <label for="procedimiento2" class="block text-sm font-semibold text-gray-700 mb-1">Procedimiento
+                                2</label>
+                            <select name="procedimiento_2_id" id="procedimiento2"
+                                class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500">
+                            </select>
+                            @error('procedimiento_2_id')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
@@ -187,6 +212,22 @@
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
+                        {{-- Tipo de Anestesia 2 --}}
+                        <div class="col-md-4">
+                            <label for="tipo_anestesia_2_id" class="form-label">Tipo de Anestesia 2</label>
+                            <select name="tipo_anestesia_2_id" id="tipo_anestesia_2_id" class="form-control select2">
+                                <option value="">Seleccione el Tipo de Anestesia</option>
+                                @foreach ($tipoAnestesias as $tipoAnestesia)
+                                    <option value="{{ $tipoAnestesia->id }}"
+                                        {{ old('tipo_anestesia_2_id') == $tipoAnestesia->id ? 'selected' : '' }}>
+                                        {{ $tipoAnestesia->nombre }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('tipo_anestesia_2_id')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
                         {{-- Instrumentador --}}
                         <div class="col-md-4">
                             <label for="instrumentador_id" class="form-label">Instrumentador</label>
@@ -203,6 +244,25 @@
                                 @endforeach
                             </select>
                             @error('instrumentador_id')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                        {{-- Instrumentador --}}
+                        <div class="col-md-4">
+                            <label for="instrumentador_2_id" class="form-label">Instrumentador 2</label>
+                            <select name="instrumentador_2_id" id="instrumentador_2_id" class="form-control select2">
+                                <option value="">Seleccione el Instrumentador</option>
+                                @php $profesionesPermitidas = [4]; @endphp
+                                @foreach ($empleados as $empleado)
+                                    @if (in_array($empleado->get_profesion->rol_id, $profesionesPermitidas))
+                                        <option value="{{ $empleado->id }}"
+                                            {{ old('instrumentador_2_id') == $empleado->id ? 'selected' : '' }}>
+                                            {{ $empleado->nombre }} {{ $empleado->apellido }}
+                                        </option>
+                                    @endif
+                                @endforeach
+                            </select>
+                            @error('instrumentador_2_id')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
@@ -225,10 +285,30 @@
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
+                        {{-- Enfermero 2 --}}
+                        <div class="col-md-4">
+                            <label for="enfermero_2_id" class="form-label">Enfermero 2</label>
+                            <select name="enfermero_2_id" id="enfermero_2_id" class="form-control select2">
+                                <option value="">Seleccione el Enfermero</option>
+                                @php $profesionesPermitidas = [5]; @endphp
+                                @foreach ($empleados as $empleado)
+                                    @if (in_array($empleado->get_profesion->rol_id, $profesionesPermitidas))
+                                        <option value="{{ $empleado->id }}"
+                                            {{ old('enfermero_2_id') == $empleado->id ? 'selected' : '' }}>
+                                            {{ $empleado->nombre }} {{ $empleado->apellido }}
+                                        </option>
+                                    @endif
+                                @endforeach
+                            </select>
+                            @error('enfermero_2_id')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
                         {{-- Fecha cirugía --}}
                         <div class="col-md-4">
                             <label for="fecha_cirugia" class="form-label">Fecha de la cirugía</label>
-                            <input type="date" name="fecha_cirugia" id="fecha_cirugia" class="form-control" value="{{ old('fecha_cirugia') }}">
+                            <input type="date" name="fecha_cirugia" id="fecha_cirugia" class="form-control"
+                                value="{{ old('fecha_cirugia') }}">
                             @error('fecha_cirugia')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
@@ -236,18 +316,20 @@
                         {{-- Hora cirugía --}}
                         <div class="col-md-4">
                             <label for="hora_cirugia" class="form-label">Hora de la cirugía</label>
-                            <input type="time" name="hora_cirugia" id="hora_cirugia" class="form-control" value="{{ old('hora_cirugia') }}">
+                            <input type="time" name="hora_cirugia" id="hora_cirugia" class="form-control"
+                                value="{{ old('hora_cirugia') }}">
                             @error('hora_cirugia')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
                         {{-- Duración cirugía (horas y minutos) --}}
                         <div class="col-md-4">
-                            <label for="duracion_cirugia" class="form-label">Duración de la cirugía</label>
+                            <label for="duracion" class="form-label">Duración de la cirugía</label>
                             {{-- Usamos input type="time" para horas:minutos; alternativa: dos selects --}}
-                            <input type="time" name="duracion_cirugia" id="duracion_cirugia" class="form-control" step="60" value="{{ old('duracion_cirugia') }}">
+                            <input type="time" name="duracion" id="duracion" class="form-control"
+                                step="60" value="{{ old('duracion') }}">
                             <small class="form-text text-muted">Indique la duración (HH:MM)</small>
-                            @error('duracion_cirugia')
+                            @error('duracion')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
@@ -257,7 +339,8 @@
                             <div class="me-4 text-center">
                                 <label class="form-label d-block mb-2">Urgencia</label>
                                 <label class="switch switch-urgencia">
-                                    <input type="checkbox" name="urgencia" id="urgencia" {{ old('urgencia') ? 'checked' : '' }}>
+                                    <input type="checkbox" name="urgencia" id="urgencia"
+                                        {{ old('urgencia') ? 'checked' : '' }}>
                                     <span class="slider round"></span>
                                 </label>
                                 @error('urgencia')
@@ -267,7 +350,8 @@
                             <div class="text-center">
                                 <label class="form-label d-block mb-2">Óbito</label>
                                 <label class="switch switch-obito">
-                                    <input type="checkbox" name="obito" id="obito" {{ old('obito') ? 'checked' : '' }}>
+                                    <input type="checkbox" name="obito" id="obito"
+                                        {{ old('obito') ? 'checked' : '' }}>
                                     <span class="slider round"></span>
                                 </label>
                                 @error('obito')
@@ -279,8 +363,9 @@
 
                     <!-- Botones -->
                     <div class="flex justify-between pt-4">
-                        <a href="{{ route('cirugias.index') }}" class="btn btn-outline-danger px-5 py-2 rounded shadow-sm">
-                             Cancelar
+                        <a href="{{ route('cirugias.index') }}"
+                            class="btn btn-outline-danger px-5 py-2 rounded shadow-sm">
+                            Cancelar
                         </a>
 
                         <button type="submit"
@@ -291,7 +376,7 @@
                 </form>
             </div>
         </div>
-       </div>
+    </div>
     </div>
 
     <!-- Select2 CSS/JS (mantener como estaba) -->
@@ -307,9 +392,11 @@
             height: 38px;
             padding: 5px;
         }
+
         .select2-container--default .select2-selection--single .select2-selection__arrow {
             height: 36px;
         }
+
         /* Switch basic */
         .switch {
             position: relative;
@@ -317,6 +404,7 @@
             width: 60px;
             height: 34px;
         }
+
         .switch input {
             opacity: 0;
             width: 0;
@@ -326,44 +414,59 @@
         .slider {
             position: absolute;
             cursor: pointer;
-            top: 0; left: 0; right: 0; bottom: 0;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
             background-color: #ccc;
             transition: .4s;
         }
+
         .slider:before {
             position: absolute;
             content: "";
-            height: 26px; width: 26px;
-            left: 4px; bottom: 4px;
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
             background-color: white;
             transition: .4s;
         }
+
         /* Default checked color (urgencia) */
-        .switch-urgencia input:checked + .slider {
+        .switch-urgencia input:checked+.slider {
             background-color: #13850bff;
         }
-        .switch-urgencia input:focus + .slider {
+
+        .switch-urgencia input:focus+.slider {
             box-shadow: 0 0 1px #13850bff;
         }
-        .switch-urgencia input:checked + .slider:before {
+
+        .switch-urgencia input:checked+.slider:before {
             transform: translateX(26px);
         }
+
         /* Óbito: checked color black */
-        .switch-obito input:checked + .slider {
+        .switch-obito input:checked+.slider {
             background-color: #000;
         }
-        .switch-obito input:focus + .slider {
+
+        .switch-obito input:focus+.slider {
             box-shadow: 0 0 1px #000;
         }
-        .switch-obito input:checked + .slider:before {
+
+        .switch-obito input:checked+.slider:before {
             transform: translateX(26px);
         }
+
         .slider.round {
             border-radius: 34px;
         }
+
         .slider.round:before {
             border-radius: 50%;
         }
+
         /* Minor responsive tweak so the urgency/óbito area stacks on small screens */
         @media (max-width: 767px) {
             .d-flex {
@@ -382,6 +485,68 @@
                 allowClear: true,
                 width: '100%'
             });
+        });
+    </script>
+
+    <!-- Scripts para combos dinámicos -->
+    <script>
+        $(document).ready(function() {
+            let oldEspecialidadId = "{{ old('especialidad_id') }}";
+            let oldProcedimientoId = "{{ old('procedimiento_id') }}";
+            let oldProcedimiento2Id = "{{ old('procedimiento_2_id') }}";
+
+            function cargarProcedimientos(especialidadId, selectedProcedimientoId = null) {
+                fetch(`/api/procedimientos/${especialidadId}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        // console.log("Respuesta del 1 API:", data); //para debug
+                        let procedimiento = $('#procedimiento');
+                        procedimiento.html('<option value="">Seleccione un procedimiento</option>');
+
+                        data.forEach(p => {
+                            let selected = (selectedProcedimientoId == p.id) ? 'selected' : '';
+                            procedimiento.append(
+                                `<option value="${p.id}" ${selected}>${p.nombre_procedimiento}</option>`
+                            );
+                        });
+                    });
+            }
+
+            function cargarProcedimientos2(especialidadId, selectedProcedimiento2Id = null) {
+                fetch(`/api/procedimientos/${especialidadId}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        //console.log("Respuesta del 2 API:", data); //para debug
+                        let procedimiento2 = $('#procedimiento2');
+                        procedimiento2.html('<option value="">Seleccione un procedimiento</option>');
+
+                        data.forEach(p => {
+                            let selected = (selectedProcedimiento2Id == p.id) ? 'selected' : '';
+                            procedimiento2.append(
+                                `<option value="${p.id}" ${selected}>${p.nombre_procedimiento}</option>`
+                            );
+                        });
+                    });
+            }
+
+            // Cuando cambie la especialidad, recargo los 2 combos
+            $('#especialidad').on('change', function() {
+                let especialidadId = $(this).val();
+                if (especialidadId) {
+                    cargarProcedimientos(especialidadId);
+                    cargarProcedimientos2(especialidadId);
+                } else {
+                    $('#procedimiento').html('<option value="">Seleccione un procedimiento</option>');
+                    $('#procedimiento2').html('<option value="">Seleccione un procedimiento</option>');
+                }
+            });
+
+            // Restaurar valores si hay datos viejos
+            if (oldEspecialidadId) {
+                $('#especialidad').val(oldEspecialidadId).trigger('change');
+                cargarProcedimientos(oldEspecialidadId, oldProcedimientoId);
+                cargarProcedimientos2(oldEspecialidadId, oldProcedimiento2Id);
+            }
         });
     </script>
 @endsection
