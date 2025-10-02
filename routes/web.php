@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\CamaController;
 use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\HabitacionController;
@@ -42,6 +43,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+//cerrar sesion
+Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
+    ->middleware('auth')
+    ->name('logout');
 
 Route::get('/', function () {return view('index');})->middleware('auth')->name('inicio');
 

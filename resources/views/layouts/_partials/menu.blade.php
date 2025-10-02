@@ -32,10 +32,15 @@
                  @lang('Usuario Conectado')
              </div>
 
-             <a href="#" class="inline-block no-underline" title="Cerrar Sesión">
+
+             <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit"><img src="{{ asset('assets/img/salir.jpeg') }}" alt="cerrar sesion" class="h-8 w-auto"></button>
+             </form>
+             {{-- <a href="" class="inline-block no-underline" title="Cerrar Sesión">
                  <img src="{{ asset('assets/img/salir.jpeg') }}" alt="cerrar sesion" class="h-8 w-auto">
                  
-              </a>
+              </a> --}}
 
 
          </div>
