@@ -240,5 +240,4 @@
       @stack('modales')
 
 </body>
-
 </html>
