@@ -1,7 +1,5 @@
 @extends('layouts.app')
-
 @section('title', 'Lista de Procedimientos')
-
 @section('contenido')
     <!--<div class="container mt-4">-->
         <div class="max-w-7xl mx-auto px-4 py-8">
@@ -17,7 +15,7 @@
                 </a>
             </div>
 
-            {{-- Contenedor principal con borde gris institucional --}}
+            {{-- Contenedor principal con borde gris --}}
             <div class="card border">
         <div class="card-body">
 
@@ -38,7 +36,7 @@
                     @endif
 
                     <div class="bg-white shadow rounded-lg border border-gray-200 overflow-auto">
-                        <table class="table table-hover table-bordered shadow-sm text-center rounded">
+                        <table id="tablaProcedimientos" class="table table-hover table-bordered shadow-sm text-center rounded">
                             <thead>
                                 <tr>
                                     <th>Procedimiento</th>
@@ -94,3 +92,22 @@
         </div>
     <!--</div>-->
 @endsection
+@push('scripts')
+<script>
+$(document).ready(function () {
+    $('#tablaProcedimientos').DataTable({
+        dom: '<"top-controls"<"col-sm-6"f><"col-sm-6 text-end"B>>rt<"bottom-controls"<"col-sm-6"i><"col-sm-6"p>>',
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
+        },
+        paging: true,
+        searching: true,
+        ordering: true,
+        info: true,
+        columnDefs: [
+            { orderable: false, targets: 4 } // Desactiva orden en columna "Acciones"
+        ]
+    });
+});
+</script>
+@endpush
