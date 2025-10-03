@@ -165,51 +165,45 @@
     <nav class="flex-1 px-2 py-6 space-y-2 text-gray-700 overflow-y-auto overflow-x-hidden">
 
         @if ($rutaActual !== 'inicio')
-            <a href="{{ route($rutaAnterior) }}"
-                title="Volver"
+            <a href="{{ route($rutaAnterior) }}" title="Volver"
                 class="sidebar-volver-link flex items-center gap-3 p-3 rounded-md hover:bg-[#1B7D8F] hover:text-white transition text-decoration-none text-gray-700 group">
-                <img src="{{ asset('assets/img/volver.jpeg') }}"  class="h-5 w-5 text-gray-600 group-hover:text-white transition"
-                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                <img src="{{ asset('assets/img/volver.jpeg') }}"
+                    class="h-5 w-5 text-gray-600 group-hover:text-white transition" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                 </svg>
                 <span class="sidebar-volver-label">Volver</span>
             </a>
         @endif
 
-        <a href="{{ route('stocks.index') }}"
-            title="Insumos"
+        <a href="{{ route('stocks.index') }}" title="Insumos"
             class="flex items-center gap-3 p-3 rounded-md hover:bg-[#1B7D8F] hover:text-white transition text-decoration-none">
             <img src="{{ asset('assets/img/insumos.jpeg') }}" class="h-6 w-6 flex-shrink-0">
             <span class="link-text">Insumos</span>
         </a>
-        <a href="{{ route('cirugias.estadisticas') }}"
-            title="Estadísticas"
+        <a href="{{ route('cirugias.estadisticas') }}" title="Estadísticas"
             class="flex items-center gap-3 p-3 rounded-md hover:bg-[#1B7D8F] hover:text-white transition text-decoration-none">
             <img src="{{ asset('assets/img/estadisticas.jpeg') }}" class="h-6 w-6 flex-shrink-0">
             <span class="link-text">Estadísticas</span>
         </a>
-        <a href="{{ route('pacientes.index') }}"
-            title="Pacientes"
+        <a href="{{ route('pacientes.index') }}" title="Pacientes"
             class="flex items-center gap-3 p-3 rounded-md hover:bg-[#1B7D8F] hover:text-white transition text-decoration-none">
             <img src="{{ asset('assets/img/pacientes.jpeg') }}" class="h-6 w-6 flex-shrink-0">
             <span class="link-text">Pacientes</span>
         </a>
-        <a href="{{ route('camas.index') }}"
-            title="Camas"
+        <a href="{{ route('camas.index') }}" title="Camas"
             class="flex items-center gap-3 p-3 rounded-md hover:bg-[#1B7D8F] hover:text-white transition text-decoration-none">
             <img src="{{ asset('assets/img/camas.jpeg') }}" class="h-6 w-6 flex-shrink-0">
             <span class="link-text">Camas</span>
         </a>
-        <a href="{{ route('cirugias.index') }}"
-            title="Cirugias"
+        <a href="{{ route('cirugias.index') }}" title="Cirugias"
             class="flex items-center gap-3 p-3 rounded-md hover:bg-[#1B7D8F] hover:text-white transition text-decoration-none">
             <img src="{{ asset('assets/img/cirugias.jpeg') }}" class="h-6 w-6 flex-shrink-0">
             <span class="link-text">Cirugías</span>
         </a>
 
         <!-- Ajustes -->
-        <a href="{{ route('ajustes') }}"
-            title="Ajustes"
+        <a href="{{ route('ajustes') }}" title="Ajustes"
             class="flex items-center gap-3 p-3 rounded-md hover:bg-[#1B7D8F] hover:text-white transition text-decoration-none">
             <img src="{{ asset('assets/img/ajustes.jpeg') }}" class="h-6 w-6 flex-shrink-0">
             <span class="link-text">Ajustes</span>
@@ -218,13 +212,14 @@
         <!-- cerrar sesión-->
         <form method="POST" action="{{ route('logout') }}">
             @csrf
-            <button type="submit" class="flex items-center gap-3 p-3 rounded-md hover:bg-[#1B7D8F] hover:text-white transition text-decoration-none">
-                <img src="{{ asset('assets/img/salir.jpeg') }}" class="h-6 w-6 flex-shrink-0">
+            <button type="submit"
+                class="w-full flex items-center gap-3 p-3 rounded-md hover:bg-[#1B7D8F] hover:text-white transition text-left text-decoration-none">
+                <img src="{{ asset('assets/img/salir.jpeg') }}" alt="cerrar sesión" class="h-6 w-6 flex-shrink-0">
                 <span class="link-text">Cerrar Sesión</span>
             </button>
-            
         </form>
-        
+
+
     </nav>
 
 </aside>
@@ -256,7 +251,7 @@
 </style>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function() {
         const sidebar = document.getElementById('sidebar');
         const toggleBtn = document.getElementById('toggleSidebar');
 
@@ -276,7 +271,7 @@
         actualizarEstadoSidebar();
 
         // Ejecutar al hacer clic en el botón de colapsar
-        toggleBtn.addEventListener('click', function () {
+        toggleBtn.addEventListener('click', function() {
             setTimeout(actualizarEstadoSidebar, 300); // esperar transición
         });
     });
