@@ -207,7 +207,7 @@ Route::middleware(['auth', 'roles:administrador'])->group(function(){
 });
 
 //Medicamentos
-Route::middleware(['auth', 'roles:administrador'])->group(function(){
+Route::middleware(['auth', 'roles:administrador,enfermeroQ'])->group(function(){
     Route::get('/medicamentos', [MedicamentoController::class, 'index'])->name('medicamentos.index');
     Route::get('/medicamentos/create', [MedicamentoController::class, 'create'])->name('medicamentos.create');
     Route::post('/medicamentos', [MedicamentoController::class, 'store'])->name('medicamentos.store');
@@ -217,7 +217,7 @@ Route::middleware(['auth', 'roles:administrador'])->group(function(){
 });
 
 //Stock
-Route::middleware(['auth', 'roles:administrador'])->group(function(){
+Route::middleware(['auth', 'roles:administrador,enfermeroQ'])->group(function(){
     Route::get('/stocks', [StockController::class, 'index'])->name('stocks.index');
     Route::get('/stocks/create', [StockController::class, 'create'])->name('stocks.create');
     Route::post('/stocks', [StockController::class, 'store'])->name('stocks.store');
