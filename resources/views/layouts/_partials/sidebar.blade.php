@@ -167,7 +167,7 @@
         @if ($rutaActual !== 'inicio')
             <a href="{{ route($rutaAnterior) }}" title="Volver"
                 class="sidebar-volver-link flex items-center gap-3 p-3 rounded-md hover:bg-[#1B7D8F] hover:text-white transition text-decoration-none text-gray-700 group">
-                <img src="{{ asset('assets/img/volver.jpeg') }}"
+                <img src="{{ asset('assets/img/volver.png') }}"
                     class="h-5 w-5 text-gray-600 group-hover:text-white transition" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
@@ -178,34 +178,34 @@
 
         <a href="{{ route('stocks.index') }}" title="Insumos"
             class="flex items-center gap-3 p-3 rounded-md hover:bg-[#1B7D8F] hover:text-white transition text-decoration-none">
-            <img src="{{ asset('assets/img/insumos.jpeg') }}" class="h-6 w-6 flex-shrink-0">
+            <img src="{{ asset('assets/img/insumos.png') }}" class="h-6 w-6 flex-shrink-0">
             <span class="link-text">Insumos</span>
         </a>
         <a href="{{ route('cirugias.estadisticas') }}" title="Estadísticas"
             class="flex items-center gap-3 p-3 rounded-md hover:bg-[#1B7D8F] hover:text-white transition text-decoration-none">
-            <img src="{{ asset('assets/img/estadisticas.jpeg') }}" class="h-6 w-6 flex-shrink-0">
+            <img src="{{ asset('assets/img/estadisticas.png') }}" class="h-6 w-6 flex-shrink-0">
             <span class="link-text">Estadísticas</span>
         </a>
         <a href="{{ route('pacientes.index') }}" title="Pacientes"
             class="flex items-center gap-3 p-3 rounded-md hover:bg-[#1B7D8F] hover:text-white transition text-decoration-none">
-            <img src="{{ asset('assets/img/pacientes.jpeg') }}" class="h-6 w-6 flex-shrink-0">
+            <img src="{{ asset('assets/img/pacientes.png') }}" class="h-6 w-6 flex-shrink-0">
             <span class="link-text">Pacientes</span>
         </a>
         <a href="{{ route('camas.index') }}" title="Camas"
             class="flex items-center gap-3 p-3 rounded-md hover:bg-[#1B7D8F] hover:text-white transition text-decoration-none">
-            <img src="{{ asset('assets/img/camas.jpeg') }}" class="h-6 w-6 flex-shrink-0">
+            <img src="{{ asset('assets/img/camas.png') }}" class="h-6 w-6 flex-shrink-0">
             <span class="link-text">Camas</span>
         </a>
         <a href="{{ route('cirugias.index') }}" title="Cirugias"
             class="flex items-center gap-3 p-3 rounded-md hover:bg-[#1B7D8F] hover:text-white transition text-decoration-none">
-            <img src="{{ asset('assets/img/cirugias.jpeg') }}" class="h-6 w-6 flex-shrink-0">
+            <img src="{{ asset('assets/img/cirugias.png') }}" class="h-6 w-6 flex-shrink-0">
             <span class="link-text">Cirugías</span>
         </a>
 
         <!-- Ajustes -->
         <a href="{{ route('ajustes') }}" title="Ajustes"
             class="flex items-center gap-3 p-3 rounded-md hover:bg-[#1B7D8F] hover:text-white transition text-decoration-none">
-            <img src="{{ asset('assets/img/ajustes.jpeg') }}" class="h-6 w-6 flex-shrink-0">
+            <img src="{{ asset('assets/img/ajustes.png') }}" class="h-6 w-6 flex-shrink-0">
             <span class="link-text">Ajustes</span>
         </a>
 

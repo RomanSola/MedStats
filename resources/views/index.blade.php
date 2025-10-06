@@ -55,61 +55,59 @@
             </script>
 
             <!-- KPIs rápidos -->
-            <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+       <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
 
-                <!-- Insumos disponibles -->
-                <div
-                    class="bg-white rounded-xl p-6 flex items-center gap-4 shadow-sm hover:shadow-lg transition-all duration-300">
-                    <div class="p-3 bg-[#1B7D8F] rounded-xl flex items-center justify-center">
-                        <img src="{{ asset('assets/img/insumos.jpeg') }}" alt="Insumos"
-                            class="h-10 w-10 object-cover rounded-md border border-white/40 shadow-sm" />
-                    </div>
-                    <div>
-                        <p class="text-sm text-gray-500">Insumos disponibles</p>
-                        <p class="text-2xl font-semibold text-gray-900">1,245</p>
-                    </div>
-                </div>
+    <!-- Insumos disponibles -->
+    <div class="bg-white rounded-xl p-6 flex items-center gap-4 shadow-sm">
+        <div class="p-2 bg-[#1B7D8F]/20 rounded flex items-center justify-center">
+            <img src="{{ asset('assets/img/insumos.png') }}" alt="Insumos"
+                class="h-10 w-10 object-cover rounded border border-white/10" />
+        </div>
+        <div>
+            <p class="text-sm text-gray-500">Insumos disponibles</p>
+            <p class="text-2xl font-semibold text-gray-900">1,245</p>
+        </div>
+    </div>
 
-                <!-- Pacientes activos -->
-                <div
-                    class="bg-white rounded-xl p-6 flex items-center gap-4 shadow-sm hover:shadow-lg transition-all duration-300">
-                    <div class="p-3 bg-[#2BA8A0] rounded-xl flex items-center justify-center">
-                        <img src="{{ asset('assets/img/pacientes.jpeg') }}" alt="Pacientes"
-                            class="h-10 w-10 object-cover rounded-md border border-white/40 shadow-sm" />
-                    </div>
-                    <div>
-                        <p class="text-sm text-gray-500">Pacientes activos</p>
-                        <p class="text-2xl font-semibold text-gray-900">536</p>
-                    </div>
-                </div>
+    <!-- Pacientes activos -->
+    <div class="bg-white rounded-xl p-6 flex items-center gap-4 shadow-sm">
+        <div class="p-2 bg-[#2BA8A0]/20 rounded flex items-center justify-center">
+            <img src="{{ asset('assets/img/pacientes.png') }}" alt="Pacientes"
+                class="h-10 w-10 object-cover rounded border border-white/10" />
+        </div>
+        <div>
+            <p class="text-sm text-gray-500">Pacientes activos</p>
+            <p class="text-2xl font-semibold text-gray-900">536</p>
+        </div>
+    </div>
 
-                <!-- Camas ocupadas -->
-                <div
-                    class="bg-white rounded-xl p-6 flex items-center gap-4 shadow-sm hover:shadow-lg transition-all duration-300">
-                    <div class="p-3 bg-[#245360] rounded-xl flex items-center justify-center">
-                        <img src="{{ asset('assets/img/camas.jpeg') }}" alt="Camas"
-                            class="h-10 w-10 object-cover rounded-md border border-white/40 shadow-sm" />
-                    </div>
-                    <div>
-                        <p class="text-sm text-gray-500">Camas ocupadas</p>
-                        <p class="text-2xl font-semibold text-gray-900">78%</p>
-                    </div>
-                </div>
+    <!-- Camas ocupadas -->
+    <div class="bg-white rounded-xl p-6 flex items-center gap-4 shadow-sm">
+        <div class="p-2 bg-[#245360]/20 rounded flex items-center justify-center">
+            <img src="{{ asset('assets/img/camas.png') }}" alt="Camas"
+                class="h-10 w-10 object-cover rounded border border-white/10" />
+        </div>
+        <div>
+            <p class="text-sm text-gray-500">Camas ocupadas</p>
+            <p class="text-2xl font-semibold text-gray-900">78%</p>
+        </div>
+    </div>
 
-                <!-- Cirugías realizadas -->
-                <div
-                    class="bg-white rounded-xl p-6 flex items-center gap-4 shadow-sm hover:shadow-lg transition-all duration-300">
-                    <div class="p-3 bg-[#176d7b] rounded-xl flex items-center justify-center">
-                        <img src="{{ asset('assets/img/cirugias.jpeg') }}" alt="Cirugías"
-                            class="h-10 w-10 object-cover rounded-md border border-white/40 shadow-sm" />
-                    </div>
-                    <div>
-                        <p class="text-sm text-gray-500">Cirugías realizadas</p>
-                        <p class="text-2xl font-semibold text-gray-900">134</p>
-                    </div>
-                </div>
+    <!-- Cirugías realizadas -->
+    <div class="bg-white rounded-xl p-6 flex items-center gap-4 shadow-sm">
+        <div class="p-2 bg-[#2BA8A0]/20 rounded flex items-center justify-center">
+            <img src="{{ asset('assets/img/cirugias.png') }}" alt="Cirugías"
+                class="h-10 w-10 object-cover rounded border border-white/10" />
+        </div>
+        <div>
+            <p class="text-sm text-gray-500">Cirugías realizadas</p>
+            <p class="text-2xl font-semibold text-gray-900">134</p>
+        </div>
+    </div>
 
-            </section>
+</section>
+
+
 
 
 
