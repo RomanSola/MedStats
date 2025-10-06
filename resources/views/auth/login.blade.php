@@ -1,7 +1,6 @@
 <x-guest-layout>
-    <div class="min-h-screen flex items-center justify-center bg-gray-100 p-4">
-        <!-- Card principal -->
-        <div class="w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden">
+        <!-- Card principal (contenido del login) -->
+        <div class="relative w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden z-10">
             
             <!-- Header: Logo y título -->
             <div class="bg-[#1B7D8F] flex flex-col items-center justify-center p-6">
