@@ -3,7 +3,7 @@
 @section('title', 'Ver Procedimiento')
 
 @section('contenido')
-<div class="container mt-4">
+<!--<div class="container mt-4">-->
     <div class="max-w-xl mx-auto px-4 py-8">
 
         {{-- Título con degradado y estilo igual al show de empleados --}}
@@ -13,8 +13,8 @@
         </h2>
 
         {{-- Contenedor principal con borde secundario (gris) y sombra --}}
-        <div class="card border-secondary shadow-sm">
-            <div class="card-body">
+        <div class="card border">
+        <div class="card-body">
 
                 <form>
                     {{-- Campo nombre --}}
@@ -31,6 +31,19 @@
                                value="{{ $procedimiento->descripcion }}" readonly>
                     </div>
 
+                    {{-- Campo Especialidad --}}
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold text-secondary">Especialidad</label>
+                        <input type="text" class="form-control border border-gray-300 shadow-sm"
+                               value="{{ $procedimiento->get_especialidad->nombre ?? '—' }}" readonly>
+                    </div>
+                    
+                    {{-- Campo Especialidad adicional --}}
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold text-secondary">Especialidad Adicional</label>
+                        <input type="text" class="form-control border border-gray-300 shadow-sm"
+                               value="{{ $procedimiento->get_especialidad_2->nombre ?? '—' }}" readonly>
+                    </div>
                     {{-- Botón volver con el mismo estilo que empleados --}}
                     <div class="text-center mt-4">
                         <a href="{{ route('procedimientos.index') }}"

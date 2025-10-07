@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('contenido')
-<div class="container">
+
     <div class="text-center mb-4">
     <div class="inline-flex items-center gap-4">
         <h2 class="bg-light d-inline-block px-4 py-2 rounded shadow-sm text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent bg-clip-text drop-shadow-md flex items-center gap-2 px-2">
@@ -152,7 +152,7 @@
                 @foreach ($porCirujano->sortByDesc('total')->take(5) as $item)
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         {{ optional($item->get_cirujano)->apellido }}, {{ optional($item->get_cirujano)->nombre }}
-                    <span class="badge bg-secondary rounded-pill">{{ $item->total }}</span>
+                    <span class="badge bg-primary text-light rounded-pill">{{ $item->total }}</span>
                     </li>
                 @endforeach
                 </ul>
@@ -326,7 +326,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 datasets: [{
                     label: 'Cirugías por mes',
                     data: {!! json_encode($porMesValores) !!},
-                    backgroundColor: '#3b82f6'
+                    backgroundColor: '#0dcaf0'
                 }]
             },
             options: {

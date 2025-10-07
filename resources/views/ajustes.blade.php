@@ -3,7 +3,6 @@
 @section('title', 'Ajustes del Sistema')
 
 @section('contenido')
-    <div class="py-5" style="background-color: #f4f6f8;">
 
         <div class="mb-6 text-center">
             <h1
@@ -11,11 +10,6 @@
                 AJUSTES DEL SISTEMA
             </h1>
         </div>
-
-
-
-        <div class="container">
-
             {{-- Contenedor central sombreado --}}
             <div class="bg-white rounded-4 shadow-lg p-5">
 
@@ -52,7 +46,7 @@
                             [
                                 'title' => 'Camas',
                                 'text' => 'Agregar Nueva Cama.',
-                                'route' => route('camas.create'),
+                                'route' => route('camas.listar'),
                                 'btn' => 'Gestionar Camas',
                             ],
                             [
@@ -101,6 +95,12 @@
                                 'text' => 'Administrar tipos de procedimientos quirúrgicos.',
                                 'route' => route('procedimientos.index'),
                                 'btn' => 'Ir a Procedimientos',
+                            ],
+                            [
+                                'title' => 'Especialidades',
+                                'text' => 'Administrar Especialidades.',
+                                'route' => route('especialidades.index'),
+                                'btn' => 'Ir a Especialidades',
                             ],
                         ];
                     @endphp

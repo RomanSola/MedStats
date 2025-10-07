@@ -3,7 +3,7 @@
 @section('title', 'Crear Profesión')
 
 @section('contenido')
-<div class="container mt-4">
+<div class="max-w-xl mx-auto px-4 py-4">
 
     <div class="flex justify-between items-center mb-6">
         <h1
@@ -12,7 +12,7 @@
         </h1>
     </div>
 
-    <div class="card border-primary">
+    <div class="card border shadow-sm">
         <div class="card-body">
             <form action="{{ route('profesion.store') }}" method="POST">
                 @csrf

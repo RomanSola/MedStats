@@ -3,7 +3,8 @@
 @section('title', 'Editar Cirugía')
 
 @section('contenido')
-    <div class="container mt-4">
+    <!--<div class="container mt-4">-->
+    <div class="max-w-6xl mx-auto px-4 py-8">
 
         <div class="flex justify-between items-center mb-6">
             <h1
@@ -21,7 +22,7 @@
 
                     <div class="row mb-3">
                         <div class="col-md-4">
-                            <label for="pais" class="form-label">Paciente</label>
+                            <label for="paciente_id" class="form-label">Paciente</label>
                             <select name="paciente_id" id="paciente_id" class="form-control select2 ">
                                 <option value="">Seleccione el Paciente</option>
                                 @foreach ($pacientes as $paciente)
@@ -36,24 +37,50 @@
                             @enderror
                         </div>
 
+                        {{-- Especialidad --}}
                         <div class="col-md-4">
-                            <label for="pais" class="form-label">Procedimiento</label>
-                            <select name="procedimiento_id" id="procedimiento_id" class="form-control">
-                                <option value="">Seleccione el procedimiento</option>
-                                @foreach ($procedimientos as $procedimiento)
-                                    <option value="{{ $procedimiento->id }}"
-                                        {{ $cirugia->procedimiento_id == $procedimiento->id ? 'selected' : '' }}>
-                                        {{ $procedimiento->nombre_procedimiento }} - {{ $procedimiento->descripcion }}
+                            <label for="especialidad" class="form-label">Especialidad</label>
+                            <select name="especialidad_id" id="especialidad" class="form-control select2">
+                                <option value="">Seleccione la especialidad</option>
+                                @foreach ($especialidades as $especialidad)
+                                    <option value="{{ $especialidad->id }}"
+                                        {{ old('especialidad_id', $cirugia->especialidad_id) == $especialidad->id ? 'selected' : '' }}>
+                                        {{ $especialidad->nombre }}
                                     </option>
                                 @endforeach
                             </select>
+                            @error('especialidad_id')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        {{-- Procedimiento --}}
+                        <div class="col-md-4">
+                            <label for="procedimiento"
+                                class="block text-sm font-semibold text-gray-700 mb-1">Procedimiento</label>
+                            <select name="procedimiento_id" id="procedimiento"
+                                class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500">
+                            </select>
                             @error('procedimiento_id')
-                                <small class="text-danger"> {{ $message }} </small>
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+
+                        {{-- Procedimiento 2 --}}
+                        <div class="col-md-4">
+                            <label for="procedimiento2" class="block text-sm font-semibold text-gray-700 mb-1">Procedimiento
+                                2</label>
+                            <select name="procedimiento_2_id" id="procedimiento2"
+                                class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500">
+                            </select>
+                            @error('procedimiento_2_id')
+                                <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
 
                         <div class="col-md-4">
-                            <label for="pais" class="form-label">Quirofano</label>
+                            <label for="quirofano_id" class="form-label">Quirofano</label>
                             <select name="quirofano_id" id="quirofano_id" class="form-control">
                                 <option value="">Seleccione el Quirofano</option>
                                 @foreach ($quirofanos as $quirofano)
@@ -69,18 +96,18 @@
                         </div>
 
                         <div class="col-md-4">
-                            <label for="pais" class="form-label">Cirujano</label>
+                            <label for="cirujano_id" class="form-label">Cirujano</label>
                             <select name="cirujano_id" id="cirujano_id" class="form-control">
                                 <option value="">Seleccione el Cirujano</option>
                                 @php
                                     $profesionesPermitidas = [1]; //Solo Cirujanos
                                 @endphp
                                 @foreach ($empleados as $empleado)
-                                    @if ( in_array( $empleado->get_profesion->rol_id, $profesionesPermitidas ) )
-                                    <option value="{{ $empleado->id }}"
-                                        {{ $cirugia->cirujano_id == $empleado->id ? 'selected' : '' }}>
-                                        {{ $empleado->nombre }} {{ $empleado->apellido }}
-                                    </option>
+                                    @if (in_array($empleado->get_profesion->rol_id, $profesionesPermitidas))
+                                        <option value="{{ $empleado->id }}"
+                                            {{ $cirugia->cirujano_id == $empleado->id ? 'selected' : '' }}>
+                                            {{ $empleado->nombre }} {{ $empleado->apellido }}
+                                        </option>
                                     @endif
                                 @endforeach
                             </select>
@@ -90,18 +117,18 @@
                         </div>
 
                         <div class="col-md-4">
-                            <label for="pais" class="form-label">Ayudante 1</label>
+                            <label for="ayudante_1_id" class="form-label">Ayudante 1</label>
                             <select name="ayudante_1_id" id="ayudante_1_id" class="form-control">
                                 <option value="">Seleccione el Ayudante 1</option>
                                 @php
                                     $profesionesPermitidas = [2]; //Solo Ayudantes
                                 @endphp
                                 @foreach ($empleados as $empleado)
-                                    @if ( in_array( $empleado->get_profesion->rol_id, $profesionesPermitidas ) )
-                                    <option value="{{ $empleado->id }}"
-                                        {{ $cirugia->ayudante_1_id == $empleado->id ? 'selected' : '' }}>
-                                        {{ $empleado->nombre }} {{ $empleado->apellido }}
-                                    </option>
+                                    @if (in_array($empleado->get_profesion->rol_id, $profesionesPermitidas))
+                                        <option value="{{ $empleado->id }}"
+                                            {{ $cirugia->ayudante_1_id == $empleado->id ? 'selected' : '' }}>
+                                            {{ $empleado->nombre }} {{ $empleado->apellido }}
+                                        </option>
                                     @endif
                                 @endforeach
                             </select>
@@ -111,18 +138,18 @@
                         </div>
 
                         <div class="col-md-4">
-                            <label for="pais" class="form-label">Ayudante 2</label>
+                            <label for="ayudante_2_id" class="form-label">Ayudante 2</label>
                             <select name="ayudante_2_id" id="ayudante_2_id" class="form-control">
                                 <option value="">Seleccione el Ayudante 2</option>
                                 @php
                                     $profesionesPermitidas = [2]; //Solo Ayudantes
                                 @endphp
                                 @foreach ($empleados as $empleado)
-                                    @if ( in_array( $empleado->get_profesion->rol_id, $profesionesPermitidas ) )
-                                    <option value="{{ $empleado->id }}"
-                                        {{ $cirugia->ayudante_2_id == $empleado->id ? 'selected' : '' }}>
-                                        {{ $empleado->nombre }} {{ $empleado->apellido }}
-                                    </option>
+                                    @if (in_array($empleado->get_profesion->rol_id, $profesionesPermitidas))
+                                        <option value="{{ $empleado->id }}"
+                                            {{ $cirugia->ayudante_2_id == $empleado->id ? 'selected' : '' }}>
+                                            {{ $empleado->nombre }} {{ $empleado->apellido }}
+                                        </option>
                                     @endif
                                 @endforeach
                             </select>
@@ -132,18 +159,18 @@
                         </div>
 
                         <div class="col-md-4">
-                            <label for="pais" class="form-label">Ayudante 3</label>
+                            <label for="ayudante_3_id" class="form-label">Ayudante 3</label>
                             <select name="ayudante_3_id" id="ayudante_3_id" class="form-control">
                                 <option value="">Seleccione el Ayudante 3</option>
                                 @php
                                     $profesionesPermitidas = [2]; //Solo Ayudantes
                                 @endphp
                                 @foreach ($empleados as $empleado)
-                                    @if ( in_array( $empleado->get_profesion->rol_id, $profesionesPermitidas ) )
-                                    <option value="{{ $empleado->id }}"
-                                        {{ $cirugia->ayudante_3_id == $empleado->id ? 'selected' : '' }}>
-                                        {{ $empleado->nombre }} {{ $empleado->apellido }}
-                                    </option>
+                                    @if (in_array($empleado->get_profesion->rol_id, $profesionesPermitidas))
+                                        <option value="{{ $empleado->id }}"
+                                            {{ $cirugia->ayudante_3_id == $empleado->id ? 'selected' : '' }}>
+                                            {{ $empleado->nombre }} {{ $empleado->apellido }}
+                                        </option>
                                     @endif
                                 @endforeach
                             </select>
@@ -153,18 +180,18 @@
                         </div>
 
                         <div class="col-md-4">
-                            <label for="pais" class="form-label">Anestesista</label>
+                            <label for="anestesista_id" class="form-label">Anestesista</label>
                             <select name="anestesista_id" id="anestesista_id" class="form-control">
                                 <option value="">Seleccione el Anestesista</option>
                                 @php
                                     $profesionesPermitidas = [3]; //Solo Anestesistas
                                 @endphp
                                 @foreach ($empleados as $empleado)
-                                    @if ( in_array( $empleado->get_profesion->rol_id, $profesionesPermitidas ) )
-                                    <option value="{{ $empleado->id }}"
-                                        {{ $cirugia->anestesista_id == $empleado->id ? 'selected' : '' }}>
-                                        {{ $empleado->nombre }} {{ $empleado->apellido }}
-                                    </option>
+                                    @if (in_array($empleado->get_profesion->rol_id, $profesionesPermitidas))
+                                        <option value="{{ $empleado->id }}"
+                                            {{ $cirugia->anestesista_id == $empleado->id ? 'selected' : '' }}>
+                                            {{ $empleado->nombre }} {{ $empleado->apellido }}
+                                        </option>
                                     @endif
                                 @endforeach
                             </select>
@@ -172,9 +199,9 @@
                                 <small class="text-danger"> {{ $message }} </small>
                             @enderror
                         </div>
-
+                        {{-- Tipo Anestesia --}}
                         <div class="col-md-4">
-                            <label for="pais" class="form-label">Tipo de Anestesia</label>
+                            <label for="tipo_anestesia_id" class="form-label">Tipo de Anestesia</label>
                             <select name="tipo_anestesia_id" id="tipo_anestesia_id" class="form-control">
                                 <option value="">Seleccione el Tipo de Anestesia</option>
                                 @foreach ($tipoAnestesias as $tipoAnestesia)
@@ -189,19 +216,37 @@
                             @enderror
                         </div>
 
+                        {{-- Tipo Anestesia 2 --}}
                         <div class="col-md-4">
-                            <label for="pais" class="form-label">Instrumentador</label>
+                            <label for="tipo_anestesia_2_id" class="form-label">Tipo de Anestesia 2</label>
+                            <select name="tipo_anestesia_2_id" id="tipo_anestesia_2_id" class="form-control">
+                                <option value="">Seleccione el Tipo de Anestesia</option>
+                                @foreach ($tipoAnestesias as $tipoAnestesia)
+                                    <option value="{{ $tipoAnestesia->id }}"
+                                        {{ $cirugia->tipo_anestesia_2_id == $tipoAnestesia->id ? 'selected' : '' }}>
+                                        {{ $tipoAnestesia->nombre }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('tipo_anestesia_2_id')
+                                <small class="text-danger"> {{ $message }} </small>
+                            @enderror
+                        </div>
+
+                        {{-- Instrumentador --}}
+                        <div class="col-md-4">
+                            <label for="instrumentador_id" class="form-label">Instrumentador</label>
                             <select name="instrumentador_id" id="instrumentador_id" class="form-control">
                                 <option value="">Seleccione el Instrumentador</option>
                                 @php
                                     $profesionesPermitidas = [4]; //Solo Instrumentadores
                                 @endphp
                                 @foreach ($empleados as $empleado)
-                                    @if ( in_array( $empleado->get_profesion->rol_id, $profesionesPermitidas ) )
-                                    <option value="{{ $empleado->id }}"
-                                        {{ $cirugia->instrumentador_id == $empleado->id ? 'selected' : '' }}>
-                                        {{ $empleado->nombre }} {{ $empleado->apellido }}
-                                    </option>
+                                    @if (in_array($empleado->get_profesion->rol_id, $profesionesPermitidas))
+                                        <option value="{{ $empleado->id }}"
+                                            {{ $cirugia->instrumentador_id == $empleado->id ? 'selected' : '' }}>
+                                            {{ $empleado->nombre }} {{ $empleado->apellido }}
+                                        </option>
                                     @endif
                                 @endforeach
                             </select>
@@ -210,29 +255,73 @@
                             @enderror
                         </div>
 
+                        {{-- Instrumentador 2 --}}
                         <div class="col-md-4">
-                            <label for="pais" class="form-label">Enfermero</label>
+                            <label for="instrumentador_2_id" class="form-label">Instrumentador 2</label>
+                            <select name="instrumentador_2_id" id="instrumentador_2_id" class="form-control">
+                                <option value="">Seleccione el Instrumentador</option>
+                                @php
+                                    $profesionesPermitidas = [4]; //Solo Instrumentadores
+                                @endphp
+                                @foreach ($empleados as $empleado)
+                                    @if (in_array($empleado->get_profesion->rol_id, $profesionesPermitidas))
+                                        <option value="{{ $empleado->id }}"
+                                            {{ $cirugia->instrumentador_2_id == $empleado->id ? 'selected' : '' }}>
+                                            {{ $empleado->nombre }} {{ $empleado->apellido }}
+                                        </option>
+                                    @endif
+                                @endforeach
+                            </select>
+                            @error('instrumentador_2_id')
+                                <small class="text-danger"> {{ $message }} </small>
+                            @enderror
+                        </div>
+
+                        {{-- Enfermero --}}
+                        <div class="col-md-4">
+                            <label for="enfermero_id" class="form-label">Enfermero</label>
                             <select name="enfermero_id" id="enfermero_id" class="form-control">
                                 <option value="">Seleccione el Enfermero</option>
-                            @php
-                                $profesionesPermitidas = [5]; //Solo Enfermeros
-                            @endphp
-                            @foreach ($empleados as $empleado)
-                                @if ( in_array( $empleado->get_profesion->rol_id, $profesionesPermitidas ) )
-                                <option value="{{ $empleado->id }}"
-                                    {{ $cirugia->enfermero_id == $empleado->id ? 'selected' : '' }}>
-                                    {{ $empleado->nombre }} {{ $empleado->apellido }}
-                                </option>
-                                @endif
-                            @endforeach
+                                @php
+                                    $profesionesPermitidas = [5]; //Solo Enfermeros
+                                @endphp
+                                @foreach ($empleados as $empleado)
+                                    @if (in_array($empleado->get_profesion->rol_id, $profesionesPermitidas))
+                                        <option value="{{ $empleado->id }}"
+                                            {{ $cirugia->enfermero_id == $empleado->id ? 'selected' : '' }}>
+                                            {{ $empleado->nombre }} {{ $empleado->apellido }}
+                                        </option>
+                                    @endif
+                                @endforeach
                             </select>
                             @error('enfermero_id')
                                 <small class="text-danger"> {{ $message }} </small>
                             @enderror
                         </div>
 
+                        {{-- Enfermero 2 --}}
                         <div class="col-md-4">
+                            <label for="enfermero_2_id" class="form-label">Enfermero 2</label>
+                            <select name="enfermero_2_id" id="enfermero_2_id" class="form-control">
+                                <option value="">Seleccione el Enfermero</option>
+                                @php
+                                    $profesionesPermitidas = [5]; //Solo Enfermeros
+                                @endphp
+                                @foreach ($empleados as $empleado)
+                                    @if (in_array($empleado->get_profesion->rol_id, $profesionesPermitidas))
+                                        <option value="{{ $empleado->id }}"
+                                            {{ $cirugia->enfermero_2_id == $empleado->id ? 'selected' : '' }}>
+                                            {{ $empleado->nombre }} {{ $empleado->apellido }}
+                                        </option>
+                                    @endif
+                                @endforeach
+                            </select>
+                            @error('enfermero_2_id')
+                                <small class="text-danger"> {{ $message }} </small>
+                            @enderror
+                        </div>
 
+                        <div class="col-md-4">
                             <label for="fecha_cirugia" class="form-label">Fecha de la cirugía</label>
                             <input type="date" name="fecha_cirugia" id="fecha_cirugia" class="form-control"
                                 value="{{ $cirugia->fecha_cirugia }}">
@@ -250,6 +339,17 @@
                             <small class="text-danger"> {{ $message }} </small>
                         @enderror
 
+                        {{-- Duración cirugía (horas y minutos) --}}
+                        <div class="col-md-4">
+                            <label for="duracion" class="form-label">Duración de la cirugía</label>
+                            {{-- Usamos input type="time" para horas:minutos; alternativa: dos selects --}}
+                            <input type="time" name="duracion" id="duracion" class="form-control"
+                                step="60" value="{{ old('duracion', $cirugia->duracion) }}">
+                            <small class="form-text text-muted">Indique la duración (HH:MM)</small>
+                            @error('duracion')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
 
                         <div class="col-md-4">
                             <label class="form-label d-block">Urgencia</label>
@@ -259,8 +359,19 @@
                                 <span class="slider round"></span>
                             </label>
                         </div>
-
                         @error('urgencia')
+                            <small class="text-danger"> {{ $message }} </small>
+                        @enderror
+
+                        <div class="col-md-4">
+                            <label class="form-label d-block">Óbito</label>
+                            <label class="switch">
+                                <input type="checkbox" name="obito" id="obito" value="1"
+                                    {{ $cirugia->obito ? 'checked' : '' }}>
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                        @error('obito')
                             <small class="text-danger"> {{ $message }} </small>
                         @enderror
                     </div>
@@ -280,6 +391,11 @@
             </div>
         </div>
     </div>
+
+    <!-- Select2 CSS/JS (mantener como estaba) -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <style>
         /* Estilo para el checkbox moderno */
@@ -347,4 +463,72 @@
             });
         });
     </script>
+
+    <!-- Scripts para combos dinámicos -->
+    <script>
+        $(document).ready(function() {
+            // Tomamos valores viejos (si hay) o los de la cirugía (cuando editamos)
+            let oldEspecialidadId = "{{ old('especialidad_id', $cirugia->especialidad_id) }}";
+            let oldProcedimientoId = "{{ old('procedimiento_id', $cirugia->procedimiento_id) }}";
+            let oldProcedimiento2Id = "{{ old('procedimiento_2_id', $cirugia->procedimiento_2_id) }}";
+
+            // Función para cargar procedimientos en el primer select
+            function cargarProcedimientos(especialidadId, selectedProcedimientoId = null) {
+                fetch(`/api/procedimientos/${especialidadId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        //console.log("Procedimientos:", data); // Debug
+                        let procedimiento = $('#procedimiento');
+                        procedimiento.html('<option value="">Seleccione un procedimiento</option>');
+
+                        data.forEach(p => {
+                            let selected = (selectedProcedimientoId == p.id) ? 'selected' : '';
+                            procedimiento.append(
+                                `<option value="${p.id}" ${selected}>${p.nombre_procedimiento} - ${p.descripcion}</option>`
+                            );
+                        });
+                    })
+                    .catch(error => console.error("Error cargando procedimientos:", error));
+            }
+
+            // Función para cargar procedimientos en el segundo select
+            function cargarProcedimientos2(especialidadId, selectedProcedimiento2Id = null) {
+                fetch(`/api/procedimientos/${especialidadId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        //console.log("Procedimientos 2:", data); // Debug
+                        let procedimiento2 = $('#procedimiento2');
+                        procedimiento2.html('<option value="">Seleccione un procedimiento</option>');
+
+                        data.forEach(p => {
+                            let selected = (selectedProcedimiento2Id == p.id) ? 'selected' : '';
+                            procedimiento2.append(
+                                `<option value="${p.id}" ${selected}>${p.nombre_procedimiento} - ${p.descripcion}</option>`
+                            );
+                        });
+                    })
+                    .catch(error => console.error("Error cargando procedimientos 2:", error));
+            }
+
+            // Cuando cambia la especialidad, recargo ambos combos
+            $('#especialidad').on('change', function() {
+                let especialidadId = $(this).val();
+                if (especialidadId) {
+                    cargarProcedimientos(especialidadId);
+                    cargarProcedimientos2(especialidadId);
+                } else {
+                    $('#procedimiento').html('<option value="">Seleccione un procedimiento</option>');
+                    $('#procedimiento2').html('<option value="">Seleccione un procedimiento</option>');
+                }
+            });
+
+            // Si hay valores (old() o $cirugia), los cargamos
+            if (oldEspecialidadId) {
+                $('#especialidad').val(oldEspecialidadId).trigger('change');
+                cargarProcedimientos(oldEspecialidadId, oldProcedimientoId);
+                cargarProcedimientos2(oldEspecialidadId, oldProcedimiento2Id);
+            }
+        });
+    </script>
+
 @endsection

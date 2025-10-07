@@ -1,6 +1,8 @@
 @extends('layouts.app')
 @section('titulo', 'Lista de Ocupaciones de Camas')
 @section('contenido')
+
+
 <h1 class="mb-4">Gestor de Ocupaciones de Camas</h1>
 <a href="{{ route('ocupacionCamas.create') }}" class="btn btn-primary mb-3">Ocupar Cama</a>
 <table class="table">

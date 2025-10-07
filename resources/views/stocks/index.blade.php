@@ -8,7 +8,11 @@
         </div>
     @endif
 
-    <div class="max-w-7xl mx-auto px-4 py-8">
+
+    <div class="flex min-h-screen bg-gray-100 transition-all duration-300 ease-in-out pt-16">
+
+        <!-- Main -->
+        <main class="flex-1 p-5 max-w-full">
         <div class="flex justify-between items-center mb-6">
             <h1
                 class="text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent  bg-clip-text drop-shadow-md  flex items-center gap-2 px-2">
@@ -75,7 +79,8 @@
 
             </table>
         </div>
-    </div>    
+    </div> 
+ </div>      
 @endsection
 @push('scripts')
 <script>

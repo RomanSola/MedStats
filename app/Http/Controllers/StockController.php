@@ -154,19 +154,25 @@ class StockController extends Controller
         return redirect()->route('stocks.index');
     }
 
+public function estadisticas(Request $request)
+{
+    // Validación directa desde el Request
+    $validated = $request->validate([
+        'desde' => 'nullable|date|before_or_equal:today',
+        'hasta' => 'nullable|date|after_or_equal:desde|before_or_equal:today',
+    ], [
+        'desde.date' => 'La fecha de inicio no tiene un formato válido.',
+        'desde.before_or_equal' => 'La fecha de inicio no puede ser futura.',
+        'hasta.date' => 'La fecha de fin no tiene un formato válido.',
+        'hasta.after_or_equal' => 'La fecha de fin debe ser igual o posterior a la fecha de inicio.',
+        'hasta.before_or_equal' => 'La fecha de fin no puede ser futura.',
+    ]);
 
-    public function estadisticas(Request $request)
-    {
-    $desde = $request->input('desde');
-    $hasta = $request->input('hasta');
+    // Asignar fechas por defecto si no se enviaron
+    $desde = $validated['desde'] ?? now()->startOfMonth()->toDateString();
+    $hasta = $validated['hasta'] ?? now()->endOfMonth()->toDateString();
 
-    //Si no se especifica período, usar el mes actual como default
-    if (!$desde || !$hasta) {
-        $desde = now()->startOfMonth()->toDateString();
-        $hasta = now()->endOfMonth()->toDateString();
-    }
-
-    //Totales generales
+    // Totales generales
     $totalStock = Stock::sum('cantidad_act');
 
     $totalAgregados = Historial_stock::where('cantidad', '>', 0)
@@ -177,7 +183,7 @@ class StockController extends Controller
         ->whereBetween('fecha', [$desde, $hasta])
         ->sum(DB::raw('ABS(cantidad)'));
 
-    //Insumos más utilizados
+    // Insumos más utilizados
     $insumos = Historial_stock::select('stock_id', DB::raw('SUM(ABS(cantidad)) as total'))
         ->where('cantidad', '<', 0)
         ->whereBetween('fecha', [$desde, $hasta])
@@ -187,57 +193,54 @@ class StockController extends Controller
         ->take(5)
         ->get();
 
-    $insumoLabels = $insumos->map(function ($item) {
-        return optional($item->get_stock->get_medicamento)->nombre ?? 'Sin nombre';
-    });
+    $insumoLabels = $insumos->map(fn($item) =>
+        optional($item->get_stock->get_medicamento)->nombre ?? 'Sin nombre'
+    );
 
     $insumoValores = $insumos->pluck('total');
 
-    //Vencimientos próximos (dentro de 60 días)
+    // Vencimientos próximos (dentro de 60 días)
     $vencimientos = Stock::whereNotNull('fecha_vencimiento')
-        ->where('fecha_vencimiento', '>=', now())
-        ->where('fecha_vencimiento', '<=', now()->addDays(60))
+        ->whereBetween('fecha_vencimiento', [now(), now()->addDays(60)])
         ->with('get_medicamento')
         ->orderBy('fecha_vencimiento')
         ->get();
-    //Insumos sin movimiento en el último mes
+
+    // Insumos sin movimiento en el último mes
     $umbralDias = max(1, intval($request->input('dias', 30)));
     $fechaLimite = now()->subDays($umbralDias)->toDateString();
+
     $stocksSinMovimiento = Stock::whereDoesntHave('historial_stock', function ($query) use ($fechaLimite) {
-    $query->where('fecha', '>', $fechaLimite);
+        $query->where('fecha', '>', $fechaLimite);
     })
-        ->with('get_medicamento')
-        ->get();
+    ->with('get_medicamento')
+    ->get(); // ← corregido el typo
 
+    // Proyección de duración de stock
+    $periodoAnalisis = 30;
+    $fechaInicio = now()->subDays($periodoAnalisis)->toDateString();
+    $fechaFin = now()->toDateString();
 
+    $consumos = Historial_stock::select('stock_id', DB::raw('SUM(ABS(cantidad)) as total_consumo'))
+        ->where('cantidad', '<', 0)
+        ->whereBetween('fecha', [$fechaInicio, $fechaFin])
+        ->groupBy('stock_id')
+        ->get()
+        ->keyBy('stock_id');
 
-$periodoAnalisis = 30;
-$fechaInicio = now()->subDays($periodoAnalisis)->toDateString();
-$fechaFin = now()->toDateString();
+    $proyecciones = Stock::with('get_medicamento')->get()->map(function ($stock) use ($consumos, $periodoAnalisis) {
+        $consumoTotal = $consumos[$stock->id]->total_consumo ?? 0;
+        $consumoDiario = $consumoTotal / $periodoAnalisis;
+        $diasRestantes = $consumoDiario > 0 ? round($stock->cantidad_act / $consumoDiario) : null;
 
-// Consumo por insumo en los últimos 30 días
-$consumos = Historial_stock::select('stock_id', DB::raw('SUM(ABS(cantidad)) as total_consumo'))
-    ->where('cantidad', '<', 0)
-    ->whereBetween('fecha', [$fechaInicio, $fechaFin])
-    ->groupBy('stock_id')
-    ->get()
-    ->keyBy('stock_id');
-
-// Proyección por insumo
-$proyecciones = Stock::with('get_medicamento')->get()->map(function ($stock) use ($consumos, $periodoAnalisis) {
-    $consumoTotal = $consumos[$stock->id]->total_consumo ?? 0;
-    $consumoDiario = $consumoTotal / $periodoAnalisis;
-    $diasRestantes = $consumoDiario > 0 ? round($stock->cantidad_act / $consumoDiario) : null;
-
-    return [
-        'medicamento' => optional($stock->get_medicamento)->nombre,
-        'lote' => $stock->lote,
-        'cantidad_act' => $stock->cantidad_act,
-        'consumo_diario' => round($consumoDiario, 2),
-        'dias_restantes' => $diasRestantes,
-    ];
-});
-
+        return [
+            'medicamento' => optional($stock->get_medicamento)->nombre,
+            'lote' => $stock->lote,
+            'cantidad_act' => $stock->cantidad_act,
+            'consumo_diario' => round($consumoDiario, 2),
+            'dias_restantes' => $diasRestantes,
+        ];
+    });
 
     return view('stocks.estadisticasstock', compact(
         'totalStock',
@@ -252,5 +255,5 @@ $proyecciones = Stock::with('get_medicamento')->get()->map(function ($stock) use
         'umbralDias',
         'proyecciones'
     ));
-    }
+}
 }

@@ -69,7 +69,15 @@ class ProfesionController extends Controller
 
     public function destroy(Profesion $profesion)
     {
+        // Verificar si hay empleados asociados
+        if ($profesion->empleados()->exists()) {
+            return redirect()->route('profesion.index')
+                ->with('error', 'No se puede eliminar: esta profesión está asignada a empleados.');
+        }
+    
         $profesion->delete();
-        return redirect()->route('profesion.index');
+    
+        return redirect()->route('profesion.index')
+            ->with('success', 'Profesión eliminada correctamente.');
     }
 }

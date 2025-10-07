@@ -28,7 +28,7 @@
                 <div>
                     <label for="{{ $field }}" class="block text-sm font-medium text-gray-700 mb-1">{{ $label }}</label>
                     <input type="{{ $type }}" name="{{ $field }}" id="{{ $field }}"
-                        class="w-full rounded-md border-gray-300 px-4 py-2 @error($field) is-invalid @enderror"
+                        class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500 @error($field) is-invalid @enderror"
                         value="{{ old($field, $paciente->$field) }}" {{ $field !== 'telefono' ? 'required' : '' }}>
                     @error($field)
                         <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
@@ -39,7 +39,8 @@
             {{-- Género --}}
             <div>
                 <label for="genero" class="block text-sm font-medium text-gray-700 mb-1">Género</label>
-                <select name="genero" id="genero" class="w-full rounded-md border-gray-300 px-4 py-2">
+                <select name="genero" id="genero"
+                    class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500">
                     <option value="">Seleccione el género</option>
                     @foreach (['Masculino', 'Femenino', 'X'] as $opcion)
                         <option value="{{ $opcion }}" {{ old('genero', $paciente->genero) == $opcion ? 'selected' : '' }}>
@@ -55,7 +56,8 @@
             {{-- País --}}
             <div>
                 <label for="pais" class="block text-sm font-medium text-gray-700 mb-1">País</label>
-                <select name="pais_id" id="pais" class="w-full rounded-md border-gray-300 px-4 py-2">
+                <select name="pais_id" id="pais"
+                    class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500">
                     <option value="">Seleccione un país</option>
                     @foreach ($paises as $pais)
                         <option value="{{ $pais->id }}"
@@ -72,7 +74,8 @@
             {{-- Provincia --}}
             <div>
                 <label for="provincia" class="block text-sm font-medium text-gray-700 mb-1">Provincia</label>
-                <select name="provincia_id" id="provincia" class="w-full rounded-md border-gray-300 px-4 py-2">
+                <select name="provincia_id" id="provincia"
+                    class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500">
                 </select>
                 @error('provincia_id')
                     <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
@@ -82,7 +85,8 @@
             {{-- Código Postal --}}
             <div>
                 <label for="codigo_postal" class="block text-sm font-medium text-gray-700 mb-1">Código Postal</label>
-                <select name="cod_postal_id" id="codigo_postal" class="w-full rounded-md border-gray-300 px-4 py-2">
+                <select name="cod_postal_id" id="codigo_postal"
+                    class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500">
                 </select>
                 @error('cod_postal_id')
                     <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
@@ -91,19 +95,19 @@
 
             {{-- Dirección --}}
             <div>
-                <label for="direccion" class="block text-sm font-medium text-gray-700 mb-1">Dirección</label>
+                <label for="direccion" class="block text-sm font-semibold text-gray-700 mb-1">Dirección</label>
                 <input type="text" name="direccion" id="direccion"
-                    class="w-full rounded-md border-gray-300 px-4 py-2"
+                    class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500"
                     value="{{ old('direccion', $paciente->direccion) }}">
             </div>
         </div>
 
         {{-- Botones --}}
-            <div class="flex justify-between pt-4">
-
-                <a href="{{ route('pacientes.index') }}" class="btn btn-outline-danger px-5 py-2 rounded shadow-sm">
-                    Cancelar
-                </a>
+        <div class="flex justify-between pt-4">
+            <a href="{{ route('pacientes.index') }}"
+                class="btn btn-outline-danger px-5 py-2 rounded shadow-sm">
+                Cancelar
+            </a>
             <button type="submit"
                 class="bg-neutral-700 hover:bg-neutral-800 text-white font-semibold px-6 py-2 rounded-full shadow-md transition">
                 Guardar Cambios

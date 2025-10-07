@@ -1,9 +1,9 @@
 @extends('layouts.app')
 @section('titulo', 'Estadísticas de Stock')
 @section('contenido')
-
-<div class="container">
+  
     <div class="text-center mb-4">
+     
     <div class="inline-flex items-center gap-4">
         <h2 class="bg-light d-inline-block px-4 py-2 rounded shadow-sm text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent bg-clip-text drop-shadow-md flex items-center gap-2 px-2">
         Estadísticas de Insumos
@@ -35,6 +35,19 @@
       </div>
     </div>
   </form>
+  @if ($errors->has('desde') || $errors->has('hasta'))
+    <div class="alert alert-warning mt-2">
+      <strong>⚠️ Atención:</strong> Hubo un problema con las fechas ingresadas.
+      <ul class="mb-0">
+        @foreach ($errors->get('desde') as $error)
+          <li>{{ $error }}</li>
+        @endforeach
+        @foreach ($errors->get('hasta') as $error)
+          <li>{{ $error }}</li>
+        @endforeach
+      </ul>
+    </div>
+  @endif
 
   {{-- Período activo --}}
   @if(request('desde') && request('hasta'))
@@ -46,7 +59,7 @@
         <span class="text-muted">→</span>
         <span class="text-dark">{{ \Carbon\Carbon::parse(request('hasta'))->format('d/m/Y') }}</span>
       </div>
-      <a href="{{ route('stocks.estadisticas') }}" class="btn btn-sm btn-outline-light text-primary border-primary">
+      <a href="{{ route('stocks.estadisticasstock') }}" class="btn btn-sm btn-outline-light text-primary border-primary">
         <i class="bi bi-x-circle me-1"></i> Quitar filtro
       </a>
     </div>
@@ -164,7 +177,7 @@
     <i class="bi bi-hourglass-split me-2"></i> Proyección de agotamiento (basado en últimos 30 días)
   </div>
   <div class="card-body">
-    <table class="table table-bordered table-hover">
+    <table id="tablaProyeccion" class="table table-bordered table-hover">
       <thead class="bg-warning text-dark text-center">
         <tr>
           <th>Medicamento</th>
@@ -200,30 +213,72 @@
 </div>
 
 </div>
+</div>
 @endsection
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    const canvas = document.getElementById('graficoInsumos');
-    canvas.height = 250;
-    const ctx = document.getElementById('graficoInsumos').getContext('2d');
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: {!! json_encode($insumoLabels) !!},
-            datasets: [{
-            label: 'Cantidad extraída',
-            data: {!! json_encode($insumoValores) !!},
-            backgroundColor: 'rgba(13, 110, 253, 0.5)',
-            borderColor: 'rgba(13, 110, 253, 1)',
-            borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {y: { beginAtZero: true }}
-        }
-    });
+  const canvas = document.getElementById('graficoInsumos');
+  canvas.height = 250;
+  const ctx = document.getElementById('graficoInsumos').getContext('2d');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: {!! json_encode($insumoLabels) !!},
+      datasets: [{
+      label: 'Cantidad extraída',
+      data: {!! json_encode($insumoValores) !!},
+      backgroundColor: 'rgba(13, 110, 253, 0.5)',
+      borderColor: 'rgba(13, 110, 253, 1)',
+      borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {y: { beginAtZero: true }}
+    }
+  });
 </script>
+<script>
+  $(document).ready(function () {
+    $('#tablaProyeccion').DataTable({
+      dom: '<"top-controls"Blf>rt<"bottom-controls"ip>',
+      buttons: [
+        {
+          extend: 'excelHtml5',
+          text: 'Exportar a Excel',
+          className: 'btn btn-success btn-sm'
+        },
+        {
+          extend: 'pdfHtml5',
+          text: 'Exportar a PDF',
+          className: 'btn btn-danger btn-sm',
+          orientation: 'landscape',
+          pageSize: 'A4',
+          customize: function (doc) {
+            doc.defaultStyle.fontSize = 8;
+          }
+        }
+      ],
+      language: {
+        url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json',
+        search: "Buscar medicamento:",
+        lengthMenu: "Mostrar _MENU_ registros por página",
+        info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+        infoEmpty: "No hay datos para mostrar",
+        infoFiltered: "(filtrado de _MAX_ registros en total)"
+      },
+      order: [[4, 'asc']], // Orden por días restantes
+      columnDefs: [
+        { orderable: false, targets: [] } // Todas las columnas son ordenables
+      ]
+  });
+});
+</script>
+<style>
+  .container {
+  padding-top: 60px; /* o más si el header es más alto */
+}
+</style>
 @endpush
 

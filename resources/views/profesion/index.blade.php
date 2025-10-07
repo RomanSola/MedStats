@@ -3,7 +3,6 @@
 @section('title', 'Gestión de Profesiones')
 
 @section('contenido')
-    <div class="container mt-4">
 
         <div class="max-w-7xl mx-auto px-4 py-8">
             <div class="flex justify-between items-center mb-6">
@@ -19,8 +18,8 @@
             </div>
 
             {{-- Contenedor principal --}}
-            <div class="card border-secondary shadow-sm mb-4">
-                <div class="card-body">
+            <div class="card border">
+        <div class="card-body">
 
                     <p class="mb-3 text-secondary fw-semibold">
                         Administrá las profesiones disponibles en el sistema. Podés ver detalles, editarlas o eliminarlas.
@@ -61,15 +60,20 @@
                                                class="btn btn-outline-primary btn-sm me-1">Ver</a>
                                             <a href="{{ route('profesion.edit', $profesion) }}"
                                                class="btn btn-outline-warning btn-sm me-1">Editar</a>
-                                            <form action="{{ route('profesion.destroy', $profesion) }}" method="POST"
-                                                  class="d-inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button class="btn btn-outline-danger btn-sm"
-                                                        onclick="return confirm('¿Estás seguro de que querés eliminar esta profesión?')">
-                                                    Eliminar
-                                                </button>
-                                            </form>
+                                               @if (!$profesion->empleados()->exists())
+                                               <form action="{{ route('profesion.destroy', $profesion) }}" method="POST" class="d-inline">
+                                                   @csrf
+                                                   @method('DELETE')
+                                                   <button class="btn btn-outline-danger btn-sm"
+                                                           onclick="return confirm('¿Estás seguro de que querés eliminar esta profesión?')">
+                                                       Eliminar
+                                                   </button>
+                                               </form>
+                                           @else
+                                           <button class="btn btn-outline-secondary btn-sm" disabled title="Esta profesión no se puede eliminar">
+                                            No eliminable
+                                        </button>
+                                           @endif
                                         </td>
                                     </tr>
                                 @empty

@@ -1,4 +1,4 @@
-<footer class="bg-[#F5FAFA] border-t border-[#C9E4E7] mt-12 text-sm text-[#245360] select-none">
+<footer id="footer" class="bg-[#F5FAFA] border-t border-[#C9E4E7] mt-12 text-sm text-[#245360] select-none">
   <div class="max-w-7xl mx-auto px-4 py-6 flex flex-col md:flex-row items-center justify-between gap-4">
 
 
@@ -27,3 +27,4 @@
 
   </div>
 </footer>
+

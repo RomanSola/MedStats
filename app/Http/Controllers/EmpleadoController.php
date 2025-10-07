@@ -28,22 +28,49 @@ class EmpleadoController extends Controller
     {
         $profesiones = Profesion::all();
         $paises = Pais::all();
-        //$provincias = Provincia::all();
+        $provincias = Provincia::all();
         return view('empleados.create', compact('profesiones', 'paises'));
     }
 
     public function store(Request $request)
     {
         $request->validate([ //Si el titulo esta vacion no hace nada
-            'dni' => 'required|int',
-            'nombre' => 'required',
-            'apellido' => 'required',
+            'dni' => 'required|int|unique:empleados,dni',
+            'nombre' => 'required|max:50',
+            'apellido' => 'required|max:50',
             'fecha_nacimiento' => 'required',
-            'telefono' => 'int',
+            'telefono' => 'int|regex:/^\d{1,15}$/',
             'pais_id' => 'required|exists:pais,id',
             'provincia_id' => 'required|exists:provincias,id',
             'cod_postal_id' => 'required|exists:codigo_postals,id',
             'profesion_id' => 'required|exists:profesions,id',
+        ],[
+            'dni.required' => 'El DNI es obligatorio.',
+            'dni.int' => 'El DNI debe ser un número entero.',
+            'dni.unique' => 'Ya existe un empleado con este DNI.',
+
+            'nombre.required' => 'El nombre es obligatorio.',
+            'nombre.max' => 'El nombre no puede tener más de 50 caracteres.',
+
+            'apellido.required' => 'El apellido es obligatorio.',
+            'apellido.max' => 'El apellido no puede tener más de 50 caracteres.',
+
+            'fecha_nacimiento.required' => 'La fecha de nacimiento es obligatoria.',
+
+            'telefono.int' => 'El teléfono debe contener solo números.',
+            'telefono.regex' => 'El teléfono debe tener entre 1 y 15 dígitos.',
+
+            'pais_id.required' => 'Debe seleccionar un país.',
+            'pais_id.exists' => 'El país seleccionado no es válido.',
+
+            'provincia_id.required' => 'Debe seleccionar una provincia.',
+            'provincia_id.exists' => 'La provincia seleccionada no es válida.',
+
+            'cod_postal_id.required' => 'Debe seleccionar un código postal.',
+            'cod_postal_id.exists' => 'El código postal seleccionado no es válido.',
+
+            'profesion_id.required' => 'Debe seleccionar una profesión.',
+            'profesion_id.exists' => 'La profesión seleccionada no es válida.',
         ]);
         // Validar que el empleado no tenga ya esta profesión
         $existe = Empleado::where('dni', $request->dni)
@@ -83,8 +110,8 @@ class EmpleadoController extends Controller
     {
         $request->validate([ //Si el titulo esta vacion no hace nada
             'dni' => 'required|int',
-            'nombre' => 'required|string',
-            'apellido' => 'required|string',
+            'nombre' => 'required|string|max:50',
+            'apellido' => 'required|string|max:50',
             'fecha_nacimiento' => 'required',
             'telefono' => 'required|regex:/^\d{1,15}$/',
             'pais_id' => 'required|exists:pais,id',

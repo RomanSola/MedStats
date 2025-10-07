@@ -65,7 +65,7 @@ class Paciente extends Model
     {
         return $this->belongsTo(Codigo_postal::class, 'cod_postal_id', 'id');
     }
-    public function get_cirugias()
+    public function cirugias()
     {
         return $this->hasMany(Cirugia::class, 'paciente_id', 'id');
     }

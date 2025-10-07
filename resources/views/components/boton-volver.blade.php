@@ -1,5 +1,4 @@
-<div class="container mt-2">
-
+{{--<div class="container mt-2">
     @php
         $rutaActual = request()->route()->getName();
 
@@ -9,6 +8,7 @@
             case 'pacientes.index':
             case 'estadisticas':
             case 'camas.index':
+            case 'cirugias.estadisticas':
             //case 'cirugias.index':
             case 'ajustes':
                 $rutaAnterior = 'inicio';
@@ -16,8 +16,9 @@
 
             // Rutas que vuelven a Ajustes
             case 'usuarios.index':
-            case 'empleados.index':
             case 'medicamentos.index':
+            case 'UsuarioPerfil.index':
+            case 'empleados.index':
             case 'salas.index':
             case 'habitaciones.index':
             case 'quirofanos.index':
@@ -26,12 +27,16 @@
             case 'tipoAnestesias.index':
             case 'ocupacionCamas.index':
             case 'perfiles.index':
+            case 'especialidades.index':
                 $rutaAnterior = 'ajustes';
                 break;
+
             //Perfiles
             case 'perfiles.create':
             case 'perfiles.edit':
                 $rutaAnterior = 'perfiles.index';
+                break;
+
             // Profesión
             case 'profesion.create':
             case 'profesion.edit':
@@ -124,7 +129,7 @@
             case 'cirugias.create':
             case 'cirugias.edit':
             case 'cirugias.show':
-            case 'cirugias.estadisticas':
+                // case 'cirugias.estadisticas':
                 $rutaAnterior = 'cirugias.index';
                 break;
 
@@ -142,11 +147,83 @@
         }
     @endphp
 
- @if ($rutaActual !== 'inicio')
-        <a href="{{ route($rutaAnterior) }}" class="btn btn-outline-primary mt-1">
-            ← Volver atrás
-        </a>
+    @if ($rutaActual !== 'inicio')
+        <form action="{{ route($rutaAnterior) }}" method="GET">
+            <button type="submit" class="btn btn-outline-secondary btn-sm btn-volver-fijo" title="Volver">
+                🡐
+            </button>
+        </form>
     @endif
 
     <!-- I begin to speak only when I am certain what I will say is not better left unsaid. - Cato the Younger -->
 </div>
+
+<style>
+
+.btn-volver-fijo {
+    position: fixed;
+    top: 80px;
+    left: 5rem; /* ubicación constante junto al sidebar */
+    z-index: 9999;
+    font-size: 1.2rem;
+    border-radius: 50px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    padding: 18px 22px;
+    background-color: white;
+    border: 1px solid #ccc;
+}
+
+/* Hover efecto */
+.btn-volver-fijo:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* 📱 Media queries solo para estilo visual */
+@media (max-width: 1024px) {
+    .btn-volver-fijo {
+        font-size: 1rem;
+        padding: 14px 18px;
+    }
+}
+
+@media (max-width: 640px) {
+    .btn-volver-fijo {
+        font-size: 0.9rem;
+        padding: 12px 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .btn-volver-fijo {
+        font-size: 0.85rem;
+        padding: 10px 14px;
+    }
+}
+</style>
+
+<!--<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const sidebar = document.getElementById('sidebar');
+        const botonVolver = document.querySelector('.btn-volver-fijo');
+        const toggleBtn = document.getElementById('toggleSidebar');
+
+        function ajustarBotonVolver() {
+            if (sidebar.classList.contains('w-64')) {
+                botonVolver.style.left = '16rem'; // sidebar expandido
+            } else {
+                botonVolver.style.left = '5rem'; // sidebar colapsado
+            }
+        }
+
+        // Ajustar al cargar
+        ajustarBotonVolver();
+
+        // Ajustar al hacer toggle
+        toggleBtn.addEventListener('click', () => {
+            setTimeout(ajustarBotonVolver, 300); // esperar transición
+        });
+    });
+</script>-->
+--}}

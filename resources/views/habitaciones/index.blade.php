@@ -3,7 +3,7 @@
 @section('titulo', 'Lista de Habitaciones')
 
 @section('contenido')
-    <div class="container mt-4">
+   
         <div class="max-w-7xl mx-auto px-4 py-8">
             <div class="flex justify-between items-center mb-6">
                 <h1
@@ -40,18 +40,18 @@
                                     <td>
                                         <!-- Botón Editar -->
                                         <a href="{{ route('habitaciones.edit', $habitacion) }}"
-                                            class="btn btn-outline-warning btn-sm me-1">Editar</a>
+                                            class="btn btn-outline-warning btn-sm me-1 btn-acciones">Editar</a>
                                             @if (!$habitacion->camas()->exists())
                                             <form action="{{ route('habitaciones.destroy', $habitacion) }}" method="POST" class="d-inline">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button class="btn btn-outline-danger btn-sm"
+                                                <button class="btn btn-outline-danger btn-sm btn-acciones"
                                                         onclick="return confirm('¿Estás seguro de que querés eliminar esta habitación?')">
                                                     Eliminar
                                                 </button>
                                             </form>
                                         @else
-                                            <button class="btn btn-outline-secondary btn-sm" disabled title="Esta habitación no se puede eliminar">
+                                            <button class="btn btn-outline-secondary btn-sm btn-acciones" disabled title="Esta habitación no se puede eliminar">
                                                 No eliminable
                                             </button>
                                         @endif
@@ -70,3 +70,11 @@
             </div>
         </div>
     @endsection
+
+            <style>
+            .btn-acciones {
+            min-width: 110px;
+            /* ajusta hasta que quede igual al "Dar de alta" */
+            text-align: center;
+        }
+        </style>

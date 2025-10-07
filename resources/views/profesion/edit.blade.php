@@ -3,7 +3,7 @@
 @section('title', 'Editar Profesión')
 
 @section('contenido')
-<div class="container mt-4">
+<div class="max-w-xl mx-auto px-4 py-4">
 
     <div class="flex justify-between items-center mb-6">
         <h1

@@ -9,7 +9,9 @@ class Cirugia extends Model
 
     protected $fillable = [
         'paciente_id',
+        'especialidad_id',
         'procedimiento_id',
+        'procedimiento_2_id',
         'quirofano_id',
         'cirujano_id',
         'ayudante_1_id',
@@ -17,9 +19,14 @@ class Cirugia extends Model
         'ayudante_3_id',
         'anestesista_id',
         'tipo_anestesia_id',
+        'tipo_anestesia_2_id',
         'instrumentador_id',
+        'instrumentador_2_id',
         'enfermero_id',
+        'enfermero_2_id',
         'urgencia',
+        'obito',
+        'duracion',
         'fecha_cirugia',
         'hora_cirugia',
         'creado_por',
@@ -30,9 +37,17 @@ class Cirugia extends Model
     {
         return $this->belongsTo(Paciente::class, 'paciente_id', 'id');
     }
+    public function get_especialidad()
+    {
+        return $this->belongsTo(Especialidad::class, 'especialidad_id', 'id');
+    }
     public function get_procedimiento()
     {
         return $this->belongsTo(Procedimiento::class, 'procedimiento_id', 'id');
+    }
+    public function get_procedimiento2()
+    {
+        return $this->belongsTo(Procedimiento::class, 'procedimiento_2_id', 'id');
     }
     public function get_quirofano()
     {
@@ -62,13 +77,25 @@ class Cirugia extends Model
     {
         return $this->belongsTo(Empleado::class, 'instrumentador_id', 'id');
     }
+    public function get_instrumentador2()
+    {
+        return $this->belongsTo(Empleado::class, 'instrumentador_2_id', 'id');
+    }
     public function get_enfermero()
     {
         return $this->belongsTo(Empleado::class, 'enfermero_id', 'id');
     }
+    public function get_enfermero2()
+    {
+        return $this->belongsTo(Empleado::class, 'enfermero_2_id', 'id');
+    }
     public function get_tipo_anestesia()
     {
         return $this->belongsTo(Tipo_anestesia::class, 'tipo_anestesia_id', 'id');
+    }
+    public function get_tipo_anestesia2()
+    {
+        return $this->belongsTo(Tipo_anestesia::class, 'tipo_anestesia_2_id', 'id');
     }
     /* FALTA TABLA DE USUARIOS
     public function creador() { return $this->belongsTo(Usuario::class, 'creado_por'); }
