@@ -29,8 +29,8 @@
             </div>
 
     {{-- Contenedor principal con borde celeste --}}
-            <div class="card border-secondary shadow-sm mb-4">
-                <div class="card-body">
+            <div class="card border">
+            <div class="card-body">
 
             <p class="mb-3 text-secondary fw-semibold">
                 Desde aquí podés administrar las salas del establecimiento y su capacidad.

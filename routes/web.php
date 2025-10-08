@@ -77,6 +77,7 @@ Route::middleware(['auth', 'roles:administrador'])->group(function(){
     Route::get('/perfiles/{perfil}/edit', [UsuarioPerfilController::class, 'edit'])->name('UsuarioPerfil.edit');
     Route::put('/perfiles/{perfil}', [UsuarioPerfilController::class, 'update'])->name('UsuarioPerfil.update');
     Route::delete('/perfiles/{perfil}', [UsuarioPerfilController::class, 'destroy'])->name('UsuarioPerfil.destroy');
+    
 });
 
 

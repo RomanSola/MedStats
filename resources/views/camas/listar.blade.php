@@ -29,7 +29,7 @@
         </div>
 
         {{-- Contenedor principal con borde celeste --}}
-        <div class="card border-secondary shadow-sm mb-4">
+        <div class="card border">
             <div class="card-body">
 
                 <p class="mb-3 text-secondary fw-semibold">
@@ -61,14 +61,14 @@
                                     </div>
                                 </td>
                                 <td class="text-center">
-                                    <a href="{{ route('camas.edit', $cama) }}" class="btn btn-outline-warning btn-sm me-1">
+                                    <a href="{{ route('camas.edit', $cama) }}" class="btn btn-outline-warning btn-sm me-1 btn-fixed-width">
                                         Editar
                                     </a>
                                     @if (!$cama->ocupada)
                                     <form action="{{ route('camas.destroy', $cama) }}" method="POST" class="d-inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button class="btn btn-outline-danger btn-sm"
+                                        <button class="btn btn-outline-danger btn-sm me-1 btn-fixed-width"
                                                 onclick="return confirm('¿Estás seguro de que querés eliminar esta cama?')">
                                             Eliminar
                                         </button>
@@ -95,4 +95,10 @@
         </div>
     </div>
 </div>
+<style>
+    .btn-fixed-width {
+        min-width: 100px; /* Puedes ajustar este valor según lo que necesites */
+        text-align: center;
+    }
+</style>
 @endsection
