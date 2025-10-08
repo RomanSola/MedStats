@@ -55,8 +55,8 @@
             </script>
 
             <!-- KPIs rápidos -->
-            <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-
+            <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+                
                 <!-- Pacientes activos -->
                 <div class="bg-white rounded-xl p-6 flex items-center gap-4 shadow-sm">
                     <div class="p-2 bg-[#2BA8A0]/20 rounded flex items-center justify-center">
