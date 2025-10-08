@@ -19,6 +19,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BusquedaController;
 use App\Http\Controllers\PersonaController;
 use App\Http\Controllers\EspecialidadController;
+use App\Http\Controllers\InicioController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -44,7 +45,8 @@ Route::middleware('auth')->group(function () {
 });
 
 
-Route::get('/', function () {return view('index');})->middleware('auth')->name('inicio');
+//Route::get('/', function () {return view('index');})->middleware('auth')->name('inicio');
+Route::get('/', [InicioController::class, 'index'])->middleware('auth')->name('inicio');
 
 
 

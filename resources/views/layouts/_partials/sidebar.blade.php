@@ -42,6 +42,7 @@
             case 'tipoAnestesias.index':
             case 'ocupacionCamas.index':
             case 'perfiles.index':
+            case 'especialidades.index':
                 $rutaAnterior = 'ajustes';
                 break;
 
@@ -152,6 +153,12 @@
             case 'quirofanos.edit':
             case 'quirofanos.show':
                 $rutaAnterior = 'quirofanos.index';
+                break;
+
+            // Especialidades
+            case 'especialidades.create':
+            case 'especialidades.edit':
+                $rutaAnterior = 'especialidades.index';
                 break;
 
             // Por defecto
