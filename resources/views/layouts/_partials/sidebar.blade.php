@@ -162,6 +162,7 @@
                 $rutaAnterior = 'especialidades.index';
                 break;    
 
+
             // Por defecto
             default:
                 $rutaAnterior = 'inicio';
