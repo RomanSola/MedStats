@@ -28,7 +28,7 @@ class EspecialidadController extends Controller
     public function store(Request $request)
     {
         $request->validate([ //Si el titulo esta vacio no hace nada 
-            'nombre' => 'required',
+            'nombre' => 'required|string|max:50',
         ]);
 
         $especialidad = new Especialidad();
@@ -37,7 +37,8 @@ class EspecialidadController extends Controller
         //dd($especialidades);
         $especialidad->save(); //Guarda en la BD, si existe lo actualiza, sino crea
 
-        return redirect()->route('especialidades.index');
+    return redirect()->route('especialidades.index')
+        ->with('success', 'Especialidad creada correctamente.');
     }
 
     public function edit(Especialidad $especialidad)
@@ -57,15 +58,19 @@ class EspecialidadController extends Controller
         return redirect()->route('especialidades.index');
     }
 
-    public function destroy(Especialidad $especialidad)
-    {
-        //Verifico que la especialidad no exista en otras tablas antes de borrarlo
-        if ($especialidad->get_procedimientos()->exists() )
-        {
-            return redirect()->route('especialidades.index')
-                ->with('error', 'No se puede eliminar la especialidad porque tiene registros asociados.');
-        }
-        $especialidad->delete();
-        return redirect()->route('especialidades.index');
+public function destroy(Especialidad $especialidad)
+{
+    $tienePrimarios = $especialidad->procedimientos()->exists();
+    $tieneSecundarios = $especialidad->procedimientos_secundarios()->exists();
+
+    if ($tienePrimarios || $tieneSecundarios) {
+        return redirect()->route('especialidades.index')
+            ->with('error', 'No se puede eliminar: esta especialidad está asociada a procedimientos.');
     }
+
+    $especialidad->delete();
+
+    return redirect()->route('especialidades.index')
+        ->with('success', 'Especialidad eliminada correctamente.');
+}
 }

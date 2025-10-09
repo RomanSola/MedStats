@@ -154,9 +154,8 @@ class StockController extends Controller
         return redirect()->route('stocks.index');
     }
 
-public function estadisticas(Request $request)
+    public function estadisticas(Request $request)
 {
-    // Validación directa desde el Request
     $validated = $request->validate([
         'desde' => 'nullable|date|before_or_equal:today',
         'hasta' => 'nullable|date|after_or_equal:desde|before_or_equal:today',
@@ -168,13 +167,43 @@ public function estadisticas(Request $request)
         'hasta.before_or_equal' => 'La fecha de fin no puede ser futura.',
     ]);
 
-    // Asignar fechas por defecto si no se enviaron
+    // Fechas por defecto si no se envían
     $desde = $validated['desde'] ?? now()->startOfMonth()->toDateString();
     $hasta = $validated['hasta'] ?? now()->endOfMonth()->toDateString();
 
-    // Totales generales
-    $totalStock = Stock::sum('cantidad_act');
+    // Umbral para "sin movimiento" (dias)
+    $umbralDias = max(1, intval($request->input('dias', 30)));
+    $fechaLimite = now()->subDays($umbralDias)->toDateString();
 
+    // ---------- CÁLCULO DEL TOTAL DE INSUMOS AL CIERRE DE 'HASTA' ----------
+    // Estrategia: partimos del stock actual (cantidad_act) y restamos la suma de movimientos
+    // posteriores a la fecha 'hasta' (movimientos con fecha > hasta).
+    // Esto nos devuelve el stock que existía al final de la fecha 'hasta'.
+    //
+    // Nota: los registros de Historial_stock tienen 'cantidad' positiva para entradas y
+    // negativa para salidas; por eso sumamos directamente 'cantidad'.
+
+    // 1) Obtener suma de movimientos posteriores a 'hasta' por stock_id
+    $movimientosPosteriores = Historial_stock::select('stock_id', DB::raw('SUM(cantidad) as suma_posterior'))
+        ->where('fecha', '>', $hasta)
+        ->groupBy('stock_id')
+        ->get()
+        ->keyBy('stock_id');
+
+    // 2) Recuperar todos los stocks y aplicar la corrección por movimientos posteriores
+    $stocks = Stock::all(); // con cantidad_act actual
+    $totalStockAlCierre = 0;
+    foreach ($stocks as $s) {
+        $sumaPosterior = $movimientosPosteriores->has($s->id) ? $movimientosPosteriores[$s->id]->suma_posterior : 0;
+        // stock al cierre = actual - movimientos posteriores
+        $stockAlCierre = $s->cantidad_act - $sumaPosterior;
+        // seguridad: no permitir valores negativos en el total agregado
+        $totalStockAlCierre += max(0, $stockAlCierre);
+    }
+    $totalStock = $totalStockAlCierre;
+    // -----------------------------------------------------------------------
+
+    // Totales por movimientos entre desde/hasta (ya estaban)
     $totalAgregados = Historial_stock::where('cantidad', '>', 0)
         ->whereBetween('fecha', [$desde, $hasta])
         ->sum('cantidad');
@@ -183,7 +212,7 @@ public function estadisticas(Request $request)
         ->whereBetween('fecha', [$desde, $hasta])
         ->sum(DB::raw('ABS(cantidad)'));
 
-    // Insumos más utilizados
+    // Insumos más utilizados en el período
     $insumos = Historial_stock::select('stock_id', DB::raw('SUM(ABS(cantidad)) as total'))
         ->where('cantidad', '<', 0)
         ->whereBetween('fecha', [$desde, $hasta])
@@ -206,17 +235,12 @@ public function estadisticas(Request $request)
         ->orderBy('fecha_vencimiento')
         ->get();
 
-    // Insumos sin movimiento en el último mes
-    $umbralDias = max(1, intval($request->input('dias', 30)));
-    $fechaLimite = now()->subDays($umbralDias)->toDateString();
-
+    // Insumos sin movimiento según umbralDias
     $stocksSinMovimiento = Stock::whereDoesntHave('historial_stock', function ($query) use ($fechaLimite) {
         $query->where('fecha', '>', $fechaLimite);
-    })
-    ->with('get_medicamento')
-    ->get(); // ← corregido el typo
+    })->with('get_medicamento')->get();
 
-    // Proyección de duración de stock
+    // Proyección de duración de stock (últimos 30 días)
     $periodoAnalisis = 30;
     $fechaInicio = now()->subDays($periodoAnalisis)->toDateString();
     $fechaFin = now()->toDateString();
@@ -256,4 +280,5 @@ public function estadisticas(Request $request)
         'proyecciones'
     ));
 }
+ 
 }

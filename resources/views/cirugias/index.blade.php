@@ -162,42 +162,40 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
         <!-- Funciones de impresión y exportación -->
         <script>
-            $(document).ready(function() {
+        $(document).ready(function() {
                 // Inicializar la tabla
-                const tabla = $('#miTabla').DataTable({
+            const tabla = $('#miTabla').DataTable({
                     dom: '<"top-controls d-flex flex-wrap align-items-end gap-3"l<"#fechas-html">f>rt<"bottom-controls"ip>',
                     language: {
                         url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
                     }
                 });
+            $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+            const fechaDesde = $('#fechaDesde').val();
+            const fechaHasta = $('#fechaHasta').val();
 
-                $('.top-controls').find('div').eq(1).before($('#fechas-html'));
+            const rowNode = tabla.row(dataIndex).node();
+            const fechaTexto = $(rowNode).find('td').eq(0).data('fecha'); // Columna 0 = Fecha
 
-                $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
-                    const fechaDesde = $('#fechaDesde').val();
-                    const fechaHasta = $('#fechaHasta').val();
-                    const rowNode = tabla.row(dataIndex).node();
-                    const fechaTexto = $('td', rowNode).eq(13).data('fecha');
+            if (!fechaTexto) return true;
 
-                    if (!fechaTexto) return true;
+            const fechaCirugia = new Date(fechaTexto); // data-fecha ya está en formato YYYY-MM-DD
+            const desde = fechaDesde ? new Date(fechaDesde) : null;
+            const hasta = fechaHasta ? new Date(fechaHasta) : null;
 
-                    const fechaCirugia = new Date(fechaTexto);
-                    const desde = fechaDesde ? new Date(fechaDesde) : null;
-                    const hasta = fechaHasta ? new Date(fechaHasta) : null;
-
-                    return (!desde || fechaCirugia >= desde) && (!hasta || fechaCirugia <= hasta);
-                });
-
-                $('#fechaDesde, #fechaHasta').on('change', function() {
-                    tabla.draw();
-                });
-
-                $('#limpiarFechas').on('click', function() {
-                    $('#fechaDesde').val('');
-                    $('#fechaHasta').val('');
-                    tabla.draw();
-                });
+            return (!desde || fechaCirugia >= desde) && (!hasta || fechaCirugia <= hasta);
             });
+
+            $('#fechaDesde, #fechaHasta').on('change', function() {
+                tabla.draw();
+            });
+
+            $('#limpiarFechas').on('click', function() {
+                $('#fechaDesde').val('');
+                $('#fechaHasta').val('');
+                tabla.draw();
+            });
+        });
 
             function imprimirTablaCompleta() {
                 const tablaOriginal = document.querySelector('.overflow-auto table');
@@ -232,23 +230,25 @@
             }
 
             async function exportarFiltradoPDF() {
-                const {
-                    jsPDF
-                } = window.jspdf;
+                const { jsPDF } = window.jspdf;
                 const doc = new jsPDF({
                     orientation: 'landscape',
                     format: 'legal'
                 });
 
                 const tablaDT = $('#miTabla').DataTable();
-                const datosFiltrados = tablaDT.rows({
-                    search: 'applied'
-                }).data();
+                const datosFiltrados = tablaDT.rows({ search: 'applied' }).data();
                 const thElements = document.querySelectorAll('thead tr th');
                 const headers = [];
                 const columnasIncluidas = [];
                 let indexFecha = -1;
                 let indexHora = -1;
+
+                // Función para capitalizar solo la primera letra
+                const capitalizarPrimeraLetra = texto => {
+                    const limpio = texto.trim().toLowerCase();
+                    return limpio.charAt(0).toUpperCase() + limpio.slice(1);
+                };
 
                 thElements.forEach((th, index) => {
                     const texto = th.innerText.trim().toLowerCase();
@@ -256,13 +256,13 @@
                     if (texto === 'fecha') indexFecha = index;
                     else if (texto === 'hora') indexHora = index;
                     else if (texto !== 'acciones' && texto !== 'urgencia') {
-                        headers.push(th.innerText.trim());
+                        headers.push(capitalizarPrimeraLetra(th.innerText));
                         columnasIncluidas.push(index);
                     }
                 });
 
                 if (indexFecha !== -1 && indexHora !== -1) {
-                    headers.unshift('Fecha y Hora');
+                    headers.unshift('Fecha y hora');
                 }
 
                 const cleanText = html => {
@@ -312,7 +312,6 @@
                 const datosFiltrados = tablaDT.rows({
                     search: 'applied'
                 }).data().toArray();
-
                 const thElements = document.querySelectorAll('#miTabla thead tr th');
                 const columnasExcluidas = ['acciones', 'urgencia'];
                 const headers = [];

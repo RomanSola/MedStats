@@ -1,4 +1,4 @@
-<x-guest-layout>
+<x-<x-guest-layout>
     <div class="mb-4 text-sm text-gray-600">
         {{ __('¿Olvidaste tu contraseña? No hay problema. Simplemente indícanos tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña y podrás elegir una nueva.') }}
     </div>
@@ -20,6 +20,13 @@
             <x-primary-button>
                 {{ __('Recuperar Contraseña') }}
             </x-primary-button>
+        </div>
+
+        <div class="mt-2 text-center">
+            <a class="text-sm text-[#1B7D8F] hover:text-[#176d7b] transition-colors"
+               href="{{ route('login') }}">
+                {{ __('Volver atrás') }}
+            </a>
         </div>
     </form>
 </x-guest-layout>
