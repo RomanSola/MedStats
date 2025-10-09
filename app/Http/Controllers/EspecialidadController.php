@@ -57,15 +57,19 @@ class EspecialidadController extends Controller
         return redirect()->route('especialidades.index');
     }
 
-    public function destroy(Especialidad $especialidad)
-    {
-        //Verifico que la especialidad no exista en otras tablas antes de borrarlo
-        if ($especialidad->get_procedimientos()->exists() )
-        {
-            return redirect()->route('especialidades.index')
-                ->with('error', 'No se puede eliminar la especialidad porque tiene registros asociados.');
-        }
-        $especialidad->delete();
-        return redirect()->route('especialidades.index');
+public function destroy(Especialidad $especialidad)
+{
+    $tienePrimarios = $especialidad->procedimientos()->exists();
+    $tieneSecundarios = $especialidad->procedimientos_secundarios()->exists();
+
+    if ($tienePrimarios || $tieneSecundarios) {
+        return redirect()->route('especialidades.index')
+            ->with('error', 'No se puede eliminar: esta especialidad está asociada a procedimientos.');
     }
+
+    $especialidad->delete();
+
+    return redirect()->route('especialidades.index')
+        ->with('success', 'Especialidad eliminada correctamente.');
+}
 }
