@@ -69,12 +69,13 @@
                                 value="{{ old('direccion') }}">
                         </div>
                     </div>
-
-                    <div class="row mb-3">
-                        <div class="col-md-4">
-                            <label for="pais" class="form-label">País</label>
-                            <select name="pais_id" id="pais" class="form-control">
-                                <option value="">Seleccione un País</option>
+                    <!-- Ubicación -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div>
+                            <label for="pais" class="block text-sm font-semibold text-gray-700 mb-1">País</label>
+                            <select name="pais_id" id="pais"
+                                class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500">
+                                <option value="">Seleccione un país</option>
                                 @foreach ($paises as $pais)
                                     <option value="{{ $pais->id }}"
                                         {{ old('pais_id') == $pais->id ? 'selected' : '' }}>
@@ -87,17 +88,22 @@
                             @enderror
                         </div>
 
-                        <div class="col-md-4">
-                            <label for="provincia" class="form-label">Provincia</label>
-                            <select name="provincia_id" id="provincia" class="form-control"></select>
+                        <div>
+                            <label for="provincia" class="block text-sm font-semibold text-gray-700 mb-1">Provincia</label>
+                            <select name="provincia_id" id="provincia"
+                                class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500">
+                            </select>
                             @error('provincia_id')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
 
-                        <div class="col-md-4">
-                            <label for="codigo_postal" class="form-label">Código Postal</label>
-                            <select name="cod_postal_id" id="codigo_postal" class="form-control"></select>
+                        <div>
+                            <label for="codigo_postal" class="block text-sm font-semibold text-gray-700 mb-1">Código
+                                Postal</label>
+                            <select name="cod_postal_id" id="codigo_postal"
+                                class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500">
+                            </select>
                             @error('cod_postal_id')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
@@ -121,8 +127,6 @@
                     </div>
 
                     <div class="flex justify-between pt-4">
-
-
                         <a href="{{ route('empleados.index') }}"
                             class="btn btn-outline-danger px-5 py-2 rounded shadow-sm">
                             Cancelar
@@ -140,36 +144,74 @@
     </div>
 
     <!-- Scripts para combos dinámicos -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        document.getElementById('pais').addEventListener('change', function() {
-            let paisId = this.value;
-            console.log('Pais id:', paisId);
-            fetch('/api/provincias/' + paisId)
-                .then(res => res.json())
-                .then(data => {
-                    console.log('Datos recibidos:', data);
-                    const provinciaSelect = document.getElementById('provincia');
-                    provinciaSelect.innerHTML = '<option value="">Seleccione una provincia</option>';
-                    data.forEach(prov => {
-                        provinciaSelect.innerHTML +=
-                            `<option value="${prov.id}">${prov.nombre}</option>`;
-                    });
-                });
-        });
+        $(document).ready(function() {
+            let oldPaisId = "{{ old('pais_id') }}";
+            let oldProvinciaId = "{{ old('provincia_id') }}";
+            let oldCodPostalId = "{{ old('cod_postal_id') }}";
 
-        document.getElementById('provincia').addEventListener('change', function() {
-            const paisId = document.getElementById('pais').value;
-            const provinciaId = this.value;
-            fetch(`/api/cod_postal/${paisId}/${provinciaId}`)
-                .then(res => res.json())
-                .then(data => {
-                    const codigoPostalSelect = document.getElementById('codigo_postal');
-                    codigoPostalSelect.innerHTML = '<option value="">Seleccione un código postal</option>';
-                    data.forEach(cod => {
-                        const nombre = cod.codigo + (cod.localidad ? ' - ' + cod.localidad : '');
-                        codigoPostalSelect.innerHTML += `<option value="${cod.id}">${nombre}</option>`;
+            function cargarProvincias(paisId, selectedProvinciaId = null, callback = null) {
+                fetch(`/api/provincias/${paisId}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        let provincia = $('#provincia');
+                        provincia.html('<option value="">Seleccione una provincia</option>');
+
+                        data.forEach(p => {
+                            let selected = (selectedProvinciaId == p.id) ? 'selected' : '';
+                            provincia.append(
+                                `<option value="${p.id}" ${selected}>${p.nombre}</option>`);
+                        });
+
+                        if (callback) callback();
                     });
+            }
+
+            function cargarCodPostales(paisId, provinciaId, selectedCodPostalId = null) {
+                fetch(`/api/cod_postal/${paisId}/${provinciaId}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        let codigos = $('#codigo_postal');
+                        codigos.html('<option value="">Seleccione un código postal</option>');
+
+                        data.forEach(c => {
+                            let texto = `${c.codigo}${c.localidad ? ' - ' + c.localidad : ''}`;
+                            let selected = (selectedCodPostalId == c.id) ? 'selected' : '';
+                            codigos.append(`<option value="${c.id}" ${selected}>${texto}</option>`);
+                        });
+                    });
+            }
+
+            // Evento cuando cambia el país
+            $('#pais').on('change', function() {
+                let paisId = $(this).val();
+                $('#provincia').html('<option value="">Cargando...</option>');
+                $('#codigo_postal').html('<option value="">Seleccione un código postal</option>');
+                if (paisId) {
+                    cargarProvincias(paisId);
+                }
+            });
+
+            // Evento cuando cambia la provincia
+            $('#provincia').on('change', function() {
+                let paisId = $('#pais').val();
+                let provinciaId = $(this).val();
+                $('#codigo_postal').html('<option value="">Cargando...</option>');
+                if (paisId && provinciaId) {
+                    cargarCodPostales(paisId, provinciaId);
+                }
+            });
+
+            // Restaurar valores si hay datos viejos
+            if (oldPaisId) {
+                $('#pais').val(oldPaisId);
+                cargarProvincias(oldPaisId, oldProvinciaId, function() {
+                    if (oldProvinciaId) {
+                        cargarCodPostales(oldPaisId, oldProvinciaId, oldCodPostalId);
+                    }
                 });
+            }
         });
     </script>
 @endsection
