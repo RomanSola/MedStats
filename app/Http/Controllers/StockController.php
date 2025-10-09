@@ -173,7 +173,13 @@ public function estadisticas(Request $request)
     $hasta = $validated['hasta'] ?? now()->endOfMonth()->toDateString();
 
     // Totales generales
-    $totalStock = Stock::sum('cantidad_act');
+    $umbralDias = max(1, intval($request->input('dias', 30)));
+$fechaLimite = now()->subDays($umbralDias)->toDateString();
+
+    $totalStock = Stock::whereDoesntHave('historial_stock', function ($query) use ($fechaLimite) {
+        $query->where('fecha', '>', $fechaLimite);
+    })->sum('cantidad_act');
+    
 
     $totalAgregados = Historial_stock::where('cantidad', '>', 0)
         ->whereBetween('fecha', [$desde, $hasta])
