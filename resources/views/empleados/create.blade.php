@@ -29,14 +29,16 @@
                         </div>
                         <div class="col-md-4">
                             <label for="nombre" class="form-label">Nombre</label>
-                            <input type="text" name="nombre" id="nombre" class="form-control">
+                            <input type="text" name="nombre" id="nombre" class="form-control"
+                                value="{{ old('nombre') }}">
                             @error('nombre')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
                         <div class="col-md-4">
                             <label for="apellido" class="form-label">Apellido</label>
-                            <input type="text" name="apellido" id="apellido" class="form-control">
+                            <input type="text" name="apellido" id="apellido" class="form-control"
+                                value="{{ old('apellido') }}">
                             @error('apellido')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
@@ -46,12 +48,16 @@
                     <div class="row mb-3">
                         <div class="col-md-4">
                             <label for="fecha_nacimiento" class="form-label">Fecha de nacimiento</label>
-                            <input type="date" name="fecha_nacimiento" id="fecha_nacimiento" class="form-control">
+                            <input type="date" name="fecha_nacimiento" id="fecha_nacimiento" class="form-control"
+                                value="{{ old('fecha_nacimiento') }}">
+                            @error('fecha_nacimiento')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
                         </div>
                         <div class="col-md-4">
                             <label for="telefono" class="form-label">Teléfono</label>
                             <input type="text" name="telefono" id="telefono" class="form-control" maxlength="15"
-                                pattern="^\d{1,15}$" inputmode="numeric" autocomplete="tel">
+                                pattern="^\d{1,15}$" inputmode="numeric" autocomplete="tel" value="{{ old('telefono') }}">
                             @error('telefono')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
@@ -59,7 +65,8 @@
 
                         <div class="col-md-4">
                             <label for="direccion" class="form-label">Dirección</label>
-                            <input type="text" name="direccion" id="direccion" class="form-control">
+                            <input type="text" name="direccion" id="direccion" class="form-control"
+                                value="{{ old('direccion') }}">
                         </div>
                     </div>
 
@@ -69,7 +76,8 @@
                             <select name="pais_id" id="pais" class="form-control">
                                 <option value="">Seleccione un País</option>
                                 @foreach ($paises as $pais)
-                                    <option value="{{ $pais->id }}" {{ old('pais_id') == $pais->id ? 'selected' : '' }}>
+                                    <option value="{{ $pais->id }}"
+                                        {{ old('pais_id') == $pais->id ? 'selected' : '' }}>
                                         {{ $pais->nombre }}
                                     </option>
                                 @endforeach
