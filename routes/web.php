@@ -45,7 +45,8 @@ Route::middleware('auth')->group(function () {
 
 
 Route::get('/', function () {return view('index');})->middleware('auth')->name('inicio');
-
+//rutas para roles
+Route::post('/usuarios/{id}/actualizar-rol', [App\Http\Controllers\UsuarioPerfilController::class, 'actualizarRol'])->name('usuarios.actualizarRol');
 
 
 //Buscador

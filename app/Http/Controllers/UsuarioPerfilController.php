@@ -19,6 +19,25 @@ class UsuarioPerfilController extends Controller
     {
         return view('UsuarioPerfil.create');
     }
+    public function actualizarRol(Request $request, $id)
+    {
+    $request->validate([
+        'role' => 'required|integer|min:1|max:4',
+    ]);
+
+    $usuario = User::findOrFail($id);
+    $usuario->role = $request->role;
+    $usuario->save();
+
+    return redirect()->route('UsuarioPerfil.index')->with('success', 'Rol actualizado correctamente.');
+    }
+public function index()
+    {
+    $perfiles = UsuarioPerfil::all();
+    $usuarios = User::all();
+
+    return view('UsuarioPerfil.index', compact('perfiles', 'usuarios'));    
+    }
 
     public function store(Request $request)
     {
