@@ -28,7 +28,7 @@ class EspecialidadController extends Controller
     public function store(Request $request)
     {
         $request->validate([ //Si el titulo esta vacio no hace nada 
-            'nombre' => 'required',
+            'nombre' => 'required|string|max:50',
         ]);
 
         $especialidad = new Especialidad();
@@ -37,7 +37,8 @@ class EspecialidadController extends Controller
         //dd($especialidades);
         $especialidad->save(); //Guarda en la BD, si existe lo actualiza, sino crea
 
-        return redirect()->route('especialidades.index');
+    return redirect()->route('especialidades.index')
+        ->with('success', 'Especialidad creada correctamente.');
     }
 
     public function edit(Especialidad $especialidad)
