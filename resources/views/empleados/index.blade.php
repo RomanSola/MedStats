@@ -91,14 +91,33 @@ $(document).ready(function () {
     $('#tablaEmpleados').DataTable({
         dom: '<"top-controls"<"col-sm-6"f>>rt<"bottom-controls"<"col-sm-6"i><"col-sm-6"p>>',
         language: {
-            url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
+            url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json',
+            emptyTable: "No hay datos disponibles en la tabla",
+            info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+            infoEmpty: "Mostrando 0 a 0 de 0 registros",
+            infoFiltered: "(filtrado de _MAX_ registros totales)",
+            lengthMenu: "Mostrar _MENU_ registros",
+            loadingRecords: "Cargando...",
+            processing: "Procesando...",
+            search: "Buscar:",
+            zeroRecords: "No se encontraron registros coincidentes",
+            paginate: {
+                first: "Primero",
+                last: "Último",
+                next: "Siguiente",
+                previous: "Anterior"
+            },
+            aria: {
+                sortAscending: ": activar para ordenar la columna ascendente",
+                sortDescending: ": activar para ordenar la columna descendente"
+            }
         },
         paging: true,
         searching: true,
         ordering: true,
         info: true,
         columnDefs: [
-            { orderable: false, targets: 5 } // Desactiva orden en columna "Acciones"
+            { orderable: false, targets: 5 }
         ]
     });
 });
