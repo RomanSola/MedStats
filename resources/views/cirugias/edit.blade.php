@@ -341,15 +341,31 @@
 
                         {{-- Duración cirugía (horas y minutos) --}}
                         <div class="col-md-4">
-                            <label for="duracion" class="form-label">Duración de la cirugía</label>
-                            {{-- Usamos input type="time" para horas:minutos; alternativa: dos selects --}}
-                            <input type="time" name="duracion" id="duracion" class="form-control"
-                                step="60" value="{{ old('duracion', $cirugia->duracion) }}">
-                            <small class="form-text text-muted">Indique la duración (HH:MM)</small>
-                            @error('duracion')
-                                <small class="text-danger">{{ $message }}</small>
+                            <label class="form-label fw-semibold text-primary mb-1">Duración de la cirugía</label>
+
+                            <div class="row gx-1 align-items-center">
+                                <div class="col-6">
+                                    <label for="duracion_horas" class="form-label mb-1 small">Horas</label>
+                                    <input type="number" name="duracion_horas" id="duracion_horas"
+                                        class="form-control form-control-sm py-0" min="0"
+                                        value="{{ old('duracion_horas', intval(explode(':', $cirugia->duracion)[0] ?? 0)) }}">
+                                </div>
+                                <div class="col-6">
+                                    <label for="duracion_minutos" class="form-label mb-1 small">Minutos</label>
+                                    <input type="number" name="duracion_minutos" id="duracion_minutos"
+                                        class="form-control form-control-sm py-0" min="0" max="59"
+                                        value="{{ old('duracion_minutos', intval(explode(':', $cirugia->duracion)[1] ?? 0)) }}">
+                                </div>
+                            </div>
+
+                            @error('duracion_horas')
+                                <small class="text-danger d-block">{{ $message }}</small>
+                            @enderror
+                            @error('duracion_minutos')
+                                <small class="text-danger d-block">{{ $message }}</small>
                             @enderror
                         </div>
+
 
                         <div class="col-md-4">
                             <label class="form-label d-block">Urgencia</label>
