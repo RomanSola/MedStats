@@ -15,7 +15,11 @@
 
     <!-- Botón volver -->
     @php
-        $rutaActual = request()->route()->getName();
+        $rutaActual = request()->route();
+
+        if($rutaActual){
+            $rutaActual = $rutaActual->getName();
+        }
 
         switch ($rutaActual) {
             // Rutas que vuelven al inicio

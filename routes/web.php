@@ -51,10 +51,12 @@ Route::get('/', [InicioController::class, 'index'])->middleware('auth')->name('i
 
 
 //Buscador
-Route::get('/buscar', [PersonaController::class, 'buscar'])->name('buscar');
-Route::get('/buscar/ajax', [PersonaController::class, 'buscarAjax'])->name('buscar.ajax');
-Route::get('/persona/{id}', [PersonaController::class, 'ver'])->name('persona.ver');
-Route::get('/pacientes/live-search', [PacienteController::class, 'liveSearch'])->name('pacientes.live-search');
+Route::middleware(['auth', 'roles:administrador'])->group(function(){
+    Route::get('/buscar', [PersonaController::class, 'buscar'])->name('buscar');
+    Route::get('/buscar/ajax', [PersonaController::class, 'buscarAjax'])->name('buscar.ajax');
+    Route::get('/persona/{id}', [PersonaController::class, 'ver'])->name('persona.ver');
+    Route::get('/pacientes/live-search', [PacienteController::class, 'liveSearch'])->name('pacientes.live-search');
+});
 
 
 // configuracion

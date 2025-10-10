@@ -4,6 +4,8 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use function PHPUnit\Framework\returnArgument;
 
 class Handler extends ExceptionHandler
 {
@@ -26,5 +28,18 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    public function render($request, Throwable $e){
+        if($e instanceof NotFoundHttpException){
+            $view = view('errors.404');
+            if(auth()->check()){
+                return response()->view('errors.404', [], 404);
+            }else{
+                return response()->view('errors.404-guest', [], 404);
+            }
+        }
+
+        return parent::render($request, $e);
     }
 }
