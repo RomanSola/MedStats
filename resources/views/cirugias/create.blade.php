@@ -339,7 +339,7 @@
                                 <div class="col-6">
                                     <label for="duracion_minutos" class="form-label mb-1 small">Minutos</label>
                                     <input type="number" name="duracion_minutos" id="duracion_minutos"
-                                        class="form-control form-control-sm py-0" min="0" max="59"
+                                        class="form-control form-control-sm py-0" min="1" max="59"
                                         value="{{ old('duracion_minutos') }}">
                                     @error('duracion_minutos')
                                         <div><small class="text-danger">{{ $message }}</small></div>
