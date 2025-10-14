@@ -32,26 +32,38 @@
     </div>
     </div>
     </form> --}}
-    {{-- Filtro por período --}}
-    <form method="GET" action="{{ route('cirugias.estadisticas') }}" class="bg-light p-3 rounded shadow-sm mb-4">
-        <div class="row g-2 align-items-end">
-            <div class="col-md-4">
-                <label for="desde" class="form-label fw-semibold text-primary">Desde</label>
-                <input type="date" name="desde" id="desde" class="form-control form-control-sm"
-                    value="{{ request('desde') }}">
+
+    {{-- Filtro por tiempo y especialidad --}}
+    <form method="GET" action="{{ route('cirugias.estadisticas') }}" class="bg-white p-4 rounded shadow mb-6">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+            <div>
+                <label for="desde" class="block text-sm font-medium text-gray-700">Desde</label>
+                <input type="date" name="desde" id="desde" value="{{ request('desde') }}" class="form-input w-full">
             </div>
-            <div class="col-md-4">
-                <label for="hasta" class="form-label fw-semibold text-primary">Hasta</label>
-                <input type="date" name="hasta" id="hasta" class="form-control form-control-sm"
-                    value="{{ request('hasta') }}">
+
+            <div>
+                <label for="hasta" class="block text-sm font-medium text-gray-700">Hasta</label>
+                <input type="date" name="hasta" id="hasta" value="{{ request('hasta') }}" class="form-input w-full">
             </div>
-            <div class="col-md-4 d-flex align-items-end">
-                <button type="submit" class="btn btn-sm btn-outline-primary w-100">
-                    <i class="bi bi-filter-circle me-1"></i> Aplicar filtro
-                </button>
+
+            <div>
+                <label for="especialidad_id" class="block text-sm font-medium text-gray-700">Especialidad</label>
+                <select name="especialidad_id" id="especialidad_id" class="form-select w-full">
+                    <option value="">Todas</option>
+                    @foreach($especialidades as $esp)
+                        <option value="{{ $esp->id }}" {{ $esp->id == request('especialidad_id') ? 'selected' : '' }}>
+                            {{ $esp->nombre }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div>
+                <button type="submit" class="btn btn-primary w-full">Aplicar filtro</button>
             </div>
         </div>
     </form>
+
     @if ($errors->has('desde') || $errors->has('hasta'))
         <div class="alert alert-warning mt-2">
             <strong>⚠️ Atención:</strong> Hubo un problema con las fechas ingresadas.
