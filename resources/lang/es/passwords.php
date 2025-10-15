@@ -13,6 +13,7 @@ return [
 	|
 	*/
 
+	'throttled'=>'Por favor espera antes de volver a intentarlo',
     'password' => 'Las contraseñas deben contener al menos 6 caracters y coincidir.',
     'reset' => 'Su contraseña ha sido cambiada.',
     'sent' => 'Le hemos enviado un correo de cambio de contraseña!',
