@@ -155,8 +155,6 @@ class CirugiaController extends Controller
             ]);
         }
 
-
-
         $cirugia = new Cirugia();
         //Datos del POST se obtiene en request
         $cirugia->paciente_id = $request->input('paciente_id');
@@ -384,18 +382,6 @@ class CirugiaController extends Controller
 
     public function estadisticas(Request $request)
     {
-        // $desde = request('desde');
-        // $hasta = request('hasta');
-
-        // Si no se especifica, se usa el año actual como rango completo
-        // if (!$desde || !$hasta) {
-        //     $anioSeleccionado = request('anio') ?? now()->year;
-        //     $desde = "$anioSeleccionado-01-01";
-        //     $hasta = "$anioSeleccionado-12-31";
-        // }
-
-        // Validación directa desde el Request
-        //dd( $request->all() );
         $validated = $request->validate([
             'desde' => 'nullable|date|before_or_equal:today',
             'hasta' => 'nullable|date|after_or_equal:desde|before_or_equal:today',
@@ -407,11 +393,10 @@ class CirugiaController extends Controller
             'hasta.before_or_equal' => 'La fecha de fin no puede ser futura.',
         ]);
 
-        // Asignar fechas por defecto si no se enviaron
         $desde = $validated['desde'] ?? now()->startOfMonth()->toDateString();
         $hasta = $validated['hasta'] ?? now()->endOfMonth()->toDateString();
-
-
+        $especialidadId = $request->input('especialidad_id');
+        $especialidades = \App\Models\Especialidad::orderBy('nombre')->get();
 
         $aniosDisponibles = \App\Models\Cirugia::select(DB::raw('YEAR(created_at) as anio'))
             ->distinct()
@@ -419,7 +404,10 @@ class CirugiaController extends Controller
             ->pluck('anio');
 
         // Base query reutilizable
-        $baseQuery = \App\Models\Cirugia::whereBetween('created_at', [$desde, $hasta]);
+        $baseQuery = \App\Models\Cirugia::whereBetween('created_at', [$desde, $hasta])
+        ->when($especialidadId, function ($query, $especialidadId) {
+            return $query->where('especialidad_id', $especialidadId);
+        });
 
         $total = $baseQuery->count();
 
@@ -516,7 +504,9 @@ class CirugiaController extends Controller
             'aniosDisponibles',
             'total',
             'promedioMensual',
-            'promedioSemanal'
+            'promedioSemanal',
+            'especialidadId',
+            'especialidades',
         ));
     }
 }

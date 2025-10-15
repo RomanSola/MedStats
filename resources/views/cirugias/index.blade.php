@@ -1,27 +1,25 @@
 @extends('layouts.app')
 @section('title', 'Gestión de Cirugías')
 @section('contenido')
-    <div class="max-w-6xl mx-auto px-4 py-8">
+    <div class="w-100" style="padding-left: 0; margin-left: 0;">
         <div class="flex justify-between items-center mb-6">
-            <h1
-                class="text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent  bg-clip-text drop-shadow-md  flex items-center gap-2 px-2">
-                Gestor de Cirugías</h1>
-            <a href="{{ route('cirugias.create') }}"
+            <div class="flex items-center gap-3">
+                <h1 class="text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent bg-clip-text drop-shadow-md px-2">
+                    Gestor de Cirugías
+                </h1>
+                <a href="{{ route('cirugias.create') }}"
                 class="inline-block bg-neutral-700 hover:bg-neutral-800 text-white font-medium py-2 px-6 rounded-full shadow-md cursor-pointer transition duration-300"
                 style="text-decoration: none;">
-                Ingresar Nueva Cirugía
-            </a>
+                    Ingresar Nueva Cirugía
+                </a>
+            </div>
         </div>
-        <div class="card border">
-            <div class="card-body">
-                <p class="mb-3 text-secondary fw-semibold">Administrá las cirugías registradas en el sistema. Podés ver
-                    detalles y editarlos.
-                </p>
-
-                <div class="bg-white shadow rounded-lg border border-gray-200 overflow-auto">
-                    <div class="dataTables_wrapper">
-                        <div class="top-controls d-flex flex-wrap align-items-center gap-3 justify-content-between">
-
+        <div class="card border-0 shadow-none rounded-0">
+        <div class="card-body p-0">
+            <p class="mb-3 text-secondary fw-semibold"> Administrá las cirugías registradas en el sistema. Podés ver detalles y editarlos.</p>
+        <div class="bg-white shadow-sm rounded-0 overflow-auto">
+            <div class="dataTables_wrapper">
+                <div class="top-controls d-flex flex-wrap align-items-center gap-2 justify-content-between">
                             {{-- Selector de cantidad --}}
                             <div class="dataTables_length"></div>
 
@@ -29,7 +27,7 @@
                             <div class="dataTables_filter"></div>
 
                             {{-- Filtros de fecha integrados --}}
-                            <div class="fechas d-flex align-items-center gap-3">
+                            <div class="fechas d-flex align-items-center gap-2">
                                 <div>
                                     <label for="fechaDesde" class="form-label mb-0">Desde:</label>
                                     <input type="date" id="fechaDesde" class="form-control form-control-sm">
@@ -44,12 +42,12 @@
                             </div>
                         </div>
                         <table id="miTabla" class=" table table-hover table-bordered shadow-sm text-center rounded">
-                            <div class="d-flex justify-content-start align-items-center gap-3 mb-3">
+                            <div class="d-flex justify-content-start align-items-center gap-2 mb-3">
                                 <thead>
                                     <tr>
                                         <th>Fecha</th>
                                         <th>Hora</th>
-                                        <th>Quirófano</th>
+                                        <th>N°Q</th>
                                         <th>Edad</th>
                                         <th>DNI</th>
                                         <th>Paciente</th>
@@ -57,13 +55,10 @@
                                         <th>Cirujano</th>
                                         <th class="no-print">Ayudante 1</th>
                                         <th class="no-print">Ayudante 2</th>
-                                        <th>Anestesista</th>
-                                        <th>Instrumentador</th>
-                                        <th class="no-print">Instrumentador 2</th>
+                                        <th>Anestesiologo</th>
+                                        <th>Instrumentador</th>                            
                                         <th>Enfermero</th>
-                                        <th class="no-print">Enfermero 2</th>
-                                        <th>Tipo de Anestesia</th>
-                                        <th class="no-print">Tipo de Anestesia 2</th>
+                                        <th>Tipo de Anestesia</th>                                  
                                         <th class="no-print">Urgencia</th>
                                         <th class="no-print">óbito</th>
                                         <th class="text-center no print">Acciones</th>
@@ -96,12 +91,9 @@
                                             <td class="no-print">{{ $cirugia->get_ayudante1->nombre ?? '-' }} {{ $cirugia->get_ayudante1->apellido ?? '' }}</td>
                                             <td class="no-print">{{ optional($cirugia->get_ayudante2)->nombre ?? '-' }} {{ optional($cirugia->get_ayudante2)->apellido ?? '' }}</td>
                                             <td>{{ $cirugia->get_anestesista->nombre }} {{ $cirugia->get_anestesista->apellido }}</td>
-                                            <td>{{ optional($cirugia->get_instrumentador)->nombre }} {{ optional($cirugia->get_instrumentador)->apellido }}</td>
-                                            <td class="no-print">{{ optional($cirugia->get_instrumentador2)->nombre ?? '-' }} {{ optional($cirugia->get_instrumentador2)->apellido ?? '' }}</td>
-                                            <td>{{ optional($cirugia->get_enfermero)->nombre }} {{ optional($cirugia->get_enfermero)->apellido }}</td>
-                                            <td class="no-print">{{ optional($cirugia->get_enfermero2)->nombre ?? '-' }} {{ optional($cirugia->get_enfermero2)->apellido ?? '' }}</td>
+                                            <td>{{ optional($cirugia->get_instrumentador)->nombre }} {{ optional($cirugia->get_instrumentador)->apellido }}</td>                                          
+                                            <td>{{ optional($cirugia->get_enfermero)->nombre }} {{ optional($cirugia->get_enfermero)->apellido }}</td> 
                                             <td>{{ $cirugia->get_tipo_anestesia->nombre }}</td>
-                                            <td class="no-print">{{ $cirugia->get_tipo_anestesia2->nombre ?? '-' }}</td>
                                             <td class="no-print">
                                                 {{ $cirugia->urgencia ? 'Si' : 'No' }}
                                             </td>
