@@ -21,8 +21,6 @@ class LoginRequest extends FormRequest
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\Rule|array|string>
      */
     public function rules(): array
     {
@@ -34,28 +32,20 @@ class LoginRequest extends FormRequest
 
     /**
      * Attempt to authenticate the request's credentials.
-     *
-     * @throws \Illuminate\Validation\ValidationException
      */
     public function authenticate(): void
     {
         $this->ensureIsNotRateLimited();
 
         if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
-            RateLimiter::hit($this->throttleKey());
-
-            throw ValidationException::withMessages([
-                'email' => trans('auth.failed'),
-            ]);
+            $this->handleFailedLogin(); // Ahora este método existe
         }
 
-        RateLimiter::clear($this->throttleKey());
+        $this->handleSuccessfulLogin(); // Y este también
     }
 
     /**
      * Ensure the login request is not rate limited.
-     *
-     * @throws \Illuminate\Validation\ValidationException
      */
     public function ensureIsNotRateLimited(): void
     {
@@ -72,6 +62,33 @@ class LoginRequest extends FormRequest
                 'seconds' => $seconds,
                 'minutes' => ceil($seconds / 60),
             ]),
+        ]);
+    }
+
+    /**
+     * Handle failed login attempt.
+     */
+    protected function handleFailedLogin(): void
+    {
+        RateLimiter::hit($this->throttleKey());
+
+        throw ValidationException::withMessages([
+            'email' => trans('auth.failed'),
+        ]);
+    }
+
+    /**
+     * Handle successful login.
+     */
+    protected function handleSuccessfulLogin(): void
+    {
+        RateLimiter::clear($this->throttleKey());
+
+        // Auditoría opcional
+        \Log::info('Login exitoso', [
+            'user_id' => auth()->id(),
+            'email' => $this->email,
+            'ip' => $this->ip()
         ]);
     }
 
