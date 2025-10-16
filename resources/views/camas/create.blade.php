@@ -73,7 +73,7 @@
                 {{-- Botones --}}
                     <div class="flex justify-between pt-4">
 
-                        <a href="{{ route('camas.index') }}" class="btn btn-outline-danger px-5 py-2 rounded shadow-sm">
+                        <a href="{{ route('camas.listar') }}" class="btn btn-outline-danger px-5 py-2 rounded shadow-sm">
                              Cancelar
                         </a>
                     <button type="submit"

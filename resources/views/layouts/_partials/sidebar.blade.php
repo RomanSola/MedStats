@@ -15,7 +15,11 @@
 
     <!-- Botón volver -->
     @php
-        $rutaActual = request()->route()->getName();
+        $rutaActual = request()->route();
+
+        if($rutaActual){
+            $rutaActual = $rutaActual->getName();
+        }
 
         switch ($rutaActual) {
             // Rutas que vuelven al inicio
@@ -31,6 +35,7 @@
 
             // Rutas que vuelven a Ajustes
             case 'usuarios.index':
+            case 'camas.listar':
             case 'medicamentos.index':
             case 'UsuarioPerfil.index':
             case 'empleados.index':
@@ -42,6 +47,7 @@
             case 'tipoAnestesias.index':
             case 'ocupacionCamas.index':
             case 'perfiles.index':
+            case 'especialidades.index':
                 $rutaAnterior = 'ajustes';
                 break;
 
@@ -69,7 +75,7 @@
             case 'camas.create':
             case 'camas.edit':
             case 'camas.show':
-                $rutaAnterior = 'camas.index';
+                $rutaAnterior = 'camas.listar';
                 break;
 
             // Empleados
@@ -153,6 +159,13 @@
             case 'quirofanos.show':
                 $rutaAnterior = 'quirofanos.index';
                 break;
+
+            // Especialidades
+            case 'especialidades.create':
+            case 'especialidades.edit':
+                $rutaAnterior = 'especialidades.index';
+                break;    
+
 
             // Por defecto
             default:

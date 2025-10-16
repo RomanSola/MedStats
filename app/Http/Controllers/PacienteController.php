@@ -201,7 +201,7 @@ class PacienteController extends Controller
 
     public function asignarDirecta(Request $request, $id)
 {
-    $paciente = Paciente::findOrFail($id); // 🔒 Esto garantiza que el paciente exista
+    $paciente = Paciente::findOrFail($id);
 
     $request->validate([
         'cama_id' => 'required|exists:camas,id',
@@ -213,7 +213,6 @@ class PacienteController extends Controller
         return back()->with('error', 'La cama seleccionada ya está ocupada.');
     }
 
-    // Si el paciente ya tiene una cama, liberamos la anterior
     if ($paciente->cama_id) {
         $camaAnterior = Cama::find($paciente->cama_id);
         if ($camaAnterior) {
@@ -232,7 +231,6 @@ class PacienteController extends Controller
         }
     }
 
-    // Asignamos la nueva cama
     $paciente->habitacion_id = $nuevaCama->habitacion_id;
     $paciente->cama_id = $nuevaCama->id;
     $paciente->save();
@@ -246,8 +244,11 @@ class PacienteController extends Controller
         'fecha_ingreso' => now()
     ]);
 
-    return redirect()->route('camas.index')->with('success', 'Paciente reasignado correctamente a la nueva cama.');
+    // ✅ Cambio mínimo: preservar sala_id en la redirección
+    return redirect()->route('camas.index', ['sala_id' => $request->input('sala_id')])
+        ->with('success', 'Paciente reasignado correctamente a la nueva cama.');
 }
+
 
 public function darDeAlta(Paciente $paciente)
 {

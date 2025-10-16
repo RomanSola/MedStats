@@ -12,8 +12,12 @@ class Especialidad extends Model
     protected $fillable = [
         'nombre' ];
       
-    public function get_procedimientos()
-    {
-        return $this->hasMany(Procedimiento::class);
-    }
+public function procedimientos()
+{
+    return $this->hasMany(Procedimiento::class, 'especialidad_id');
+}
+public function procedimientos_secundarios()
+{
+    return $this->hasMany(Procedimiento::class, 'especialidad_2_id');
+}
 }

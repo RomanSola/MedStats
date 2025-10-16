@@ -3,7 +3,7 @@
 @section('title', 'Lista de Especialidades')
 
 @section('contenido')
-    <div class="container mt-4">
+    {{-- {{-- <div class="container mt-4">-- --}}
         <div class="max-w-7xl mx-auto px-4 py-8">
             <div class="flex justify-between items-center mb-6">
                 <h1
@@ -18,7 +18,7 @@
             </div>
 
             {{-- Contenedor principal con borde gris institucional --}}
-            <div class="card border-secondary shadow-sm mb-4">
+            <div class="card border">
                 <div class="card-body">
 
                     <p class="mb-3 text-secondary fw-semibold">
@@ -52,13 +52,22 @@
                                         <td class="text-center">
                                             <a href="{{ route('especialidades.edit', $especialidad) }}"
                                                 class="btn btn-outline-warning btn-sm me-1">Editar</a>
-                                            <form action="{{ route('especialidades.destroy', $especialidad) }}" method="POST"
-                                                class="d-inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button class="btn btn-outline-danger btn-sm"
-                                                    onclick="return confirm('¿Estás seguro de que querés eliminar este procedimiento?')">Eliminar</button>
-                                            </form>
+                                            @if (!$especialidad->procedimientos()->exists() && !$especialidad->procedimientos_secundarios()->exists())
+                                                <form action="{{ route('especialidades.destroy', $especialidad) }}" method="POST"
+                                                    class="d-inline">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button class="btn btn-outline-danger btn-sm"
+                                                        onclick="return confirm('¿Estás seguro de que querés eliminar esta especialidad?')">
+                                                        Eliminar
+                                                    </button>
+                                                </form>
+                                            @else
+                                                <button class="btn btn-outline-secondary btn-sm" disabled
+                                                    title="Esta sala no se puede eliminar">
+                                                    No eliminable
+                                                </button>
+                                            @endif
                                         </td>
                                     </tr>
                                 @empty

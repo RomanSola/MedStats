@@ -1,4 +1,7 @@
-{{--<div class="container mt-2">
+{{--
+SE MOVIÓ A LAYOUTS -> _PARTIALS -> SIDEBAR.BLADE
+
+<div class="container mt-2">
     @php
         $rutaActual = request()->route()->getName();
 

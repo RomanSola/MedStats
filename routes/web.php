@@ -19,6 +19,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BusquedaController;
 use App\Http\Controllers\PersonaController;
 use App\Http\Controllers\EspecialidadController;
+use App\Http\Controllers\InicioController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -44,16 +45,18 @@ Route::middleware('auth')->group(function () {
 });
 
 
-Route::get('/', function () {return view('index');})->middleware('auth')->name('inicio');
-//rutas para roles
-Route::post('/usuarios/{id}/actualizar-rol', [App\Http\Controllers\UsuarioPerfilController::class, 'actualizarRol'])->name('usuarios.actualizarRol');
+//Route::get('/', function () {return view('index');})->middleware('auth')->name('inicio');
+Route::get('/', [InicioController::class, 'index'])->middleware('auth')->name('inicio');
+
 
 
 //Buscador
-Route::get('/buscar', [PersonaController::class, 'buscar'])->name('buscar');
-Route::get('/buscar/ajax', [PersonaController::class, 'buscarAjax'])->name('buscar.ajax');
-Route::get('/persona/{id}', [PersonaController::class, 'ver'])->name('persona.ver');
-Route::get('/pacientes/live-search', [PacienteController::class, 'liveSearch'])->name('pacientes.live-search');
+Route::middleware(['auth', 'roles:administrador'])->group(function(){
+    Route::get('/buscar', [PersonaController::class, 'buscar'])->name('buscar');
+    Route::get('/buscar/ajax', [PersonaController::class, 'buscarAjax'])->name('buscar.ajax');
+    Route::get('/persona/{id}', [PersonaController::class, 'ver'])->name('persona.ver');
+    Route::get('/pacientes/live-search', [PacienteController::class, 'liveSearch'])->name('pacientes.live-search');
+});
 
 
 // configuracion
@@ -78,6 +81,7 @@ Route::middleware(['auth', 'roles:administrador'])->group(function(){
     Route::get('/perfiles/{perfil}/edit', [UsuarioPerfilController::class, 'edit'])->name('UsuarioPerfil.edit');
     Route::put('/perfiles/{perfil}', [UsuarioPerfilController::class, 'update'])->name('UsuarioPerfil.update');
     Route::delete('/perfiles/{perfil}', [UsuarioPerfilController::class, 'destroy'])->name('UsuarioPerfil.destroy');
+    
 });
 
 

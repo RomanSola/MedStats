@@ -3,7 +3,7 @@
 @section('titulo', 'Gestión de Camas')
 
 @section('contenido')
-
+<div class="max-w-7xl mx-auto px-4 py-8">
     <div class="flex justify-between items-center mb-6">
         <h1
             class="text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent bg-clip-text drop-shadow-md flex items-center gap-2 px-2">
@@ -61,14 +61,11 @@
                                     @endphp
 
                                     @if ($dias < 15)
-                                        <p><strong>Edad:</strong> {{ $dias }} {{ $dias === 1 ? 'día' : 'días' }}
-                                        </p>
+                                        <p><strong>Edad:</strong> {{ $dias }} {{ $dias === 1 ? 'día' : 'días' }}</p>
                                     @elseif ($dias < 31)
-                                        <p><strong>Edad:</strong> {{ $semanas }}
-                                            {{ $semanas === 1 ? 'semana' : 'semanas' }}</p>
+                                        <p><strong>Edad:</strong> {{ $semanas }} {{ $semanas === 1 ? 'semana' : 'semanas' }}</p>
                                     @elseif ($anios < 1)
-                                        <p><strong>Edad:</strong> {{ $meses }} {{ $meses === 1 ? 'mes' : 'meses' }}
-                                        </p>
+                                        <p><strong>Edad:</strong> {{ $meses }} {{ $meses === 1 ? 'mes' : 'meses' }}</p>
                                     @elseif ($anios < 3)
                                         <p><strong>Edad:</strong> {{ $anios }} {{ $anios === 1 ? 'año' : 'años' }}
                                             @if ($mesesExtras > 0)
@@ -106,16 +103,14 @@
                                         </button>
                                     </form>
                                 @else
-                                    <button type="button" class="btn btn-outline-secondary btn-sm" data-toggle="modal"
-                                        data-target="#asignarPacienteModal" data-cama-id="{{ $cama->id }}">
+                                    <button type="button" class="btn btn-outline-secondary btn-sm"
+                                        data-toggle="modal"
+                                        data-target="#asignarPacienteModal"
+                                        data-cama-id="{{ $cama->id }}"
+                                        data-sala-id="{{ request('sala_id') }}">
                                         Asignar paciente
                                     </button>
                                 @endif
-
-                                <a href="{{ route('camas.edit', ['cama' => $cama->id]) }}"
-                                    class="btn btn-outline-warning btn-sm">
-                                    Editar cama
-                                </a>
                             </div>
                         </div>
                     </div>
@@ -123,177 +118,142 @@
             </div>
         </div>
     </div>
-    </div>
-
-    @push('modales')
-        {{-- Modal Asignar Paciente --}}
-        <div class="modal fade" id="asignarPacienteModal" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Asignar paciente a cama</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <input type="text" id="buscarPaciente" class="form-control mb-3"
-                            placeholder="Buscar paciente por nombre o DNI...">
-                        <div id="listaPacientes">
-                            <p class="text-muted">Escriba para buscar pacientes.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        {{-- Modal Confirmar Reasignación --}}
-        <div class="modal fade" id="confirmarReasignacionModal" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Confirmar reasignación</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        ¿Estás seguro de que querés reasignar a este paciente a otra cama?
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-danger" id="btnConfirmarReasignacion">Confirmar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    @endpush
-
-
-    {{-- Modal 
-<div class="modal fade" id="asignarPacienteModal" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Asignar paciente a cama</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <input type="text" id="buscarPaciente" class="form-control mb-3" placeholder="Buscar paciente por nombre o DNI...">
-        <div id="listaPacientes">
-          <p class="text-muted">Escriba para buscar pacientes.</p>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
-{{-- Modal Script
-<div class="modal fade" id="confirmarReasignacionModal" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Confirmar reasignación</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        ¿Estás seguro de que querés reasignar a este paciente a otra cama?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-danger" id="btnConfirmarReasignacion">Confirmar</button>
-      </div>
-    </div>
-  </div>
-</div> --}}
 
-    {{-- Script --}}
-    @push('scripts')
-        <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                let camaSeleccionada = null;
-                let formPendiente = null;
-
-                const inputBusqueda = document.getElementById('buscarPaciente');
-                const listaPacientes = document.getElementById('listaPacientes');
-                const csrfToken = "{{ csrf_token() }}";
-
-                $('#asignarPacienteModal').on('show.bs.modal', function(event) {
-                    const button = $(event.relatedTarget);
-                    camaSeleccionada = button.data('cama-id');
-                    inputBusqueda.value = "";
-                    listaPacientes.innerHTML = "<p class='text-muted'>Escriba para buscar pacientes.</p>";
-                });
-
-                inputBusqueda.addEventListener("keyup", function() {
-                    const q = this.value.trim();
-                    if (q.length < 2) {
-                        listaPacientes.innerHTML = "<p class='text-muted'>Escriba al menos 2 caracteres.</p>";
-                        return;
-                    }
-
-                    fetch(`/pacientes/live-search?buscar=${encodeURIComponent(q)}`)
-                        .then(res => res.json())
-                        .then(data => {
-                            listaPacientes.innerHTML = "";
-                            if (data.length === 0) {
-                                listaPacientes.innerHTML =
-                                    "<p class='text-danger'>No se encontraron pacientes.</p>";
-                                return;
-                            }
-
-                            data.forEach(p => {
-                                const form = document.createElement("form");
-                                form.method = "POST";
-                                form.action = `/pacientes/${p.id}/asignar-directa`;
-
-                                const yaAsignado = p.cama_id !== null;
-                                form.innerHTML = `
-    <input type="hidden" name="_token" value="${csrfToken}">
-    <input type="hidden" name="cama_id" value="${camaSeleccionada}">
-    <div class="border rounded p-2 mb-2 ${yaAsignado ? 'bg-light' : ''}">
-        <div class="d-flex justify-content-between align-items-center">
-            <div>
-                <strong>${p.nombre} ${p.apellido}</strong> (DNI: ${p.dni})
-                ${yaAsignado 
-                    ? `<br><span class="text-danger">⚠️ Este paciente ya tiene una cama asignada</span>` 
-                    : ''
-                }
+@push('modales')
+{{-- Modal Asignar Paciente --}}
+<div class="modal fade" id="asignarPacienteModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            {{-- El formulario se genera dinámicamente en JS --}}
+            <div class="modal-header">
+                <h5 class="modal-title">Asignar paciente a cama</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-            <div>
-                ${yaAsignado
-                    ? `<button type="button" class="btn btn-sm btn-outline-danger" onclick="confirmarReasignacion(this.form)">Reasignar</button>`
-                    : `<button type="submit" class="btn btn-sm btn-outline-success">Asignar</button>`
-                }
+            <div class="modal-body">
+                <input type="text" id="buscarPaciente" class="form-control mb-3"
+                    placeholder="Buscar paciente por nombre o DNI...">
+                <div id="listaPacientes">
+                    <p class="text-muted">Escriba para buscar pacientes.</p>
+                </div>
+
+                {{-- Campos ocultos para cama y sala --}}
+                <input type="hidden" name="cama_id" id="hiddenCamaId">
+                <input type="hidden" name="sala_id" id="hiddenSalaId">
             </div>
         </div>
-    </div>`;
-                                listaPacientes.appendChild(form);
-                            });
-                        })
-                        .catch(err => {
-                            console.error(err);
-                            listaPacientes.innerHTML =
-                                "<p class='text-danger'>Error al buscar pacientes.</p>";
-                        });
-                });
+    </div>
+</div>
 
-                window.confirmarReasignacion = function(form) {
-                    formPendiente = form;
-                    $('#confirmarReasignacionModal').modal('show');
-                };
+{{-- Modal Confirmar Reasignación --}}
+<div class="modal fade" id="confirmarReasignacionModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirmar reasignación</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ¿Estás seguro de que querés reasignar a este paciente a otra cama?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" id="btnConfirmarReasignacion">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>
+@endpush
 
-                document.getElementById('btnConfirmarReasignacion').addEventListener('click', function() {
-                    if (formPendiente) {
-                        formPendiente.submit();
-                        formPendiente = null;
-                        $('#confirmarReasignacionModal').modal('hide');
-                    }
+@push('scripts')
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    let camaSeleccionada = null;
+    let salaSeleccionada = null;
+    let formPendiente = null;
+
+    const inputBusqueda = document.getElementById('buscarPaciente');
+    const listaPacientes = document.getElementById('listaPacientes');
+    const csrfToken = "{{ csrf_token() }}";
+
+    $('#asignarPacienteModal').on('show.bs.modal', function(event) {
+        const button = $(event.relatedTarget);
+        camaSeleccionada = button.data('cama-id');
+        salaSeleccionada = button.data('sala-id');
+        document.getElementById('hiddenCamaId').value = camaSeleccionada;
+        document.getElementById('hiddenSalaId').value = salaSeleccionada;
+        inputBusqueda.value = "";
+        listaPacientes.innerHTML = "<p class='text-muted'>Escriba para buscar pacientes.</p>";
+    });
+
+    inputBusqueda.addEventListener("keyup", function() {
+        const q = this.value.trim();
+        if (q.length < 2) {
+            listaPacientes.innerHTML = "<p class='text-muted'>Escriba al menos 2 caracteres.</p>";
+            return;
+        }
+
+        fetch(`/pacientes/live-search?buscar=${encodeURIComponent(q)}`)
+            .then(res => res.json())
+            .then(data => {
+                listaPacientes.innerHTML = "";
+                if (data.length === 0) {
+                    listaPacientes.innerHTML = "<p class='text-danger'>No se encontraron pacientes.</p>";
+                    return;
+                }
+
+                data.forEach(p => {
+                    const form = document.createElement("form");
+                    form.method = "POST";
+                    form.action = `/pacientes/${p.id}/asignar-directa`;
+
+                    const yaAsignado = p.cama_id !== null;
+                    form.innerHTML = `
+<input type="hidden" name="_token" value="${csrfToken}">
+<input type="hidden" name="cama_id" value="${camaSeleccionada}">
+<input type="hidden" name="sala_id" value="${salaSeleccionada}">
+<div class="border rounded p-2 mb-2 ${yaAsignado ? 'bg-light' : ''}">
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            <strong>${p.nombre} ${p.apellido}</strong> (DNI: ${p.dni})
+            ${yaAsignado 
+                ? `<br><span class="text-danger">⚠️ Este paciente ya tiene una cama asignada</span>` 
+                : ''
+            }
+        </div>
+        <div>
+            ${yaAsignado
+                ? `<button type="button" class="btn btn-sm btn-outline-danger" onclick="confirmarReasignacion(this.form)">Reasignar</button>`
+                : `<button type="submit" class="btn btn-sm btn-outline-success">Asignar</button>`
+            }
+        </div>
+    </div>
+</div>`;
+                    listaPacientes.appendChild(form);
                 });
+            })
+            .catch(err => {
+                console.error(err);
+                listaPacientes.innerHTML = "<p class='text-danger'>Error al buscar pacientes.</p>";
             });
-        </script>
-    @endpush
-@endsection
+    });
+
+    window.confirmarReasignacion = function(form) {
+        formPendiente = form;
+        $('#confirmarReasignacionModal').modal('show');
+    };
+
+    document.getElementById('btnConfirmarReasignacion').addEventListener('click', function() {
+        if (formPendiente) {
+            formPendiente.submit();
+            formPendiente = null;
+            $('#confirmarReasignacionModal').modal('hide');
+        }
+    });
+});
+</script>
+@endpush

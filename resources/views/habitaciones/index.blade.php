@@ -17,8 +17,8 @@
             </div>
 
             {{-- Contenedor principal con borde gris institucional --}}
-            <div class="card border-secondary shadow-sm mb-4">
-                <div class="card-body">
+            <div class="card border">
+            <div class="card-body">
 
                     <p class="mb-3 text-secondary fw-semibold">
                         Visualizá, editá o eliminá habitaciones del sistema.

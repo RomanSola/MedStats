@@ -72,7 +72,8 @@ class CirugiaController extends Controller
             'enfermero_id' => 'required|exists:empleados,id',
             'fecha_cirugia' => 'required',
             'hora_cirugia' => 'required',
-            'duracion' => 'required',
+            'duracion_horas' => 'required|integer|min:0',
+            'duracion_minutos' => 'required|integer|min:1|max:59',
         ], [
             'paciente_id.required' => 'Seleccioná un paciente antes de continuar.',
             'paciente_id.exists' => 'El paciente seleccionado no existe en el sistema.',
@@ -154,8 +155,6 @@ class CirugiaController extends Controller
             ]);
         }
 
-
-
         $cirugia = new Cirugia();
         //Datos del POST se obtiene en request
         $cirugia->paciente_id = $request->input('paciente_id');
@@ -176,7 +175,13 @@ class CirugiaController extends Controller
         $cirugia->enfermero_2_id = $request->input('enfermero_2_id');
         $cirugia->fecha_cirugia = $request->input('fecha_cirugia');
         $cirugia->hora_cirugia = $request->input('hora_cirugia');
-        $cirugia->duracion = $request->input('duracion');
+
+        //Formatear duración
+        $horas = $request->input('duracion_horas', 0);
+        $minutos = $request->input('duracion_minutos', 0);
+        $duracion = sprintf('%02d:%02d', $horas, $minutos);
+        $cirugia->duracion = $duracion;
+
         //Reemplazar cuando tengamos los usuarios
         $cirugia->creado_por = '1';
         $cirugia->modificado_por = '1';
@@ -224,7 +229,8 @@ class CirugiaController extends Controller
             'enfermero_id' => 'nullable|exists:empleados,id',
             'fecha_cirugia' => 'required',
             'hora_cirugia' => 'required',
-            'duracion' => 'required',
+            'duracion_horas' => 'required|integer|min:0',
+            'duracion_minutos' => 'required|integer|min:1|max:59',
         ]);
         /*
         if ($request->input('ayudante_1_id') != null) {
@@ -345,7 +351,12 @@ class CirugiaController extends Controller
 
         $cirugia->fecha_cirugia = $request->input('fecha_cirugia');
         $cirugia->hora_cirugia = $request->input('hora_cirugia');
-        $cirugia->duracion = $request->input('duracion');
+        
+        //Formatear duración
+        $horas = $request->input('duracion_horas', 0);
+        $minutos = $request->input('duracion_minutos', 0);
+        $duracion = sprintf('%02d:%02d', $horas, $minutos);
+        $cirugia->duracion = $duracion;
 
         if ($request->input('urgencia') != null) {
             $cirugia->urgencia = true;
@@ -369,17 +380,23 @@ class CirugiaController extends Controller
         return redirect()->route('cirugias.index');
     }
 
-    public function estadisticas()
+    public function estadisticas(Request $request)
     {
-        $desde = request('desde');
-        $hasta = request('hasta');
+        $validated = $request->validate([
+            'desde' => 'nullable|date|before_or_equal:today',
+            'hasta' => 'nullable|date|after_or_equal:desde|before_or_equal:today',
+        ], [
+            'desde.date' => 'La fecha de inicio no tiene un formato válido.',
+            'desde.before_or_equal' => 'La fecha de inicio no puede ser futura.',
+            'hasta.date' => 'La fecha de fin no tiene un formato válido.',
+            'hasta.after_or_equal' => 'La fecha de fin debe ser igual o posterior a la fecha de inicio.',
+            'hasta.before_or_equal' => 'La fecha de fin no puede ser futura.',
+        ]);
 
-        // Si no se especifica, se usa el año actual como rango completo
-        if (!$desde || !$hasta) {
-            $anioSeleccionado = request('anio') ?? now()->year;
-            $desde = "$anioSeleccionado-01-01";
-            $hasta = "$anioSeleccionado-12-31";
-        }
+        $desde = $validated['desde'] ?? now()->startOfMonth()->toDateString();
+        $hasta = $validated['hasta'] ?? now()->endOfMonth()->toDateString();
+        $especialidadId = $request->input('especialidad_id');
+        $especialidades = \App\Models\Especialidad::orderBy('nombre')->get();
 
         $aniosDisponibles = \App\Models\Cirugia::select(DB::raw('YEAR(created_at) as anio'))
             ->distinct()
@@ -387,7 +404,10 @@ class CirugiaController extends Controller
             ->pluck('anio');
 
         // Base query reutilizable
-        $baseQuery = \App\Models\Cirugia::whereBetween('created_at', [$desde, $hasta]);
+        $baseQuery = \App\Models\Cirugia::whereBetween('created_at', [$desde, $hasta])
+        ->when($especialidadId, function ($query, $especialidadId) {
+            return $query->where('especialidad_id', $especialidadId);
+        });
 
         $total = $baseQuery->count();
 
@@ -484,7 +504,9 @@ class CirugiaController extends Controller
             'aniosDisponibles',
             'total',
             'promedioMensual',
-            'promedioSemanal'
+            'promedioSemanal',
+            'especialidadId',
+            'especialidades',
         ));
     }
 }

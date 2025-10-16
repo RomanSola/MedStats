@@ -322,16 +322,30 @@
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
+
                         {{-- Duración cirugía (horas y minutos) --}}
                         <div class="col-md-4">
-                            <label for="duracion" class="form-label">Duración de la cirugía</label>
-                            {{-- Usamos input type="time" para horas:minutos; alternativa: dos selects --}}
-                            <input type="time" name="duracion" id="duracion" class="form-control"
-                                step="60" value="{{ old('duracion') }}">
-                            <small class="form-text text-muted">Indique la duración (HH:MM)</small>
-                            @error('duracion')
-                                <small class="text-danger">{{ $message }}</small>
-                            @enderror
+                            <label class="form-label fw-semibold text-primary mb-1">Duración de la cirugía</label>
+                            <div class="row gx-1 align-items-center">
+                                <div class="col-6">
+                                    <label for="duracion_horas" class="form-label mb-1 small">Horas</label>
+                                    <input type="number" name="duracion_horas" id="duracion_horas"
+                                        class="form-control form-control-sm py-0" min="0"
+                                        value="{{ old('duracion_horas') }}">
+                                    @error('duracion_horas')
+                                        <div><small class="text-danger">{{ $message }}</small></div>
+                                    @enderror
+                                </div>
+                                <div class="col-6">
+                                    <label for="duracion_minutos" class="form-label mb-1 small">Minutos</label>
+                                    <input type="number" name="duracion_minutos" id="duracion_minutos"
+                                        class="form-control form-control-sm py-0" min="1" max="59"
+                                        value="{{ old('duracion_minutos') }}">
+                                    @error('duracion_minutos')
+                                        <div><small class="text-danger">{{ $message }}</small></div>
+                                    @enderror
+                                </div>
+                            </div>
                         </div>
 
                         {{-- Urgencia y Óbito juntos (alineados) --}}
