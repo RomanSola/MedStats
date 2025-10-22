@@ -29,7 +29,12 @@
                          d="M5.121 17.804A9 9 0 1118.88 6.195A9 9 0 015.12 17.804z" />
                      <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                  </svg>
-                 @lang('Usuario Conectado')
+                 {{-- @lang('Usuario Conectado') --}}
+                 @if (Auth::check())
+                     <span>{{ Auth::user()->name }}</span>
+                 @else
+                     <span>Invitado</span>
+                 @endif
              </div>
 
 

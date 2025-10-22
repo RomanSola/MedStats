@@ -27,6 +27,43 @@ class UsuarioPerfilController extends Controller
 
         $perfil = new UsuarioPerfil();
         $perfil->perfil = $request->input('perfil');
+        //admin
+        if ($request->input('admin') != null) {
+            $perfil->admin = true;
+        } else {
+            $perfil->admin = false;
+        }
+        //insumos
+        if ($request->input('insumos') != null) {
+            $perfil->insumos = true;
+        } else {
+            $perfil->insumos = false;
+        }
+        //estadisticas
+        if ($request->input('estadisticas') != null) {
+            $perfil->estadisticas = true;
+        } else {
+            $perfil->estadisticas = false;
+        }
+        //pacientes
+        if ($request->input('pacientes') != null) {
+            $perfil->pacientes = true;
+        } else {
+            $perfil->pacientes = false;
+        }
+        //camas
+        if ($request->input('camas') != null) {
+            $perfil->camas = true;
+        } else {
+            $perfil->camas = false;
+        }
+        //cirugias
+        if ($request->input('cirugias') != null) {
+            $perfil->cirugias = true;
+        } else {
+            $perfil->cirugias = false;
+        }
+
         $perfil->save();
 
         return redirect()->route('UsuarioPerfil.index')->with('success', 'Perfil creado correctamente.');
@@ -50,6 +87,43 @@ class UsuarioPerfilController extends Controller
         ]);
 
         $perfil->perfil = $request->input('perfil');
+        //admin
+        if ($request->input('admin') != null) {
+            $perfil->admin = true;
+        } else {
+            $perfil->admin = false;
+        }
+        //insumos
+        if ($request->input('insumos') != null) {
+            $perfil->insumos = true;
+        } else {
+            $perfil->insumos = false;
+        }
+        //estadisticas
+        if ($request->input('estadisticas') != null) {
+            $perfil->estadisticas = true;
+        } else {
+            $perfil->estadisticas = false;
+        }
+        //pacientes
+        if ($request->input('pacientes') != null) {
+            $perfil->pacientes = true;
+        } else {
+            $perfil->pacientes = false;
+        }
+        //camas
+        if ($request->input('camas') != null) {
+            $perfil->camas = true;
+        } else {
+            $perfil->camas = false;
+        }
+        //cirugias
+        if ($request->input('cirugias') != null) {
+            $perfil->cirugias = true;
+        } else {
+            $perfil->cirugias = false;
+        }
+        
         $perfil->save();
 
         return redirect()->route('UsuarioPerfil.index')->with('success', 'Perfil actualizado correctamente.');
@@ -63,24 +137,23 @@ class UsuarioPerfilController extends Controller
         $perfil->delete();
         return redirect()->route('UsuarioPerfil.index')->with('success', 'Perfil eliminado correctamente.');
     }
-public function index()
-{
-    $perfiles = UsuarioPerfil::all();
-    $usuarios = \App\Models\User::all(); // Agregamos esto
+    public function index()
+    {
+        $perfiles = UsuarioPerfil::all();
+        $usuarios = \App\Models\User::all(); // Agregamos esto
 
-    return view('UsuarioPerfil.index', compact('perfiles', 'usuarios'));
-}
-public function actualizarRol(Request $request, $id)
-{
-    $request->validate([
-        'role' => 'required|integer|min:1|max:4',
-    ]);
+        return view('UsuarioPerfil.index', compact('perfiles', 'usuarios'));
+    }
+    public function actualizarRol(Request $request, $id)
+    {
+        $request->validate([
+            'role' => 'required|integer|min:1|max:4',
+        ]);
 
-    $usuario = User::findOrFail($id);
-    $usuario->role = $request->role;
-    $usuario->save();
+        $usuario = User::findOrFail($id);
+        $usuario->role = $request->role;
+        $usuario->save();
 
-    return redirect()->route('UsuarioPerfil.index')->with('success', 'Rol actualizado correctamente.');
-}
-    
+        return redirect()->route('UsuarioPerfil.index')->with('success', 'Rol actualizado correctamente.');
+    }
 }
