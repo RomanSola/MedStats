@@ -55,7 +55,6 @@ Route::middleware(['auth', 'roles:administrador'])->group(function(){
     Route::get('/buscar', [PersonaController::class, 'buscar'])->name('buscar');
     Route::get('/buscar/ajax', [PersonaController::class, 'buscarAjax'])->name('buscar.ajax');
     Route::get('/persona/{id}', [PersonaController::class, 'ver'])->name('persona.ver');
-    Route::get('/pacientes/live-search', [PacienteController::class, 'liveSearch'])->name('pacientes.live-search');
 });
 
 
@@ -118,22 +117,23 @@ Route::middleware(['auth', 'roles:administrador'])->group(function(){
     Route::get('/pacientes/{paciente}', [PacienteController::class, 'show'])->name('pacientes.show');
     Route::put('/pacientes/{paciente}', [PacienteController::class, 'update'])->name('pacientes.update');
     Route::delete('/pacientes/{paciente}', [PacienteController::class, 'destroy'])->name('pacientes.destroy');
+
+    // --- RUTAS VULNERABLES CORREGIDAS ---
+    // Asignación desde vista detallada
+    Route::get('/pacientes/{paciente}/asignar', [PacienteController::class, 'asignar'])->name('pacientes.asignar');
+    Route::post('/pacientes/{paciente}/asignar', [PacienteController::class, 'guardarAsignacion'])->name('pacientes.asignar.guardar');
+    
+    // Asignación directa (con ID del paciente)
+    Route::post('/pacientes/{paciente}/asignar-directa', [PacienteController::class, 'asignarDirecta'])->name('pacientes.asignarDirecta');
+    
+    // Live search para el buscador del modal
+    Route::get('/pacientes/live-search', [PacienteController::class, 'liveSearch'])->name('pacientes.liveSearch');
 });
 
-// Asignación desde vista detallada
-Route::get('/pacientes/{paciente}/asignar', [PacienteController::class, 'asignar'])->name('pacientes.asignar');
-Route::post('/pacientes/{paciente}/asignar', [PacienteController::class, 'guardarAsignacion'])->name('pacientes.asignar.guardar');
 
-// Asignación directa (con ID del paciente)
-Route::post('/pacientes/{paciente}/asignar-directa', [PacienteController::class, 'asignarDirecta'])->name('pacientes.asignarDirecta');
-
-// Alta de paciente
-Route::post('/pacientes/{paciente}/dar-de-alta', [PacienteController::class, 'darDeAlta'])->name('pacientes.darDeAlta');
-
-// Live search para el buscador del modal
-Route::get('/pacientes/live-search', [PacienteController::class, 'liveSearch'])->name('pacientes.liveSearch');
-
-
+// Alta de paciente (Ya estaba protegida, se mantiene)
+Route::post('/pacientes/{paciente}/dar-de-alta', [PacienteController::class, 'darDeAlta'])
+    ->middleware(['auth', 'roles:administrador'])->name('pacientes.darDeAlta');
 
 
 //Procedimientos
@@ -192,9 +192,6 @@ Route::middleware(['auth', 'roles:administrador'])->group(function(){
     Route::get('/camas/listar', [CamaController::class, 'index'])->name('camas.listar');
 });
 
-// Dar de alta un paciente
-Route::post('/pacientes/{paciente}/dar-de-alta', [PacienteController::class, 'darDeAlta'])
-    ->middleware(['auth', 'roles:administrador'])->name('pacientes.darDeAlta');
 
 //Ocupación Camas
 Route::middleware(['auth', 'roles:administrador'])->group(function(){
