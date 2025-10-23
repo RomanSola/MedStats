@@ -81,6 +81,10 @@ class Cirugia extends Model
     {
         return $this->belongsTo(Empleado::class, 'instrumentador_2_id', 'id');
     }
+        public function get_instrumentador3()
+    {
+        return $this->belongsTo(Empleado::class, 'instrumentador_3_id', 'id');
+    }
     public function get_enfermero()
     {
         return $this->belongsTo(Empleado::class, 'enfermero_id', 'id');
@@ -89,6 +93,10 @@ class Cirugia extends Model
     {
         return $this->belongsTo(Empleado::class, 'enfermero_2_id', 'id');
     }
+    public function get_enfermero3()
+    {
+        return $this->belongsTo(Empleado::class, 'enfermero_3_id', 'id');
+    }
     public function get_tipo_anestesia()
     {
         return $this->belongsTo(Tipo_anestesia::class, 'tipo_anestesia_id', 'id');
@@ -96,6 +104,10 @@ class Cirugia extends Model
     public function get_tipo_anestesia2()
     {
         return $this->belongsTo(Tipo_anestesia::class, 'tipo_anestesia_2_id', 'id');
+    }
+    public function get_tipo_anestesia3()
+    {
+        return $this->belongsTo(Tipo_anestesia::class, 'tipo_anestesia_3_id', 'id');
     }
     /* FALTA TABLA DE USUARIOS
     public function creador() { return $this->belongsTo(Usuario::class, 'creado_por'); }

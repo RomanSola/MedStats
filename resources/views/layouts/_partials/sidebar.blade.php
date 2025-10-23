@@ -103,7 +103,18 @@
             case 'pacientes.edit':
             case 'pacientes.show':
             case 'pacientes.asignar':
-                $rutaAnterior = 'pacientes.index';
+                // Si la URL anterior es pacientes, volver a pacientes.index, si no volver a persona.ver
+                if (url()->previous() && str_contains(url()->previous(), route('pacientes.index'))) {
+                    $rutaAnterior = 'pacientes.index';
+                } else {
+                    // Obtener el id del paciente desde la ruta actual
+                    $id = request()->route('id') ?? request()->route('paciente') ?? null;
+                    if ($id) {
+                        $rutaAnterior = ['persona.ver', ['id' => $id]];
+                    } else {
+                        $rutaAnterior = 'pacientes.index';
+                    }
+                }
                 break;
 
             // Ocupación de camas
@@ -175,10 +186,8 @@
     @endphp
 
     <!-- Links -->
-    <nav class="flex-1 px-2 py-6 space-y-2 text-gray-700 overflow-y-auto overflow-x-hidden">
-
         @if ($rutaActual !== 'inicio')
-            <a href="{{ route($rutaAnterior) }}" title="Volver"
+            <a href="{{ is_array($rutaAnterior) ? route($rutaAnterior[0], $rutaAnterior[1]) : route($rutaAnterior) }}" title="Volver"
                 class="sidebar-volver-link flex items-center gap-3 p-3 rounded-md hover:bg-[#1B7D8F] hover:text-white transition text-decoration-none text-gray-700 group">
                 <img src="{{ asset('assets/img/volver.png') }}"
                     class="h-5 w-5 text-gray-600 group-hover:text-white transition" fill="none" viewBox="0 0 24 24"

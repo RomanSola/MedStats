@@ -8,8 +8,10 @@
         'anestesista_id' => [3, 'Anestesista'],
         'instrumentador_id' => [4, 'Instrumentador'],
         'instrumentador_2_id' => [4, 'Instrumentador 2'],
+        'instrumentador_3_id' => [4, 'Instrumentador 3'],
         'enfermero_id' => [5, 'Enfermero'],
-        'enfermero_2_id' => [5, 'Enfermero 2']
+        'enfermero_2_id' => [5, 'Enfermero 2'],
+        'enfermero_3_id' => [5, 'Enfermero 3']
     ];
 @endphp
 
@@ -59,6 +61,21 @@
         @endforeach
     </select>
     @error('tipo_anestesia_2_id')
+        <small class="text-danger">{{ $message }}</small>
+    @enderror
+</div>
+
+<div class="col-md-4">
+    <label for="tipo_anestesia_3_id" class="form-label">Tipo de Anestesia 3</label>
+    <select name="tipo_anestesia_3_id" id="tipo_anestesia_3_id" class="form-control select2">
+        <option value="">Seleccione el Tipo de Anestesia</option>
+        @foreach ($tipoAnestesias as $tipoAnestesia)
+            <option value="{{ $tipoAnestesia->id }}" {{ old('tipo_anestesia_3_id') == $tipoAnestesia->id ? 'selected' : '' }}>
+                {{ $tipoAnestesia->nombre }}
+            </option>
+        @endforeach
+    </select>
+    @error('tipo_anestesia_3_id')
         <small class="text-danger">{{ $message }}</small>
     @enderror
 </div>

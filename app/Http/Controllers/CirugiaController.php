@@ -33,10 +33,13 @@ class CirugiaController extends Controller
             'get_anestesista',
             'get_instrumentador',
             'get_instrumentador2',
+            'get_instrumentador3',
             'get_enfermero',
             'get_enfermero2',
+            'get_enfermero3',
             'get_tipo_anestesia',
-            'get_tipo_anestesia2'
+            'get_tipo_anestesia2',
+            'get_tipo_anestesia3',
         ])->get();
         //dd($cirugias);
         return view('cirugias.index', compact('cirugias')); //Llama a la vista y le pasa las Cirugias obtenidas
@@ -140,6 +143,13 @@ class CirugiaController extends Controller
                 'instrumentador_2_id.different' => 'El Instrumentador 2 debe ser distinto a Insturmentador.',
             ]);
         }
+        if ($request->input('instrumentador_3_id') != null) {
+            $request->validate([
+                'instrumentador_3_id' => 'exists:empleados,id|nullable|different:instrumentador_2_id',
+            ], [
+                'instrumentador_2_id.different' => 'El Instrumentador 2 debe ser distinto a Insturmentador.',
+            ]);
+        }
         if ($request->input('enfermero_2_id') != null) {
             $request->validate([
                 'enfermero_2_id' => 'exists:empleados,id|nullable|different:enfermero_id',
@@ -147,11 +157,25 @@ class CirugiaController extends Controller
                 'enfermero_2_id.different' => 'El Enfermero 2 debe ser distinto a Enfermero.',
             ]);
         }
+        if ($request->input('enfermero_3_id') != null) {
+            $request->validate([
+                'enfermero_3_id' => 'exists:empleados,id|nullable|different:enfermero_2_id',
+            ], [
+                'enfermero_3_id.different' => 'El Enfermero 3 debe ser distinto a Enfermero 2.',
+            ]);
+        }
         if ($request->input('tipo_anestesia_2_id') != null) {
             $request->validate([
                 'tipo_anestesia_2_id' => 'exists:tipo_anestesias,id|nullable|different:tipo_anestesia_id',
             ], [
                 'tipo_anestesia_2_id.different' => 'El tipo de anestesia 2 debe ser distinto a tipo de anestesia.',
+            ]);
+        }
+        if ($request->input('tipo_anestesia_3_id') != null) {
+            $request->validate([
+                'tipo_anestesia_3_id' => 'exists:tipo_anestesias,id|nullable|different:tipo_anestesia_2_id',
+            ], [
+                'tipo_anestesia_3_id.different' => 'El tipo de anestesia 3 debe ser distinto a tipo de anestesia 2.',
             ]);
         }
 
@@ -169,10 +193,13 @@ class CirugiaController extends Controller
         $cirugia->anestesista_id = $request->input('anestesista_id');
         $cirugia->tipo_anestesia_id = $request->input('tipo_anestesia_id');
         $cirugia->tipo_anestesia_2_id = $request->input('tipo_anestesia_2_id');
+        $cirugia->tipo_anestesia_3_id = $request->input('tipo_anestesia_3_id');
         $cirugia->instrumentador_id = $request->input('instrumentador_id');
         $cirugia->instrumentador_2_id = $request->input('instrumentador_2_id');
+        $cirugia->instrumentador_3_id = $request->input('instrumentador_3_id');
         $cirugia->enfermero_id = $request->input('enfermero_id');
         $cirugia->enfermero_2_id = $request->input('enfermero_2_id');
+        $cirugia->enfermero_3_id = $request->input('enfermero_3_id');
         $cirugia->fecha_cirugia = $request->input('fecha_cirugia');
         $cirugia->hora_cirugia = $request->input('hora_cirugia');
 
@@ -284,6 +311,13 @@ class CirugiaController extends Controller
                 'instrumentador_2_id.different' => 'El Instrumentador 2 debe ser distinto a Insturmentador.',
             ]);
         }
+        if ($request->input('instrumentador_3_id') != null) {
+            $request->validate([
+                'instrumentador_3_id' => 'exists:empleados,id|nullable|different:instrumentador_id',
+            ], [
+                'instrumentador_3_id.different' => 'El Instrumentador 3 debe ser distinto a Insturmentador 2.',
+            ]);
+        }
         if ($request->input('enfermero_2_id') != null) {
             $request->validate([
                 'enfermero_2_id' => 'exists:empleados,id|nullable|different:enfermero_id',
@@ -291,11 +325,25 @@ class CirugiaController extends Controller
                 'enfermero_2_id.different' => 'El Enfermero 2 debe ser distinto a Enfermero.',
             ]);
         }
+        if ($request->input('enfermero_3_id') != null) {
+            $request->validate([
+                'enfermero_3_id' => 'exists:empleados,id|nullable|different:enfermero_2_id',
+            ], [
+                'enfermero_3_id.different' => 'El Enfermero 3 debe ser distinto a Enfermero 2.',
+            ]);
+        }
         if ($request->input('tipo_anestesia_2_id') != null) {
             $request->validate([
                 'tipo_anestesia_2_id' => 'exists:tipo_anestesias,id|nullable|different:tipo_anestesia_id',
             ], [
                 'tipo_anestesia_2_id.different' => 'El tipo de anestesia 2 debe ser distinto a tipo de anestesia.',
+            ]);
+        }
+        if ($request->input('tipo_anestesia_3_id') != null) {
+            $request->validate([
+                'tipo_anestesia_3_id' => 'exists:tipo_anestesias,id|nullable|different:tipo_anestesia_2_id',
+            ], [
+                'tipo_anestesia_3_id.different' => 'El tipo de anestesia 3 debe ser distinto a tipo de anestesia 2.',
             ]);
         }
         //dd($request);
@@ -336,17 +384,26 @@ class CirugiaController extends Controller
         if ($request->input('tipo_anestesia_2_id') != null) {
             $cirugia->tipo_anestesia_2_id = $request->input('tipo_anestesia_2_id');
         }
+        if ($request->input('tipo_anestesia_3_id') != null) {
+            $cirugia->tipo_anestesia_2_id = $request->input('tipo_anestesia_3_id');
+        }
         if ($request->input('instrumentador_id') != null) {
             $cirugia->instrumentador_id = $request->input('instrumentador_id');
         }
         if ($request->input('instrumentador_2_id') != null) {
             $cirugia->instrumentador_2_id = $request->input('instrumentador_2_id');
         }
+        if ($request->input('instrumentador_3_id') != null) {
+            $cirugia->instrumentador_3_id = $request->input('instrumentador_3_id');
+        }
         if ($request->input('enfermero_id') != null) {
             $cirugia->enfermero_id = $request->input('enfermero_id');
         }
         if ($request->input('enfermero_2_id') != null) {
             $cirugia->enfermero_2_id = $request->input('enfermero_2_id');
+        }
+        if ($request->input('enfermero_3_id') != null) {
+            $cirugia->enfermero_3_id = $request->input('enfermero_3_id');
         }
 
         $cirugia->fecha_cirugia = $request->input('fecha_cirugia');
