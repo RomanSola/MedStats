@@ -353,11 +353,10 @@
                                 <div class="col-6">
                                     <label for="duracion_minutos" class="form-label mb-1 small">Minutos</label>
                                     <input type="number" name="duracion_minutos" id="duracion_minutos"
-                                        class="form-control form-control-sm py-0" min="1" max="59"
+                                        class="form-control form-control-sm py-0" min="0" max="59"
                                         value="{{ old('duracion_minutos', intval(explode(':', $cirugia->duracion)[1] ?? 0)) }}">
                                 </div>
                             </div>
-
                             @error('duracion_horas')
                                 <small class="text-danger d-block">{{ $message }}</small>
                             @enderror
@@ -365,7 +364,6 @@
                                 <small class="text-danger d-block">{{ $message }}</small>
                             @enderror
                         </div>
-
 
                         <div class="col-md-4">
                             <label class="form-label d-block">Urgencia</label>
@@ -414,7 +412,7 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <style>
-        /* Estilo para el checkbox moderno */
+        /* Estilo para el checkbox */
         .switch {
             position: relative;
             display: inline-block;
@@ -493,10 +491,8 @@
                 fetch(`/api/procedimientos/${especialidadId}`)
                     .then(response => response.json())
                     .then(data => {
-                        //console.log("Procedimientos:", data); // Debug
                         let procedimiento = $('#procedimiento');
                         procedimiento.html('<option value="">Seleccione un procedimiento</option>');
-
                         data.forEach(p => {
                             let selected = (selectedProcedimientoId == p.id) ? 'selected' : '';
                             procedimiento.append(
@@ -512,10 +508,8 @@
                 fetch(`/api/procedimientos/${especialidadId}`)
                     .then(response => response.json())
                     .then(data => {
-                        //console.log("Procedimientos 2:", data); // Debug
                         let procedimiento2 = $('#procedimiento2');
                         procedimiento2.html('<option value="">Seleccione un procedimiento</option>');
-
                         data.forEach(p => {
                             let selected = (selectedProcedimiento2Id == p.id) ? 'selected' : '';
                             procedimiento2.append(
@@ -546,5 +540,4 @@
             }
         });
     </script>
-
 @endsection
