@@ -152,16 +152,20 @@
                     </div>
                 </div>
             @else
-                <ul class="space-y-2">
-                    @foreach ($resultados as $persona)
-                        <li>
-                            <a href="{{ route('persona.ver', ['id' => $persona->id, 'from' => 'busqueda']) }}"
-                               class="text-[#1B7D8F] hover:underline">
-                                {{ $persona->nombre }} {{ $persona->apellido }} - DNI: {{ $persona->dni }}
-                            </a>
-                        </li>
-                    @endforeach
-                </ul>
+                <div class="max-w-2xl mx-auto mb-6">
+                    <div class="bg-white shadow-xl rounded-2xl overflow-hidden border border-gray-200">
+                        <ul class="space-y-2 m-4">
+                            @foreach ($resultados as $persona)
+                                <li>
+                                    <a href="{{ route('persona.ver', ['id' => $persona->id, 'from' => 'busqueda']) }}"
+                                    class="text-[#176d7b] btn border-[#176d7b]">
+                                        {{ $persona->nombre }} {{ $persona->apellido }} - DNI: {{ $persona->dni }}
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
             @endif
         @endif
     </center>

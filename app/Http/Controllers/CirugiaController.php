@@ -19,8 +19,6 @@ class CirugiaController extends Controller
     //Muestra todos los datos
     public function index() //Pagina inicial
     {
-        //$cirugias = Tarea::all(); //Hace un select all a la tabla
-        //Llama a la funcion get_categoria del modelo tarea.php
         $cirugias = Cirugia::with([
             'get_paciente',
             'get_especialidad',
@@ -41,7 +39,6 @@ class CirugiaController extends Controller
             'get_tipo_anestesia2',
             'get_tipo_anestesia3',
         ])->get();
-        //dd($cirugias);
         return view('cirugias.index', compact('cirugias')); //Llama a la vista y le pasa las Cirugias obtenidas
     }
 
@@ -62,7 +59,6 @@ class CirugiaController extends Controller
 
     public function store(Request $request)
     {
-        //dd($request->all());
         $request->validate([
             'paciente_id' => 'required|exists:pacientes,id',
             'especialidad_id' => 'required|exists:especialidads,id',
@@ -224,9 +220,7 @@ class CirugiaController extends Controller
         } else {
             $cirugia->obito = false;
         }
-
         $cirugia->save(); //Guarda en la BD, si existe lo actualiza, sino crea
-
         return redirect()->route('cirugias.index');
     }
 
@@ -238,12 +232,11 @@ class CirugiaController extends Controller
         $procedimientos = Procedimiento::with('get_especialidad')->get();
         $quirofanos = Quirofano::all();
         $tipoAnestesias = Tipo_anestesia::all();
-        //dd($empleados);
         return view('cirugias.edit', compact('cirugia', 'pacientes', 'empleados', 'especialidades', 'procedimientos', 'quirofanos', 'tipoAnestesias'));
     }
 
     public function update(Request $request, Cirugia $cirugia)
-    {   //dd($request->all());
+    {
         $request->validate([
             'paciente_id' => 'required|exists:pacientes,id',
             'especialidad_id' => 'required|exists:especialidads,id',
@@ -259,22 +252,6 @@ class CirugiaController extends Controller
             'duracion_horas' => 'required|integer|min:0',
             'duracion_minutos' => 'required|integer|min:1|max:59',
         ]);
-        /*
-        if ($request->input('ayudante_1_id') != null) {
-            $request->validate([
-                'ayudante_1_id' => 'exists:empleados,id',
-            ]);
-        }
-        if ($request->input('ayudante_2_id') != null) {
-            $request->validate([
-                'ayudante_2_id' => 'exists:empleados,id',
-            ]);
-        }
-        if ($request->input('ayudante_3_id') != null) {
-            $request->validate([
-                'ayudante_3_id' => 'exists:empleados,id',
-            ]);
-        }*/
 
         if ($request->input('ayudante_1_id') != null) {
             $request->validate([
@@ -339,6 +316,7 @@ class CirugiaController extends Controller
                 'tipo_anestesia_2_id.different' => 'El tipo de anestesia 2 debe ser distinto a tipo de anestesia.',
             ]);
         }
+
         if ($request->input('tipo_anestesia_3_id') != null) {
             $request->validate([
                 'tipo_anestesia_3_id' => 'exists:tipo_anestesias,id|nullable|different:tipo_anestesia_2_id',
@@ -347,6 +325,7 @@ class CirugiaController extends Controller
             ]);
         }
         //dd($request);
+
 
         if ($request->input('paciente_id') != null) {
             $cirugia->paciente_id = $request->input('paciente_id');
@@ -449,12 +428,10 @@ class CirugiaController extends Controller
             'hasta.after_or_equal' => 'La fecha de fin debe ser igual o posterior a la fecha de inicio.',
             'hasta.before_or_equal' => 'La fecha de fin no puede ser futura.',
         ]);
-
         $desde = $validated['desde'] ?? now()->startOfMonth()->toDateString();
         $hasta = $validated['hasta'] ?? now()->endOfMonth()->toDateString();
         $especialidadId = $request->input('especialidad_id');
         $especialidades = \App\Models\Especialidad::orderBy('nombre')->get();
-
         $aniosDisponibles = \App\Models\Cirugia::select(DB::raw('YEAR(created_at) as anio'))
             ->distinct()
             ->orderBy('anio', 'desc')
@@ -465,19 +442,15 @@ class CirugiaController extends Controller
         ->when($especialidadId, function ($query, $especialidadId) {
             return $query->where('especialidad_id', $especialidadId);
         });
-
         $total = $baseQuery->count();
-
         $meses = (clone $baseQuery)
             ->select(DB::raw('MONTH(created_at) as mes'))
             ->distinct()
             ->count();
-
         $semanas = (clone $baseQuery)
             ->select(DB::raw('YEARWEEK(created_at, 1) as semana'))
             ->distinct()
             ->count();
-
         $promedioMensual = $meses > 0 ? round($total / $meses, 2) : 0;
         $promedioSemanal = $semanas > 0 ? round($total / $semanas, 2) : 0;
 
@@ -512,6 +485,21 @@ class CirugiaController extends Controller
 
         $enfermeroValores = $topEnfermeros->pluck('total');
 
+        // Top instrumentadores
+        $topInstrumentadors = (clone $baseQuery)
+            ->select('instrumentador_id', DB::raw('COUNT(*) as total'))
+            ->groupBy('instrumentador_id')
+            ->with('get_instrumentador')
+            ->get()
+            ->sortByDesc('total')
+            ->take(5);
+
+        $instrumentadorLabels = $topInstrumentadors->map(function ($item) {
+            return optional($item->get_instrumentador)->nombre . ' ' . optional($item->get_instrumentador)->apellido;
+        });
+
+        $instrumentadorValores = $topInstrumentadors->pluck('total');
+
         // Distribución por mes
         $porMes = (clone $baseQuery)
             ->select(DB::raw('MONTH(created_at) as mes'), DB::raw('COUNT(*) as total'))
@@ -545,6 +533,9 @@ class CirugiaController extends Controller
         return view('cirugias.estadisticas', compact(
             'porCirujano',
             'topEnfermeros',
+            'topInstrumentadors',
+            'instrumentadorLabels',
+            'instrumentadorValores',
             'enfermeroLabels',
             'enfermeroValores',
             'porMes',

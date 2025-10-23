@@ -1,6 +1,7 @@
 <!-- Sidebar global -->
 <aside id="sidebar"
-    class="fixed top-16 left-0 h-[calc(100vh-8rem)] w-64 bg-white shadow-lg flex flex-col transition-all duration-300 ease-in-out z-40">
+    class="fixed top-16 left-0 h-[calc(100vh-8rem)] w-72 bg-gradient-to-b from-white/100 via-white/80 to-transparent shadow-lg flex flex-col transition-all duration-300 ease-in-out z-40 backdrop-blur-sm border-r border-gray-200">
+
 
     <!-- Header del sidebar -->
     <div class="flex items-center justify-between px-4 h-16 border-b border-gray-200">
