@@ -257,5 +257,5 @@ Route::middleware(['auth', 'roles:administrador'])->group(function(){
 });
 // routes/web.php
 Route::post('/usuarios/{id}/actualizar-rol', [App\Http\Controllers\UsuarioPerfilController::class, 'actualizarRol'])->name('usuarios.actualizarRol');
-Route::put('/usuarios/{id}/actualizar-rol', [UsuarioController::class, 'actualizarRol'])->name('usuarios.actualizarRol');
+Route::put('/usuarios/{id}/actualizar-rol', [UsuarioPerfilController::class, 'actualizarRol'])->name('usuarios.actualizarRol');
 require __DIR__.'/auth.php';

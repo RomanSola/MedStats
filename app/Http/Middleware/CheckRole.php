@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use App\Models\UsuarioPerfil;
 
 class CheckRole
 {
@@ -25,16 +26,21 @@ class CheckRole
             return $next($request);
         }
 
-        $rolMap = [
-            1 => 'administrador',
-            2 => 'coordinador',
-            3 => 'medico',
-            4 => 'enfermeroQ',// Quirofano
-            5 => 'enfermeroCI',// Cirugia
-            6 => 'enfermeroP',// Pediatria
-            7 => 'enfermeroCL'// Clinica
-        ];
-        //dd($roles,$rolMap,$user->role );
+        $perfiles = UsuarioPerfil::all();
+        foreach( $perfiles as $perfil ){
+            $rolMap [ $perfil->id ] = $perfil->perfil;
+        }
+            
+        // $rolMap = [
+        //     1 => 'administrador',
+        //     2 => 'coordinador',
+        //     3 => 'medico',
+        //     4 => 'enfermeroQ',// Quirofano
+        //     5 => 'enfermeroCI',// Cirugia
+        //     6 => 'enfermeroP',// Pediatria
+        //     7 => 'enfermeroCL'// Clinica
+        // ];
+        //dd($rolMap);
         $userRoleName = $rolMap[$user->role ?? 0] ?? null;
    
         if (in_array($userRoleName, $roles)) {
