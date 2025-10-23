@@ -51,7 +51,7 @@ Route::get('/', [InicioController::class, 'index'])->middleware('auth')->name('i
 
 
 //Buscador
-Route::middleware(['auth', 'roles:administrador'])->group(function(){
+Route::middleware(['auth', 'roles:admin,pacientes,cirugias,camas,estadisticas'])->group(function () {
     Route::get('/buscar', [PersonaController::class, 'buscar'])->name('buscar');
     Route::get('/buscar/ajax', [PersonaController::class, 'buscarAjax'])->name('buscar.ajax');
     Route::get('/persona/{id}', [PersonaController::class, 'ver'])->name('persona.ver');
@@ -63,7 +63,7 @@ Route::view('/ajustes', 'ajustes')->name('ajustes');
 
 
 //vista estadistica
-Route::middleware(['auth', 'roles:administrador'])->group(function(){
+Route::middleware(['auth', 'roles:estadisticas'])->group(function () {
     Route::get('/cirugias/estadisticas', [CirugiaController::class, 'estadisticas'])->name('cirugias.estadisticas');
     Route::get('/stocks/estadisticasstock', [StockController::class, 'estadisticas'])->name('stocks.estadisticasstock');
 });
@@ -73,19 +73,18 @@ Route::middleware(['auth', 'roles:administrador'])->group(function(){
 // });
 
 //Usuario perfiles
-Route::middleware(['auth', 'roles:administrador'])->group(function(){
+Route::middleware(['auth', 'roles:admin'])->group(function () {
     Route::get('/perfiles', [UsuarioPerfilController::class, 'index'])->name('UsuarioPerfil.index');
     Route::get('/perfiles/create', [UsuarioPerfilController::class, 'create'])->name('UsuarioPerfil.create');
     Route::post('/perfiles', [UsuarioPerfilController::class, 'store'])->name('UsuarioPerfil.store');
     Route::get('/perfiles/{perfil}/edit', [UsuarioPerfilController::class, 'edit'])->name('UsuarioPerfil.edit');
     Route::put('/perfiles/{perfil}', [UsuarioPerfilController::class, 'update'])->name('UsuarioPerfil.update');
     Route::delete('/perfiles/{perfil}', [UsuarioPerfilController::class, 'destroy'])->name('UsuarioPerfil.destroy');
-    
 });
 
 
 //Profesiones
-Route::middleware(['auth', 'roles:administrador'])->group(function(){
+Route::middleware(['auth', 'roles:admin'])->group(function () {
     Route::get('/profesiones', [ProfesionController::class, 'index'])->name('profesion.index');
     Route::get('/profesiones/create', [ProfesionController::class, 'create'])->name('profesion.create');
     Route::post('/profesiones', [ProfesionController::class, 'store'])->name('profesion.store');
@@ -96,7 +95,7 @@ Route::middleware(['auth', 'roles:administrador'])->group(function(){
 });
 
 //Empleados
-Route::middleware(['auth', 'roles:administrador'])->group(function(){
+Route::middleware(['auth', 'roles:admin'])->group(function () {
     Route::get('/empleados', [EmpleadoController::class, 'index'])->name('empleados.index');
     Route::get('/empleados/create', [EmpleadoController::class, 'create'])->name('empleados.create');
     Route::post('/empleados', [EmpleadoController::class, 'store'])->name('empleados.store');
@@ -109,7 +108,7 @@ Route::middleware(['auth', 'roles:administrador'])->group(function(){
 
 
 // Pacientes
-Route::middleware(['auth', 'roles:administrador'])->group(function(){
+Route::middleware(['auth', 'roles:pacientes'])->group(function () {
     Route::get('/pacientes', [PacienteController::class, 'index'])->name('pacientes.index');
     Route::get('/pacientes/create', [PacienteController::class, 'create'])->name('pacientes.create');
     Route::post('/pacientes', [PacienteController::class, 'store'])->name('pacientes.store');
@@ -122,22 +121,23 @@ Route::middleware(['auth', 'roles:administrador'])->group(function(){
     // Asignación desde vista detallada
     Route::get('/pacientes/{paciente}/asignar', [PacienteController::class, 'asignar'])->name('pacientes.asignar');
     Route::post('/pacientes/{paciente}/asignar', [PacienteController::class, 'guardarAsignacion'])->name('pacientes.asignar.guardar');
-    
+
     // Asignación directa (con ID del paciente)
     Route::post('/pacientes/{paciente}/asignar-directa', [PacienteController::class, 'asignarDirecta'])->name('pacientes.asignarDirecta');
-    
+
     // Live search para el buscador del modal
     Route::get('/pacientes/live-search', [PacienteController::class, 'liveSearch'])->name('pacientes.liveSearch');
+
+    // Alta de paciente (Ya estaba protegida, se mantiene)
+    Route::post('/pacientes/{paciente}/dar-de-alta', [PacienteController::class, 'darDeAlta'])
+        ->middleware(['auth', 'roles:administrador'])->name('pacientes.darDeAlta');
 });
 
 
-// Alta de paciente (Ya estaba protegida, se mantiene)
-Route::post('/pacientes/{paciente}/dar-de-alta', [PacienteController::class, 'darDeAlta'])
-    ->middleware(['auth', 'roles:administrador'])->name('pacientes.darDeAlta');
 
 
 //Procedimientos
-Route::middleware(['auth', 'roles:administrador'])->group(function(){
+Route::middleware(['auth', 'roles:admin'])->group(function () {
     Route::get('/procedimientos', [ProcedimientoController::class, 'index'])->name('procedimientos.index');
     Route::get('/procedimientos/create', [ProcedimientoController::class, 'create'])->name('procedimientos.create');
     Route::post('/procedimientos', [ProcedimientoController::class, 'store'])->name('procedimientos.store');
@@ -150,19 +150,19 @@ Route::middleware(['auth', 'roles:administrador'])->group(function(){
 });
 
 
-    //Tipo Anestesia
-Route::middleware(['auth', 'roles:administrador'])->group(function(){
+//Tipo Anestesia
+Route::middleware(['auth', 'roles:admin'])->group(function () {
     Route::get('/tipoAnestesias', [TipoAnestesiaController::class, 'index'])->name('tipoAnestesias.index');
     Route::get('/tipoAnestesias/create', [TipoAnestesiaController::class, 'create'])->name('tipoAnestesias.create');
     Route::post('/tipoAnestesias', [TipoAnestesiaController::class, 'store'])->name('tipoAnestesias.store');
     Route::get('/tipoAnestesias/{anestesia}/edit', [TipoAnestesiaController::class, 'edit'])->name('tipoAnestesias.edit');
     Route::put('/tipoAnestesias/{anestesia}', [TipoAnestesiaController::class, 'update'])->name('tipoAnestesias.update');
-Route::delete('/tipoAnestesias/{anestesia}', [TipoAnestesiaController::class, 'destroy'])->name('tipoAnestesias.destroy');
+    Route::delete('/tipoAnestesias/{anestesia}', [TipoAnestesiaController::class, 'destroy'])->name('tipoAnestesias.destroy');
 });
 
 
 //Salas
-Route::middleware(['auth', 'roles:administrador'])->group(function(){
+Route::middleware(['auth', 'roles:admin'])->group(function () {
     Route::get('/salas', [SalaController::class, 'index'])->name('salas.index');
     Route::get('/salas/create', [SalaController::class, 'create'])->name('salas.create');
     Route::post('/salas', [SalaController::class, 'store'])->name('salas.store');
@@ -172,29 +172,30 @@ Route::middleware(['auth', 'roles:administrador'])->group(function(){
 });
 
 //Habitaciones
-Route::middleware(['auth', 'roles:administrador'])->group(function(){
+Route::middleware(['auth', 'roles:admin'])->group(function () {
     Route::get('/habitaciones', [HabitacionController::class, 'index'])->name('habitaciones.index');
     Route::get('/habitaciones/create', [HabitacionController::class, 'create'])->name('habitaciones.create');
     Route::post('/habitaciones', [HabitacionController::class, 'store'])->name('habitaciones.store');
     Route::get('/habitaciones/{habitacion}/edit', [HabitacionController::class, 'edit'])->name('habitaciones.edit');
     Route::put('/habitaciones/{habitacion}', [HabitacionController::class, 'update'])->name('habitaciones.update');
     Route::delete('/habitaciones/{habitacion}', [HabitacionController::class, 'destroy'])->name('habitaciones.destroy');
+    //Se agrega la gestion de camas para el admin, no las ocupaciones
+    Route::get('/camas/listar', [CamaController::class, 'index'])->name('camas.listar');
+    Route::get('/camas/create', [CamaController::class, 'create'])->name('camas.create');
+    Route::get('/camas/{cama}/edit', [CamaController::class, 'edit'])->name('camas.edit');
+    Route::post('/camas', [CamaController::class, 'store'])->name('camas.store');
+    Route::put('/camas/{cama}', [CamaController::class, 'update'])->name('camas.update');
+    Route::delete('/camas/{cama}', [CamaController::class, 'destroy'])->name('camas.destroy');
 });
 
 //Camas
-Route::middleware(['auth', 'roles:administrador'])->group(function(){
+Route::middleware(['auth', 'roles:camas'])->group(function () {
     Route::get('/camas', [CamaController::class, 'index'])->name('camas.index');
-    Route::get('/camas/create', [CamaController::class, 'create'])->name('camas.create');
-    Route::post('/camas', [CamaController::class, 'store'])->name('camas.store');
-    Route::get('/camas/{cama}/edit', [CamaController::class, 'edit'])->name('camas.edit');
-    Route::put('/camas/{cama}', [CamaController::class, 'update'])->name('camas.update');
-    Route::delete('/camas/{cama}', [CamaController::class, 'destroy'])->name('camas.destroy');
-    Route::get('/camas/listar', [CamaController::class, 'index'])->name('camas.listar');
 });
 
 
 //Ocupación Camas
-Route::middleware(['auth', 'roles:administrador'])->group(function(){
+Route::middleware(['auth', 'roles:camas'])->group(function () {
     Route::get('/ocupacionCamas', [OcupacionCamaController::class, 'index'])->name('ocupacionCamas.index');
     Route::get('/ocupacionCamas/create', [OcupacionCamaController::class, 'create'])->name('ocupacionCamas.create');
     Route::post('/ocupacionCamas', [OcupacionCamaController::class, 'store'])->name('ocupacionCamas.store');
@@ -205,7 +206,7 @@ Route::middleware(['auth', 'roles:administrador'])->group(function(){
 });
 
 //Medicamentos
-Route::middleware(['auth', 'roles:administrador,enfermeroQ'])->group(function(){
+Route::middleware(['auth', 'roles:admin,insumos'])->group(function () {
     Route::get('/medicamentos', [MedicamentoController::class, 'index'])->name('medicamentos.index');
     Route::get('/medicamentos/create', [MedicamentoController::class, 'create'])->name('medicamentos.create');
     Route::post('/medicamentos', [MedicamentoController::class, 'store'])->name('medicamentos.store');
@@ -215,7 +216,7 @@ Route::middleware(['auth', 'roles:administrador,enfermeroQ'])->group(function(){
 });
 
 //Stock
-Route::middleware(['auth', 'roles:administrador,enfermeroQ'])->group(function(){
+Route::middleware(['auth', 'roles:insumos'])->group(function () {
     Route::get('/stocks', [StockController::class, 'index'])->name('stocks.index');
     Route::get('/stocks/create', [StockController::class, 'create'])->name('stocks.create');
     Route::post('/stocks', [StockController::class, 'store'])->name('stocks.store');
@@ -226,7 +227,7 @@ Route::middleware(['auth', 'roles:administrador,enfermeroQ'])->group(function(){
 });
 
 //Cirugias
-Route::middleware(['auth', 'roles:administrador'])->group(function(){
+Route::middleware(['auth', 'roles:cirugias'])->group(function () {
     Route::get('/cirugias', [CirugiaController::class, 'index'])->name('cirugias.index');
     Route::get('/cirugias/create', [CirugiaController::class, 'create'])->name('cirugias.create');
     Route::post('/cirugias', [CirugiaController::class, 'store'])->name('cirugias.store');
@@ -236,7 +237,7 @@ Route::middleware(['auth', 'roles:administrador'])->group(function(){
 });
 
 //Quirofanos
-Route::middleware(['auth', 'roles:administrador'])->group(function(){
+Route::middleware(['auth', 'roles:admin'])->group(function () {
     Route::get('/quirofanos', [QuirofanoController::class, 'index'])->name('quirofanos.index');
     Route::get('/quirofanos/create', [QuirofanoController::class, 'create'])->name('quirofanos.create');
     Route::post('/quirofanos', [QuirofanoController::class, 'store'])->name('quirofanos.store');
@@ -247,7 +248,7 @@ Route::middleware(['auth', 'roles:administrador'])->group(function(){
 });
 
 //Especialidades
-Route::middleware(['auth', 'roles:administrador'])->group(function(){
+Route::middleware(['auth', 'roles:admin'])->group(function () {
     Route::get('/especialidades', [EspecialidadController::class, 'index'])->name('especialidades.index');
     Route::get('/especialidades/create', [EspecialidadController::class, 'create'])->name('especialidades.create');
     Route::post('/especialidades', [EspecialidadController::class, 'store'])->name('especialidades.store');
@@ -255,7 +256,9 @@ Route::middleware(['auth', 'roles:administrador'])->group(function(){
     Route::put('/especialidades/{especialidad}', [EspecialidadController::class, 'update'])->name('especialidades.update');
     Route::delete('/especialidades/{especialidad}', [EspecialidadController::class, 'destroy'])->name('especialidades.destroy');
 });
-// routes/web.php
-Route::post('/usuarios/{id}/actualizar-rol', [App\Http\Controllers\UsuarioPerfilController::class, 'actualizarRol'])->name('usuarios.actualizarRol');
-Route::put('/usuarios/{id}/actualizar-rol', [UsuarioPerfilController::class, 'actualizarRol'])->name('usuarios.actualizarRol');
-require __DIR__.'/auth.php';
+
+Route::middleware(['auth', 'roles:admin'])->group(function () {
+    Route::post('/usuarios/{id}/actualizar-rol', [App\Http\Controllers\UsuarioPerfilController::class, 'actualizarRol'])->name('usuarios.actualizarRol');
+    Route::put('/usuarios/{id}/actualizar-rol', [UsuarioPerfilController::class, 'actualizarRol'])->name('usuarios.actualizarRol');
+    require __DIR__ . '/auth.php';
+});
