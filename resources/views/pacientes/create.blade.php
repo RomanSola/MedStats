@@ -85,6 +85,9 @@
                         <option value="Femenino" {{ old('genero') == 'Femenino' ? 'selected' : '' }}>Femenino</option>
                         <option value="X" {{ old('genero') == 'X' ? 'selected' : '' }}>X</option>
                     </select>
+                    @error('genero')
+                        <small class="text-danger">{{ $message }}</small>
+                    @enderror
                 </div>
 
 
