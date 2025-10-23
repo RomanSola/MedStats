@@ -311,6 +311,64 @@
             </div>
         </div>
     </div>
+    <br>
+    {{-- Top instrumentadores --}}
+    <div class="card h-100 shadow-sm">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">Top instrumentadores/as
+        </div>
+        <div class="card-body d-flex flex-column flex-md-row align-items-center justify-content-between">
+            <div>
+                <ul class="mb-3 mb-md-0">
+                    @foreach ($topInstrumentadors as $item)
+                        <li>{{ optional($item->get_instrumentador)->nombre }} {{ optional($item->get_instrumentador)->apellido }}:
+                            {{ $item->total }}</li>
+                    @endforeach
+                </ul>
+                <div class="mt-3">
+                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+                        data-bs-target="#modalEnfermeros">
+                        Ver todos los instrumentadores/as
+                    </button>
+                </div>
+            </div>
+            <div>
+                <canvas id="graficoInstrumentadors" style="width: 180px; height: 180px;"></canvas>
+            </div>
+        </div>
+    </div>
+
+    {{-- Pop-Up para ver todos los instrumentadores --}}
+    <div class="modal fade" id="modalInstrumentadors" tabindex="-1" aria-labelledby="modalInstrumentadorsLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="modalEnfermerosLabel">Listado completo de instrumentadores/as</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Apellido</th>
+                                <th>Total de cirugías asistidas</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($topInstrumentadors as $item)
+                                <tr>
+                                    <td>{{ optional($item->get_instrumentador)->nombre }}</td>
+                                    <td>{{ optional($item->get_instrumentador)->apellido }}</td>
+                                    <td>{{ $item->total }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 
     </div>
     </div>
@@ -357,6 +415,7 @@
     </div>
     </div>
 
+    {{-- Scripts para gráficos --}}
 
     @push('scripts')
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -465,12 +524,41 @@
                     }
                 });
             }
+            // Top instrumentadores - Doughnut
+            const ctxInstrumentadors = document.getElementById('graficoInstrumentadors');
+            if (ctxInstrumentadors) {
+                new Chart(ctxInstrumentadors.getContext('2d'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: @json($instrumentadorLabels),
+                        datasets: [{
+                            label: 'Actividades por enfermero/a',
+                            data: @json($instrumentadorValores),
+                            backgroundColor: [
+                                '#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6',
+                                '#ec4899', '#22d3ee', '#f43f5e', '#a3e635', '#6366f1'
+                            ]
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom'
+                            }
+                        }
+                    }
+                });
+            }
         </script>
         <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
         <script>
             AOS.init();
         </script>
 
+
 @endpush
 
 @endsection
+
