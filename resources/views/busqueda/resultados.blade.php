@@ -158,7 +158,7 @@
                             @foreach ($resultados as $persona)
                                 <li>
                                     <a href="{{ route('persona.ver', ['id' => $persona->id, 'from' => 'busqueda']) }}"
-                                    class="text-[#1B7D8F] hover:underline">
+                                    class="text-[#176d7b] btn border-[#176d7b]">
                                         {{ $persona->nombre }} {{ $persona->apellido }} - DNI: {{ $persona->dni }}
                                     </a>
                                 </li>
