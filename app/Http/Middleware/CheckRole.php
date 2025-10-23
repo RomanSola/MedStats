@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use App\Models\UsuarioPerfil;
 
 class CheckRole
 {
@@ -17,30 +18,49 @@ class CheckRole
     {
         $user = $request->user();
 
-        if (!$user && in_array('guest', $roles)) {
-            return $next($request);
+        if (!$user) {
+            abort(403, 'Usuario no autenticado.');
         }
 
-        if ($user && is_null($user->role) && in_array('guest', $roles)) {
-            return $next($request);
+        // Buscar el perfil del usuario
+        $perfil = UsuarioPerfil::find($user->role);
+
+        // dd($perfil);
+        if (!$perfil) {
+            abort(403, 'Perfil no encontrado.');
+        }
+        //dd($roles);
+        // Verificar si el perfil tiene permiso para el módulo solicitado
+        foreach ($roles as $rol) {
+            if (isset($perfil->$rol) && $perfil->$rol ) {
+                return $next($request);
+            }
+            // if (!isset($perfil->$rol) || !$perfil->$rol) {
+            //     abort(403, "El perfil '{$perfil->perfil}' no tiene acceso a este módulo.");
+            // }
         }
 
-        $rolMap = [
-            1 => 'administrador',
-            2 => 'coordinador',
-            3 => 'medico',
-            4 => 'enfermeroQ',// Quirofano
-            5 => 'enfermeroCI',// Cirugia
-            6 => 'enfermeroP',// Pediatria
-            7 => 'enfermeroCL'// Clinica
-        ];
-        //dd($roles,$rolMap,$user->role );
-        $userRoleName = $rolMap[$user->role ?? 0] ?? null;
-   
-        if (in_array($userRoleName, $roles)) {
-            return $next($request);
-        }
+        abort(403, "El perfil '{$perfil->perfil}' no tiene acceso a este módulo.");
 
-        abort(403, 'Acceso no autorizado.');
+        // if (!$user && in_array('guest', $roles)) {
+        //     return $next($request);
+        // }
+
+        // if ($user && is_null($user->role) && in_array('guest', $roles)) {
+        //     return $next($request);
+        // }
+
+        // $perfiles = UsuarioPerfil::all();
+        // foreach( $perfiles as $perfil ){
+        //     $rolMap [ $perfil->id ] = $perfil->perfil;
+        // }
+
+        // $userRoleName = $rolMap[$user->role ?? 0] ?? null;
+
+        // if (in_array($userRoleName, $roles)) {
+        //     return $next($request);
+        // }
+
+        // abort(403, 'Acceso no autorizado.');
     }
 }

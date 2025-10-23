@@ -52,8 +52,8 @@
                                     <td class="text-center">
                                         <a href="{{ route('UsuarioPerfil.edit', $perfil) }}"
                                             class="btn btn-outline-warning btn-sm me-1">Editar</a>
-                                        <form action="{{ route('UsuarioPerfil.destroy', $perfil) }}"
-                                            method="POST" class="d-inline">
+                                        <form action="{{ route('UsuarioPerfil.destroy', $perfil) }}" method="POST"
+                                            class="d-inline">
                                             @csrf
                                             @method('DELETE')
                                             <button class="btn btn-outline-danger btn-sm"
@@ -77,7 +77,8 @@
             <div class="card-body">
                 <h2 class="text-xl font-semibold mb-3 text-gray-700">Usuarios del Sistema</h2>
                 <p class="mb-3 text-secondary fw-semibold">
-                    A continuación se muestran todos los usuarios registrados y su rol actual. Podés asignar o cambiar su rol
+                    A continuación se muestran todos los usuarios registrados y su rol actual. Podés asignar o cambiar su
+                    rol
                     directamente desde esta tabla.
                 </p>
 
@@ -99,35 +100,37 @@
                             </tr>
                         </thead>
                         <tbody>
+
                             @foreach ($usuarios as $usuario)
-                                @php
-                                    $roles = [
-                                        1 => 'Administrador',
-                                        2 => 'Coordinador',
-                                        3 => 'Médico',
-                                        4 => 'Enfermero'
-                                    ];
-                                @endphp
+                                @foreach ($perfiles as $perfil)
+                                    @if ($usuario->role == $perfil->id)
+                                        {{ $rolActual = $perfil->perfil }}
+                                        @break
+                                    @endif
+                                @endforeach
                                 <tr>
                                     <td>{{ $usuario->name }}</td>
                                     <td>{{ $usuario->email }}</td>
                                     <td>
                                         <span class="fw-semibold text-gray-700">
-                                            {{ $roles[$usuario->role] ?? 'Sin rol asignado' }}
+                                            {{ $rolActual ?? 'Sin rol asignado' }}
                                         </span>
                                     </td>
                                     <td>
                                         <form action="{{ route('usuarios.actualizarRol', $usuario->id) }}" method="POST"
                                             class="d-flex align-items-center justify-content-center gap-2">
                                             @csrf
-                                            <select name="role"
+                                            <select name="role" id="role"
                                                 class="form-select form-select-sm w-auto border-gray-300 rounded shadow-sm">
-                                                @foreach ($roles as $valor => $nombre)
-                                                    <option value="{{ $valor }}"
-                                                        {{ $usuario->role == $valor ? 'selected' : '' }}>
-                                                        {{ $nombre }}
+                                                @foreach ($perfiles as $perfil)
+                                                    <option value="{{ $perfil->id }}"
+                                                        {{ $usuario->role == $perfil->id ? 'selected' : '' }}>
+                                                        {{ $perfil->perfil }}
                                                     </option>
                                                 @endforeach
+                                                @error('role')
+                                                    <small class="text-danger">{{ $message }}</small>
+                                                @enderror
                                             </select>
                                     </td>
                                     <td>

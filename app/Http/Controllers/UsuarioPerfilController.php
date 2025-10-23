@@ -140,14 +140,14 @@ class UsuarioPerfilController extends Controller
     public function index()
     {
         $perfiles = UsuarioPerfil::all();
-        $usuarios = \App\Models\User::all(); // Agregamos esto
+        $usuarios = User::all(); 
 
         return view('UsuarioPerfil.index', compact('perfiles', 'usuarios'));
     }
     public function actualizarRol(Request $request, $id)
     {
         $request->validate([
-            'role' => 'required|integer|min:1|max:4',
+            'role' => 'required|integer',
         ]);
 
         $usuario = User::findOrFail($id);
