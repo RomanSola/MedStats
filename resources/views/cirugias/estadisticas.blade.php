@@ -1,16 +1,18 @@
-@extends('layouts.app')
+@extends('layouts.app_estadisticas')
+
 @section('contenido')
 
     <div class="text-center mb-4">
-        <div class="inline-flex items-center gap-4">
-            <h2
-                class="bg-light d-inline-block px-4 py-2 rounded shadow-sm text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent bg-clip-text drop-shadow-md flex items-center gap-2 px-2">
-                Estadísticas de Cirugías
-            </h2>
-            <a href="{{ route('stocks.estadisticasstock') }}" class="btn btn-outline-info shadow-sm">
-                <i class="bi bi-box-seam me-1"></i> Estadísticas de Stock
-            </a>
-        </div>
+
+    <div class="inline-flex items-center gap-4">
+        <h2 class="bg-light d-inline-block .px-4 py-2 rounded shadow-sm text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent bg-clip-text drop-shadow-md flex items-center gap-2 px-2">
+        Estadísticas de Cirugías
+        </h2>
+        <a href="{{ route('stocks.estadisticasstock') }}" class="btn btn-outline-info shadow-sm">
+        <i class="bi bi-box-seam me-1"></i> Estadísticas de Stock
+        </a>
+    </div>
+
     </div>
 
     {{-- <form method="GET" action="{{ route('cirugias.estadisticas') }}" class="bg-light p-3 rounded shadow-sm mb-4">
@@ -258,26 +260,21 @@
     </div>
 
     {{-- Top enfermeros --}}
-    <div class="card h-100 shadow-sm">
-        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">Top enfermeros/as
-        </div>
-        <div class="card-body d-flex flex-column flex-md-row align-items-center justify-content-between">
-            <div>
-                <ul class="mb-3 mb-md-0">
-                    @foreach ($topEnfermeros as $item)
-                        <li>{{ optional($item->get_enfermero)->nombre }} {{ optional($item->get_enfermero)->apellido }}:
-                            {{ $item->total }}</li>
-                    @endforeach
-                </ul>
-                <div class="mt-3">
-                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
-                        data-bs-target="#modalEnfermeros">
-                        Ver todos los enfermeros/as
-                    </button>
-                </div>
-            </div>
-            <div>
-                <canvas id="graficoEnfermeros" style="width: 180px; height: 180px;"></canvas>
+
+    <div class="card h-100 shadow-sm mt-4">
+    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">Top enfermeros/as</div>
+    <div class="card-body d-flex flex-column flex-md-row align-items-center justify-content-between">
+        <div>
+            <ul class="mb-3 mb-md-0">
+                @foreach ($topEnfermeros as $item)
+                    <li>{{ optional($item->get_enfermero)->nombre }} {{ optional($item->get_enfermero)->apellido }}: {{ $item->total }}</li>
+                @endforeach
+            </ul>
+            <div class="mt-3">
+            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalEnfermeros">
+            Ver todos los enfermeros/as
+            </button>
+
             </div>
         </div>
     </div>
@@ -315,48 +312,44 @@
         </div>
     </div>
 
-    {{-- Urgencias vs Programadas --}}
+    </div>
+    </div>
 
+
+    {{-- Urgencias vs Programadas --}}
     <div class="card-body">
-        <div class="row mb-4">
-            {{-- Columna izquierda: Resumen numérico --}}
-            <div class="col-md-6">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-header bg-danger text-white">Resumen de urgencias vs programadas</div>
-                    <div class="card-body">
-                        <p>Cirugías urgentes: <strong>{{ $urgentes }}</strong></p>
-                        <p>Cirugías programadas: <strong>{{ $programadas }}</strong></p>
-                        <p>Porcentaje urgencias:
-                            @if ($urgentes + $programadas > 0)
-                                <p>Porcentaje urgencias:
-                                    <strong>{{ round(($urgentes / ($urgentes + $programadas)) * 100, 2) }}%</strong>
-                                </p>
-                            @else
-                                <p>Porcentaje urgencias:
-                                    <strong>0%</strong>
-                                </p>
-                            @endif
-                        </p>
-                    </div>
-                </div>
+
+    <div class="row mb-4">
+        <div class="col-md-6">
+        <div class="card h-100 shadow-sm">
+            <div class="card-header bg-danger text-white">Resumen de urgencias vs programadas</div>
+            <div class="card-body">
+                <p>Cirugías urgentes: <strong>{{ $urgentes }}</strong></p>
+                <p>Cirugías programadas: <strong>{{ $programadas }}</strong></p>
+                <p>Porcentaje urgencias:
+                    @if ($urgentes + $programadas > 0)
+                        <strong>{{ round(($urgentes / ($urgentes + $programadas)) * 100, 2) }}%</strong>
+                    @else
+                        <strong>0%</strong>
+                    @endif
+                </p>
+
             </div>
 
-            {{-- Columna derecha: Gráfico comparativo --}}
-            <div class="col-md-6">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-header bg-warning text-dark">Gráfico comparativo</div>
-                    <div class="card-body">
-                        <div style="height: 300px;">
-                            @if ($urgentes + $programadas > 0)
-                                <div style="height: 300px;">
-                                    <canvas id="graficoUrgenciasProgramadas"></canvas>
-                                </div>
-                            @else
-                                <div class="alert alert-info text-center">
-                                    No hay cirugías urgentes ni programadas para mostrar comparación.
-                                </div>
-                            @endif
-                        </div>
+
+        <div class="col-md-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header bg-warning text-dark">Gráfico comparativo</div>
+                <div class="card-body">
+                    <div style="height: 300px;">
+                        @if ($urgentes + $programadas > 0)
+                            <canvas id="graficoUrgenciasProgramadas"></canvas>
+                        @else
+                            <div class="alert alert-info text-center">
+                                No hay cirugías urgentes ni programadas para mostrar comparación.
+                            </div>
+                        @endif
+
                     </div>
                 </div>
             </div>
@@ -364,7 +357,6 @@
     </div>
     </div>
 
-    {{-- Scripts para gráficos --}}
 
     @push('scripts')
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -478,5 +470,7 @@
         <script>
             AOS.init();
         </script>
-    @endpush
+
+@endpush
+
 @endsection
