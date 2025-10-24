@@ -260,5 +260,8 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
 Route::middleware(['auth', 'roles:admin'])->group(function () {
     Route::post('/usuarios/{id}/actualizar-rol', [App\Http\Controllers\UsuarioPerfilController::class, 'actualizarRol'])->name('usuarios.actualizarRol');
     Route::put('/usuarios/{id}/actualizar-rol', [UsuarioPerfilController::class, 'actualizarRol'])->name('usuarios.actualizarRol');
-    require __DIR__ . '/auth.php';
 });
+
+// 👇 Debe ir fuera de cualquier grupo con 'auth' o 'roles'
+require __DIR__ . '/auth.php';
+

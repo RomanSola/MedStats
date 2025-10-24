@@ -32,7 +32,7 @@ class CheckRole
         //dd($roles);
         // Verificar si el perfil tiene permiso para el módulo solicitado
         foreach ($roles as $rol) {
-            if (isset($perfil->$rol) && $perfil->$rol ) {
+            if (isset($perfil->$rol) && $perfil->$rol) {
                 return $next($request);
             }
             // if (!isset($perfil->$rol) || !$perfil->$rol) {
