@@ -157,7 +157,7 @@
         $(document).ready(function() {
                 // Inicializar la tabla
             const tabla = $('#miTabla').DataTable({
-                    dom: '<"top-controls d-flex flex-wrap align-items-end gap-3"l<"#fechas-html">f>rt<"bottom-controls"ip>',
+                    dom: '<"top-controls d-flex flex-wrap align-items-end gap-3"lf>rt<"bottom-controls"ip>',
                     language: {
                         url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
                     }
