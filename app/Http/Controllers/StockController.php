@@ -56,7 +56,7 @@ class StockController extends Controller
             'comentario' => 'Carga inicial de stock',
             'usuario' => null,
             'paciente_id' => null,
-            //'creado_por' => auth()->id(),
+            'creado_por' => auth()->id(),
         ]);
         return redirect()->route('stocks.index')->with('success', 'Medicamento cargado con éxito');
 
@@ -149,7 +149,7 @@ class StockController extends Controller
             'empleado_id' => $request->input('empleado_id'),
             'paciente_id' => $request->input('paciente_id'),
             'comentario' => $comentario,
-            // 'creado_por' => auth()->id(), // si querés registrar el usuario
+            'creado_por' => auth()->id(), // si querés registrar el usuario
         ]); 
         return redirect()->route('stocks.index');
     }

@@ -39,7 +39,7 @@
                         @if($item->get_paciente) (DNI {{ $item->get_paciente->dni }}) @endif
                     </td>
                     <td class="px-4 py-2 border">{{ $item->comentario }}</td>
-                    <td class="px-4 py-2 border text-center">–</td> {{-- Usuario pendiente --}}
+                    <td class="px-4 py-2 border text-center">{{ $item->get_creador->name ?? '-'}}</td> {{-- Usuario pendiente --}}
                 </tr>
                 @empty
                 <tr>
