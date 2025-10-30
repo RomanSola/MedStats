@@ -34,12 +34,11 @@ class Historial_stock extends Model
     {
         return $this->belongsTo(Empleado::class, 'empleado_id', 'id');
     }
-    /* FALTA LA TABLA DE USUARIOS
     public function get_creador()
     {
-        return $this->belongsTo(Usuario::class, 'creado_por');
+        return $this->belongsTo(User::class, 'creado_por', 'id');
     }
-    protected static function booted()
+    /*protected static function booted()
     {   
         //Valida que el stock exista y la cantidad no baje de cero
         static::creating(function ($historial) {

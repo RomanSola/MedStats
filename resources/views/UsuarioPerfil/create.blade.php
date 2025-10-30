@@ -57,6 +57,18 @@
                     @enderror
                 </div>
 
+                <!-- Pacientes -->
+                <div class="switches-group-compact">
+                    <span class="switch-label">Pacientes</span>
+                    <label class="switch">
+                        <input type="checkbox" name="pacientes" id="pacientes" {{ old('pacientes') ? 'checked' : '' }}>
+                        <span class="slider round"></span>
+                    </label>
+                    @error('pacientes')
+                        <div><small class="text-danger">{{ $message }}</small></div>
+                    @enderror
+                </div>
+
                 <!-- Estadísticas -->
                 <div class="switches-group-compact">
                     <span class="switch-label">Estadísticas</span>

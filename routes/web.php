@@ -264,4 +264,4 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
 
 // 👇 Debe ir fuera de cualquier grupo con 'auth' o 'roles'
 require __DIR__ . '/auth.php';
-
+ 

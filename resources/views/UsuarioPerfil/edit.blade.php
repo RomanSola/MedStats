@@ -38,6 +38,7 @@
                     $opciones = [
                         'admin' => 'Administrador',
                         'insumos' => 'Insumos',
+                        'pacientes' => 'Pacientes',
                         'estadisticas' => 'Estadísticas',
                         'camas' => 'Camas',
                         'cirugias' => 'Cirugías',
