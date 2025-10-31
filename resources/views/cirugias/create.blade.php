@@ -57,8 +57,7 @@
                         <div class="col-md-4">
                             <label for="procedimiento"
                                 class="block text-sm font-semibold text-gray-700 mb-1">Procedimiento</label>
-                            <select name="procedimiento_id" id="procedimiento"
-                                class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500">
+                            <select name="procedimiento_id" id="procedimiento" class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500">
                             </select>
                             @error('procedimiento_id')
                                 <small class="text-danger">{{ $message }}</small>
@@ -120,7 +119,7 @@
                             <label for="ayudante_1_id" class="form-label">Ayudante 1</label>
                             <select name="ayudante_1_id" id="ayudante_1_id" class="form-control select2">
                                 <option value="">Seleccione el Ayudante 1</option>
-                                @php $profesionesPermitidas = [2]; @endphp
+                                @php $profesionesPermitidas = [1, 2]; @endphp
                                 @foreach ($empleados as $empleado)
                                     @if (in_array($empleado->get_profesion->rol_id, $profesionesPermitidas))
                                         <option value="{{ $empleado->id }}"
@@ -140,7 +139,7 @@
                             <label for="ayudante_2_id" class="form-label">Ayudante 2</label>
                             <select name="ayudante_2_id" id="ayudante_2_id" class="form-control select2">
                                 <option value="">Seleccione el Ayudante 2</option>
-                                @php $profesionesPermitidas = [2]; @endphp
+                                @php $profesionesPermitidas = [1, 2]; @endphp
                                 @foreach ($empleados as $empleado)
                                     @if (in_array($empleado->get_profesion->rol_id, $profesionesPermitidas))
                                         <option value="{{ $empleado->id }}"
@@ -160,7 +159,7 @@
                             <label for="ayudante_3_id" class="form-label">Ayudante 3</label>
                             <select name="ayudante_3_id" id="ayudante_3_id" class="form-control select2">
                                 <option value="">Seleccione el Ayudante 3</option>
-                                @php $profesionesPermitidas = [2]; @endphp
+                                @php $profesionesPermitidas = [1, 2]; @endphp
                                 @foreach ($empleados as $empleado)
                                     @if (in_array($empleado->get_profesion->rol_id, $profesionesPermitidas))
                                         <option value="{{ $empleado->id }}"
@@ -531,89 +530,115 @@
         }
     </style>
     <script>
-    $(document).ready(function () {
-        $('.select2').select2({
-            placeholder: "Seleccione una opción",
-            allowClear: true,
-            width: '100%'
-        });
+$(document).ready(function () {
+    // Inicializar Select2
+    $('.select2').select2({
+        placeholder: "Seleccione una opción",
+        allowClear: true,
+        width: '100%'
+    });
 
-        const oldEspecialidadId = "{{ old('especialidad_id') }}";
-        const oldProcedimientoId = "{{ old('procedimiento_id') }}";
-        const oldProcedimiento2Id = "{{ old('procedimiento_2_id') }}";
+    // Restaurar valores antiguos
+    const oldEspecialidadId = "{{ old('especialidad_id') }}";
+    const oldProcedimientoId = "{{ old('procedimiento_id') }}";
+    const oldProcedimiento2Id = "{{ old('procedimiento_2_id') }}";
 
-        // Función genérica para cargar procedimientos
-        function cargarProcedimientos(especialidadId, selector, selectedId = null) {
-            fetch(`/api/procedimientos/${especialidadId}`)
-                .then(res => res.json())
-                .then(data => {
-                    const select = $(selector);
-                    select.html('<option value="">Seleccione un procedimiento</option>');
-                    data.forEach(p => {
-                        const selected = (selectedId == p.id) ? 'selected' : '';
-                        select.append(`<option value="${p.id}" ${selected}>${p.nombre_procedimiento}</option>`);
-                    });
+    // Función genérica para cargar procedimientos
+    function cargarProcedimientos(especialidadId, selector, selectedId = null) {
+        fetch(`/api/procedimientos/${especialidadId}`)
+            .then(res => res.json())
+            .then(data => {
+                const select = $(selector);
+                select.html('<option value="">Seleccione un procedimiento</option>');
+                data.forEach(p => {
+                    const selected = (selectedId == p.id) ? 'selected' : '';
+                    select.append(`<option value="${p.id}" ${selected}>${p.nombre_procedimiento}</option>`);
                 });
-        }
+                select.trigger('change'); // Refresca visualmente
+            });
+    }
 
-        // Evento cambio de especialidad
-        $('#especialidad').on('change', function () {
-            const especialidadId = $(this).val();
-            if (especialidadId) {
-                cargarProcedimientos(especialidadId, '#procedimiento');
-                cargarProcedimientos(especialidadId, '#procedimiento2');
-            } else {
-                $('#procedimiento, #procedimiento2').html('<option value="">Seleccione un procedimiento</option>');
-            }
+    // Evento cambio de especialidad
+    $('#especialidad').on('change', function () {
+        const especialidadId = $(this).val();
+        if (especialidadId) {
+            cargarProcedimientos(especialidadId, '#procedimiento');
+            cargarProcedimientos(especialidadId, '#procedimiento2');
+        } else {
+            $('#procedimiento, #procedimiento2').html('<option value="">Seleccione un procedimiento</option>');
+        }
+    });
+
+    // Restaurar valores si hay datos viejos
+    if (oldEspecialidadId) {
+        $('#especialidad').val(oldEspecialidadId).trigger('change');
+        cargarProcedimientos(oldEspecialidadId, '#procedimiento', oldProcedimientoId);
+        cargarProcedimientos(oldEspecialidadId, '#procedimiento2', oldProcedimiento2Id);
+    }
+
+    const grupos = {
+        enfermeros: ['#enfermero_id', '#enfermero_2_id', '#enfermero_3_id'],
+        procedimientos: ['#procedimiento', '#procedimiento2'],
+        ayudantes: ['#ayudante_1_id', '#ayudante_2_id', '#ayudante_3_id'],
+        instrumentadores: ['#instrumentador_id', '#instrumentador_2_id', '#instrumentador_3_id'],
+        anestesias: ['#tipo_anestesia_id', '#tipo_anestesia_2_id', '#tipo_anestesia_3_id']
+    };
+
+    // Función para deshabilitar opciones repetidas
+    function actualizarOpcionesUnificadas(grupoSelectores) {
+    if (grupoSelectores.length < 2) return;
+
+    const valoresSeleccionados = grupoSelectores.map(id => $(id).val()).filter(val => val !== '');
+
+    grupoSelectores.forEach(selector => {
+        const select = $(selector);
+        const valorActual = select.val();
+
+        // Deshabilitar opciones duplicadas
+        select.find('option').each(function () {
+            const val = $(this).attr('value');
+            if (!val) return;
+
+            const debeDeshabilitar = val !== valorActual && valoresSeleccionados.includes(val);
+            $(this).prop('disabled', debeDeshabilitar);
         });
 
-        // Restaurar valores si hay datos viejos
-        if (oldEspecialidadId) {
-            $('#especialidad').val(oldEspecialidadId).trigger('change');
-            cargarProcedimientos(oldEspecialidadId, '#procedimiento', oldProcedimientoId);
-            cargarProcedimientos(oldEspecialidadId, '#procedimiento2', oldProcedimiento2Id);
-        }
-
-        // Validación de enfermeros únicos al enviar
-        $('form').on('submit', function (e) {
-            const seleccionados = [
-                $('#enfermero_id').val(),
-                $('#enfermero_2_id').val(),
-                $('#enfermero_3_id').val()
-            ].filter(id => id !== '');
-
-            const duplicados = seleccionados.filter((id, index, self) => self.indexOf(id) !== index);
-            if (duplicados.length > 0) {
-                e.preventDefault();
-                alert('Los enfermeros seleccionados deben ser diferentes. Por favor, revise su selección.');
-            }
-        });
-
-        // Deshabilitar opciones repetidas en Select2
-        function actualizarOpciones() {
-            const idsSeleccionados = [
-                $('#enfermero_id').val(),
-                $('#enfermero_2_id').val(),
-                $('#enfermero_3_id').val()
-            ];
-
-            $('.select2').each(function () {
-                const select = $(this);
-                const currentVal = select.val();
-
-                select.find('option').each(function () {
-                    const val = $(this).attr('value');
-                    if (val === "") return;
-                    $(this).prop('disabled', val !== currentVal && idsSeleccionados.includes(val));
-                });
-
-                select.trigger('change.select2');
+        // Refrescar Select2 correctamente
+        if (select.hasClass('select2')) {
+            select.select2('destroy'); // Eliminar instancia actual
+            select.select2({
+                placeholder: "Seleccione una opción",
+                allowClear: true,
+                width: '100%'
             });
         }
-
-        $('#enfermero_id, #enfermero_2_id, #enfermero_3_id').on('change', actualizarOpciones);
-        actualizarOpciones(); // Ejecutar al cargar
     });
-    </script>
+}
+
+    // Activar deshabilitación dinámica en todos los grupos
+    Object.values(grupos).forEach(grupo => {
+        grupo.forEach(id => $(id).on('change', () => actualizarOpcionesUnificadas(grupo)));
+        actualizarOpcionesUnificadas(grupo);
+    });
+
+    // Función para detectar duplicados
+    function hayDuplicados(valores) {
+        const filtrados = valores.filter(v => v !== '');
+        return filtrados.some((v, i) => filtrados.indexOf(v) !== i);
+    }
+
+    // Validación al enviar el formulario
+    $('form').on('submit', function (e) {
+        for (const [nombreGrupo, grupo] of Object.entries(grupos)) {
+            const seleccionados = grupo.map(id => $(id).val());
+            if (hayDuplicados(seleccionados)) {
+                e.preventDefault();
+                alert(`Los valores seleccionados en "${nombreGrupo}" deben ser diferentes.`);
+                break;
+            }
+        }
+    });
+});
+</script>
 @endpush
 @endsection

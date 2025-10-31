@@ -540,65 +540,114 @@
     </script>
 
     <!-- Scripts para combos dinámicos -->
-    <script>
-        $(document).ready(function() {
-            // Tomamos valores viejos (si hay) o los de la cirugía (cuando editamos)
-            let oldEspecialidadId = "{{ old('especialidad_id', $cirugia->especialidad_id) }}";
-            let oldProcedimientoId = "{{ old('procedimiento_id', $cirugia->procedimiento_id) }}";
-            let oldProcedimiento2Id = "{{ old('procedimiento_2_id', $cirugia->procedimiento_2_id) }}";
+<script>
+    $(document).ready(function () {
+        // Inicializar Select2
+        $('.select2').select2({
+            placeholder: "Seleccione una opción",
+            allowClear: true,
+            width: '100%'
+        });
 
-            // Función para cargar procedimientos en el primer select
-            function cargarProcedimientos(especialidadId, selectedProcedimientoId = null) {
-                fetch(`/api/procedimientos/${especialidadId}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        let procedimiento = $('#procedimiento');
-                        procedimiento.html('<option value="">Seleccione un procedimiento</option>');
-                        data.forEach(p => {
-                            let selected = (selectedProcedimientoId == p.id) ? 'selected' : '';
-                            procedimiento.append(
-                                `<option value="${p.id}" ${selected}>${p.nombre_procedimiento} - ${p.descripcion}</option>`
-                            );
-                        });
-                    })
-                    .catch(error => console.error("Error cargando procedimientos:", error));
-            }
+        // Valores antiguos (old() o $cirugia)
+        const oldEspecialidadId = "{{ old('especialidad_id', $cirugia->especialidad_id ?? '') }}";
+        const oldProcedimientoId = "{{ old('procedimiento_id', $cirugia->procedimiento_id ?? '') }}";
+        const oldProcedimiento2Id = "{{ old('procedimiento_2_id', $cirugia->procedimiento_2_id ?? '') }}";
 
-            // Función para cargar procedimientos en el segundo select
-            function cargarProcedimientos2(especialidadId, selectedProcedimiento2Id = null) {
-                fetch(`/api/procedimientos/${especialidadId}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        let procedimiento2 = $('#procedimiento2');
-                        procedimiento2.html('<option value="">Seleccione un procedimiento</option>');
-                        data.forEach(p => {
-                            let selected = (selectedProcedimiento2Id == p.id) ? 'selected' : '';
-                            procedimiento2.append(
-                                `<option value="${p.id}" ${selected}>${p.nombre_procedimiento} - ${p.descripcion}</option>`
-                            );
-                        });
-                    })
-                    .catch(error => console.error("Error cargando procedimientos 2:", error));
-            }
+        // Función genérica para cargar procedimientos
+        function cargarProcedimientos(especialidadId, selector, selectedId = null) {
+            fetch(`/api/procedimientos/${especialidadId}`)
+                .then(res => res.json())
+                .then(data => {
+                    const select = $(selector);
+                    select.html('<option value="">Seleccione un procedimiento</option>');
+                    data.forEach(p => {
+                        const selected = (selectedId == p.id) ? 'selected' : '';
+                        select.append(`<option value="${p.id}" ${selected}>${p.nombre_procedimiento} - ${p.descripcion}</option>`);
+                    });
+                    select.trigger('change');
+                })
+                .catch(err => console.error(`Error cargando ${selector}:`, err));
+        }
 
-            // Cuando cambia la especialidad, recargo ambos combos
-            $('#especialidad').on('change', function() {
-                let especialidadId = $(this).val();
-                if (especialidadId) {
-                    cargarProcedimientos(especialidadId);
-                    cargarProcedimientos2(especialidadId);
-                } else {
-                    $('#procedimiento').html('<option value="">Seleccione un procedimiento</option>');
-                    $('#procedimiento2').html('<option value="">Seleccione un procedimiento</option>');
-                }
-            });
-
-            // Si hay valores (old() o $cirugia), los cargamos
-            if (oldEspecialidadId) {
-                $('#especialidad').val(oldEspecialidadId).trigger('change');
-                cargarProcedimientos(oldEspecialidadId, oldProcedimientoId);
-                cargarProcedimientos2(oldEspecialidadId, oldProcedimiento2Id);
+        // Evento cambio de especialidad
+        $('#especialidad').on('change', function () {
+            const especialidadId = $(this).val();
+            if (especialidadId) {
+                cargarProcedimientos(especialidadId, '#procedimiento');
+                cargarProcedimientos(especialidadId, '#procedimiento2');
+            } else {
+                $('#procedimiento, #procedimiento2').html('<option value="">Seleccione un procedimiento</option>');
             }
         });
-    </script>
+
+        // Restaurar valores si hay datos viejos
+        if (oldEspecialidadId) {
+            $('#especialidad').val(oldEspecialidadId).trigger('change');
+            cargarProcedimientos(oldEspecialidadId, '#procedimiento', oldProcedimientoId);
+            cargarProcedimientos(oldEspecialidadId, '#procedimiento2', oldProcedimiento2Id);
+        }
+
+        // Grupos de selects que deben evitar duplicados
+        const grupos = {
+            enfermeros: ['#enfermero_id', '#enfermero_2_id', '#enfermero_3_id'],
+            procedimientos: ['#procedimiento', '#procedimiento2'],
+            ayudantes: ['#ayudante_1_id', '#ayudante_2_id', '#ayudante_3_id'],
+            instrumentadores: ['#instrumentador_id', '#instrumentador_2_id', '#instrumentador_3_id'],
+            anestesias: ['#tipo_anestesia_id', '#tipo_anestesia_2_id', '#tipo_anestesia_3_id']
+        };
+
+        // Deshabilitar opciones repetidas
+        function actualizarOpcionesUnificadas(grupoSelectores) {
+            if (grupoSelectores.length < 2) return;
+
+            const valoresSeleccionados = grupoSelectores.map(id => $(id).val()).filter(val => val !== '');
+
+            grupoSelectores.forEach(selector => {
+                const select = $(selector);
+                const valorActual = select.val();
+
+                select.find('option').each(function () {
+                    const val = $(this).attr('value');
+                    if (!val) return;
+                    const debeDeshabilitar = val !== valorActual && valoresSeleccionados.includes(val);
+                    $(this).prop('disabled', debeDeshabilitar);
+                });
+
+                if (select.hasClass('select2')) {
+                    select.select2('destroy').select2({
+                        placeholder: "Seleccione una opción",
+                        allowClear: true,
+                        width: '100%'
+                    });
+                } else {
+                    select.trigger('change');
+                }
+            });
+        }
+
+        // Activar deshabilitación dinámica
+        Object.values(grupos).forEach(grupo => {
+            grupo.forEach(id => $(id).on('change', () => actualizarOpcionesUnificadas(grupo)));
+            actualizarOpcionesUnificadas(grupo);
+        });
+
+        // Validación al enviar el formulario
+        function hayDuplicados(valores) {
+            const filtrados = valores.filter(v => v !== '');
+            return filtrados.some((v, i) => filtrados.indexOf(v) !== i);
+        }
+
+        $('form').on('submit', function (e) {
+            for (const [nombreGrupo, grupo] of Object.entries(grupos)) {
+                const seleccionados = grupo.map(id => $(id).val());
+                if (hayDuplicados(seleccionados)) {
+                    e.preventDefault();
+                    alert(`Los valores seleccionados en "${nombreGrupo}" deben ser diferentes.`);
+                    break;
+                }
+            }
+        });
+    });
+</script>
 @endsection
