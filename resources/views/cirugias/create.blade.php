@@ -1,7 +1,5 @@
 @extends('layouts.app')
-
 @section('title', 'Registrar Nueva Cirugía')
-
 @section('contenido')
     <!--<div class="container mt-4">-->
     <div class="max-w-7xl mx-auto px-4 py-8">
@@ -284,7 +282,7 @@
                         </div>
                         {{-- Instrumentador 3--}}
                         <div class="col-md-4">
-                            <label for="instrumentador_3_id" class="form-label">Instrumentador 2</label>
+                            <label for="instrumentador_3_id" class="form-label">Instrumentador 3</label>
                             <select name="instrumentador_3_id" id="instrumentador_3_id" class="form-control select2">
                                 <option value="">Seleccione el Instrumentador</option>
                                 @php $profesionesPermitidas = [4]; @endphp
@@ -341,7 +339,7 @@
                         </div>
                         {{-- Enfermero 3 --}}
                         <div class="col-md-4">
-                            <label for="enfermero_3_id" class="form-label">Enfermero 2</label>
+                            <label for="enfermero_3_id" class="form-label">Enfermero 3</label>
                             <select name="enfermero_3_id" id="enfermero_3_id" class="form-control select2">
                                 <option value="">Seleccione el Enfermero</option>
                                 @php $profesionesPermitidas = [5]; @endphp
@@ -433,6 +431,7 @@
     </div>
     </div>
 
+    @push('scripts')
     <!-- Select2 CSS/JS (mantener como estaba) -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -532,75 +531,89 @@
         }
     </style>
     <script>
-        $(document).ready(function() {
-            // Inicializar Select2
-            $('.select2').select2({
-                placeholder: "Seleccione una opción",
-                allowClear: true,
-                width: '100%'
-            });
+    $(document).ready(function () {
+        $('.select2').select2({
+            placeholder: "Seleccione una opción",
+            allowClear: true,
+            width: '100%'
         });
-    </script>
 
-    <!-- Scripts para combos dinámicos -->
-    <script>
-        $(document).ready(function() {
-            let oldEspecialidadId = "{{ old('especialidad_id') }}";
-            let oldProcedimientoId = "{{ old('procedimiento_id') }}";
-            let oldProcedimiento2Id = "{{ old('procedimiento_2_id') }}";
+        const oldEspecialidadId = "{{ old('especialidad_id') }}";
+        const oldProcedimientoId = "{{ old('procedimiento_id') }}";
+        const oldProcedimiento2Id = "{{ old('procedimiento_2_id') }}";
 
-            function cargarProcedimientos(especialidadId, selectedProcedimientoId = null) {
-                fetch(`/api/procedimientos/${especialidadId}`)
-                    .then(res => res.json())
-                    .then(data => {
-                        // console.log("Respuesta del 1 API:", data); //para debug
-                        let procedimiento = $('#procedimiento');
-                        procedimiento.html('<option value="">Seleccione un procedimiento</option>');
-
-                        data.forEach(p => {
-                            let selected = (selectedProcedimientoId == p.id) ? 'selected' : '';
-                            procedimiento.append(
-                                `<option value="${p.id}" ${selected}>${p.nombre_procedimiento}</option>`
-                            );
-                        });
+        // Función genérica para cargar procedimientos
+        function cargarProcedimientos(especialidadId, selector, selectedId = null) {
+            fetch(`/api/procedimientos/${especialidadId}`)
+                .then(res => res.json())
+                .then(data => {
+                    const select = $(selector);
+                    select.html('<option value="">Seleccione un procedimiento</option>');
+                    data.forEach(p => {
+                        const selected = (selectedId == p.id) ? 'selected' : '';
+                        select.append(`<option value="${p.id}" ${selected}>${p.nombre_procedimiento}</option>`);
                     });
-            }
+                });
+        }
 
-            function cargarProcedimientos2(especialidadId, selectedProcedimiento2Id = null) {
-                fetch(`/api/procedimientos/${especialidadId}`)
-                    .then(res => res.json())
-                    .then(data => {
-                        //console.log("Respuesta del 2 API:", data); //para debug
-                        let procedimiento2 = $('#procedimiento2');
-                        procedimiento2.html('<option value="">Seleccione un procedimiento</option>');
-
-                        data.forEach(p => {
-                            let selected = (selectedProcedimiento2Id == p.id) ? 'selected' : '';
-                            procedimiento2.append(
-                                `<option value="${p.id}" ${selected}>${p.nombre_procedimiento}</option>`
-                            );
-                        });
-                    });
-            }
-
-            // Cuando cambie la especialidad, recargo los 2 combos
-            $('#especialidad').on('change', function() {
-                let especialidadId = $(this).val();
-                if (especialidadId) {
-                    cargarProcedimientos(especialidadId);
-                    cargarProcedimientos2(especialidadId);
-                } else {
-                    $('#procedimiento').html('<option value="">Seleccione un procedimiento</option>');
-                    $('#procedimiento2').html('<option value="">Seleccione un procedimiento</option>');
-                }
-            });
-
-            // Restaurar valores si hay datos viejos
-            if (oldEspecialidadId) {
-                $('#especialidad').val(oldEspecialidadId).trigger('change');
-                cargarProcedimientos(oldEspecialidadId, oldProcedimientoId);
-                cargarProcedimientos2(oldEspecialidadId, oldProcedimiento2Id);
+        // Evento cambio de especialidad
+        $('#especialidad').on('change', function () {
+            const especialidadId = $(this).val();
+            if (especialidadId) {
+                cargarProcedimientos(especialidadId, '#procedimiento');
+                cargarProcedimientos(especialidadId, '#procedimiento2');
+            } else {
+                $('#procedimiento, #procedimiento2').html('<option value="">Seleccione un procedimiento</option>');
             }
         });
+
+        // Restaurar valores si hay datos viejos
+        if (oldEspecialidadId) {
+            $('#especialidad').val(oldEspecialidadId).trigger('change');
+            cargarProcedimientos(oldEspecialidadId, '#procedimiento', oldProcedimientoId);
+            cargarProcedimientos(oldEspecialidadId, '#procedimiento2', oldProcedimiento2Id);
+        }
+
+        // Validación de enfermeros únicos al enviar
+        $('form').on('submit', function (e) {
+            const seleccionados = [
+                $('#enfermero_id').val(),
+                $('#enfermero_2_id').val(),
+                $('#enfermero_3_id').val()
+            ].filter(id => id !== '');
+
+            const duplicados = seleccionados.filter((id, index, self) => self.indexOf(id) !== index);
+            if (duplicados.length > 0) {
+                e.preventDefault();
+                alert('Los enfermeros seleccionados deben ser diferentes. Por favor, revise su selección.');
+            }
+        });
+
+        // Deshabilitar opciones repetidas en Select2
+        function actualizarOpciones() {
+            const idsSeleccionados = [
+                $('#enfermero_id').val(),
+                $('#enfermero_2_id').val(),
+                $('#enfermero_3_id').val()
+            ];
+
+            $('.select2').each(function () {
+                const select = $(this);
+                const currentVal = select.val();
+
+                select.find('option').each(function () {
+                    const val = $(this).attr('value');
+                    if (val === "") return;
+                    $(this).prop('disabled', val !== currentVal && idsSeleccionados.includes(val));
+                });
+
+                select.trigger('change.select2');
+            });
+        }
+
+        $('#enfermero_id, #enfermero_2_id, #enfermero_3_id').on('change', actualizarOpciones);
+        actualizarOpciones(); // Ejecutar al cargar
+    });
     </script>
+@endpush
 @endsection
