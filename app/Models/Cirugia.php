@@ -30,7 +30,7 @@ class Cirugia extends Model
         'fecha_cirugia',
         'hora_cirugia',
         'creado_por',
-        'modificado_por'
+        'modificado_por',
     ];
 
     public function get_paciente()

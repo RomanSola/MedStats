@@ -225,22 +225,7 @@
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
-                        {{-- Tipo de Anestesia 3 --}}
-                        <div class="col-md-4">
-                            <label for="tipo_anestesia_3_id" class="form-label">Tipo de Anestesia 3</label>
-                            <select name="tipo_anestesia_3_id" id="tipo_anestesia_3_id" class="form-control select2">
-                                <option value="">Seleccione el Tipo de Anestesia</option>
-                                @foreach ($tipoAnestesias as $tipoAnestesia)
-                                    <option value="{{ $tipoAnestesia->id }}"
-                                        {{ old('tipo_anestesia_3_id') == $tipoAnestesia->id ? 'selected' : '' }}>
-                                        {{ $tipoAnestesia->nombre }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            @error('tipo_anestesia_3_id')
-                                <small class="text-danger">{{ $message }}</small>
-                            @enderror
-                        </div>
+                        
                         {{-- Instrumentador --}}
                         <div class="col-md-4">
                             <label for="instrumentador_id" class="form-label">Instrumentador</label>
@@ -279,25 +264,7 @@
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
-                        {{-- Instrumentador 3--}}
-                        <div class="col-md-4">
-                            <label for="instrumentador_3_id" class="form-label">Instrumentador 3</label>
-                            <select name="instrumentador_3_id" id="instrumentador_3_id" class="form-control select2">
-                                <option value="">Seleccione el Instrumentador</option>
-                                @php $profesionesPermitidas = [4]; @endphp
-                                @foreach ($empleados as $empleado)
-                                    @if (in_array($empleado->get_profesion->rol_id, $profesionesPermitidas))
-                                        <option value="{{ $empleado->id }}"
-                                            {{ old('instrumentador_3_id') == $empleado->id ? 'selected' : '' }}>
-                                            {{ $empleado->nombre }} {{ $empleado->apellido }}
-                                        </option>
-                                    @endif
-                                @endforeach
-                            </select>
-                            @error('instrumentador_3_id')
-                                <small class="text-danger">{{ $message }}</small>
-                            @enderror
-                        </div>
+
                         {{-- Enfermero --}}
                         <div class="col-md-4">
                             <label for="enfermero_id" class="form-label">Enfermero</label>
@@ -336,25 +303,7 @@
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
-                        {{-- Enfermero 3 --}}
-                        <div class="col-md-4">
-                            <label for="enfermero_3_id" class="form-label">Enfermero 3</label>
-                            <select name="enfermero_3_id" id="enfermero_3_id" class="form-control select2">
-                                <option value="">Seleccione el Enfermero</option>
-                                @php $profesionesPermitidas = [5]; @endphp
-                                @foreach ($empleados as $empleado)
-                                    @if (in_array($empleado->get_profesion->rol_id, $profesionesPermitidas))
-                                        <option value="{{ $empleado->id }}"
-                                            {{ old('enfermero_3_id') == $empleado->id ? 'selected' : '' }}>
-                                            {{ $empleado->nombre }} {{ $empleado->apellido }}
-                                        </option>
-                                    @endif
-                                @endforeach
-                            </select>
-                            @error('enfermero_3_id')
-                                <small class="text-danger">{{ $message }}</small>
-                            @enderror
-                        </div>
+
                         {{-- Fecha cirugía --}}
                         <div class="col-md-4">
                             <label for="fecha_cirugia" class="form-label">Fecha de la cirugía</label>
