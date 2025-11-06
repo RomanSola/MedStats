@@ -31,13 +31,10 @@ class CirugiaController extends Controller
             'get_anestesista',
             'get_instrumentador',
             'get_instrumentador2',
-            'get_instrumentador3',
             'get_enfermero',
             'get_enfermero2',
-            'get_enfermero3',
             'get_tipo_anestesia',
             'get_tipo_anestesia2',
-            'get_tipo_anestesia3',
         ])->get();
         return view('cirugias.index', compact('cirugias')); //Llama a la vista y le pasa las Cirugias obtenidas
     }
@@ -57,8 +54,9 @@ class CirugiaController extends Controller
         return view('cirugias.create', compact('pacientes', 'empleados', 'especialidades', 'procedimientos', 'quirofanos', 'tipoAnestesias'));
     }
 
-    /*public function store(Request $request)
+    public function store(Request $request)
     {
+        // Validación principal
         $request->validate([
             'paciente_id' => 'required|exists:pacientes,id',
             'especialidad_id' => 'required|exists:especialidads,id',
@@ -69,232 +67,63 @@ class CirugiaController extends Controller
             'tipo_anestesia_id' => 'required|exists:tipo_anestesias,id',
             'instrumentador_id' => 'required|exists:empleados,id',
             'enfermero_id' => 'required|exists:empleados,id',
-            'fecha_cirugia' => 'required',
+            'fecha_cirugia' => 'required|date',
             'hora_cirugia' => 'required',
             'duracion' => 'required|date_format:H:i',
-            //'duracion_horas' => 'required|integer|min:0',
-            //'duracion_minutos' => 'required|integer|min:1|max:59',
-        ], [
-            'paciente_id.required' => 'Seleccioná un paciente antes de continuar.',
-            'paciente_id.exists' => 'El paciente seleccionado no existe en el sistema.',
-
-            'especialidad_id.required' => 'Indicá la especialidad a realizar.',
-            'especialidad_id.exists' => 'La especialidad no está registrada.',
-
-            'procedimiento_id.required' => 'Indicá el procedimiento a realizar.',
-            'procedimiento_id.exists' => 'El procedimiento no está registrado.',
-
-            'quirofano_id.required' => 'Seleccioná el quirófano asignado.',
-            'quirofano_id.exists' => 'Ese quirófano no está disponible o no existe.',
-
-            'cirujano_id.required' => 'Asigná un cirujano para la cirugía.',
-            'cirujano_id.exists' => 'El cirujano seleccionado no está registrado.',
-
-            'anestesista_id.required' => 'Asigná un anestesiologo para el procedimiento.',
-            'anestesista_id.exists' => 'El anestesiologo seleccionado no está registrado.',
-
-            'tipo_anestesia_id.required' => 'Indicá el tipo de anestesia.',
-            'tipo_anestesia_id.exists' => 'Ese tipo de anestesia no está registrado.',
-
-            'instrumentador_id.required' => 'Asigná un instrumentador quirúrgico.',
-            'instrumentador_id.exists' => 'El instrumentador seleccionado no está registrado.',
-
-            'enfermero_id.required' => 'Asigná un enfermero/a para la cirugía.',
-            'enfermero_id.exists' => 'El enfermero/a seleccionado no está registrado.',
-
-            'fecha_cirugia.required' => 'Indicá la fecha programada para la cirugía.',
-            'hora_cirugia.required' => 'Indicá la hora programada para la cirugía.',
         ]);
-        if ($request->input('ayudante_1_id') != null) {
-            $request->validate([
-                'ayudante_1_id' => 'exists:empleados,id|nullable|different:cirujano_id',
-            ], [
-                'ayudante_1_id.different' => 'El ayudante 1 debe ser distinto a los demas.',
-            ]);
-        }
-        if ($request->input('ayudante_2_id') != null) {
-            $request->validate([
-                'ayudante_2_id' => 'exists:empleados,id|nullable|different:ayudante_1_id',
-            ], [
-                'ayudante_2_id.different' => 'El ayudante 2 debe ser distinto a los demas.',
-            ]);
-        }
-        if ($request->input('ayudante_3_id') != null) {
-            $request->validate([
-                'ayudante_3_id' => 'exists:empleados,id|nullable|different:ayudante_1_id|different:ayudante_2_id',
-            ], [
-                'ayudante_3_id.different' => 'El ayudante 3 debe ser distinto a los demas.',
-            ]);
-        }
-        if ($request->input('procedimiento_2_id') != null) {
-            $request->validate([
-                'procedimiento_2_id' => 'exists:procedimientos,id|nullable|different:procedimiento_id',
-            ], [
-                'procedimiento_2_id.different' => 'El Procedimiento 2 debe ser distinto a Procedimiento.',
-            ]);
-        }
-        if ($request->input('instrumentador_2_id') != null) {
-            $request->validate([
-                'instrumentador_2_id' => 'exists:empleados,id|nullable|different:instrumentador_id',
-            ], [
-                'instrumentador_2_id.different' => 'El Instrumentador 2 debe ser distinto a Insturmentador.',
-            ]);
-        }
-        if ($request->input('instrumentador_3_id') != null) {
-            $request->validate([
-                'instrumentador_3_id' => 'exists:empleados,id|nullable|different:instrumentador_2_id',
-            ], [
-                'instrumentador_3_id.different' => 'El Instrumentador 3 debe ser distinto a Instrumentador 2.',
-            ]);
-        }
-        if ($request->input('enfermero_2_id') != null) {
-            $request->validate([
-                'enfermero_2_id' => 'exists:empleados,id|nullable|different:enfermero_id',
-            ], [
-                'enfermero_2_id.different' => 'El Enfermero 2 debe ser distinto a Enfermero.',
-            ]);
-        }
-        if ($request->input('enfermero_3_id') != null) {
-            $request->validate([
-                'enfermero_3_id' => 'exists:empleados,id|nullable|different:enfermero_2_id',
-            ], [
-                'enfermero_3_id.different' => 'El Enfermero 3 debe ser distinto a Enfermero 2.',
-            ]);
-        }
-        if ($request->input('tipo_anestesia_2_id') != null) {
-            $request->validate([
-                'tipo_anestesia_2_id' => 'exists:tipo_anestesias,id|nullable|different:tipo_anestesia_id',
-            ], [
-                'tipo_anestesia_2_id.different' => 'El tipo de anestesia 2 debe ser distinto a tipo de anestesia.',
-            ]);
-        }
-        if ($request->input('tipo_anestesia_3_id') != null) {
-            $request->validate([
-                'tipo_anestesia_3_id' => 'exists:tipo_anestesias,id|nullable|different:tipo_anestesia_2_id',
-            ], [
-                'tipo_anestesia_3_id.different' => 'El tipo de anestesia 3 debe ser distinto a tipo de anestesia 2.',
-            ]);
+
+        // Validaciones condicionales
+        $condicionales = [
+            'ayudante_1_id' => 'cirujano_id',
+            'ayudante_2_id' => 'ayudante_1_id',
+            'ayudante_3_id' => 'ayudante_2_id',
+            'procedimiento_2_id' => 'procedimiento_id',
+            'instrumentador_2_id' => 'instrumentador_id',
+            'enfermero_2_id' => 'enfermero_id',
+            'tipo_anestesia_2_id' => 'tipo_anestesia_id',
+        ];
+
+        foreach ($condicionales as $campo => $comparar) {
+            if ($request->filled($campo)) {
+                $tabla = str_contains($campo, 'procedimiento') ? 'procedimientos' : (str_contains($campo, 'tipo_anestesia') ? 'tipo_anestesias' : 'empleados');
+
+                $request->validate([
+                    $campo => "exists:$tabla,id|nullable|different:$comparar",
+                ], [
+                    "$campo.different" => "El campo $campo debe ser distinto de $comparar.",
+                ]);
+            }
         }
 
-        $cirugia = new Cirugia();
-        //Datos del POST se obtiene en request
-        $cirugia->paciente_id = $request->input('paciente_id');
-        $cirugia->especialidad_id = $request->input('especialidad_id');
-        $cirugia->procedimiento_id = $request->input('procedimiento_id');
-        $cirugia->procedimiento_2_id = $request->input('procedimiento_2_id');
-        $cirugia->quirofano_id = $request->input('quirofano_id');
-        $cirugia->cirujano_id = $request->input('cirujano_id');
-        $cirugia->ayudante_1_id = $request->input('ayudante_1_id');
-        $cirugia->ayudante_2_id = $request->input('ayudante_2_id');
-        $cirugia->ayudante_3_id = $request->input('ayudante_3_id');
-        $cirugia->anestesista_id = $request->input('anestesista_id');
-        $cirugia->tipo_anestesia_id = $request->input('tipo_anestesia_id');
-        $cirugia->tipo_anestesia_2_id = $request->input('tipo_anestesia_2_id');
-        $cirugia->tipo_anestesia_3_id = $request->input('tipo_anestesia_3_id');
-        $cirugia->instrumentador_id = $request->input('instrumentador_id');
-        $cirugia->instrumentador_2_id = $request->input('instrumentador_2_id');
-        $cirugia->instrumentador_3_id = $request->input('instrumentador_3_id');
-        $cirugia->enfermero_id = $request->input('enfermero_id');
-        $cirugia->enfermero_2_id = $request->input('enfermero_2_id');
-        $cirugia->enfermero_3_id = $request->input('enfermero_3_id');
-        $cirugia->fecha_cirugia = $request->input('fecha_cirugia');
-        $cirugia->hora_cirugia = $request->input('hora_cirugia');
+        // Crear cirugía
+        Cirugia::create([
+            'paciente_id' => $request->paciente_id,
+            'especialidad_id' => $request->especialidad_id,
+            'procedimiento_id' => $request->procedimiento_id,
+            'procedimiento_2_id' => $request->procedimiento_2_id,
+            'quirofano_id' => $request->quirofano_id,
+            'cirujano_id' => $request->cirujano_id,
+            'ayudante_1_id' => $request->ayudante_1_id,
+            'ayudante_2_id' => $request->ayudante_2_id,
+            'ayudante_3_id' => $request->ayudante_3_id,
+            'anestesista_id' => $request->anestesista_id,
+            'tipo_anestesia_id' => $request->tipo_anestesia_id,
+            'tipo_anestesia_2_id' => $request->tipo_anestesia_2_id,
+            'instrumentador_id' => $request->instrumentador_id,
+            'instrumentador_2_id' => $request->instrumentador_2_id,
+            'enfermero_id' => $request->enfermero_id,
+            'enfermero_2_id' => $request->enfermero_2_id,
+            'fecha_cirugia' => $request->fecha_cirugia,
+            'hora_cirugia' => $request->hora_cirugia,
+            'duracion' => $request->duracion,
+            'urgencia' => $request->has('urgencia'),
+            'obito' => $request->has('obito'),
+            'creado_por' => auth()->id() ?? 1,
+            'modificado_por' => auth()->id() ?? 1,
+        ]);
 
-        //Formatear duración
-        $horas = $request->input('duracion_horas', 0);
-        $minutos = $request->input('duracion_minutos', 0);
-        $duracion = sprintf('%02d:%02d', $horas, $minutos);
-        $cirugia->duracion = $duracion;
-
-        //Reemplazar cuando tengamos los usuarios
-        $cirugia->creado_por = '1';
-        $cirugia->modificado_por = '1';
-
-        if ($request->input('urgencia') != null) {
-            $cirugia->urgencia = true;
-        } else {
-            $cirugia->urgencia = false;
-        }
-
-        if ($request->input('obito') != null) {
-            $cirugia->obito = true;
-        } else {
-            $cirugia->obito = false;
-        }
-        $cirugia->save(); //Guarda en la BD, si existe lo actualiza, sino crea
         return redirect()->route('cirugias.index');
-    }*/
-        public function store(Request $request)
-{
-    // Validación principal
-    $request->validate([
-        'paciente_id' => 'required|exists:pacientes,id',
-        'especialidad_id' => 'required|exists:especialidads,id',
-        'procedimiento_id' => 'required|exists:procedimientos,id',
-        'quirofano_id' => 'required|exists:quirofanos,id',
-        'cirujano_id' => 'required|exists:empleados,id',
-        'anestesista_id' => 'required|exists:empleados,id',
-        'tipo_anestesia_id' => 'required|exists:tipo_anestesias,id',
-        'instrumentador_id' => 'required|exists:empleados,id',
-        'enfermero_id' => 'required|exists:empleados,id',
-        'fecha_cirugia' => 'required|date',
-        'hora_cirugia' => 'required',
-        'duracion' => 'required|date_format:H:i',
-    ]);
-
-    // Validaciones condicionales
-    $condicionales = [
-        'ayudante_1_id' => 'cirujano_id',
-        'ayudante_2_id' => 'ayudante_1_id',
-        'ayudante_3_id' => 'ayudante_2_id',
-        'procedimiento_2_id' => 'procedimiento_id',
-        'instrumentador_2_id' => 'instrumentador_id',
-        'enfermero_2_id' => 'enfermero_id',
-        'tipo_anestesia_2_id' => 'tipo_anestesia_id',
-    ];
-
-    foreach ($condicionales as $campo => $comparar) {
-        if ($request->filled($campo)) {
-            $tabla = str_contains($campo, 'procedimiento') ? 'procedimientos' :
-                     (str_contains($campo, 'tipo_anestesia') ? 'tipo_anestesias' : 'empleados');
-
-            $request->validate([
-                $campo => "exists:$tabla,id|nullable|different:$comparar",
-            ], [
-                "$campo.different" => "El campo $campo debe ser distinto de $comparar.",
-            ]);
-        }
     }
-
-    // Crear cirugía
-    Cirugia::create([
-        'paciente_id' => $request->paciente_id,
-        'especialidad_id' => $request->especialidad_id,
-        'procedimiento_id' => $request->procedimiento_id,
-        'procedimiento_2_id' => $request->procedimiento_2_id,
-        'quirofano_id' => $request->quirofano_id,
-        'cirujano_id' => $request->cirujano_id,
-        'ayudante_1_id' => $request->ayudante_1_id,
-        'ayudante_2_id' => $request->ayudante_2_id,
-        'ayudante_3_id' => $request->ayudante_3_id,
-        'anestesista_id' => $request->anestesista_id,
-        'tipo_anestesia_id' => $request->tipo_anestesia_id,
-        'tipo_anestesia_2_id' => $request->tipo_anestesia_2_id,
-        'instrumentador_id' => $request->instrumentador_id,
-        'instrumentador_2_id' => $request->instrumentador_2_id,
-        'enfermero_id' => $request->enfermero_id,
-        'enfermero_2_id' => $request->enfermero_2_id,
-        'fecha_cirugia' => $request->fecha_cirugia,
-        'hora_cirugia' => $request->hora_cirugia,
-        'duracion' => $request->duracion,
-        'urgencia' => $request->has('urgencia'),
-        'obito' => $request->has('obito'),
-        'creado_por' => auth()->id() ?? 1,
-        'modificado_por' => auth()->id() ?? 1,
-    ]);
-
-    return redirect()->route('cirugias.index');
-}
 
     public function edit(Cirugia $cirugia)
     {
@@ -360,25 +189,11 @@ class CirugiaController extends Controller
                 'instrumentador_2_id.different' => 'El Instrumentador 2 debe ser distinto a Insturmentador.',
             ]);
         }
-        if ($request->input('instrumentador_3_id') != null) {
-            $request->validate([
-                'instrumentador_3_id' => 'exists:empleados,id|nullable|different:instrumentador_id',
-            ], [
-                'instrumentador_3_id.different' => 'El Instrumentador 3 debe ser distinto a Insturmentador 2.',
-            ]);
-        }
         if ($request->input('enfermero_2_id') != null) {
             $request->validate([
                 'enfermero_2_id' => 'exists:empleados,id|nullable|different:enfermero_id',
             ], [
                 'enfermero_2_id.different' => 'El Enfermero 2 debe ser distinto a Enfermero.',
-            ]);
-        }
-        if ($request->input('enfermero_3_id') != null) {
-            $request->validate([
-                'enfermero_3_id' => 'exists:empleados,id|nullable|different:enfermero_2_id',
-            ], [
-                'enfermero_3_id.different' => 'El Enfermero 3 debe ser distinto a Enfermero 2.',
             ]);
         }
         if ($request->input('tipo_anestesia_2_id') != null) {
@@ -388,15 +203,6 @@ class CirugiaController extends Controller
                 'tipo_anestesia_2_id.different' => 'El tipo de anestesia 2 debe ser distinto a tipo de anestesia.',
             ]);
         }
-
-        if ($request->input('tipo_anestesia_3_id') != null) {
-            $request->validate([
-                'tipo_anestesia_3_id' => 'exists:tipo_anestesias,id|nullable|different:tipo_anestesia_2_id',
-            ], [
-                'tipo_anestesia_3_id.different' => 'El tipo de anestesia 3 debe ser distinto a tipo de anestesia 2.',
-            ]);
-        }
-        //dd($request);
 
 
         if ($request->input('paciente_id') != null) {
@@ -435,17 +241,11 @@ class CirugiaController extends Controller
         if ($request->input('tipo_anestesia_2_id') != null) {
             $cirugia->tipo_anestesia_2_id = $request->input('tipo_anestesia_2_id');
         }
-        if ($request->input('tipo_anestesia_3_id') != null) {
-            $cirugia->tipo_anestesia_2_id = $request->input('tipo_anestesia_3_id');
-        }
         if ($request->input('instrumentador_id') != null) {
             $cirugia->instrumentador_id = $request->input('instrumentador_id');
         }
         if ($request->input('instrumentador_2_id') != null) {
             $cirugia->instrumentador_2_id = $request->input('instrumentador_2_id');
-        }
-        if ($request->input('instrumentador_3_id') != null) {
-            $cirugia->instrumentador_3_id = $request->input('instrumentador_3_id');
         }
         if ($request->input('enfermero_id') != null) {
             $cirugia->enfermero_id = $request->input('enfermero_id');
@@ -453,13 +253,10 @@ class CirugiaController extends Controller
         if ($request->input('enfermero_2_id') != null) {
             $cirugia->enfermero_2_id = $request->input('enfermero_2_id');
         }
-        if ($request->input('enfermero_3_id') != null) {
-            $cirugia->enfermero_3_id = $request->input('enfermero_3_id');
-        }
 
         $cirugia->fecha_cirugia = $request->input('fecha_cirugia');
         $cirugia->hora_cirugia = $request->input('hora_cirugia');
-        
+
         //Formatear duración
         $horas = $request->input('duracion_horas', 0);
         $minutos = $request->input('duracion_minutos', 0);
@@ -511,9 +308,9 @@ class CirugiaController extends Controller
 
         // Base query reutilizable
         $baseQuery = \App\Models\Cirugia::whereBetween('created_at', [$desde, $hasta])
-        ->when($especialidadId, function ($query, $especialidadId) {
-            return $query->where('especialidad_id', $especialidadId);
-        });
+            ->when($especialidadId, function ($query, $especialidadId) {
+                return $query->where('especialidad_id', $especialidadId);
+            });
         $total = $baseQuery->count();
         $meses = (clone $baseQuery)
             ->select(DB::raw('MONTH(created_at) as mes'))

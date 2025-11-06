@@ -132,7 +132,7 @@ Route::middleware(['auth', 'roles:pacientes'])->group(function () {
 
     // Alta de paciente (Ya estaba protegida, se mantiene)
     Route::post('/pacientes/{paciente}/dar-de-alta', [PacienteController::class, 'darDeAlta'])
-        ->middleware(['auth', 'roles:administrador'])->name('pacientes.darDeAlta');
+        ->middleware(['auth', 'roles:admin'])->name('pacientes.darDeAlta');
 });
 
 
