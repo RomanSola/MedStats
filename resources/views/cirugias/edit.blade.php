@@ -233,23 +233,6 @@
                             @enderror
                         </div>
 
-                        {{-- Tipo Anestesia 3 --}}
-                        <div class="col-md-4">
-                            <label for="tipo_anestesia_3_id" class="form-label">Tipo de Anestesia 3</label>
-                            <select name="tipo_anestesia_3_id" id="tipo_anestesia_3_id" class="form-control">
-                                <option value="">Seleccione el Tipo de Anestesia</option>
-                                @foreach ($tipoAnestesias as $tipoAnestesia)
-                                    <option value="{{ $tipoAnestesia->id }}"
-                                        {{ $cirugia->tipo_anestesia_3_id == $tipoAnestesia->id ? 'selected' : '' }}>
-                                        {{ $tipoAnestesia->nombre }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            @error('tipo_anestesia_3_id')
-                                <small class="text-danger"> {{ $message }} </small>
-                            @enderror
-                        </div>
-
                         {{-- Instrumentador --}}
                         <div class="col-md-4">
                             <label for="instrumentador_id" class="form-label">Instrumentador</label>
@@ -294,28 +277,6 @@
                             @enderror
                         </div>
 
-                        {{-- Instrumentador 3 --}}
-                        <div class="col-md-4">
-                            <label for="instrumentador_3_id" class="form-label">Instrumentador 3</label>
-                            <select name="instrumentador_3_id" id="instrumentador_3_id" class="form-control">
-                                <option value="">Seleccione el Instrumentador</option>
-                                @php
-                                    $profesionesPermitidas = [4]; //Solo Instrumentadores
-                                @endphp
-                                @foreach ($empleados as $empleado)
-                                    @if (in_array($empleado->get_profesion->rol_id, $profesionesPermitidas))
-                                        <option value="{{ $empleado->id }}"
-                                            {{ $cirugia->instrumentador_3_id == $empleado->id ? 'selected' : '' }}>
-                                            {{ $empleado->nombre }} {{ $empleado->apellido }}
-                                        </option>
-                                    @endif
-                                @endforeach
-                            </select>
-                            @error('instrumentador_3_id')
-                                <small class="text-danger"> {{ $message }} </small>
-                            @enderror
-                        </div>
-
                         {{-- Enfermero --}}
                         <div class="col-md-4">
                             <label for="enfermero_id" class="form-label">Enfermero</label>
@@ -356,28 +317,6 @@
                                 @endforeach
                             </select>
                             @error('enfermero_2_id')
-                                <small class="text-danger"> {{ $message }} </small>
-                            @enderror
-                        </div>
-
-                        {{-- Enfermero 3 --}}
-                        <div class="col-md-4">
-                            <label for="enfermero_3_id" class="form-label">Enfermero 3</label>
-                            <select name="enfermero_3_id" id="enfermero_3_id" class="form-control">
-                                <option value="">Seleccione el Enfermero</option>
-                                @php
-                                    $profesionesPermitidas = [5]; //Solo Enfermeros
-                                @endphp
-                                @foreach ($empleados as $empleado)
-                                    @if (in_array($empleado->get_profesion->rol_id, $profesionesPermitidas))
-                                        <option value="{{ $empleado->id }}"
-                                            {{ $cirugia->enfermero_3_id == $empleado->id ? 'selected' : '' }}>
-                                            {{ $empleado->nombre }} {{ $empleado->apellido }}
-                                        </option>
-                                    @endif
-                                @endforeach
-                            </select>
-                            @error('enfermero_3_id')
                                 <small class="text-danger"> {{ $message }} </small>
                             @enderror
                         </div>
@@ -590,11 +529,11 @@
 
         // Grupos de selects que deben evitar duplicados
         const grupos = {
-            enfermeros: ['#enfermero_id', '#enfermero_2_id', '#enfermero_3_id'],
+            enfermeros: ['#enfermero_id', '#enfermero_2_id'],
             procedimientos: ['#procedimiento', '#procedimiento2'],
             ayudantes: ['#ayudante_1_id', '#ayudante_2_id', '#ayudante_3_id'],
-            instrumentadores: ['#instrumentador_id', '#instrumentador_2_id', '#instrumentador_3_id'],
-            anestesias: ['#tipo_anestesia_id', '#tipo_anestesia_2_id', '#tipo_anestesia_3_id']
+            instrumentadores: ['#instrumentador_id', '#instrumentador_2_id'],
+            anestesias: ['#tipo_anestesia_id', '#tipo_anestesia_2_id']
         };
 
         // Deshabilitar opciones repetidas
