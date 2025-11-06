@@ -70,9 +70,8 @@ class CirugiaController extends Controller
             'enfermero_id' => 'required|exists:empleados,id',
             'fecha_cirugia' => 'required',
             'hora_cirugia' => 'required',
-            'duracion' => 'required|date_format:H:i',
-            //'duracion_horas' => 'required|integer|min:0',
-            //'duracion_minutos' => 'required|integer|min:1|max:59',
+            'duracion_horas' => 'required|integer|min:0',
+            'duracion_minutos' => 'required|integer|min:1|max:59',
         ], [
             'paciente_id.required' => 'Seleccioná un paciente antes de continuar.',
             'paciente_id.exists' => 'El paciente seleccionado no existe en el sistema.',
@@ -201,7 +200,7 @@ class CirugiaController extends Controller
         $cirugia->save(); //Guarda en la BD, si existe lo actualiza, sino crea
         return redirect()->route('cirugias.index');
     }
-    
+
     public function edit(Cirugia $cirugia)
     {
         $pacientes = Paciente::all();
