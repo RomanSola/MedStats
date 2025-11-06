@@ -49,6 +49,8 @@ Route::middleware('auth')->group(function () {
 Route::get('/', [InicioController::class, 'index'])->middleware('auth')->name('inicio');
 
 
+// Live search para el buscador del modal (DEBE QUEDAR AFUERA DEL MIDDLEWARE)
+Route::get('/pacientes/live-search', [PacienteController::class, 'liveSearch'])->name('pacientes.liveSearch');
 
 //Buscador
 Route::middleware(['auth', 'roles:admin,pacientes,cirugias,camas,estadisticas'])->group(function () {
@@ -125,8 +127,8 @@ Route::middleware(['auth', 'roles:pacientes'])->group(function () {
     // Asignación directa (con ID del paciente)
     Route::post('/pacientes/{paciente}/asignar-directa', [PacienteController::class, 'asignarDirecta'])->name('pacientes.asignarDirecta');
 
-    // Live search para el buscador del modal
-    Route::get('/pacientes/live-search', [PacienteController::class, 'liveSearch'])->name('pacientes.liveSearch');
+    // // Live search para el buscador del modal
+    // Route::get('/pacientes/live-search', [PacienteController::class, 'liveSearch'])->name('pacientes.liveSearch');
 
     // Alta de paciente (Ya estaba protegida, se mantiene)
     Route::post('/pacientes/{paciente}/dar-de-alta', [PacienteController::class, 'darDeAlta'])
@@ -191,6 +193,9 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
 //Camas
 Route::middleware(['auth', 'roles:camas'])->group(function () {
     Route::get('/camas', [CamaController::class, 'index'])->name('camas.index');
+
+    // // Live search para el buscador del modal 
+
 });
 
 
@@ -264,4 +269,3 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
 
 // 👇 Debe ir fuera de cualquier grupo con 'auth' o 'roles'
 require __DIR__ . '/auth.php';
- 
