@@ -71,7 +71,7 @@ class CirugiaController extends Controller
             'fecha_cirugia' => 'required',
             'hora_cirugia' => 'required',
             'duracion_horas' => 'required|integer|min:0',
-            'duracion_minutos' => 'required|integer|min:1|max:59',
+            'duracion_minutos' => 'required|integer|min:0|max:59',
         ], [
             'paciente_id.required' => 'Seleccioná un paciente antes de continuar.',
             'paciente_id.exists' => 'El paciente seleccionado no existe en el sistema.',

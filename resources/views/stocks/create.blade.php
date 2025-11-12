@@ -1,10 +1,7 @@
 @extends('layouts.app')
-
 @section('titulo', 'Ingresar Medicamento')
-
 @section('contenido')
-    <div class="max-w-3xl mx-auto px-4 py-8">
-
+<div class="max-w-3xl mx-auto px-4 py-8">
         <div class="flex justify-between items-center mb-6">
             <h1
                 class="text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent  bg-clip-text drop-shadow-md  flex items-center gap-2 px-2">
@@ -79,7 +76,7 @@
         </form>
 
 
-        <!-- Script para alerta de vencimiento -->
+    <!-- Script para alerta de vencimiento -->
         <script>
             const vencimiento = document.getElementById('fecha_vencimiento');
             vencimiento.addEventListener('change', () => {
@@ -145,5 +142,5 @@
                 }
             });
         </script>
-    </div>
+</div>
 @endsection

@@ -99,7 +99,7 @@
                             <label for="cirujano_id" class="form-label">Cirujano</label>
                             <select name="cirujano_id" id="cirujano_id" class="form-control select2">
                                 <option value="">Seleccione el Cirujano</option>
-                                @php $profesionesPermitidas = [1]; @endphp
+                                @php $profesionesPermitidas = [1,2]; @endphp
                                 @foreach ($empleados as $empleado)
                                     @if (in_array($empleado->get_profesion->rol_id, $profesionesPermitidas))
                                         <option value="{{ $empleado->id }}"
@@ -366,6 +366,7 @@
                                     <input type="checkbox" name="urgencia" id="urgencia"
                                         {{ old('urgencia') ? 'checked' : '' }}>
                                     <span class="slider round"></span>
+                                
                                 </label>
                                 @error('urgencia')
                                     <div><small class="text-danger">{{ $message }}</small></div>
