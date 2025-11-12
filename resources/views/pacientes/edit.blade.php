@@ -104,7 +104,8 @@
 
         {{-- Botones --}}
         <div class="flex justify-between pt-4">
-            <a href="{{ route('pacientes.index') }}"
+            
+            <a href="{{ $cancelUrl }}"
                 class="btn btn-outline-danger px-5 py-2 rounded shadow-sm">
                 Cancelar
             </a>

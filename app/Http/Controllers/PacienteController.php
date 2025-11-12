@@ -7,7 +7,7 @@ use App\Models\Paciente;
 use App\Models\Pais;
 use App\Models\Provincia;
 use App\Models\Codigo_postal;
-use Illuminate\Http\Request;
+use Illuminate\Http\Request; 
 use App\Models\Habitacion;
 use App\Models\Ocupacion_cama;
 use App\Models\Sala;
@@ -22,14 +22,12 @@ class PacienteController extends Controller
             $busqueda = $request->buscar;
             $query->where(function($q) use ($busqueda) {
                 $q->where('dni', 'like', "%$busqueda%")
-                  ->orWhere('nombre', 'like', "%$busqueda%")
-                  ->orWhere('apellido', 'like', "%$busqueda%");
+                    ->orWhere('nombre', 'like', "%$busqueda%")
+                    ->orWhere('apellido', 'like', "%$busqueda%");
             });
         }
 
         $pacientes = $query->get();
-
-        // 🔹 Contexto de cama si venís desde "Camas"
         $camaContext = null;
         if ($request->filled('cama')) {
             $camaId = (int) $request->query('cama');
@@ -92,12 +90,19 @@ class PacienteController extends Controller
 
         return redirect()->route('pacientes.asignar', $paciente->id)
             ->with('success', 'Paciente registrado. Ahora puede asignarle una cama.');
-        }
+    }
 
-    public function edit(Paciente $paciente)
+    public function edit(Request $request, Paciente $paciente)
     {
         $paises = Pais::all();
-        return view('pacientes.edit', compact('paciente', 'paises'));
+        $from = $request->query('from');
+        $fromId = $request->query('id');
+
+        $cancelUrl = route('pacientes.index'); // URL por defecto
+        if ($from === 'busqueda' && $fromId) {
+            $cancelUrl = route('persona.ver', $fromId);
+        }
+        return view('pacientes.edit', compact('paciente', 'paises', 'cancelUrl'));
     }
 
     public function update(Request $request, Paciente $paciente)
@@ -200,104 +205,95 @@ class PacienteController extends Controller
     }
 
     public function asignarDirecta(Request $request, $id)
-{
-    $paciente = Paciente::findOrFail($id);
+    {
+        $paciente = Paciente::findOrFail($id);
 
-    $request->validate([
-        'cama_id' => 'required|exists:camas,id',
-    ]);
+        $request->validate([
+            'cama_id' => 'required|exists:camas,id',
+        ]);
 
-    $nuevaCama = Cama::findOrFail($request->cama_id);
+        $nuevaCama = Cama::findOrFail($request->cama_id);
 
-    if ($nuevaCama->ocupada) {
-        return back()->with('error', 'La cama seleccionada ya está ocupada.');
-    }
-
-    if ($paciente->cama_id) {
-        $camaAnterior = Cama::find($paciente->cama_id);
-        if ($camaAnterior) {
-            $camaAnterior->ocupada = false;
-            $camaAnterior->save();
+        if ($nuevaCama->ocupada) {
+            return back()->with('error', 'La cama seleccionada ya está ocupada.');
         }
 
-        $ocupacionAnterior = Ocupacion_cama::where('paciente_id', $paciente->id)
+        if ($paciente->cama_id) {
+            $camaAnterior = Cama::find($paciente->cama_id);
+            if ($camaAnterior) {
+                $camaAnterior->ocupada = false;
+                $camaAnterior->save();
+            }
+
+            $ocupacionAnterior = Ocupacion_cama::where('paciente_id', $paciente->id)
+                ->whereNull('fecha_egreso')
+                ->latest('fecha_ingreso')
+                ->first();
+
+            if ($ocupacionAnterior) {
+                $ocupacionAnterior->fecha_egreso = now();
+                $ocupacionAnterior->save();
+            }
+        }
+
+        $paciente->habitacion_id = $nuevaCama->habitacion_id;
+        $paciente->cama_id = $nuevaCama->id;
+        $paciente->save();
+
+        $nuevaCama->ocupada = true;
+        $nuevaCama->save();
+
+        Ocupacion_cama::create([
+            'paciente_id' => $paciente->id,
+            'cama_id' => $nuevaCama->id,
+            'fecha_ingreso' => now()
+        ]);
+
+        return redirect()->route('camas.index', ['sala_id' => $request->input('sala_id')])
+            ->with('success', 'Paciente reasignado correctamente a la nueva cama.');
+    }
+
+
+    public function darDeAlta(Paciente $paciente)
+    {
+        if ($paciente->cama) {
+            $paciente->cama->ocupada = false;
+            $paciente->cama->save();
+        }
+
+        $ocupacion = Ocupacion_cama::where('paciente_id', $paciente->id)
             ->whereNull('fecha_egreso')
             ->latest('fecha_ingreso')
             ->first();
 
-        if ($ocupacionAnterior) {
-            $ocupacionAnterior->fecha_egreso = now();
-            $ocupacionAnterior->save();
+        if ($ocupacion) {
+            $ocupacion->fecha_egreso = now();
+            $ocupacion->save();
         }
+
+        $paciente->cama_id = null;
+        $paciente->habitacion_id = null;
+        $paciente->save();
+
+        return back()->with('success', 'Paciente dado de alta correctamente.');
     }
 
-    $paciente->habitacion_id = $nuevaCama->habitacion_id;
-    $paciente->cama_id = $nuevaCama->id;
-    $paciente->save();
+    public function liveSearch(Request $request)
+    {
+        $query = $request->get('term');
+        if(!$query){
+            return response()->json([]);
+        }
+        
+        $pacientes = Paciente::where(function($q) use ($query) {
+                            $q->where('nombre', 'LIKE', "%{$query}%")
+                              ->orWhere('apellido', 'LIKE', "%{$query}%")
+                              ->orWhere('dni', 'LIKE', "%{$query}%");
+                        })
+                        ->whereNull('cama_id') 
+                        ->take(10)
+                        ->get();
 
-    $nuevaCama->ocupada = true;
-    $nuevaCama->save();
-
-    Ocupacion_cama::create([
-        'paciente_id' => $paciente->id,
-        'cama_id' => $nuevaCama->id,
-        'fecha_ingreso' => now()
-    ]);
-
-    // ✅ Cambio mínimo: preservar sala_id en la redirección
-    return redirect()->route('camas.index', ['sala_id' => $request->input('sala_id')])
-        ->with('success', 'Paciente reasignado correctamente a la nueva cama.');
-}
-
-
-public function darDeAlta(Paciente $paciente)
-{
-    if ($paciente->cama) {
-        $paciente->cama->ocupada = false;
-        $paciente->cama->save();
+        return response()->json($pacientes);
     }
-
-    $ocupacion = Ocupacion_cama::where('paciente_id', $paciente->id)
-        ->whereNull('fecha_egreso')
-        ->latest('fecha_ingreso')
-        ->first();
-
-    if ($ocupacion) {
-        $ocupacion->fecha_egreso = now();
-        $ocupacion->save();
-    }
-
-    $paciente->cama_id = null;
-    $paciente->habitacion_id = null;
-    $paciente->save();
-
-    $origen = request()->input('from');
-
-    if ($origen === 'pacientes.index') {
-        return redirect()->route('pacientes.index')->with('success', 'Paciente dado de alta y cama liberada.');
-    } elseif ($origen === 'camas.index') {
-        return redirect()->route('camas.index')->with('success', 'Paciente dado de alta y cama liberada.');
-    }
-
-    return redirect()->route('pacientes.index')->with('success', 'Paciente dado de alta y cama liberada.');
-}
-
-
- 
-public function liveSearch(Request $request)
-{
-    $buscar = $request->input('buscar');
-
-    $pacientes = Paciente::query()
-        ->where('nombre', 'like', "%{$buscar}%")
-        ->orWhere('apellido', 'like', "%{$buscar}%")
-        ->orWhere('dni', 'like', "%{$buscar}%")
-        ->limit(10)
-        ->get(['id', 'nombre', 'apellido', 'dni', 'cama_id']); // ✅ cama_id incluido
-
-    return response()->json($pacientes);
-}
-
-
-
 }
