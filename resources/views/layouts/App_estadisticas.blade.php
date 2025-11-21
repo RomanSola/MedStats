@@ -135,65 +135,7 @@
         window.addEventListener('resize', ajustarAlturaSidebar);
     </script>
 
-    <script>
-        const sidebar = document.getElementById('sidebar');
-        const toggleBtn = document.getElementById('toggleSidebar');
-        const linkTexts = document.querySelectorAll('.link-text');
-        const sidebarTitle = document.getElementById('sidebar-title');
-        const mainContent = document.getElementById('mainContent');
 
-        // Recuperar estado inicial del sidebar
-        if (localStorage.getItem('sidebar-collapsed') === 'true') {
-            applyCollapsedState(false);
-        } else {
-            applyExpandedState(false);
-        }
-
-        toggleBtn.addEventListener('click', () => {
-            if (sidebar.classList.contains('w-64')) {
-                applyCollapsedState(true);
-                localStorage.setItem('sidebar-collapsed', 'true');
-            } else {
-                applyExpandedState(true);
-                localStorage.setItem('sidebar-collapsed', 'false');
-            }
-        });
-
-        function applyExpandedState(withAnim = true) {
-            sidebar.classList.remove('w-20');
-            sidebar.classList.add('w-64');
-            linkTexts.forEach(t => t.classList.remove('hidden'));
-            if (sidebarTitle) sidebarTitle.classList.remove('hidden');
-
-            // Sidebar expandido → contenido más chico
-            mainContent.style.marginLeft = "16rem";
-            mainContent.style.transform = "scale(0.95)";
-            mainContent.style.transition = withAnim ? "all 0.25s ease-in-out" : "none";
-        }
-
-        function applyCollapsedState(withAnim = true) {
-            sidebar.classList.remove('w-64');
-            sidebar.classList.add('w-20');
-            linkTexts.forEach(t => t.classList.add('hidden'));
-            if (sidebarTitle) sidebarTitle.classList.add('hidden');
-
-            // Sidebar colapsado → contenido a tamaño real, bien grande
-            mainContent.style.marginLeft = "5rem";
-            mainContent.style.transform = "scale(1)";
-            mainContent.style.transition = withAnim ? "all 0.25s ease-in-out" : "none";
-        }
-    </script>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const sidebar = document.getElementById('sidebar');
-            const toggleBtn = document.getElementById('toggleSidebar');
-
-            toggleBtn.addEventListener('click', () => {
-                sidebar.classList.toggle('collapsed');
-            });
-        });
-    </script>
 
     @stack('scripts')
     @stack('modales')

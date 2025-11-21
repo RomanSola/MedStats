@@ -30,12 +30,12 @@
                      <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                  </svg>
                  {{-- @lang('Usuario Conectado') --}}
-                 @if (Auth::check())
+                         @if (Auth::check())
                      <span>{{ Auth::user()->name }}</span>
-                 @else
+                         @else
                      <span>Invitado</span>
-                 @endif
-             </div>
+                         @endif
+                     </div>
 
 
              <form method="POST" action="{{ route('logout') }}">
