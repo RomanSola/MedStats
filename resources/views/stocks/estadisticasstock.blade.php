@@ -6,9 +6,9 @@
      
     <div class="inline-flex items-center gap-4">
         <h2 class="bg-light d-inline-block px-4 py-2 rounded shadow-sm text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent bg-clip-text drop-shadow-md flex items-center gap-2 px-2">
-        Estadísticas de Insumos
+        Estadísticas de Stock
         </h2>
-        <a href="{{ route('cirugias.estadisticas') }}" class="btn btn-outline-info shadow-sm">
+        <a href="{{ route('cirugias.estadisticas') }}" class="btn text-white shadow-sm d-flex align-items-center" style="background: linear-gradient(to right, #1B7D8F, #245360); border: none;">
         <i class="bi bi-box-seam me-1"></i> Estadísticas de Cirugías
         </a>
     </div>

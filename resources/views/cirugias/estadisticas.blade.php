@@ -2,10 +2,10 @@
 @section('contenido')
     <div class="text-center mb-4">
     <div class="inline-flex items-center gap-4">
-        <h2 class="bg-light d-inline-block .px-4 py-2 rounded shadow-sm text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent bg-clip-text drop-shadow-md flex items-center gap-2 px-2">
+        <h2 class="bg-light d-inline-block px-4 py-2 rounded shadow-sm text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent bg-clip-text drop-shadow-md flex items-center gap-2 px-2">
         Estadísticas de Cirugías
         </h2>
-        <a href="{{ route('stocks.estadisticasstock') }}" class="btn btn-outline-info shadow-sm">
+        <a href="{{ route('stocks.estadisticasstock') }}" class="btn text-white shadow-sm d-flex align-items-center" style="background: linear-gradient(to right, #1B7D8F, #245360); border: none;">
         <i class="bi bi-box-seam me-1"></i> Estadísticas de Stock
         </a>
     </div>
@@ -32,21 +32,27 @@
     </form> --}}
 
     {{-- Filtro por tiempo y especialidad --}}
-    <form method="GET" action="{{ route('cirugias.estadisticas') }}" class="bg-white p-4 rounded shadow mb-6">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
-            <div>
-                <label for="desde" class="block text-sm font-medium text-gray-700">Desde</label>
-                <input type="date" name="desde" id="desde" value="{{ request('desde') }}" class="form-input w-full">
+    <form method="GET" action="{{ route('cirugias.estadisticas') }}" class="bg-white p-4 rounded-xl shadow-lg border-t-4 border-[#1B7D8F] mb-6">
+        <div class="row g-3 align-items-end">
+            <div class="col-md">
+                <label for="desde" class="block text-sm font-semibold text-gray-600 mb-1">
+                    <i class="bi bi-calendar-event me-1 text-[#1B7D8F]"></i> Desde
+                </label>
+                <input type="date" name="desde" id="desde" value="{{ request('desde') }}" class="form-control border-gray-300 rounded-lg focus:ring-[#1B7D8F] focus:border-[#1B7D8F]">
             </div>
 
-            <div>
-                <label for="hasta" class="block text-sm font-medium text-gray-700">Hasta</label>
-                <input type="date" name="hasta" id="hasta" value="{{ request('hasta') }}" class="form-input w-full">
+            <div class="col-md">
+                <label for="hasta" class="block text-sm font-semibold text-gray-600 mb-1">
+                    <i class="bi bi-calendar-event-fill me-1 text-[#1B7D8F]"></i> Hasta
+                </label>
+                <input type="date" name="hasta" id="hasta" value="{{ request('hasta') }}" class="form-control border-gray-300 rounded-lg focus:ring-[#1B7D8F] focus:border-[#1B7D8F]">
             </div>
 
-            <div>
-                <label for="especialidad_id" class="block text-sm font-medium text-gray-700">Especialidad</label>
-                <select name="especialidad_id" id="especialidad_id" class="form-select w-full">
+            <div class="col-md">
+                <label for="especialidad_id" class="block text-sm font-semibold text-gray-600 mb-1">
+                    <i class="bi bi-heart-pulse-fill me-1 text-[#1B7D8F]"></i> Especialidad
+                </label>
+                <select name="especialidad_id" id="especialidad_id" class="form-select border-gray-300 rounded-lg focus:ring-[#1B7D8F] focus:border-[#1B7D8F]" onchange="this.form.submit()">
                     <option value="">Todas</option>
                     @foreach($especialidades as $esp)
                         <option value="{{ $esp->id }}" {{ $esp->id == request('especialidad_id') ? 'selected' : '' }}>
@@ -56,8 +62,24 @@
                 </select>
             </div>
 
-            <div>
-                <button type="submit" class="btn btn-primary w-full">Aplicar filtro</button>
+            <div class="col-md">
+                <label for="cirujano_id" class="block text-sm font-semibold text-gray-600 mb-1">
+                    <i class="bi bi-person-badge-fill me-1 text-[#1B7D8F]"></i> Cirujano
+                </label>
+                <select name="cirujano_id" id="cirujano_id" class="form-select border-gray-300 rounded-lg focus:ring-[#1B7D8F] focus:border-[#1B7D8F]">
+                    <option value="">Todos</option>
+                    @foreach($cirujanosDisponibles as $cirujano)
+                        <option value="{{ $cirujano->id }}" {{ $cirujano->id == request('cirujano_id') ? 'selected' : '' }}>
+                            {{ $cirujano->apellido }}, {{ $cirujano->nombre }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="col-md">
+                <button type="submit" class="btn text-white shadow-md w-100 rounded-lg d-flex align-items-center justify-content-center gap-2 transition-transform hover:scale-105" style="background: linear-gradient(to right, #1B7D8F, #245360); border: none;">
+                    <i class="bi bi-funnel-fill"></i> Aplicar filtro
+                </button>
             </div>
         </div>
     </form>
@@ -144,28 +166,33 @@
         {{-- Pop-Up para detalles ampliados --}}
         <div class="modal fade" id="modalCirugias" tabindex="-1" aria-labelledby="modalCirugiasLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header bg-info text-white">
-                        <h5 class="modal-title" id="modalCirugiasLabel">Detalle mensual de cirugías</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                <div class="modal-content rounded-xl border-0 shadow-2xl overflow-hidden">
+                    <div class="modal-header text-white border-0" style="background: linear-gradient(to right, #1B7D8F, #245360);">
+                        <h5 class="modal-title fw-bold" id="modalCirugiasLabel">
+                            <i class="bi bi-calendar-week me-2"></i>Detalle mensual de cirugías
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                     </div>
-                    <div class="modal-body">
-                        <table class="table table-bordered table-hover">
-                            <thead class="table-light">
+                    <div class="modal-body p-0">
+                        <table class="table table-hover mb-0 border-0">
+                            <thead class="bg-gray-100 text-gray-700">
                                 <tr>
-                                    <th>Mes</th>
-                                    <th>Total de cirugías</th>
+                                    <th class="py-3 px-4 border-0">Mes</th>
+                                    <th class="py-3 px-4 border-0 text-end">Total de cirugías</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($porMes as $item)
                                     <tr>
-                                        <td>{{ $item->mes_nombre }}</td>
-                                        <td>{{ $item->total }}</td>
+                                        <td class="py-3 px-4 border-bottom border-gray-100">{{ $item->mes_nombre }}</td>
+                                        <td class="py-3 px-4 border-bottom border-gray-100 text-end fw-semibold text-[#1B7D8F]">{{ $item->total }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
+                    </div>
+                    <div class="modal-footer bg-gray-50 border-0">
+                        <button type="button" class="btn btn-secondary btn-sm rounded-lg" data-bs-dismiss="modal">Cerrar</button>
                     </div>
                 </div>
             </div>
@@ -220,33 +247,39 @@
         </div>
     </div>
     {{-- Pop-Up para ver todos los cirujanos --}}
-    <div class="modal fade" id="modalCirujanos" tabindex="-1" aria-labelledby="modalCirujanosLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="modalCirujanos" tabindex="-1" aria-labelledby="modalCirujanosLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title" id="modalCirujanosLabel">Listado completo de cirugías por cirujano</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                </div>
-                <div class="modal-body">
-                    <table class="table table-bordered table-hover">
-                        <thead class="table-light">
-                            <tr>
-                                <th>Apellido</th>
-                                <th>Nombre</th>
-                                <th>Total de cirugías</th>
-                            </tr>
-                        </thead>
+                <div class="modal-content rounded-xl border-0 shadow-2xl overflow-hidden">
+                    <div class="modal-header text-white border-0" style="background: linear-gradient(to right, #1B7D8F, #245360);">
+                        <h5 class="modal-title fw-bold" id="modalCirujanosLabel">
+                            <i class="bi bi-person-lines-fill me-2"></i>Listado completo de cirugías por cirujano
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body p-0">
+                        <table class="table table-hover mb-0 border-0">
+                            <thead class="bg-gray-100 text-gray-700">
+                                <tr>
+                                    <th class="py-3 px-4 border-0">Apellido</th>
+                                    <th class="py-3 px-4 border-0">Nombre</th>
+                                    <th class="py-3 px-4 border-0 text-end">Total de cirugías</th>
+                                </tr>
+                            </thead>
                         <tbody>
                             @foreach ($porCirujano->sortByDesc('total') as $item)
                                 <tr>
-                                    <td>{{ optional($item->get_cirujano)->apellido }}</td>
-                                    <td>{{ optional($item->get_cirujano)->nombre }}</td>
-                                    <td>{{ $item->total }}</td>
+                                    <td class="py-3 px-4 border-bottom border-gray-100 fw-medium">{{ optional($item->get_cirujano)->apellido }}</td>
+                                    <td class="py-3 px-4 border-bottom border-gray-100">{{ optional($item->get_cirujano)->nombre }}</td>
+                                    <td class="py-3 px-4 border-bottom border-gray-100 text-end">
+                                        <span class="badge rounded-pill bg-[#1B7D8F] text-white px-3 py-1">{{ $item->total }}</span>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
+                </div>
+                <div class="modal-footer bg-gray-50 border-0">
+                    <button type="button" class="btn btn-secondary btn-sm rounded-lg" data-bs-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
@@ -271,33 +304,39 @@
     </div>
     </div>
     {{-- Pop-Up para ver todos los enfermeros --}}
-    <div class="modal fade" id="modalEnfermeros" tabindex="-1" aria-labelledby="modalEnfermerosLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="modalEnfermeros" tabindex="-1" aria-labelledby="modalEnfermerosLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title" id="modalEnfermerosLabel">Listado completo de enfermeros/as</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                </div>
-                <div class="modal-body">
-                    <table class="table table-bordered table-hover">
-                        <thead class="table-light">
-                            <tr>
-                                <th>Nombre</th>
-                                <th>Apellido</th>
-                                <th>Total de cirugías asistidas</th>
-                            </tr>
-                        </thead>
+                <div class="modal-content rounded-xl border-0 shadow-2xl overflow-hidden">
+                    <div class="modal-header text-white border-0" style="background: linear-gradient(to right, #1B7D8F, #245360);">
+                        <h5 class="modal-title fw-bold" id="modalEnfermerosLabel">
+                            <i class="bi bi-people-fill me-2"></i>Listado completo de enfermeros/as
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body p-0">
+                        <table class="table table-hover mb-0 border-0">
+                            <thead class="bg-gray-100 text-gray-700">
+                                <tr>
+                                    <th class="py-3 px-4 border-0">Nombre</th>
+                                    <th class="py-3 px-4 border-0">Apellido</th>
+                                    <th class="py-3 px-4 border-0 text-end">Total de cirugías asistidas</th>
+                                </tr>
+                            </thead>
                         <tbody>
                             @foreach ($topEnfermeros as $item)
                                 <tr>
-                                    <td>{{ optional($item->get_enfermero)->nombre }}</td>
-                                    <td>{{ optional($item->get_enfermero)->apellido }}</td>
-                                    <td>{{ $item->total }}</td>
+                                    <td class="py-3 px-4 border-bottom border-gray-100">{{ optional($item->get_enfermero)->nombre }}</td>
+                                    <td class="py-3 px-4 border-bottom border-gray-100 fw-medium">{{ optional($item->get_enfermero)->apellido }}</td>
+                                    <td class="py-3 px-4 border-bottom border-gray-100 text-end">
+                                        <span class="badge rounded-pill bg-[#2BA8A0] text-white px-3 py-1">{{ $item->total }}</span>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
+                </div>
+                <div class="modal-footer bg-gray-50 border-0">
+                    <button type="button" class="btn btn-secondary btn-sm rounded-lg" data-bs-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
@@ -327,33 +366,39 @@
         </div>
     </div>
     {{-- Pop-Up para ver todos los instrumentadores --}}
-    <div class="modal fade" id="modalInstrumentadors" tabindex="-1" aria-labelledby="modalInstrumentadorsLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="modalInstrumentadors" tabindex="-1" aria-labelledby="modalInstrumentadorsLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title" id="modalEnfermerosLabel">Listado completo de instrumentadores/as</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            <div class="modal-content rounded-xl border-0 shadow-2xl overflow-hidden">
+                <div class="modal-header text-white border-0" style="background: linear-gradient(to right, #1B7D8F, #245360);">
+                    <h5 class="modal-title fw-bold" id="modalInstrumentadorsLabel">
+                        <i class="bi bi-tools me-2"></i>Listado completo de instrumentadores/as
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
-                <div class="modal-body">
-                    <table class="table table-bordered table-hover">
-                        <thead class="table-light">
+                <div class="modal-body p-0">
+                    <table class="table table-hover mb-0 border-0">
+                        <thead class="bg-gray-100 text-gray-700">
                             <tr>
-                                <th>Nombre</th>
-                                <th>Apellido</th>
-                                <th>Total de cirugías asistidas</th>
+                                <th class="py-3 px-4 border-0">Nombre</th>
+                                <th class="py-3 px-4 border-0">Apellido</th>
+                                <th class="py-3 px-4 border-0 text-end">Total de cirugías asistidas</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($topInstrumentadors as $item)
                                 <tr>
-                                    <td>{{ optional($item->get_instrumentador)->nombre }}</td>
-                                    <td>{{ optional($item->get_instrumentador)->apellido }}</td>
-                                    <td>{{ $item->total }}</td>
+                                    <td class="py-3 px-4 border-bottom border-gray-100">{{ optional($item->get_instrumentador)->nombre }}</td>
+                                    <td class="py-3 px-4 border-bottom border-gray-100 fw-medium">{{ optional($item->get_instrumentador)->apellido }}</td>
+                                    <td class="py-3 px-4 border-bottom border-gray-100 text-end">
+                                        <span class="badge rounded-pill bg-[#245360] text-white px-3 py-1">{{ $item->total }}</span>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
+                </div>
+                <div class="modal-footer bg-gray-50 border-0">
+                    <button type="button" class="btn btn-secondary btn-sm rounded-lg" data-bs-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>

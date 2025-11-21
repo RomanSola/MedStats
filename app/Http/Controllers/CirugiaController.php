@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Cirugia;
@@ -373,8 +372,8 @@ class CirugiaController extends Controller
             'hasta.after_or_equal' => 'La fecha de fin debe ser igual o posterior a la fecha de inicio.',
             'hasta.before_or_equal' => 'La fecha de fin no puede ser futura.',
         ]);
-        $desde = $validated['desde'] ?? now()->startOfMonth()->toDateString();
-        $hasta = $validated['hasta'] ?? now()->endOfMonth()->toDateString();
+        $desde = $validated['desde'] ?? null;
+        $hasta = $validated['hasta'] ?? null;
         $especialidadId = $request->input('especialidad_id');
         $especialidades = \App\Models\Especialidad::orderBy('nombre')->get();
         $aniosDisponibles = \App\Models\Cirugia::select(DB::raw('YEAR(created_at) as anio'))
@@ -382,11 +381,34 @@ class CirugiaController extends Controller
             ->orderBy('anio', 'desc')
             ->pluck('anio');
 
+        $cirujanoId = $request->input('cirujano_id');
+
         // Base query reutilizable
-        $baseQuery = \App\Models\Cirugia::whereBetween('created_at', [$desde, $hasta])
+        $baseQuery = \App\Models\Cirugia::query()
+        ->when($desde && $hasta, function ($query) use ($desde, $hasta) {
+            return $query->whereBetween('created_at', [$desde, $hasta]);
+        })
         ->when($especialidadId, function ($query, $especialidadId) {
             return $query->where('especialidad_id', $especialidadId);
+        })
+        ->when($cirujanoId, function ($query, $cirujanoId) {
+            return $query->where('cirujano_id', $cirujanoId);
         });
+
+        // Obtener cirujanos disponibles para el filtro
+        // Si hay especialidad seleccionada, mostramos solo los que han operado esa especialidad
+        // Si no, mostramos todos los que han operado alguna vez
+        $cirujanosDisponibles = \App\Models\Empleado::whereIn('id', function($query) use ($especialidadId) {
+            $query->select('cirujano_id')
+                  ->from('cirugias')
+                  ->when($especialidadId, function($q, $especialidadId) {
+                      return $q->where('especialidad_id', $especialidadId);
+                  });
+        })
+        ->orderBy('apellido')
+        ->orderBy('nombre')
+        ->get();
+
         $total = $baseQuery->count();
         $meses = (clone $baseQuery)
             ->select(DB::raw('MONTH(created_at) as mes'))
@@ -500,6 +522,8 @@ class CirugiaController extends Controller
             'promedioSemanal',
             'especialidadId',
             'especialidades',
+            'cirujanosDisponibles',
+            'cirujanoId'
         ));
     }
 }
