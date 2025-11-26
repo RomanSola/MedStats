@@ -97,8 +97,6 @@ class Cirugia extends Model
     {
         return $this->belongsTo(Tipo_anestesia::class, 'tipo_anestesia_2_id', 'id');
     }
-    /* FALTA TABLA DE USUARIOS
-    public function creador() { return $this->belongsTo(Usuario::class, 'creado_por'); }
-    public function modificador() { return $this->belongsTo(Usuario::class, 'modificado_por'); }
-    */
+    public function creador() { return $this->belongsTo(User::class, 'creado_por'); }
+    public function modificador() { return $this->belongsTo(User::class, 'modificado_por'); }
 }

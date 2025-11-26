@@ -265,6 +265,12 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
 Route::middleware(['auth', 'roles:admin'])->group(function () {
     Route::post('/usuarios/{id}/actualizar-rol', [App\Http\Controllers\UsuarioPerfilController::class, 'actualizarRol'])->name('usuarios.actualizarRol');
     Route::put('/usuarios/{id}/actualizar-rol', [UsuarioPerfilController::class, 'actualizarRol'])->name('usuarios.actualizarRol');
+    
+    // Rutas para gestión de usuarios
+    Route::get('/usuarios', [App\Http\Controllers\UserController::class, 'index'])->name('usuarios.index');
+    Route::get('/usuarios/create', [App\Http\Controllers\UserController::class, 'create'])->name('usuarios.create');
+    Route::post('/usuarios', [App\Http\Controllers\UserController::class, 'store'])->name('usuarios.store');
+    Route::delete('/usuarios/{usuario}', [App\Http\Controllers\UserController::class, 'destroy'])->name('usuarios.destroy');
 });
 
 // 👇 Debe ir fuera de cualquier grupo con 'auth' o 'roles'

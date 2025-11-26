@@ -27,85 +27,97 @@
                             [
                                 'title' => 'Usuarios',
                                 'text' => 'Dar de alta nuevos usuarios del sistema.',
-                                'route' => '#',
+                                'route' => route('usuarios.index'),
                                 'btn' => 'Dar de Alta Usuarios',
-                                'disabled' => true,
+                                'access' => 'admin',
                             ],
                             [
                                 'title' => 'Medicamentos',
                                 'text' => 'Agregar o editar medicamentos disponibles.',
                                 'route' => route('medicamentos.index'),
                                 'btn' => 'Ir a Medicamentos',
+                                'access' => ['admin', 'insumos'],
                             ],
                             [
                                 'title' => 'Habitaciones',
                                 'text' => 'Agregar habitaciones nuevas para asignación de camas.',
                                 'route' => route('habitaciones.index'),
                                 'btn' => 'Gestionar Habitación',
+                                'access' => 'admin',
                             ],
                             [
                                 'title' => 'Camas',
                                 'text' => 'Agregar Nueva Cama.',
                                 'route' => route('camas.listar'),
                                 'btn' => 'Gestionar Camas',
+                                'access' => 'admin',
                             ],
                             [
                                 'title' => 'Salas',
                                 'text' => 'Definir salas del establecimiento y su capacidad.',
                                 'route' => route('salas.index'),
                                 'btn' => 'Gestionar Salas',
+                                'access' => 'admin',
                             ],
                             [
                                 'title' => 'Empleados',
                                 'text' => 'Agregar empleados y definir su profesión.',
                                 'route' => route('empleados.index'),
                                 'btn' => 'Ir a Empleados',
+                                'access' => 'admin',
                             ],
-                            //[
-                                //'title' => 'Cirugías',
-                               ////'route' => route('cirugias.index'),
-                                //'btn' => 'Ir a Cirugías',
-                            //],//--}}
                             [
                                 'title' => 'Roles de Usuario',
                                 'text' => 'Gestionar los perfiles y permisos del sistema.',
                                 'route' => route('UsuarioPerfil.index'),
                                 'btn' => 'Ver Roles',
+                                'access' => 'admin',
                             ],
                             [
                                 'title' => 'Tipos de Anestesia',
                                 'text' => 'Agregar tipos de anestesia.',
                                 'route' => route('tipoAnestesias.index'),
                                 'btn' => 'Ir a Anestesias',
+                                'access' => 'admin',
                             ],
                             [
                                 'title' => 'Quirófanos',
                                 'text' => 'Gestionar quirófanos habilitados para cirugías.',
                                 'route' => route('quirofanos.index'),
                                 'btn' => 'Gestionar Quirófanos',
+                                'access' => 'admin',
                             ],
                             [
                                 'title' => 'Profesiones',
                                 'text' => 'Definir nuevas profesiones del personal.',
                                 'route' => route('profesion.index'),
                                 'btn' => 'Ver Profesiones',
+                                'access' => 'admin',
                             ],
                             [
                                 'title' => 'Procedimientos',
                                 'text' => 'Administrar tipos de procedimientos quirúrgicos.',
                                 'route' => route('procedimientos.index'),
                                 'btn' => 'Ir a Procedimientos',
+                                'access' => 'admin',
                             ],
                             [
                                 'title' => 'Especialidades',
                                 'text' => 'Administrar Especialidades.',
                                 'route' => route('especialidades.index'),
                                 'btn' => 'Ir a Especialidades',
+                                'access' => 'admin',
                             ],
                         ];
+
+                        // Ordenar alfabéticamente por título
+                        usort($cards, function ($a, $b) {
+                            return strcmp($a['title'], $b['title']);
+                        });
                     @endphp
 
                     @foreach ($cards as $card)
+                        @if(Auth::user()->hasAccess($card['access']))
                         <div class="col-lg-4 col-md-6">
                             <div class="card soft-card mb-4" style="border: 2px solid {{ $borderColor }};">
                                 <div class="{{ $cardBodyClass }}" style="{{ $cardHeight }}">
@@ -120,6 +132,7 @@
                                 </div>
                             </div>
                         </div>
+                        @endif
                     @endforeach
 
 

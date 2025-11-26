@@ -208,16 +208,17 @@
         <!-- Links Principales -->
         @php
             $menuItems = [
-                ['route' => 'stocks.index', 'title' => 'Insumos', 'icon' => 'package'],
-                ['route' => 'cirugias.estadisticas', 'title' => 'Estadísticas', 'icon' => 'bar-chart-2'],
-                ['route' => 'pacientes.index', 'title' => 'Pacientes', 'icon' => 'users'],
-                ['route' => 'camas.index', 'title' => 'Camas', 'icon' => 'bed'],
-                ['route' => 'cirugias.index', 'title' => 'Cirugías', 'icon' => 'activity'],
-                ['route' => 'ajustes', 'title' => 'Ajustes', 'icon' => 'settings'],
+                ['route' => 'stocks.index', 'title' => 'Insumos', 'icon' => 'package', 'access' => 'insumos'],
+                ['route' => 'cirugias.estadisticas', 'title' => 'Estadísticas', 'icon' => 'bar-chart-2', 'access' => 'estadisticas'],
+                ['route' => 'pacientes.index', 'title' => 'Pacientes', 'icon' => 'users', 'access' => 'pacientes'],
+                ['route' => 'camas.index', 'title' => 'Camas', 'icon' => 'bed', 'access' => 'camas'],
+                ['route' => 'cirugias.index', 'title' => 'Cirugías', 'icon' => 'activity', 'access' => 'cirugias'],
+                ['route' => 'ajustes', 'title' => 'Ajustes', 'icon' => 'settings', 'access' => null], // Visible para todos
             ];
         @endphp
 
         @foreach($menuItems as $item)
+            @if(Auth::user()->hasAccess($item['access']))
             <a href="{{ route($item['route']) }}" 
                class="flex items-center gap-3 p-3 rounded-xl transition-all group relative overflow-hidden
                       {{ request()->routeIs($item['route']) ? 'bg-[#1B7D8F]/10 text-[#1B7D8F]' : 'text-gray-600 hover:bg-gray-50 hover:text-[#1B7D8F]' }}"
@@ -225,6 +226,7 @@
                 <i data-lucide="{{ $item['icon'] }}" class="w-6 h-6 flex-shrink-0"></i>
                 <span class="link-text font-medium whitespace-nowrap hidden opacity-0 transition-opacity duration-300">{{ $item['title'] }}</span>
             </a>
+            @endif
         @endforeach
 
     </div>

@@ -34,6 +34,7 @@ class CirugiaController extends Controller
             'get_enfermero2',
             'get_tipo_anestesia',
             'get_tipo_anestesia2',
+            'modificador',
         ])->get();
         return view('cirugias.index', compact('cirugias')); //Llama a la vista y le pasa las Cirugias obtenidas
     }
@@ -180,10 +181,8 @@ class CirugiaController extends Controller
         $minutos = $request->input('duracion_minutos', 0);
         $duracion = sprintf('%02d:%02d', $horas, $minutos);
         $cirugia->duracion = $duracion;
-
-        //Reemplazar cuando tengamos los usuarios
-        $cirugia->creado_por = '1';
-        $cirugia->modificado_por = '1';
+        $cirugia->creado_por = auth()->id();
+        $cirugia->modificado_por = auth()->id();
 
         if ($request->input('urgencia') != null) {
             $cirugia->urgencia = true;
@@ -226,7 +225,7 @@ class CirugiaController extends Controller
             'fecha_cirugia' => 'required',
             'hora_cirugia' => 'required',
             'duracion_horas' => 'required|integer|min:0',
-            'duracion_minutos' => 'required|integer|min:1|max:59',
+            'duracion_minutos' => 'required|integer|min:0|max:59',
         ]);
 
         if ($request->input('ayudante_1_id') != null) {
@@ -349,6 +348,8 @@ class CirugiaController extends Controller
         } else {
             $cirugia->obito = false;
         }
+
+        $cirugia->modificado_por = auth()->id();
 
         $cirugia->save();
         return redirect()->route('cirugias.index');

@@ -43,4 +43,48 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+    /**
+     * Get the user's profile/role.
+     */
+    public function perfil()
+    {
+        return $this->belongsTo(UsuarioPerfil::class, 'role');
+    }
+
+    /**
+     * Check if the user has access to a specific module.
+     *
+     * @param string|array $modules
+     * @return bool
+     */
+    public function hasAccess($modules)
+    {
+        if (empty($modules)) {
+            return true;
+        }
+
+        if (is_string($modules)) {
+            $modules = [$modules];
+        }
+
+        // If user is admin, they usually have access to everything, 
+        // but let's stick to the explicit permission check from the profile
+        // or if the profile itself is 'admin' (common convention, but relying on columns is safer as per CheckRole)
+        
+        $perfil = $this->perfil;
+
+        if (!$perfil) {
+            return false;
+        }
+
+        foreach ($modules as $module) {
+            // Check if the column exists and is true
+            // We assume the column name in UsuarioPerfil matches the module name
+            if ($perfil->$module) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

@@ -101,6 +101,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-8 bg-gray-100 min-h-screen">
 
                 <!-- CARD 1: Insumos -->
+                @if(Auth::user()->hasAccess('insumos'))
                 <a href="{{ route('stocks.index') }}"
                     class="flex rounded-2xl overflow-hidden transform hover:scale-[1.02] transition duration-300 bg-white text-decoration-none h-40">
                     <div class="w-1/2 p-6 flex flex-col justify-between">
@@ -120,8 +121,10 @@
                             class="h-24 w-32 object-cover rounded-lg">
                     </div>
                 </a>
+                @endif
 
                 <!-- CARD 2: Estadísticas -->
+                @if(Auth::user()->hasAccess('estadisticas'))
                 <a href="{{ route('cirugias.estadisticas') }}"
                     class="flex rounded-2xl overflow-hidden transform hover:scale-[1.02] transition duration-300 bg-white text-decoration-none h-40">
                     <div class="w-1/2 p-6 flex flex-col justify-between">
@@ -141,8 +144,10 @@
                             class="h-24 w-32 object-cover rounded-lg">
                     </div>
                 </a>
+                @endif
 
                 <!-- CARD 3: Pacientes -->
+                @if(Auth::user()->hasAccess('pacientes'))
                 <a href="{{ route('pacientes.index') }}"
                     class="flex rounded-2xl overflow-hidden transform hover:scale-[1.02] transition duration-300 bg-white text-decoration-none h-40">
                     <div class="w-1/2 p-6 flex flex-col justify-between">
@@ -162,8 +167,10 @@
                             class="h-24 w-32 object-cover rounded-lg">
                     </div>
                 </a>
+                @endif
 
                 <!-- CARD 4: Camas -->
+                @if(Auth::user()->hasAccess('camas'))
                 <a href="{{ route('camas.index') }}"
                     class="flex rounded-2xl overflow-hidden transform hover:scale-[1.02] transition duration-300 bg-white text-decoration-none h-40">
                     <div class="w-1/2 p-6 flex flex-col justify-between">
@@ -183,8 +190,10 @@
                             class="h-24 w-32 object-cover rounded-lg">
                     </div>
                 </a>
+                @endif
 
                 <!-- CARD 5: Libro de cirugías -->
+                @if(Auth::user()->hasAccess('cirugias'))
                 <a href="{{ route('cirugias.index') }}"
                     class="flex rounded-2xl overflow-hidden transform hover:scale-[1.02] transition duration-300 bg-white h-40 text-decoration-none h-40">
                     <div class="w-1/2 p-6 flex flex-col justify-between">
@@ -204,6 +213,7 @@
                             class="h-24 w-32 object-cover rounded-lg">
                     </div>
                 </a>
+                @endif
 
             </div>
 

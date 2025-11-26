@@ -201,6 +201,10 @@
                     <p class="text-gray-500 uppercase text-sm">Duración de la cirugía</p>
                     <p class="text-gray-800 font-medium">{{ $cirugia->duracion }}</p>
                 </div>
+                <div>
+                    <p class="text-gray-500 uppercase text-sm">Modificado Por</p>
+                    <p class="text-gray-800 font-medium">{{ optional($cirugia->modificador)->name ?? '-' }}</p>
+                </div>
             </div>
             <div class="flex justify-between pt-4">
 
