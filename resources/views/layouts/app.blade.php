@@ -136,11 +136,7 @@
         });
     </script>
 
-    <script>
 
-
-
-    @push('scripts')
         <script>
             window.addEventListener('load', ajustarPadding);
             window.addEventListener('resize', ajustarPadding);
@@ -155,7 +151,7 @@
                 }
             }
         </script>
-    @endpush
+
 
     <!-- Scripts adicionales desde las vistas -->
     @stack('scripts')

@@ -1,105 +1,79 @@
 @extends('layouts.app')
 @section('titulo', 'Inicio')
 @section('contenido')
-
     <div class="flex min-h-screen bg-gray-100 transition-all duration-300 ease-in-out">
         <!-- Main -->
-        <main class="flex-1 p-1 max-w-full">
-            <!-- Header con búsqueda -->
-            <header class="flex justify-center mb-8 mt-16">
-                <form action="{{ route('buscar') }}" method="GET" class="relative w-full max-w-3xl">
-                    <input type="text" id="busqueda" name="busqueda" autocomplete="off"
-                        placeholder="Buscar paciente por nombre, apellido o DNI"
-                        class="w-full rounded-l-md border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#1B7D8F] transition" />
-                    <button type="submit"
-                        class="absolute right-0 top-0 bottom-0 px-6 bg-[#1B7D8F] hover:bg-[#176d7b] text-white rounded-r-md transition"
-                        aria-label="Buscar">
-                        🔍
-                    </button>
-                </form>
-            </header>
+        <main class="flex-1 p-4 max-w-full">
+            <div class="text-center mt-10 mb-12">
+                <h1 class="text-4xl font-bold text-gray-800 mb-2">
+                    Hola, <span class="text-[#1B7D8F]">{{ Auth::user()->name ?? 'Usuario' }}</span>
+                </h1>
 
-
-            <!-- jQuery y autocomplete -->
-            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-            <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-            <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
-            <script>
-                $(function() {
-                    $("#busqueda").autocomplete({
-                        source: function(request, response) {
-                            $.ajax({
-                                url: "{{ route('buscar.ajax') }}",
-                                dataType: "json",
-                                data: {
-                                    term: request.term
-                                },
-                                success: function(data) {
-                                    response($.map(data, function(item) {
-                                        return {
-                                            label: item.nombre + " " + item.apellido +
-                                                " (DNI: " + item.dni + ")",
-                                            value: item.nombre + item.apellido,
-                                            id: item.id
-                                        };
-                                    }));
-                                }
-                            });
-                        },
-                        minLength: 2,
-                        select: function(event, ui) {
-                            window.location.href = "/persona/" + ui.item.id;
-                        }
-                    });
-                });
-            </script>
+                <!-- Buscador -->
+                <div class="flex justify-center">
+                    <form action="{{ route('buscar') }}" method="GET" class="relative w-full max-w-2xl transform transition-all hover:scale-[1.01]">
+                        <div class="relative group">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <svg class="h-6 w-6 text-gray-400 group-focus-within:text-[#1B7D8F] transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                </svg>
+                            </div>
+                            <input type="text" id="busqueda" name="busqueda" autocomplete="off"
+                                placeholder="Buscar paciente por nombre, apellido o DNI..."
+                                class="w-full pl-12 pr-4 py-4 rounded-full border-2 border-gray-200 focus:border-[#1B7D8F] focus:ring-4 focus:ring-[#1B7D8F]/10 focus:outline-none shadow-sm text-lg transition-all duration-300" />
+                            <button type="submit" class="absolute right-2 top-2 bottom-2 px-6 bg-[#1B7D8F] hover:bg-[#176d7b] text-white rounded-full font-medium shadow-md transition-all duration-300 hover:shadow-lg">
+                                Buscar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
 
             <!-- KPIs rápidos -->
-            <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+            <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12 max-w-7xl mx-auto">
                 
                 <!-- Pacientes activos -->
-                <div class="bg-white rounded-xl p-6 flex items-center gap-4 shadow-sm">
-                    <div class="p-2 bg-[#2BA8A0]/20 rounded flex items-center justify-center">
-                        <img src="{{ asset('assets/img/pacientes.png') }}" alt="Pacientes"
-                            class="h-10 w-10 object-cover rounded border border-white/10" />
+                <div class="bg-white rounded-2xl p-6 flex items-center gap-5 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
+                    <div class="p-3 bg-blue-50 rounded-xl">
+                        <img src="{{ asset('assets/img/pacientes.png') }}" alt="Pacientes" class="h-10 w-10 object-contain" />
                     </div>
                     <div>
-                        <p class="text-sm text-gray-500">Pacientes en cama</p>
-                        <p class="text-2xl font-semibold text-gray-900">{{ $pacientes }}</p>
+                        <p class="text-sm font-medium text-gray-500 mb-1">Pacientes en cama</p>
+                        <p class="text-3xl font-bold text-gray-800">{{ $pacientes }}</p>
                     </div>
                 </div>
 
                 <!-- Camas ocupadas -->
-                <div class="bg-white rounded-xl p-6 flex items-center gap-4 shadow-sm">
-                    <div class="p-2 bg-[#245360]/20 rounded flex items-center justify-center">
-                        <img src="{{ asset('assets/img/camas.png') }}" alt="Camas"
-                            class="h-10 w-10 object-cover rounded border border-white/10" />
+                <div class="bg-white rounded-2xl p-6 flex items-center gap-5 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
+                    <div class="p-3 bg-teal-50 rounded-xl">
+                        <img src="{{ asset('assets/img/camas.png') }}" alt="Camas" class="h-10 w-10 object-contain" />
                     </div>
                     <div>
-                        <p class="text-sm text-gray-500">Camas ocupadas</p>
-                        <p class="text-2xl font-semibold text-gray-900">{{ $porcentajeCamas }}%</p>
+                        <p class="text-sm font-medium text-gray-500 mb-1">Ocupación</p>
+                        <div class="flex items-baseline gap-2">
+                            <p class="text-3xl font-bold text-gray-800">{{ $porcentajeCamas }}%</p>
+                            <span class="text-xs font-medium px-2 py-0.5 rounded-full {{ $porcentajeCamas > 80 ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700' }}">
+                                {{ $porcentajeCamas > 80 ? 'Alta' : 'Normal' }}
+                            </span>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Cirugías realizadas -->
-                <div class="bg-white rounded-xl p-6 flex items-center gap-4 shadow-sm">
-                    <div class="p-2 bg-[#2BA8A0]/20 rounded flex items-center justify-center">
-                        <img src="{{ asset('assets/img/cirugias.png') }}" alt="Cirugías"
-                            class="h-10 w-10 object-cover rounded border border-white/10" />
+                <div class="bg-white rounded-2xl p-6 flex items-center gap-5 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
+                    <div class="p-3 bg-indigo-50 rounded-xl">
+                        <img src="{{ asset('assets/img/cirugias.png') }}" alt="Cirugías" class="h-10 w-10 object-contain" />
                     </div>
                     <div>
-                        <p class="text-sm text-gray-500">Cirugías realizadas en el año</p>
-                        <p class="text-2xl font-semibold text-gray-900">{{ $cantCirugias }}</p>
+                        <p class="text-sm font-medium text-gray-500 mb-1">Cirugías (Año)</p>
+                        <p class="text-3xl font-bold text-gray-800">{{ $cantCirugias }}</p>
                     </div>
                 </div>
 
             </section>
 
-
             <!-- Cards principales -->
-
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-8 bg-gray-100 min-h-screen">
-
                 <!-- CARD 1: Insumos -->
                 @if(Auth::user()->hasAccess('insumos'))
                 <a href="{{ route('stocks.index') }}"
@@ -214,14 +188,39 @@
                     </div>
                 </a>
                 @endif
-
             </div>
-
-
         </main>
     </div>
 
-    <!-- Script -->
-
-
 @endsection
+@push('scripts')
+<script>
+    $(function() {
+        $("#busqueda").autocomplete({
+            source: function(request, response) {
+                $.ajax({
+                    url: "{{ route('buscar.ajax') }}",
+                    dataType: "json",
+                    data: {
+                        term: request.term
+                    },
+                    success: function(data) {
+                        response($.map(data, function(item) {
+                            return {
+                                label: item.nombre + " " + item.apellido +
+                                    " (DNI: " + item.dni + ")",
+                                value: item.nombre + item.apellido,
+                                id: item.id
+                            };
+                        }));
+                    }
+                });
+            },
+            minLength: 2,
+            select: function(event, ui) {
+                window.location.href = "/persona/" + ui.item.id;
+            }
+        });
+    });
+</script>
+@endpush
