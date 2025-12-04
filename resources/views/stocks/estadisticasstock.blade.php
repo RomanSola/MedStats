@@ -1,7 +1,7 @@
 @extends('layouts.app_estadisticas')
 @section('titulo', 'Estadísticas de Stock')
 @section('contenido')
-    <div class="container-fluid py-4">
+    <div class="container py-4">
         {{-- Header Section --}}
         <div class="d-flex justify-content-between align-items-center mb-5">
             <div>
@@ -240,6 +240,7 @@
                         <p class="text-sm text-gray-500 mb-0">Estimación basada en consumo de últimos 30 días</p>
                     </div>
                     <div class="card-body px-4 pb-4">
+                        <div class="table-responsive">
                         <table id="tablaProyeccion" class="table table-hover align-middle w-100">
                             <thead class="bg-gray-50 text-xs text-gray-500 uppercase font-bold">
                                 <tr>
@@ -270,6 +271,7 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        </div>
                     </div>
                 </div>
             </div>

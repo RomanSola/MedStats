@@ -8,6 +8,8 @@
 
     <!-- Bootstrap -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
     <!-- Tailwind (CDN) -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -30,11 +32,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
     <style>
-        /* Importante: eliminamos transformaciones que crean un nuevo stacking context. */
-        #mainContent {
-            transform: none !important;
-            transform-origin: none !important;
-        }
+
 
         body {
             background-color: #e6f4f3;
@@ -117,22 +115,7 @@
     </script>
 
     <script>
-        function ajustarAlturaSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const footer = document.getElementById('footer');
 
-            if (!sidebar || !footer) return;
-
-            const footerHeight = footer.offsetHeight;
-            const windowHeight = window.innerHeight;
-            const headerHeight = 64; // top-16 = 4rem = 64px
-
-            const nuevaAltura = windowHeight - footerHeight - headerHeight;
-            sidebar.style.height = `${nuevaAltura}px`;
-        }
-
-        window.addEventListener('load', ajustarAlturaSidebar);
-        window.addEventListener('resize', ajustarAlturaSidebar);
     </script>
 
 

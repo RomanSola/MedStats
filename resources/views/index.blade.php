@@ -73,7 +73,7 @@
             </section>
 
             <!-- Cards principales -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-8 bg-gray-100 min-h-screen">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-8 bg-gray-100">
                 <!-- CARD 1: Insumos -->
                 @if(Auth::user()->hasAccess('insumos'))
                 <a href="{{ route('stocks.index') }}"

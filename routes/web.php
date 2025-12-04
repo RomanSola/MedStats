@@ -61,7 +61,7 @@ Route::middleware(['auth', 'roles:admin,pacientes,cirugias,camas,estadisticas'])
 
 
 // configuracion
-Route::view('/ajustes', 'ajustes')->name('ajustes');
+Route::view('/ajustes', 'ajustes')->middleware('auth')->name('ajustes');
 
 
 //vista estadistica
