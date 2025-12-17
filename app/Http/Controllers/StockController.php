@@ -245,15 +245,16 @@ class StockController extends Controller
     $fechaInicio = now()->subDays($periodoAnalisis)->toDateString();
     $fechaFin = now()->toDateString();
 
-    $consumos = Historial_stock::select('stock_id', DB::raw('SUM(ABS(cantidad)) as total_consumo'))
-        ->where('cantidad', '<', 0)
-        ->whereBetween('fecha', [$fechaInicio, $fechaFin])
-        ->groupBy('stock_id')
+    $consumos = Historial_stock::join('stocks', 'historial_stocks.stock_id', '=', 'stocks.id')
+        ->select('stocks.medicamento_id', DB::raw('SUM(ABS(historial_stocks.cantidad)) as total_consumo'))
+        ->where('historial_stocks.cantidad', '<', 0)
+        ->whereBetween('historial_stocks.fecha', [$fechaInicio, $fechaFin])
+        ->groupBy('stocks.medicamento_id')
         ->get()
-        ->keyBy('stock_id');
+        ->keyBy('medicamento_id');
 
     $proyecciones = Stock::with('get_medicamento')->get()->map(function ($stock) use ($consumos, $periodoAnalisis) {
-        $consumoTotal = $consumos[$stock->id]->total_consumo ?? 0;
+        $consumoTotal = $consumos[$stock->medicamento_id]->total_consumo ?? 0;
         $consumoDiario = $consumoTotal / $periodoAnalisis;
         $diasRestantes = $consumoDiario > 0 ? round($stock->cantidad_act / $consumoDiario) : null;
 

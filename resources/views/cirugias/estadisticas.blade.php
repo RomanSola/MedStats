@@ -321,6 +321,7 @@
 
     {{-- Modales (Reutilizando estilos limpios) --}}
     
+@push('modales')
     {{-- Modal Cirugías Mes --}}
     <div class="modal fade" id="modalCirugias" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -438,6 +439,7 @@
             </div>
         </div>
     </div>
+@endpush
 
 @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

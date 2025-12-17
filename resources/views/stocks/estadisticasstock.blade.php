@@ -257,11 +257,11 @@
                                         <td class="text-gray-600">{{ $item['cantidad_act'] }}</td>
                                         <td class="text-gray-600">{{ $item['consumo_diario'] }}</td>
                                         <td>
-                                            @if($item['dias_restantes'] && $item['dias_restantes'] < 10)
+                                            @if(!is_null($item['dias_restantes']) && $item['dias_restantes'] < 10)
                                                 <span class="badge bg-red-100 text-red-700 border border-red-200 rounded-pill px-2 py-1">Crítico: {{ $item['dias_restantes'] }} días</span>
-                                            @elseif($item['dias_restantes'] && $item['dias_restantes'] < 20)
+                                            @elseif(!is_null($item['dias_restantes']) && $item['dias_restantes'] < 20)
                                                 <span class="badge bg-amber-100 text-amber-700 border border-amber-200 rounded-pill px-2 py-1">Bajo: {{ $item['dias_restantes'] }} días</span>
-                                            @elseif($item['dias_restantes'])
+                                            @elseif(!is_null($item['dias_restantes']))
                                                 <span class="badge bg-emerald-100 text-emerald-700 border border-emerald-200 rounded-pill px-2 py-1">Normal: {{ $item['dias_restantes'] }} días</span>
                                             @else
                                                 <span class="badge bg-gray-100 text-gray-500 border border-gray-200 rounded-pill px-2 py-1">Sin consumo</span>
