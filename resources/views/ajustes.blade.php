@@ -108,6 +108,13 @@
                                 'btn' => 'Ir a Especialidades',
                                 'access' => 'admin',
                             ],
+                            [
+                                'title' => 'Servicios',
+                                'text' => 'Administrar Servicios del Hospital.',
+                                'route' => route('servicios.index'),
+                                'btn' => 'Ir a Servicios',
+                                'access' => 'admin',
+                            ],
                         ];
 
                         // Ordenar alfabéticamente por título

@@ -1,7 +1,5 @@
 @extends('layouts.app')
-
 @section('titulo', 'Gestión de Camas')
-
 @section('contenido')
     {{-- <div class="max-w-7xl mx-auto px-4 py-8"> --}}
     <div class="relative z- max-w-7xl mx-auto px-4 py-0 mt-16 lg:ml-64 transition-all duration-300">
@@ -33,85 +31,121 @@
             <div class="bg-white rounded-xl p-6">
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     @foreach ($camas as $cama)
-                        <div class="bg-white rounded-xl border border-gray-300 shadow p-4 text-center">
-                            <h3 class="text-lg font-semibold text-gray-800 mb-2">
-                                Habitación {{ $cama->get_habitacion->numero ?? 'Sin asignar' }}
-                            </h3>
+                        <div class="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 transform overflow-hidden group">
+                            <!-- Cabecera de la tarjeta: Num de Habitación -->
+                            <div class="bg-gray-50 px-4 py-3 border-b border-gray-100 flex justify-between items-center">
+                                <span class="text-xs font-bold uppercase tracking-wider text-gray-500">Habitación</span>
+                                <span class="text-lg font-bold text-gray-800">{{ $cama->get_habitacion->numero ?? 'N/A' }}</span>
+                            </div>
 
-                            <div class="bg-gray-100 rounded-lg p-3 mb-2 shadow-inner">
-                                <h5 class="text-md font-bold text-gray-800 mb-3">
-                                    Cama {{ $cama->codigo }}
-                                </h5>
-
-                                {{-- Datos del paciente --}}
-                                @if ($cama->ocupada && $cama->paciente)
-                                    <div
-                                        class="text-left text-sm bg-white border border-gray-200 rounded-lg px-3 py-2 mb-3 space-y-1">
-                                        <p><strong>Nombre:</strong> {{ $cama->paciente->nombre }}
-                                            {{ $cama->paciente->apellido }}</p>
-                                        <p><strong>DNI:</strong> {{ $cama->paciente->dni }}</p>
-
-                                        @php
-                                            $fechaNacimiento = \Carbon\Carbon::parse($cama->paciente->fecha_nacimiento);
-                                            $hoy = \Carbon\Carbon::now();
-                                            $dias = $fechaNacimiento->diffInDays($hoy);
-                                            $semanas = floor($dias / 7);
-                                            $meses = $fechaNacimiento->diffInMonths($hoy);
-                                            $anios = $fechaNacimiento->diffInYears($hoy);
-                                            $mesesExtras = $meses - $anios * 12;
-                                        @endphp
-
-                                        @if ($dias < 15)
-                                            <p><strong>Edad:</strong> {{ $dias }}
-                                                {{ $dias === 1 ? 'día' : 'días' }}</p>
-                                        @elseif ($dias < 31)
-                                            <p><strong>Edad:</strong> {{ $semanas }}
-                                                {{ $semanas === 1 ? 'semana' : 'semanas' }}</p>
-                                        @elseif ($anios < 1)
-                                            <p><strong>Edad:</strong> {{ $meses }}
-                                                {{ $meses === 1 ? 'mes' : 'meses' }}</p>
-                                        @elseif ($anios < 3)
-                                            <p><strong>Edad:</strong> {{ $anios }}
-                                                {{ $anios === 1 ? 'año' : 'años' }}
-                                                @if ($mesesExtras > 0)
-                                                    ({{ $mesesExtras }} {{ $mesesExtras === 1 ? 'mes' : 'meses' }})
-                                                @endif
-                                            </p>
-                                        @else
-                                            <p><strong>Edad:</strong> {{ $anios }} años</p>
-                                        @endif
-
-                                        <p><strong>Género:</strong> {{ $cama->paciente->genero }}</p>
-                                        <p><strong>Teléfono:</strong> {{ $cama->paciente->telefono }}</p>
-                                        <p><strong>Dirección:</strong> {{ $cama->paciente->direccion }}</p>
+                            <div class="p-4">
+                                <!-- Título de Cama y Badge de Estado -->
+                                <div class="flex justify-between items-start mb-4">
+                                    <div class="text-left">
+                                        <h5 class="text-sm font-medium text-gray-500 mb-0.5">Cama</h5>
+                                        <span class="text-xl font-bold text-gray-900">{{ $cama->codigo }}</span>
                                     </div>
-                                @endif
-
-                                {{-- Estado --}}
-                                <div class="mb-3">
-                                    <span
-                                        class="text-xs font-semibold text-white px-3 py-1 rounded-full inline-block
-                                    {{ $cama->ocupada == 'ocupada' ? 'bg-red-500' : 'bg-green-500' }}">
-                                        {{ $cama->ocupada == 'ocupada' ? 'OCUPADA' : 'LIBRE' }}
+                                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold {{ $cama->ocupada == 'ocupada' ? 'bg-red-50 text-red-700 border border-red-100' : 'bg-emerald-50 text-emerald-700 border border-emerald-100' }}">
+                                        <span class="relative flex h-2 w-2">
+                                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 {{ $cama->ocupada == 'ocupada' ? 'bg-red-400' : 'bg-emerald-400' }}"></span>
+                                          <span class="relative inline-flex rounded-full h-2 w-2 {{ $cama->ocupada == 'ocupada' ? 'bg-red-500' : 'bg-emerald-500' }}"></span>
+                                        </span>
+                                        {{ $cama->ocupada == 'ocupada' ? 'Ocupada' : 'Libre' }}
                                     </span>
                                 </div>
 
+                                {{-- Datos del paciente --}}
+                                @if ($cama->ocupada && $cama->paciente)
+                                    <div class="text-left bg-blue-50/50 rounded-lg p-3 space-y-2 mb-4 border border-blue-100/50">
+                                        <!-- Nombre y Edad -->
+                                        <div>
+                                            <p class="font-bold text-gray-900 text-sm truncate" title="{{ $cama->paciente->nombre }} {{ $cama->paciente->apellido }}">
+                                                {{ $cama->paciente->nombre }} {{ $cama->paciente->apellido }}
+                                            </p>
+                                            
+                                            @php
+                                                $fechaNacimiento = \Carbon\Carbon::parse($cama->paciente->fecha_nacimiento);
+                                                $hoy = \Carbon\Carbon::now();
+                                                $dias = $fechaNacimiento->diffInDays($hoy);
+                                                $semanas = floor($dias / 7);
+                                                $meses = $fechaNacimiento->diffInMonths($hoy);
+                                                $anios = $fechaNacimiento->diffInYears($hoy);
+                                                
+                                                $edadTexto = "";
+                                                if ($dias < 15) $edadTexto = "$dias días";
+                                                elseif ($dias < 31) $edadTexto = "$semanas semanas";
+                                                elseif ($anios < 1) $edadTexto = "$meses meses";
+                                                else $edadTexto = "$anios años";
+                                            @endphp
+
+                                            <p class="text-xs text-blue-600 font-medium flex items-center gap-1 mt-0.5">
+                                                <i data-lucide="cake" class="w-3 h-3"></i> {{ $edadTexto }}
+                                            </p>
+                                        </div>
+
+                                        <!-- Detalles: DNI, Género, Teléfono -->
+                                        <div class="space-y-1.5 pt-1">
+                                            <div class="flex items-center gap-2 text-xs text-gray-600">
+                                                <i data-lucide="credit-card" class="w-3.5 h-3.5 text-gray-400"></i>
+                                                <span>{{ $cama->paciente->dni }}</span>
+                                            </div>
+                                            <div class="flex items-center gap-2 text-xs text-gray-600">
+                                                <i data-lucide="user" class="w-3.5 h-3.5 text-gray-400"></i>
+                                                <span>{{ $cama->paciente->genero }}</span>
+                                            </div>
+                                            <div class="flex items-center gap-2 text-xs text-gray-600">
+                                                <i data-lucide="phone" class="w-3.5 h-3.5 text-gray-400"></i>
+                                                <span>{{ $cama->paciente->telefono ?? '-' }}</span>
+                                            </div>
+                                        </div>
+
+                                        <!-- Alergias -->
+                                        @if($cama->paciente->alergias && $cama->paciente->alergias != 'Sin alergias registradas')
+                                            <div class="mt-2 pt-2 border-t border-blue-100">
+                                                <div class="bg-red-50 border border-red-100 rounded-md p-2 flex gap-2 items-start">
+                                                    <i data-lucide="alert-circle" class="w-4 h-4 text-red-500 flex-shrink-0 mt-0.5"></i>
+                                                    <div class="text-xs text-red-700 leading-tight">
+                                                        <span class="font-bold block mb-0.5">Alergias:</span>
+                                                        {{ \Illuminate\Support\Str::limit($cama->paciente->alergias, 50) }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @else
+                                            <div class="mt-2 pt-2 border-t border-blue-100">
+                                                <div class="flex items-center gap-1.5 text-xs text-gray-400">
+                                                    <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i>
+                                                    <span>Sin alergias conocidas</span>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    </div>
+                                @else
+                                    <div class="h-40 flex flex-col items-center justify-center text-gray-400 bg-gray-50/50 rounded-lg border border-dashed border-gray-200 mb-4">
+                                        <i data-lucide="bed" class="w-10 h-10 mb-2 opacity-50"></i>
+                                        <span class="text-sm">Disponible</span>
+                                    </div>
+                                @endif
+
                                 {{-- Botones --}}
-                                <div class="flex flex-col items-center space-y-2">
+                                <div class="mt-auto pt-2">
                                     @if ($cama->ocupada && $cama->paciente)
                                         <form
                                             action="{{ route('pacientes.darDeAlta', ['paciente' => $cama->paciente->id, 'from' => 'camas.index']) }}"
                                             method="POST">
                                             @csrf
-                                            <button type="submit" class="btn btn-outline-success btn-sm">
+                                            <button type="submit" class="w-full flex items-center justify-center gap-2 bg-white hover:bg-emerald-50 text-emerald-600 border border-emerald-200 hover:border-emerald-300 font-medium py-2 px-4 rounded-lg transition-colors text-sm shadow-sm">
+                                                <i data-lucide="log-out" class="w-4 h-4"></i>
                                                 Dar de Alta
                                             </button>
                                         </form>
                                     @else
-                                        <button type="button" class="btn btn-outline-secondary btn-sm" data-toggle="modal"
+                                        <button type="button" 
+                                            class="w-full flex items-center justify-center gap-2 bg-gray-900 hover:bg-gray-800 text-white font-medium py-2 px-4 rounded-lg transition-colors text-sm shadow-md" 
+                                            data-toggle="modal"
                                             data-target="#asignarPacienteModal" data-cama-id="{{ $cama->id }}"
                                             data-sala-id="{{ request('sala_id') }}">
-                                            Asignar paciente
+                                            <i data-lucide="user-plus" class="w-4 h-4"></i>
+                                            Asignar Paciente
                                         </button>
                                     @endif
                                 </div>

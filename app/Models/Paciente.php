@@ -16,6 +16,7 @@ class Paciente extends Model
         'fecha_nacimiento',
         'genero',
         'telefono',
+        'alergias',
         'pais_id',
         'provincia_id',
         'cod_postal_id',

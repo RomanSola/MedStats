@@ -1,7 +1,5 @@
 @extends('layouts.app')
-
 @section('titulo', 'Historial del Stock')
-
 @section('contenido')
 <div class="max-w-7xl mx-auto px-4 py-8">
     <h1 class="text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent bg-clip-text drop-shadow-md px-2 mb-6">
@@ -32,7 +30,7 @@
                     <td class="px-4 py-2 border text-center">{{ $item->fecha }}</td>
                     <td class="px-4 py-2 border">
                         {{ $item->get_empleado?->nombre }} {{ $item->get_empleado?->apellido }}
-                        @if($item->get_empleado) (DNI {{ $item->get_empleado->dni }}) @endif
+                        @if($item->get_empleado) (Mat. {{ $item->get_empleado->matricula ?? 'S/M' }}) @endif
                     </td>
                     <td class="px-4 py-2 border">
                         {{ $item->get_paciente?->nombre }} {{ $item->get_paciente?->apellido }}
@@ -49,11 +47,8 @@
             </tbody>
         </table>
     </div>
-
     <div class="mt-6">
         {{ $hist_item->links() }}
     </div>
-
-
 </div>
 @endsection

@@ -19,7 +19,8 @@ class Empleado extends Model
         'provincia_id', 
         'cod_postal_id', 
         'direccion', 
-        'profesion_id', 
+        'profesion_id',
+        'matricula',
         'creado_por', 
         'modificado_por'];
 

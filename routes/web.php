@@ -20,6 +20,7 @@ use App\Http\Controllers\BusquedaController;
 use App\Http\Controllers\PersonaController;
 use App\Http\Controllers\EspecialidadController;
 use App\Http\Controllers\InicioController;
+use App\Http\Controllers\ServicioController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -262,6 +263,11 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
     Route::delete('/especialidades/{especialidad}', [EspecialidadController::class, 'destroy'])->name('especialidades.destroy');
 });
 
+//Servicios
+Route::middleware(['auth', 'roles:admin'])->group(function () {
+    Route::resource('servicios', ServicioController::class);
+});
+
 Route::middleware(['auth', 'roles:admin'])->group(function () {
     Route::post('/usuarios/{id}/actualizar-rol', [App\Http\Controllers\UsuarioPerfilController::class, 'actualizarRol'])->name('usuarios.actualizarRol');
     Route::put('/usuarios/{id}/actualizar-rol', [UsuarioPerfilController::class, 'actualizarRol'])->name('usuarios.actualizarRol');
@@ -270,6 +276,8 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
     Route::get('/usuarios', [App\Http\Controllers\UserController::class, 'index'])->name('usuarios.index');
     Route::get('/usuarios/create', [App\Http\Controllers\UserController::class, 'create'])->name('usuarios.create');
     Route::post('/usuarios', [App\Http\Controllers\UserController::class, 'store'])->name('usuarios.store');
+    Route::get('/usuarios/{usuario}/edit', [App\Http\Controllers\UserController::class, 'edit'])->name('usuarios.edit');
+    Route::put('/usuarios/{usuario}', [App\Http\Controllers\UserController::class, 'update'])->name('usuarios.update');
     Route::delete('/usuarios/{usuario}', [App\Http\Controllers\UserController::class, 'destroy'])->name('usuarios.destroy');
 });
 

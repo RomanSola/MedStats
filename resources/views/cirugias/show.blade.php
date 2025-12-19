@@ -1,7 +1,5 @@
 @extends('layouts.app')
-
 @section('title', 'Ver Cirugía')
-
 @section('contenido')
     <div class="max-w-4xl mx-auto px-6 py-8">
 
@@ -67,8 +65,8 @@
                         {{ $cirugia->get_cirujano->apellido }}</p>
                 </div>
                 <div>
-                    <p class="text-gray-500 uppercase text-sm">DNI</p>
-                    <p class="text-gray-800 font-medium">{{ $cirugia->get_cirujano->dni }}</p>
+                    <p class="text-gray-500 uppercase text-sm">Matrícula</p>
+                    <p class="text-gray-800 font-medium">{{ $cirugia->get_cirujano->matricula ?? 'Sin matrícula' }}</p>
                 </div>
             </div>
 
@@ -83,8 +81,8 @@
                         </p>
                     </div>
                     <div>
-                        <p class="text-gray-500 uppercase text-sm">DNI</p>
-                        <p class="text-gray-800 font-medium">{{ $cirugia->{'get_ayudante' . $num}->dni ?? '-' }}</p>
+                        <p class="text-gray-500 uppercase text-sm">Matrícula</p>
+                        <p class="text-gray-800 font-medium">{{ $cirugia->{'get_ayudante' . $num}->matricula ?? '-' }}</p>
                     </div>
                 </div>
             @endforeach
@@ -110,8 +108,8 @@
                     </p>
                 </div>
                 <div>
-                    <p class="text-gray-500 uppercase text-sm">DNI</p>
-                    <p class="text-gray-800 font-medium">{{ $cirugia->get_instrumentador->dni }}</p>
+                    <p class="text-gray-500 uppercase text-sm">Matrícula</p>
+                    <p class="text-gray-800 font-medium">{{ $cirugia->get_instrumentador->matricula ?? 'Sin matrícula' }}</p>
                 </div>
             </div>
 
@@ -124,8 +122,8 @@
                     </p>
                 </div>
                 <div>
-                    <p class="text-gray-500 uppercase text-sm">DNI</p>
-                    <p class="text-gray-800 font-medium">{{ $cirugia->get_instrumentador2->dni ?? '-'}}</p>
+                    <p class="text-gray-500 uppercase text-sm">Matrícula</p>
+                    <p class="text-gray-800 font-medium">{{ $cirugia->get_instrumentador2->matricula ?? '-'}}</p>
                 </div>
             </div>
 
@@ -138,8 +136,8 @@
                     </p>
                 </div>
                 <div>
-                    <p class="text-gray-500 uppercase text-sm">DNI</p>
-                    <p class="text-gray-800 font-medium">{{ $cirugia->get_enfermero->dni }}</p>
+                    <p class="text-gray-500 uppercase text-sm">Matrícula</p>
+                    <p class="text-gray-800 font-medium">{{ $cirugia->get_enfermero->matricula ?? 'Sin matrícula' }}</p>
                 </div>
             </div>
 
@@ -152,8 +150,8 @@
                     </p>
                 </div>
                 <div>
-                    <p class="text-gray-500 uppercase text-sm">DNI</p>
-                    <p class="text-gray-800 font-medium">{{ $cirugia->get_enfermero2->dni ?? '-'}}</p>
+                    <p class="text-gray-500 uppercase text-sm">Matrícula</p>
+                    <p class="text-gray-800 font-medium">{{ $cirugia->get_enfermero2->matricula ?? '-'}}</p>
                 </div>
             </div>
 
@@ -213,9 +211,5 @@
                 </a>
             </div>
         </div>
-
-
-
-
     </div>
 @endsection

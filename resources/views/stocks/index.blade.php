@@ -8,8 +8,7 @@
         </div>
     @endif
 
-
-    <div class="flex min-h-screen bg-gray-100 transition-all duration-300 ease-in-out pt-16">
+    <div class="flex min-h-screen transition-all duration-300 ease-in-out">
 
         <!-- Main -->
         <main class="flex-1 p-5 max-w-full">
@@ -17,11 +16,42 @@
             <h1
                 class="text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent  bg-clip-text drop-shadow-md  flex items-center gap-2 px-2">
                 Medicamentos en Stock</h1>
-            <a href="{{ route('stocks.create') }}"
-                class="inline-block bg-neutral-700 hover:bg-neutral-800 text-white font-medium py-2 px-6 rounded-full shadow-md cursor-pointer transition duration-300"
-                style="text-decoration: none;">
-                Ingresar Nuevo Medicamento
-            </a>
+            
+            <div class="flex gap-4 items-center">
+                <!-- Filtros por servicio -->
+                <form method="GET" action="{{ route('stocks.index') }}" class="flex items-center gap-3">
+                    <div class="d-flex align-items-center gap-2 px-3 py-2 rounded-lg" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border: 2px solid #1B7D8F;">
+
+                        <label for="servicio_id" class="font-semibold mb-0" style="color: #1B7D8F;">Filtrar por Servicio:</label>
+                        <select name="servicio_id" id="servicio_id" 
+                            class="form-select" 
+                            style="border: 2px solid #1B7D8F; border-radius: 8px; min-width: 200px; font-weight: 500;"
+                            onchange="this.form.submit()"
+                            {{ (count($servicios) == 1 && auth()->user()->servicio_id) ? 'disabled' : '' }}
+                        >
+                            @if(!auth()->user()->servicio_id)
+                                <option value="">Todos los Servicios</option>
+                            @endif
+                            @foreach($servicios as $s)
+                                <option value="{{ $s->id }}" {{ request('servicio_id') == $s->id ? 'selected' : '' }}>
+                                    {{ $s->nombre }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @if(auth()->user()->servicio_id)
+                            <span class="badge" style="background-color: #1B7D8F; font-size: 0.75rem;">
+                                Restringido
+                            </span>
+                        @endif
+                    </div>
+                </form>
+
+                <a href="{{ route('stocks.create') }}"
+                    class="inline-block bg-neutral-700 hover:bg-neutral-800 text-white font-medium py-2 px-6 rounded-full shadow-md cursor-pointer transition duration-300"
+                    style="text-decoration: none;">
+                    Ingresar Nuevo Medicamento
+                </a>
+            </div>
         </div>
 
         <div class="bg-white shadow rounded-lg border border-gray-200 overflow-auto">
@@ -29,6 +59,7 @@
                 <thead>
                     <tr>
                         <th class="px-4 py-2 border">Medicamento</th>
+                        <th class="px-4 py-2 border">Servicio</th>
                         <th class="px-4 py-2 border">Lote</th>
                         <th class="px-4 py-2 border">Fecha de vencimiento</th>
                         <th class="px-4 py-2 border text-center">Cantidad actual</th>
@@ -49,6 +80,7 @@
 
                         <tr class="hover:bg-gray-50">
                             <td class="px-4 py-2 border">{{ $item->get_medicamento->nombre }}</td>
+                            <td class="px-4 py-2 border">{{ $item->get_servicio->nombre }}</td>
                             <td class="px-4 py-2 border">{{ $item->lote }}</td>
                             <td class="px-4 py-2 border">{{ $item->fecha_vencimiento }}</td>
                             <td class="px-4 py-2 border text-center">
@@ -102,5 +134,4 @@ $(document).ready(function () {
     });
 });
 </script>
-
 @endpush

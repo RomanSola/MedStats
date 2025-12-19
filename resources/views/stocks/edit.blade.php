@@ -37,6 +37,12 @@
                 <input type="number" value="{{ $stock->cantidad_act }}" readonly
                     class="w-full bg-gray-100 border border-gray-300 rounded-md px-4 py-2 text-gray-700">
             </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Servicio</label>
+                <input type="text" value="{{ $stock->get_servicio->nombre }}" readonly
+                    class="w-full bg-gray-100 border border-gray-300 rounded-md px-4 py-2 text-gray-700">
+            </div>
         </div>
 
         <!-- Modificación de stock -->
@@ -69,7 +75,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                     <label for="paciente_id" class="block text-sm font-medium text-gray-700 mb-1">El medicamento es para</label>
-                    <select name="paciente_id" id="paciente_id" class="form-control select2">
+                    <select name="paciente_id" id="paciente_id" class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500 select2">
                         <option value="">Seleccione un paciente</option>
                         @foreach ($pacientes as $paciente)
                             <option value="{{ $paciente->id }}"
@@ -85,14 +91,14 @@
 
                 <div>
                     <label for="empleado_id" class="block text-sm font-medium text-gray-700 mb-1">Recetado por</label>
-                    <select name="empleado_id" id="empleado_id" class="form-control select2">
+                    <select name="empleado_id" id="empleado_id" class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500 select2">
                         <option value="">Seleccione un médico</option>
                         @php $profesionesPermitidas = [1, 2]; @endphp
                         @foreach ($empleados as $empleado)
                         @if (in_array($empleado->get_profesion->rol_id, $profesionesPermitidas))
                             <option value="{{ $empleado->id }}"
                                 {{ old('empleado_id') == $empleado->id ? 'selected' : '' }}>
-                                Dr/a {{ $empleado->apellido }} – DNI {{ $empleado->dni }}
+                                Dr/a {{ $empleado->apellido }} – Mat. {{ $empleado->matricula ?? 'S/M' }}
                             </option>
                         @endif
                         @endforeach
@@ -128,6 +134,44 @@
     </form>     
     </div>
 @push('scripts')
+
+<style>
+    /* Estilos personalizados para Select2 */
+    .select2-container--default .select2-selection--single {
+        border: 1px solid #d1d5db !important;
+        border-radius: 0.375rem !important;
+        height: 42px !important;
+        padding: 0.5rem 1rem !important;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        line-height: 26px !important;
+        padding-left: 0 !important;
+        color: #374151 !important;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 40px !important;
+        right: 8px !important;
+    }
+
+    .select2-container--default.select2-container--focus .select2-selection--single {
+        border-color: #3b82f6 !important;
+        outline: none !important;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+    }
+
+    .select2-dropdown {
+        border: 1px solid #d1d5db !important;
+        border-radius: 0.375rem !important;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+    }
+
+    .select2-container--default .select2-results__option--highlighted[aria-selected] {
+        background-color: #3b82f6 !important;
+    }
+</style>
 
 <script>
     $(document).ready(function() {

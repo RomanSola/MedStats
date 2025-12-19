@@ -9,36 +9,73 @@ use App\Models\Empleado;
 use App\Models\Medicamento;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\Servicio;
 
 class StockController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $stock = Stock::with('get_medicamento')->get();
-        return view('stocks.index', compact('stock'));
+        $user = auth()->user();
+        $query = Stock::with(['get_medicamento', 'get_servicio']);
+
+        // Check if user is restricted to a service
+        if ($user->servicio_id) {
+            $query->where('servicio_id', $user->servicio_id);
+            // Limit available filters
+            $servicios = Servicio::where('id', $user->servicio_id)->get();
+        } else {
+             // Admin/Global: Show all or filter by request
+             if ($request->filled('servicio_id')) {
+                $query->where('servicio_id', $request->servicio_id);
+            }
+            $servicios = Servicio::all();
+        }
+
+        $stock = $query->get();
+        //$servicios = Servicio::all(); // Moved logic up
+        return view('stocks.index', compact('stock', 'servicios'));
     }
 
     public function create()
     {
         $medicamentos = Medicamento::pluck('nombre', 'id');
-        return view('stocks.create', compact('medicamentos'));
+        
+        $user = auth()->user();
+        if ($user->servicio_id) {
+            $servicios = Servicio::where('id', $user->servicio_id)->get();
+        } else {
+            $servicios = Servicio::all();
+        }
+        
+        return view('stocks.create', compact('medicamentos', 'servicios'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'medicamento_id' => 'required|exists:medicamentos,id',
-            'fecha_vencimiento' => 'nullable|date',
-            'lote' => 'required',
             'cantidad_act' => 'required|integer|min:0',
+            // 'servicio_id' => 'required|exists:servicios,id', // Validation logic updated below
         ]);
+        
+        $user = auth()->user();
+        $inputServicio = $request->input('servicio_id');
+        
+        // If user is restricted, force their service ID
+        if ($user->servicio_id) {
+            $inputServicio = $user->servicio_id;
+        } else {
+            // If explicit input is missing for admin, validation fails
+            $request->validate(['servicio_id' => 'required|exists:servicios,id']);
+        }
+        
         $existe = Stock::where('medicamento_id', $request->input('medicamento_id'))
         ->where('lote', $request->input('lote'))
+        ->where('servicio_id', $inputServicio)
         ->exists();
 
         if ($existe) {
             return redirect()->back()
-            ->withErrors(['lote' => 'Ya existe un stock para este medicamento con ese lote.'])
+            ->withErrors(['lote' => 'Ya existe un stock para este medicamento con ese lote en este servicio.'])
             ->withInput();
         }
 
@@ -47,6 +84,7 @@ class StockController extends Controller
         $stock->fecha_vencimiento = $request->input('fecha_vencimiento');
         $stock->lote = $request->input('lote');
         $stock->cantidad_act = $request->input('cantidad_act');
+        $stock->servicio_id = $inputServicio;
         $stock->save();
         //dd($stock);
         Historial_stock::create([
@@ -85,9 +123,9 @@ class StockController extends Controller
             'cantidad_extraer' => 'nullable|integer|min:0',
         ]);
     
-        // Verificar si ya existe un stock con mismo medicamento y lote (excluyendo el actual)
         $existe = Stock::where('medicamento_id', $request->input('medicamento_id'))
             ->where('lote', $stock->lote)
+            ->where('servicio_id', $stock->servicio_id)
             ->where('id', '!=', $stock->id)
             ->exists();
     

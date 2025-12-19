@@ -118,6 +118,15 @@
                         @enderror
                     </div>
 
+                    <div class="mb-3">
+                        <label for="matricula" class="form-label">Matrícula <span class="text-muted">(opcional)</span></label>
+                        <input type="number" name="matricula" id="matricula" class="form-control"
+                            value="{{ old('matricula', $empleado->matricula) }}" placeholder="Ingrese la matrícula profesional">
+                        @error('matricula')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+
                     <div class="flex justify-between pt-4">
                         <a href="{{ route('empleados.index') }}"
                             class="btn btn-outline-danger px-5 py-2 rounded shadow-sm">

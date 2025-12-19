@@ -14,6 +14,7 @@ class Stock extends Model
         'lote',
         'fecha_vencimiento',
         'cantidad_act',
+        'servicio_id',
         'creado_por',
         'modificado_por'
     ];
@@ -21,6 +22,11 @@ class Stock extends Model
     public function get_medicamento()
     {
         return $this->belongsTo(Medicamento::class,'medicamento_id', 'id');
+    }
+
+    public function get_servicio()
+    {
+        return $this->belongsTo(Servicio::class, 'servicio_id');
     }
     public function get_historial()
     {

@@ -1,11 +1,7 @@
 @extends('layouts.app')
-
 @section('title', 'Ver Empleado')
-
 @section('contenido')
     <div class="max-w-5xl mx-auto px-4 py-4">
-
-        
         <div class="flex justify-between items-center mb-6">
             <h1
                 class="text-2xl font-bold bg-gradient-to-r from-[#1B7D8F] via-[#2BA8A0] to-[#245360] text-transparent  bg-clip-text drop-shadow-md  flex items-center gap-2 px-2">
@@ -81,6 +77,11 @@
                             <label class="form-label">Profesión</label>
                             <input type="text" class="form-control border  shadow-sm"
                                 value="{{ $empleado->get_profesion->nombre_profesion }}" readonly>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Matrícula</label>
+                            <input type="text" class="form-control border  shadow-sm"
+                                value="{{ $empleado->matricula ?? 'Sin matrícula' }}" readonly>
                         </div>
                     </div>
 

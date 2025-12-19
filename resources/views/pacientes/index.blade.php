@@ -35,7 +35,7 @@
                             <th class="px-4 py-2 border">DNI</th>
                             <th class="px-4 py-2 border">Nombre</th>
                             <th class="px-4 py-2 border">Apellido</th>
-                            <th class="px-4 py-2 border">Teléfono</th>
+                            <th class="px-4 py-2 border">Alergias</th>
                             <th class="px-4 py-2 border">Género</th>
                             <th class="px-4 py-2 border">Habitación</th>
                             <th class="px-4 py-2 border">Cama</th>
@@ -48,7 +48,7 @@
                                 <td class="px-4 py-2 border">{{ $paciente->dni }}</td>
                                 <td class="px-4 py-2 border">{{ $paciente->nombre }}</td>
                                 <td class="px-4 py-2 border">{{ $paciente->apellido }}</td>
-                                <td class="px-4 py-2 border">{{ $paciente->telefono }}</td>
+                                <td class="px-4 py-2 border">{{ $paciente->alergias ?? '—' }}</td>
                                 <td class="px-4 py-2 border">{{ $paciente->genero }}</td>
                                 <td class="px-4 py-2 border">{{ $paciente->habitacion?->numero ?? '—' }}</td>
                                 <td class="px-4 py-2 border">{{ $paciente->cama?->codigo ?? '—' }}</td>

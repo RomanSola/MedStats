@@ -80,6 +80,7 @@ class PacienteController extends Controller
         $paciente->fecha_nacimiento = $request->input('fecha_nacimiento');
         $paciente->genero = $request->input('genero');
         $paciente->telefono = $request->input('telefono');
+        $paciente->alergias = $request->input('alergias');
         $paciente->pais_id = $request->input('pais_id');
         $paciente->provincia_id = $request->input('provincia_id');
         $paciente->cod_postal_id = $request->input('cod_postal_id');
@@ -145,6 +146,7 @@ class PacienteController extends Controller
         }
 
         $paciente->telefono = $request->input('telefono');
+        $paciente->alergias = $request->input('alergias');
 
         if ($request->filled('pais_id')) {
             $paciente->pais_id = $request->input('pais_id');
@@ -280,7 +282,7 @@ class PacienteController extends Controller
 
     public function liveSearch(Request $request)
     {
-        $query = $request->get('term');
+        $query = $request->get('buscar');
         if(!$query){
             return response()->json([]);
         }
@@ -290,7 +292,7 @@ class PacienteController extends Controller
                               ->orWhere('apellido', 'LIKE', "%{$query}%")
                               ->orWhere('dni', 'LIKE', "%{$query}%");
                         })
-                        ->whereNull('cama_id') 
+                        // Eliminamos whereNull('cama_id') para permitir reasignaciones
                         ->take(10)
                         ->get();
 

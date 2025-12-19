@@ -48,14 +48,17 @@
                             <td class="fw-medium">{{ $usuario->email }}</td>
                             <td class="text-center">
                                 @if (auth()->id() != $usuario->id)
-                                <form action="{{ route('usuarios.destroy', $usuario) }}" method="POST" class="d-inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="btn btn-outline-danger btn-sm btn-acciones"
-                                            onclick="return confirm('¿Estás seguro de que querés eliminar este usuario?')">
-                                        Eliminar
-                                    </button>
-                                </form>
+                                    <a href="{{ route('usuarios.edit', $usuario) }}" class="btn btn-outline-primary btn-sm btn-acciones">
+                                        Editar
+                                    </a>
+                                    <form action="{{ route('usuarios.destroy', $usuario) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn btn-outline-danger btn-sm btn-acciones"
+                                                onclick="return confirm('¿Estás seguro de que querés eliminar este usuario?')">
+                                            Eliminar
+                                        </button>
+                                    </form>
                                 @else
                                 <button class="btn btn-outline-secondary btn-sm btn-acciones" disabled title="No puedes eliminar tu propio usuario">
                                     Actual

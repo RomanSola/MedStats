@@ -40,22 +40,22 @@
                             <table id="tablaEmpleados" class="table table-hover table-bordered shadow-sm text-center rounded">
                                 <thead>
                                     <tr>
-                                        <th>DNI</th>
                                         <th>Nombre</th>
                                         <th>Apellido</th>
                                         <th>Teléfono</th>
                                         <th>Profesión</th>
+                                        <th>Matrícula</th>
                                         <th class="text-center">Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @forelse($empleados as $empleado)
                                         <tr>
-                                            <td>{{ $empleado->dni }}</td>
                                             <td>{{ $empleado->nombre }}</td>
                                             <td>{{ $empleado->apellido }}</td>
                                             <td>{{ $empleado->telefono }}</td>
                                             <td>{{ $empleado->get_profesion->nombre_profesion }}</td>
+                                            <td>{{ $empleado->matricula ?? '—' }}</td>
                                             <td class="text-center">
                                                 <a href="{{ route('empleados.show', $empleado) }}"
                                                     class="btn btn-outline-primary btn-sm me-1">Ver</a>

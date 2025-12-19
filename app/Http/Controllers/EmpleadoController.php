@@ -44,6 +44,7 @@ class EmpleadoController extends Controller
             'provincia_id' => 'required|exists:provincias,id',
             'cod_postal_id' => 'required|exists:codigo_postals,id',
             'profesion_id' => 'required|exists:profesions,id',
+            'matricula' => 'nullable|integer',
         ],[
             'dni.required' => 'El DNI es obligatorio.',
             'dni.int' => 'El DNI debe ser un número entero.',
@@ -71,6 +72,8 @@ class EmpleadoController extends Controller
 
             'profesion_id.required' => 'Debe seleccionar una profesión.',
             'profesion_id.exists' => 'La profesión seleccionada no es válida.',
+
+            'matricula.integer' => 'La matrícula debe ser un número entero.',
         ]);
         // Validar que el empleado no tenga ya esta profesión
         $existe = Empleado::where('dni', $request->dni)
@@ -94,6 +97,7 @@ class EmpleadoController extends Controller
         $empleado->cod_postal_id = $request->input('cod_postal_id');
         $empleado->direccion = $request->input('direccion');
         $empleado->profesion_id = $request->input('profesion_id');
+        $empleado->matricula = $request->input('matricula');
         $empleado->save(); //Guarda en la BD, si existe lo actualiza, sino crea
 
         return redirect()->route('empleados.index');
@@ -118,6 +122,7 @@ class EmpleadoController extends Controller
             'provincia_id' => 'required|exists:provincias,id',
             'cod_postal_id' => 'required|exists:codigo_postals,id',
             'profesion_id' => 'required|exists:profesions,id',
+            'matricula' => 'nullable|integer',
         ]);
 
         if ($request->input('dni') != null) {
@@ -150,6 +155,8 @@ class EmpleadoController extends Controller
         if ($request->input('profesion_id') != null) {
             $empleado->profesion_id = $request->input('profesion_id');
         }
+
+        $empleado->matricula = $request->input('matricula');
 
         $empleado->save();
         return redirect()->route('empleados.index');

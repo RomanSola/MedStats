@@ -31,11 +31,15 @@
             </div>
             <div>
                 <p class="text-sm text-gray-500 uppercase tracking-wide">Teléfono</p>
-                <p class="text-base font-semibold text-gray-800">{{ $paciente->telefono }}</p>
+                <p class="text-base font-semibold text-gray-800">{{ $paciente->telefono ?? '—' }}</p>
             </div>
             <div>
                 <p class="text-sm text-gray-500 uppercase tracking-wide">Género</p>
                 <p class="text-base font-semibold text-gray-800">{{ $paciente->genero }}</p>
+            </div>
+            <div class="md:col-span-2">
+                <p class="text-sm text-gray-500 uppercase tracking-wide">Alergias</p>
+                <p class="text-base font-semibold text-gray-800">{{ $paciente->alergias ?? 'Sin alergias registradas' }}</p>
             </div>
         </div>
 

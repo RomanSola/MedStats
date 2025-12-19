@@ -77,6 +77,16 @@
                 </div>
 
                 <div>
+                    <label for="alergias" class="block text-sm font-semibold text-gray-700 mb-1">Alergias</label>
+                    <textarea name="alergias" id="alergias" rows="3"
+                        class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500"
+                        placeholder="Ingrese las alergias del paciente (opcional)">{{ old('alergias') }}</textarea>
+                    @error('alergias')
+                        <small class="text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+
+                <div>
                     <label for="genero" class="block text-sm font-semibold text-gray-700 mb-1">Género</label>
                     <select name="genero" id="genero"
                         class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500">
