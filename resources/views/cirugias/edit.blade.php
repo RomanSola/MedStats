@@ -390,16 +390,22 @@
                         @enderror
                     </div>
 
-                    <div class="flex justify-between pt-4">
+                    <div class="flex justify-between pt-4 gap-2 flex-wrap">
 
                         <a href="{{ route('cirugias.index') }}"
                             class="btn btn-outline-danger px-5 py-2 rounded shadow-sm">
                             Cancelar
                         </a>
-                        <button type="submit"
-                            class="bg-neutral-700 hover:bg-neutral-800 text-white font-semibold px-6 py-2 rounded-full shadow-md transition">
-                            Guardar Cambios
-                        </button>
+                        <div class="flex gap-2">
+                            <button type="submit" name="action" value="cargar_medicamentos"
+                                class="bg-[#1B7D8F] hover:bg-[#15606e] text-white font-semibold px-6 py-2 rounded-full shadow-md transition">
+                                Guardar y Cargar Medicamentos
+                            </button>
+                            <button type="submit"
+                                class="bg-neutral-700 hover:bg-neutral-800 text-white font-semibold px-6 py-2 rounded-full shadow-md transition">
+                                Guardar Cambios
+                            </button>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -495,7 +501,7 @@
 
         // Función genérica para cargar procedimientos
         function cargarProcedimientos(especialidadId, selector, selectedId = null) {
-            fetch(`/api/procedimientos/${especialidadId}`)
+            fetch(`/medstats-api/procedimientos/${especialidadId}`)
                 .then(res => res.json())
                 .then(data => {
                     const select = $(selector);

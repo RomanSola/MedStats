@@ -387,16 +387,22 @@
                     </div> {{-- end row --}}
 
                     <!-- Botones -->
-                    <div class="flex justify-between pt-4">
+                    <div class="flex justify-between pt-4 gap-2 flex-wrap">
                         <a href="{{ route('cirugias.index') }}"
                             class="btn btn-outline-danger px-5 py-2 rounded shadow-sm">
                             Cancelar
                         </a>
 
-                        <button type="submit"
-                            class="inline-block bg-neutral-700 hover:bg-neutral-800 text-white font-medium py-2 px-6 rounded-full shadow-md cursor-pointer transition duration-300">
-                            Registrar Cirugía
-                        </button>
+                        <div class="flex gap-2">
+                            <button type="submit" name="action" value="cargar_medicamentos"
+                                class="inline-block bg-[#1B7D8F] hover:bg-[#15606e] text-white font-medium py-2 px-6 rounded-full shadow-md cursor-pointer transition duration-300">
+                                Registrar y Cargar Medicamentos
+                            </button>
+                            <button type="submit"
+                                class="inline-block bg-neutral-700 hover:bg-neutral-800 text-white font-medium py-2 px-6 rounded-full shadow-md cursor-pointer transition duration-300">
+                                Registrar Cirugía
+                            </button>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -519,7 +525,7 @@ $(document).ready(function () {
 
     // Función genérica para cargar procedimientos
     function cargarProcedimientos(especialidadId, selector, selectedId = null) {
-        fetch(`/api/procedimientos/${especialidadId}`)
+        fetch(`/medstats-api/procedimientos/${especialidadId}`)
             .then(res => res.json())
             .then(data => {
                 const select = $(selector);

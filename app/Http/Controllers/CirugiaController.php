@@ -196,6 +196,9 @@ class CirugiaController extends Controller
         }
         // dd($cirugia);
         $cirugia->save(); //Guarda en la BD, si existe lo actualiza, sino crea
+        if ($request->input('action') === 'cargar_medicamentos') {
+            return redirect()->route('cirugias.medicamentos', $cirugia);
+        }
         return redirect()->route('cirugias.index');
     }
 
@@ -352,6 +355,9 @@ class CirugiaController extends Controller
         $cirugia->modificado_por = auth()->id();
 
         $cirugia->save();
+        if ($request->input('action') === 'cargar_medicamentos') {
+            return redirect()->route('cirugias.medicamentos', $cirugia);
+        }
         return redirect()->route('cirugias.index');
     }
 
@@ -526,5 +532,85 @@ class CirugiaController extends Controller
             'cirujanosDisponibles',
             'cirujanoId'
         ));
+    }
+
+    public function medicamentos(Cirugia $cirugia)
+    {
+        $quirofanoServicio = \App\Models\Servicio::where('nombre', 'like', '%quirofano%')->first()
+            ?? \App\Models\Servicio::find(3);
+
+        if (!$quirofanoServicio) {
+            return redirect()->back()->withErrors(['error' => 'No se encontró el servicio Quirófano en la base de datos.']);
+        }
+
+        $stocks = \App\Models\Stock::where('servicio_id', $quirofanoServicio->id)
+            ->where('cantidad_act', '>', 0)
+            ->with('get_medicamento')
+            ->get();
+
+        $consumidos = \App\Models\Historial_stock::where('comentario', 'cirugia ' . $cirugia->id)
+            ->where('cantidad', '<', 0)
+            ->with('get_stock.get_medicamento')
+            ->get();
+
+        return view('cirugias.medicamentos', compact('cirugia', 'stocks', 'consumidos'));
+    }
+
+    public function guardarMedicamentos(Request $request, Cirugia $cirugia)
+    {
+        $request->validate([
+            'stock_id' => 'required|exists:stocks,id',
+            'cantidad' => 'required|integer|min:1',
+        ], [
+            'stock_id.required' => 'Debe seleccionar un insumo/medicamento.',
+            'stock_id.exists' => 'El stock seleccionado no es válido.',
+            'cantidad.required' => 'Debe ingresar la cantidad.',
+            'cantidad.integer' => 'La cantidad debe ser un número entero.',
+            'cantidad.min' => 'La cantidad debe ser al menos 1.',
+        ]);
+
+        $stock = \App\Models\Stock::find($request->stock_id);
+        $quirofanoServicio = \App\Models\Servicio::where('nombre', 'like', '%quirofano%')->first()
+            ?? \App\Models\Servicio::find(3);
+
+        if ($stock->servicio_id != $quirofanoServicio->id) {
+            return redirect()->back()->withErrors(['stock_id' => 'El stock seleccionado no pertenece al servicio de Quirófano.'])->withInput();
+        }
+
+        $cantidad = $request->cantidad;
+
+        if ($stock->cantidad_act < $cantidad) {
+            return redirect()->back()->withErrors(['cantidad' => 'No hay suficiente stock de este lote. Stock disponible: ' . $stock->cantidad_act])->withInput();
+        }
+
+        $stock->decrement('cantidad_act', $cantidad);
+
+        \App\Models\Historial_stock::create([
+            'stock_id' => $stock->id,
+            'cantidad' => -$cantidad,
+            'fecha' => now()->toDateString(),
+            'empleado_id' => $cirugia->cirujano_id,
+            'paciente_id' => $cirugia->paciente_id,
+            'comentario' => 'cirugia ' . $cirugia->id,
+            'creado_por' => auth()->id(),
+        ]);
+
+        return redirect()->route('cirugias.medicamentos', $cirugia)->with('success', 'Medicamento cargado y descontado del stock correctamente.');
+    }
+
+    public function eliminarMedicamento(Cirugia $cirugia, \App\Models\Historial_stock $historial)
+    {
+        if ($historial->comentario !== 'cirugia ' . $cirugia->id) {
+            return redirect()->back()->withErrors(['error' => 'El registro de historial no pertenece a esta cirugía.']);
+        }
+
+        $stock = \App\Models\Stock::find($historial->stock_id);
+        if ($stock) {
+            $stock->increment('cantidad_act', abs($historial->cantidad));
+        }
+
+        $historial->delete();
+
+        return redirect()->route('cirugias.medicamentos', $cirugia)->with('success', 'Carga de medicamento eliminada y stock restaurado.');
     }
 }

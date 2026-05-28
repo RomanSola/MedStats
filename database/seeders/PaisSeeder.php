@@ -4,20 +4,30 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 
 class PaisSeeder extends Seeder
 {
     public function run()
     {
-        $json = Storage::get('data/countries.json');
-        $paises = json_decode($json, true);
+        $paises = [
+            'Argentina',
+            'Bolivia',
+            'Brasil',
+            'Chile',
+            'Colombia',
+            'Ecuador',
+            'Guyana',
+            'Paraguay',
+            'Perú',
+            'Suriname',
+            'Uruguay',
+            'Venezuela'
+        ];
 
-        foreach ($paises as $pais) {
+        foreach ($paises as $nombre) {
             DB::table('pais')->updateOrInsert(
-                ['id' => $pais['id']],
+                ['nombre' => $nombre],
                 [
-                    'nombre' => $pais['name'],
                     'created_at' => now(),
                     'updated_at' => now()
                 ]

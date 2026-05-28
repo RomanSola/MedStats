@@ -139,6 +139,10 @@
                                            class="p-1.5 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors" title="Ver Detalles">
                                             <i data-lucide="eye" class="w-4 h-4"></i>
                                         </a>
+                                        <a href="{{ route('cirugias.medicamentos', $cirugia) }}"
+                                           class="p-1.5 bg-[#e6f4f3] text-[#1B7D8F] rounded-lg hover:bg-[#cdeceb] transition-colors" title="Cargar Medicamentos">
+                                            <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+                                        </a>
                                         <a href="{{ route('cirugias.edit', $cirugia) }}"
                                            class="p-1.5 bg-amber-50 text-amber-600 rounded-lg hover:bg-amber-100 transition-colors" title="Editar">
                                             <i data-lucide="edit-2" class="w-4 h-4"></i>

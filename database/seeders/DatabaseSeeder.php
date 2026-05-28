@@ -14,10 +14,11 @@ class DatabaseSeeder extends Seeder
     {
 
             $this->call([
-        PaisSeeder::class,
-        ProvinciaSeeder::class,
-        CodigoPostalSeeder::class,
-    ]);
+            PaisSeeder::class,
+            ProvinciaSeeder::class,
+            CodigoPostalSeeder::class,
+            ProcedimientoSeeder::class,
+        ]);
         // \App\Models\User::factory(10)->create();
 
         // \App\Models\User::factory()->create([

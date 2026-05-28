@@ -89,8 +89,8 @@ class PacienteController extends Controller
         $paciente->modificado_por = '1';
         $paciente->save();
 
-        return redirect()->route('pacientes.asignar', $paciente->id)
-            ->with('success', 'Paciente registrado. Ahora puede asignarle una cama.');
+        return redirect()->route('pacientes.index')
+            ->with('success', 'Paciente registrado correctamente.');
     }
 
     public function edit(Request $request, Paciente $paciente)

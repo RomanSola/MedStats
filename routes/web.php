@@ -23,18 +23,6 @@ use App\Http\Controllers\InicioController;
 use App\Http\Controllers\ServicioController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
-
-
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -240,6 +228,11 @@ Route::middleware(['auth', 'roles:cirugias'])->group(function () {
     Route::get('/cirugias/{cirugia}/edit', [CirugiaController::class, 'edit'])->name('cirugias.edit');
     Route::get('/cirugias/{cirugia}', [CirugiaController::class, 'show'])->name('cirugias.show');
     Route::put('/cirugias/{cirugia}', [CirugiaController::class, 'update'])->name('cirugias.update');
+    
+    // Surgery medications
+    Route::get('/cirugias/{cirugia}/medicamentos', [CirugiaController::class, 'medicamentos'])->name('cirugias.medicamentos');
+    Route::post('/cirugias/{cirugia}/medicamentos', [CirugiaController::class, 'guardarMedicamentos'])->name('cirugias.medicamentos.store');
+    Route::delete('/cirugias/{cirugia}/medicamentos/{historial}', [CirugiaController::class, 'eliminarMedicamento'])->name('cirugias.medicamentos.destroy');
 });
 
 //Quirofanos

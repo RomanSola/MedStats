@@ -152,7 +152,7 @@
         const selectedCodPostal = "{{ old('cod_postal_id', $empleado->cod_postal_id ?? '') }}";
 
         function cargarProvincias(paisId, selectedProv = null) {
-            fetch(`/api/provincias/${paisId}`)
+            fetch(`/medstats-api/provincias/${paisId}`)
                 .then(res => res.json())
                 .then(data => {
                     provinciaSelect.innerHTML = '<option value="">Seleccione una provincia</option>';
@@ -166,7 +166,7 @@
         }
 
         function cargarCodigosPostales(paisId, provinciaId, selectedCp = null) {
-            fetch(`/api/cod_postal/${paisId}/${provinciaId}`)
+            fetch(`/medstats-api/cod_postal/${paisId}/${provinciaId}`)
                 .then(res => res.json())
                 .then(data => {
                     codigoPostalSelect.innerHTML = '<option value="">Seleccione un código postal</option>';

@@ -177,7 +177,7 @@
             let oldCodPostalId = "{{ old('cod_postal_id') }}";
 
             function cargarProvincias(paisId, selectedProvinciaId = null, callback = null) {
-                fetch(`/api/provincias/${paisId}`)
+                fetch(`/medstats-api/provincias/${paisId}`)
                     .then(res => res.json())
                     .then(data => {
                         let provincia = $('#provincia');
@@ -194,7 +194,7 @@
             }
 
             function cargarCodPostales(paisId, provinciaId, selectedCodPostalId = null) {
-                fetch(`/api/cod_postal/${paisId}/${provinciaId}`)
+                fetch(`/medstats-api/cod_postal/${paisId}/${provinciaId}`)
                     .then(res => res.json())
                     .then(data => {
                         let codigos = $('#codigo_postal');

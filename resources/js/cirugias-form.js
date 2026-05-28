@@ -45,7 +45,7 @@ class CirugiaForm {
 
     async cargarProcedimientos(especialidadId, selectedId, selector) {
         try {
-            const response = await fetch(`/api/procedimientos/${especialidadId}`);
+            const response = await fetch(`/medstats-api/procedimientos/${especialidadId}`);
             const data = await response.json();
             
             const select = $(selector);

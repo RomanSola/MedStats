@@ -1,0 +1,28 @@
+[34mUsage:[39m
+ sudo <code>
+
+[34mArguments:[39m
+ [37;44;1mcode[39;49;22m  Code to execute.
+
+[34mHelp:[39m
+ Evaluate PHP code, bypassing visibility restrictions.
+ 
+ e.g.
+ [36m>>> $sekret->whisper("hi")[39m
+ [36mPHP error:  Call to private method Sekret::whisper() from context '' on line 1[39m
+ 
+ [36m>>> sudo $sekret->whisper("hi")[39m
+ [36m=> "hi"[39m
+ 
+ [36m>>> $sekret->word[39m
+ [36mPHP error:  Cannot access private property Sekret::$word on line 1[39m
+ 
+ [36m>>> sudo $sekret->word[39m
+ [36m=> "hi"[39m
+ 
+ [36m>>> $sekret->word = "please"[39m
+ [36mPHP error:  Cannot access private property Sekret::$word on line 1[39m
+ 
+ [36m>>> sudo $sekret->word = "please"[39m
+ [36m=> "please"[39m
+
