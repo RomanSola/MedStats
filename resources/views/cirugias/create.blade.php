@@ -55,9 +55,8 @@
 
                         {{-- Procedimiento --}}
                         <div class="col-md-4">
-                            <label for="procedimiento"
-                                class="block text-sm font-semibold text-gray-700 mb-1">Procedimiento</label>
-                            <select name="procedimiento_id" id="procedimiento" class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500">
+                            <label for="procedimiento" class="form-label">Procedimiento</label>
+                            <select name="procedimiento_id" id="procedimiento" class="form-control select2">
                             </select>
                             @error('procedimiento_id')
                                 <small class="text-danger">{{ $message }}</small>
@@ -67,10 +66,8 @@
 
                         {{-- Procedimiento 2 --}}
                         <div class="col-md-4">
-                            <label for="procedimiento2" class="block text-sm font-semibold text-gray-700 mb-1">Procedimiento
-                                2</label>
-                            <select name="procedimiento_2_id" id="procedimiento2"
-                                class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500">
+                            <label for="procedimiento2" class="form-label">Procedimiento 2</label>
+                            <select name="procedimiento_2_id" id="procedimiento2" class="form-control select2">
                             </select>
                             @error('procedimiento_2_id')
                                 <small class="text-danger">{{ $message }}</small>
@@ -340,13 +337,13 @@
                                     <label for="duracion_horas" class="form-label mb-1 small">Horas</label>
                                     <input type="number" name="duracion_horas" id="duracion_horas"
                                         class="form-control form-control-sm py-0" min="0"
-                                        value="{{ old('duracion_horas') }}">
+                                        value="{{ old('duracion_horas', 0) }}">
                                 </div>
                                 <div class="col-6">
                                     <label for="duracion_minutos" class="form-label mb-1 small">Minutos</label>
                                     <input type="number" name="duracion_minutos" id="duracion_minutos"
                                         class="form-control form-control-sm py-0" min="0" max="59"
-                                        value="{{ old('duracion_minutos') }}">
+                                        value="{{ old('duracion_minutos', 0) }}">
                                 </div>
                             </div>
                             @error('duracion_horas')

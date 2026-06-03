@@ -56,10 +56,8 @@
 
                         {{-- Procedimiento --}}
                         <div class="col-md-4">
-                            <label for="procedimiento"
-                                class="block text-sm font-semibold text-gray-700 mb-1">Procedimiento</label>
-                            <select name="procedimiento_id" id="procedimiento"
-                                class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500">
+                            <label for="procedimiento" class="form-label">Procedimiento</label>
+                            <select name="procedimiento_id" id="procedimiento" class="form-control select2">
                             </select>
                             @error('procedimiento_id')
                                 <small class="text-danger">{{ $message }}</small>
@@ -69,10 +67,8 @@
 
                         {{-- Procedimiento 2 --}}
                         <div class="col-md-4">
-                            <label for="procedimiento2" class="block text-sm font-semibold text-gray-700 mb-1">Procedimiento
-                                2</label>
-                            <select name="procedimiento_2_id" id="procedimiento2"
-                                class="w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 focus:ring-2 focus:ring-blue-500">
+                            <label for="procedimiento2" class="form-label">Procedimiento 2</label>
+                            <select name="procedimiento_2_id" id="procedimiento2" class="form-control select2">
                             </select>
                             @error('procedimiento_2_id')
                                 <small class="text-danger">{{ $message }}</small>
@@ -81,7 +77,7 @@
 
                         <div class="col-md-4">
                             <label for="quirofano_id" class="form-label">Quirofano</label>
-                            <select name="quirofano_id" id="quirofano_id" class="form-control">
+                            <select name="quirofano_id" id="quirofano_id" class="form-control select2">
                                 <option value="">Seleccione el Quirofano</option>
                                 @foreach ($quirofanos as $quirofano)
                                     <option value="{{ $quirofano->id }}"
@@ -97,10 +93,10 @@
 
                         <div class="col-md-4">
                             <label for="cirujano_id" class="form-label">Cirujano</label>
-                            <select name="cirujano_id" id="cirujano_id" class="form-control">
+                            <select name="cirujano_id" id="cirujano_id" class="form-control select2">
                                 <option value="">Seleccione el Cirujano</option>
                                 @php
-                                    $profesionesPermitidas = [1]; //Solo Cirujanos
+                                    $profesionesPermitidas = [1,2]; //Solo Cirujanos
                                 @endphp
                                 @foreach ($empleados as $empleado)
                                     @if (in_array($empleado->get_profesion->rol_id, $profesionesPermitidas))
@@ -118,10 +114,10 @@
 
                         <div class="col-md-4">
                             <label for="ayudante_1_id" class="form-label">Ayudante 1</label>
-                            <select name="ayudante_1_id" id="ayudante_1_id" class="form-control">
+                            <select name="ayudante_1_id" id="ayudante_1_id" class="form-control select2">
                                 <option value="">Seleccione el Ayudante 1</option>
                                 @php
-                                    $profesionesPermitidas = [2]; //Solo Ayudantes
+                                    $profesionesPermitidas = [1,2]; //Solo Ayudantes
                                 @endphp
                                 @foreach ($empleados as $empleado)
                                     @if (in_array($empleado->get_profesion->rol_id, $profesionesPermitidas))
@@ -139,10 +135,10 @@
 
                         <div class="col-md-4">
                             <label for="ayudante_2_id" class="form-label">Ayudante 2</label>
-                            <select name="ayudante_2_id" id="ayudante_2_id" class="form-control">
+                            <select name="ayudante_2_id" id="ayudante_2_id" class="form-control select2">
                                 <option value="">Seleccione el Ayudante 2</option>
                                 @php
-                                    $profesionesPermitidas = [2]; //Solo Ayudantes
+                                    $profesionesPermitidas = [1,2]; //Solo Ayudantes
                                 @endphp
                                 @foreach ($empleados as $empleado)
                                     @if (in_array($empleado->get_profesion->rol_id, $profesionesPermitidas))
@@ -160,10 +156,10 @@
 
                         <div class="col-md-4">
                             <label for="ayudante_3_id" class="form-label">Ayudante 3</label>
-                            <select name="ayudante_3_id" id="ayudante_3_id" class="form-control">
+                            <select name="ayudante_3_id" id="ayudante_3_id" class="form-control select2">
                                 <option value="">Seleccione el Ayudante 3</option>
                                 @php
-                                    $profesionesPermitidas = [2]; //Solo Ayudantes
+                                    $profesionesPermitidas = [1,2]; //Solo Ayudantes
                                 @endphp
                                 @foreach ($empleados as $empleado)
                                     @if (in_array($empleado->get_profesion->rol_id, $profesionesPermitidas))
@@ -181,7 +177,7 @@
 
                         <div class="col-md-4">
                             <label for="anestesista_id" class="form-label">Anestesista</label>
-                            <select name="anestesista_id" id="anestesista_id" class="form-control">
+                            <select name="anestesista_id" id="anestesista_id" class="form-control select2">
                                 <option value="">Seleccione el Anestesista</option>
                                 @php
                                     $profesionesPermitidas = [3]; //Solo Anestesistas
@@ -202,7 +198,7 @@
                         {{-- Tipo Anestesia --}}
                         <div class="col-md-4">
                             <label for="tipo_anestesia_id" class="form-label">Tipo de Anestesia</label>
-                            <select name="tipo_anestesia_id" id="tipo_anestesia_id" class="form-control">
+                            <select name="tipo_anestesia_id" id="tipo_anestesia_id" class="form-control select2">
                                 <option value="">Seleccione el Tipo de Anestesia</option>
                                 @foreach ($tipoAnestesias as $tipoAnestesia)
                                     <option value="{{ $tipoAnestesia->id }}"
@@ -219,7 +215,7 @@
                         {{-- Tipo Anestesia 2 --}}
                         <div class="col-md-4">
                             <label for="tipo_anestesia_2_id" class="form-label">Tipo de Anestesia 2</label>
-                            <select name="tipo_anestesia_2_id" id="tipo_anestesia_2_id" class="form-control">
+                            <select name="tipo_anestesia_2_id" id="tipo_anestesia_2_id" class="form-control select2">
                                 <option value="">Seleccione el Tipo de Anestesia</option>
                                 @foreach ($tipoAnestesias as $tipoAnestesia)
                                     <option value="{{ $tipoAnestesia->id }}"
@@ -236,7 +232,7 @@
                         {{-- Instrumentador --}}
                         <div class="col-md-4">
                             <label for="instrumentador_id" class="form-label">Instrumentador</label>
-                            <select name="instrumentador_id" id="instrumentador_id" class="form-control">
+                            <select name="instrumentador_id" id="instrumentador_id" class="form-control select2">
                                 <option value="">Seleccione el Instrumentador</option>
                                 @php
                                     $profesionesPermitidas = [4]; //Solo Instrumentadores
@@ -258,7 +254,7 @@
                         {{-- Instrumentador 2 --}}
                         <div class="col-md-4">
                             <label for="instrumentador_2_id" class="form-label">Instrumentador 2</label>
-                            <select name="instrumentador_2_id" id="instrumentador_2_id" class="form-control">
+                            <select name="instrumentador_2_id" id="instrumentador_2_id" class="form-control select2">
                                 <option value="">Seleccione el Instrumentador</option>
                                 @php
                                     $profesionesPermitidas = [4]; //Solo Instrumentadores
@@ -280,7 +276,7 @@
                         {{-- Enfermero --}}
                         <div class="col-md-4">
                             <label for="enfermero_id" class="form-label">Enfermero</label>
-                            <select name="enfermero_id" id="enfermero_id" class="form-control">
+                            <select name="enfermero_id" id="enfermero_id" class="form-control select2">
                                 <option value="">Seleccione el Enfermero</option>
                                 @php
                                     $profesionesPermitidas = [5]; //Solo Enfermeros
@@ -302,7 +298,7 @@
                         {{-- Enfermero 2 --}}
                         <div class="col-md-4">
                             <label for="enfermero_2_id" class="form-label">Enfermero 2</label>
-                            <select name="enfermero_2_id" id="enfermero_2_id" class="form-control">
+                            <select name="enfermero_2_id" id="enfermero_2_id" class="form-control select2">
                                 <option value="">Seleccione el Enfermero</option>
                                 @php
                                     $profesionesPermitidas = [5]; //Solo Enfermeros

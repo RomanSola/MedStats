@@ -12,14 +12,7 @@
         <form action="{{ route('pacientes.store') }}" method="POST"
             class="bg-white shadow rounded-lg p-6 border border-gray-200 space-y-6">
             @csrf
-
-            <!--  Aviso de redirección a asignación de cama -->
-            <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded-md my-4 shadow">
-                <p class="font-semibold">Aviso:</p>
-                <p>Después de registrar un nuevo paciente, será redirigido automáticamente a la pantalla para asignarle una
-                    cama.</p>
-            </div>
-
+            
             <form action="{{ route('pacientes.store') }}" method="POST"
                 class="bg-white shadow rounded-lg p-6 border border-gray-200 space-y-6">
                 @csrf

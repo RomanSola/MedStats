@@ -64,14 +64,14 @@ class CirugiaController extends Controller
             'procedimiento_id' => 'required|exists:procedimientos,id',
             'quirofano_id' => 'required|exists:quirofanos,id',
             'cirujano_id' => 'required|exists:empleados,id',
-            'anestesista_id' => 'required|exists:empleados,id',
-            'tipo_anestesia_id' => 'required|exists:tipo_anestesias,id',
+            'anestesista_id' => 'nullable|exists:empleados,id',
+            'tipo_anestesia_id' => 'nullable|exists:tipo_anestesias,id',
             'instrumentador_id' => 'nullable|exists:empleados,id',
             'enfermero_id' => 'required|exists:empleados,id',
             'fecha_cirugia' => 'required',
             'hora_cirugia' => 'required',
-            'duracion_horas' => 'required|integer|min:0',
-            'duracion_minutos' => 'required|integer|min:0|max:59',
+            'duracion_horas' => 'nullable|integer|min:0',
+            'duracion_minutos' => 'nullable|integer|min:0|max:59',
         ], [
             'paciente_id.required' => 'Seleccioná un paciente antes de continuar.',
             'paciente_id.exists' => 'El paciente seleccionado no existe en el sistema.',
@@ -220,14 +220,14 @@ class CirugiaController extends Controller
             'procedimiento_id' => 'required|exists:procedimientos,id',
             'quirofano_id' => 'required|exists:quirofanos,id',
             'cirujano_id' => 'required|exists:empleados,id',
-            'anestesista_id' => 'required|exists:empleados,id',
-            'tipo_anestesia_id' => 'required|exists:tipo_anestesias,id',
+            'anestesista_id' => 'nullable|exists:empleados,id',
+            'tipo_anestesia_id' => 'nullable|exists:tipo_anestesias,id',
             'instrumentador_id' => 'nullable|exists:empleados,id',
             'enfermero_id' => 'nullable|exists:empleados,id',
             'fecha_cirugia' => 'required',
             'hora_cirugia' => 'required',
-            'duracion_horas' => 'required|integer|min:0',
-            'duracion_minutos' => 'required|integer|min:0|max:59',
+            'duracion_horas' => 'nullable|integer|min:0',
+            'duracion_minutos' => 'nullable|integer|min:0|max:59',
         ]);
 
         if ($request->input('ayudante_1_id') != null) {
@@ -281,54 +281,22 @@ class CirugiaController extends Controller
         }
 
 
-        if ($request->input('paciente_id') != null) {
-            $cirugia->paciente_id = $request->input('paciente_id');
-        }
-        if ($request->input('especialidad_id') != null) {
-            $cirugia->especialidad_id = $request->input('especialidad_id');
-        }
-        if ($request->input('procedimiento_id') != null) {
-            $cirugia->procedimiento_id = $request->input('procedimiento_id');
-        }
-        if ($request->input('procedimiento_2_id') != null) {
-            $cirugia->procedimiento_2_id = $request->input('procedimiento_2_id');
-        }
-        if ($request->input('quirofano_id') != null) {
-            $cirugia->quirofano_id = $request->input('quirofano_id');
-        }
-        if ($request->input('cirujano_id') != null) {
-            $cirugia->cirujano_id = $request->input('cirujano_id');
-        }
-        if ($request->input('ayudante_1_id') != null) {
-            $cirugia->ayudante_1_id = $request->input('ayudante_1_id');
-        }
-        if ($request->input('ayudante_2_id') != null) {
-            $cirugia->ayudante_2_id = $request->input('ayudante_2_id');
-        }
-        if ($request->input('ayudante_3_id') != null) {
-            $cirugia->ayudante_3_id = $request->input('ayudante_3_id');
-        }
-        if ($request->input('anestesista_id') != null) {
-            $cirugia->anestesista_id = $request->input('anestesista_id');
-        }
-        if ($request->input('tipo_anestesia_id') != null) {
-            $cirugia->tipo_anestesia_id = $request->input('tipo_anestesia_id');
-        }
-        if ($request->input('tipo_anestesia_2_id') != null) {
-            $cirugia->tipo_anestesia_2_id = $request->input('tipo_anestesia_2_id');
-        }
-        if ($request->input('instrumentador_id') != null) {
-            $cirugia->instrumentador_id = $request->input('instrumentador_id');
-        }
-        if ($request->input('instrumentador_2_id') != null) {
-            $cirugia->instrumentador_2_id = $request->input('instrumentador_2_id');
-        }
-        if ($request->input('enfermero_id') != null) {
-            $cirugia->enfermero_id = $request->input('enfermero_id');
-        }
-        if ($request->input('enfermero_2_id') != null) {
-            $cirugia->enfermero_2_id = $request->input('enfermero_2_id');
-        }
+        $cirugia->paciente_id = $request->input('paciente_id');
+        $cirugia->especialidad_id = $request->input('especialidad_id');
+        $cirugia->procedimiento_id = $request->input('procedimiento_id');
+        $cirugia->procedimiento_2_id = $request->input('procedimiento_2_id');
+        $cirugia->quirofano_id = $request->input('quirofano_id');
+        $cirugia->cirujano_id = $request->input('cirujano_id');
+        $cirugia->ayudante_1_id = $request->input('ayudante_1_id');
+        $cirugia->ayudante_2_id = $request->input('ayudante_2_id');
+        $cirugia->ayudante_3_id = $request->input('ayudante_3_id');
+        $cirugia->anestesista_id = $request->input('anestesista_id');
+        $cirugia->tipo_anestesia_id = $request->input('tipo_anestesia_id');
+        $cirugia->tipo_anestesia_2_id = $request->input('tipo_anestesia_2_id');
+        $cirugia->instrumentador_id = $request->input('instrumentador_id');
+        $cirugia->instrumentador_2_id = $request->input('instrumentador_2_id');
+        $cirugia->enfermero_id = $request->input('enfermero_id');
+        $cirugia->enfermero_2_id = $request->input('enfermero_2_id');
 
         $cirugia->fecha_cirugia = $request->input('fecha_cirugia');
         $cirugia->hora_cirugia = $request->input('hora_cirugia');
