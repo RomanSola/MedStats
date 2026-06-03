@@ -45,12 +45,12 @@ class CirugiaController extends Controller
     }
     public function create()
     {
-        $pacientes = Paciente::all();
-        $empleados = Empleado::all();
-        $especialidades = Especialidad::all();
-        $procedimientos = Procedimiento::all();
-        $quirofanos = Quirofano::all();
-        $tipoAnestesias = Tipo_anestesia::all();
+        $pacientes = Paciente::orderBy('apellido')->orderBy('nombre')->get();
+        $empleados = Empleado::orderBy('apellido')->orderBy('nombre')->get();
+        $especialidades = Especialidad::orderBy('nombre')->get();
+        $procedimientos = Procedimiento::orderBy('nombre_procedimiento')->get();
+        $quirofanos = Quirofano::orderBy('nombre')->get();
+        $tipoAnestesias = Tipo_anestesia::orderBy('nombre')->get();
         return view('cirugias.create', compact('pacientes', 'empleados', 'especialidades', 'procedimientos', 'quirofanos', 'tipoAnestesias'));
     }
 
@@ -66,7 +66,7 @@ class CirugiaController extends Controller
             'cirujano_id' => 'required|exists:empleados,id',
             'anestesista_id' => 'required|exists:empleados,id',
             'tipo_anestesia_id' => 'required|exists:tipo_anestesias,id',
-            'instrumentador_id' => 'required|exists:empleados,id',
+            'instrumentador_id' => 'nullable|exists:empleados,id',
             'enfermero_id' => 'required|exists:empleados,id',
             'fecha_cirugia' => 'required',
             'hora_cirugia' => 'required',
@@ -94,7 +94,6 @@ class CirugiaController extends Controller
             'tipo_anestesia_id.required' => 'Indicá el tipo de anestesia.',
             'tipo_anestesia_id.exists' => 'Ese tipo de anestesia no está registrado.',
 
-            'instrumentador_id.required' => 'Asigná un instrumentador quirúrgico.',
             'instrumentador_id.exists' => 'El instrumentador seleccionado no está registrado.',
 
             'enfermero_id.required' => 'Asigná un enfermero/a para la cirugía.',
@@ -204,12 +203,12 @@ class CirugiaController extends Controller
 
     public function edit(Cirugia $cirugia)
     {
-        $pacientes = Paciente::all();
-        $empleados = Empleado::with('get_profesion')->get();
-        $especialidades = Especialidad::all();
-        $procedimientos = Procedimiento::with('get_especialidad')->get();
-        $quirofanos = Quirofano::all();
-        $tipoAnestesias = Tipo_anestesia::all();
+        $pacientes = Paciente::orderBy('apellido')->orderBy('nombre')->get();
+        $empleados = Empleado::with('get_profesion')->orderBy('apellido')->orderBy('nombre')->get();
+        $especialidades = Especialidad::orderBy('nombre')->get();
+        $procedimientos = Procedimiento::with('get_especialidad')->orderBy('nombre_procedimiento')->get();
+        $quirofanos = Quirofano::orderBy('nombre')->get();
+        $tipoAnestesias = Tipo_anestesia::orderBy('nombre')->get();
         return view('cirugias.edit', compact('cirugia', 'pacientes', 'empleados', 'especialidades', 'procedimientos', 'quirofanos', 'tipoAnestesias'));
     }
 
