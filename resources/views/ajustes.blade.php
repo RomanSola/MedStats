@@ -115,6 +115,27 @@
                                 'btn' => 'Ir a Servicios',
                                 'access' => 'admin',
                             ],
+                            [
+                                'title' => 'Países',
+                                'text' => 'Administrar países del sistema.',
+                                'route' => route('paises.index'),
+                                'btn' => 'Ir a Países',
+                                'access' => 'admin',
+                            ],
+                            [
+                                'title' => 'Provincias',
+                                'text' => 'Administrar provincias.',
+                                'route' => route('provincias.index'),
+                                'btn' => 'Ir a Provincias',
+                                'access' => 'admin',
+                            ],
+                            [
+                                'title' => 'Códigos Postales',
+                                'text' => 'Administrar códigos postales y localidades.',
+                                'route' => route('codigos_postales.index'),
+                                'btn' => 'Ir a C.P.',
+                                'access' => 'admin',
+                            ],
                         ];
 
                         // Ordenar alfabéticamente por título

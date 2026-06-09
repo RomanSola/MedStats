@@ -259,6 +259,9 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
 //Servicios
 Route::middleware(['auth', 'roles:admin'])->group(function () {
     Route::resource('servicios', ServicioController::class);
+    Route::resource('paises', App\Http\Controllers\PaisController::class)->except(['show']);
+    Route::resource('provincias', App\Http\Controllers\ProvinciaController::class)->except(['show']);
+    Route::resource('codigos_postales', App\Http\Controllers\CodigoPostalController::class)->except(['show']);
 });
 
 Route::middleware(['auth', 'roles:admin'])->group(function () {

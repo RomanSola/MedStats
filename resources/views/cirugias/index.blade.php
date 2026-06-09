@@ -111,12 +111,12 @@
                                 <td class="px-6 py-4">{{ $cirugia->get_cirujano->nombre }} {{ $cirugia->get_cirujano->apellido }}</td>
                                 <td class="px-6 py-4 no-print">{{ $cirugia->get_ayudante1->nombre ?? '-' }} {{ $cirugia->get_ayudante1->apellido ?? '' }}</td>
                                 <td class="px-6 py-4 no-print">{{ optional($cirugia->get_ayudante2)->nombre ?? '-' }} {{ optional($cirugia->get_ayudante2)->apellido ?? '' }}</td>
-                                <td class="px-6 py-4">{{ $cirugia->get_anestesista->nombre }} {{ $cirugia->get_anestesista->apellido }}</td>
+                                <td class="px-6 py-4">{{ optional($cirugia->get_anestesista)->nombre }} {{ optional($cirugia->get_anestesista)->apellido }}</td>
                                 <td class="px-6 py-4">{{ optional($cirugia->get_instrumentador)->nombre }} {{ optional($cirugia->get_instrumentador)->apellido }}</td>                                          
                                 <td class="px-6 py-4">{{ optional($cirugia->get_enfermero)->nombre }} {{ optional($cirugia->get_enfermero)->apellido }}</td> 
                                 <td class="px-6 py-4">
                                     <span class="px-2 py-1 text-xs font-medium bg-blue-50 text-blue-600 rounded-full">
-                                        {{ $cirugia->get_tipo_anestesia->nombre }}
+                                        {{ optional($cirugia->get_tipo_anestesia)->nombre ?? '-' }}
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 no-print">

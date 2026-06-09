@@ -90,7 +90,7 @@
             {{-- Tipo de Anestesia --}}
             <div>
                 <p class="text-gray-500 uppercase text-sm">Tipo de Anestesia</p>
-                <p class="text-gray-800 font-medium">{{ $cirugia->get_tipo_anestesia->nombre }}</p>
+                <p class="text-gray-800 font-medium">{{ optional($cirugia->get_tipo_anestesia)->nombre ?? '-' }}</p>
             </div>
 
             {{-- Tipo de Anestesia 2 --}}
@@ -104,12 +104,12 @@
                 <div>
                     <p class="text-gray-500 uppercase text-sm">Instrumentador</p>
                     <p class="text-gray-800 font-medium">
-                        {{ $cirugia->get_instrumentador->nombre }} {{ $cirugia->get_instrumentador->apellido }}
+                        {{ optional($cirugia->get_instrumentador)->nombre ?? '-' }} {{ optional($cirugia->get_instrumentador)->apellido ?? '' }}
                     </p>
                 </div>
                 <div>
                     <p class="text-gray-500 uppercase text-sm">Matrícula</p>
-                    <p class="text-gray-800 font-medium">{{ $cirugia->get_instrumentador->matricula ?? 'Sin matrícula' }}</p>
+                    <p class="text-gray-800 font-medium">{{ optional($cirugia->get_instrumentador)->matricula ?? 'Sin matrícula' }}</p>
                 </div>
             </div>
 
