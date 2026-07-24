@@ -237,11 +237,19 @@
                     url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
                 },
                 pageLength: 10,
-                order: [[0, 'desc']], // Ordenar por fecha descendente
+                order: [], // Respetar el orden del backend (recientes al final)
                 drawCallback: function() {
-                    // Mover info y paginación a nuestros contenedores custom
-                    $('#tableInfo').html($('.dataTables_info'));
-                    $('#tablePagination').html($('.dataTables_paginate'));
+                    // Mover info y paginación a nuestros contenedores custom evitando clonaciones deshechas
+                    const infoElement = $('.dataTables_info');
+                    const paginateElement = $('.dataTables_paginate');
+                    
+                    if (infoElement.length && !$.contains($('#tableInfo')[0], infoElement[0])) {
+                        $('#tableInfo').append(infoElement);
+                    }
+                    if (paginateElement.length && !$.contains($('#tablePagination')[0], paginateElement[0])) {
+                        $('#tablePagination').append(paginateElement);
+                    }
+                    
                     if(window.lucide) lucide.createIcons(); // Re-init iconos tras paginación
                 }
             });

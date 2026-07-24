@@ -35,7 +35,7 @@ class CirugiaController extends Controller
             'get_tipo_anestesia',
             'get_tipo_anestesia2',
             'modificador',
-        ])->get();
+        ])->orderBy('id', 'desc')->get();
         return view('cirugias.index', compact('cirugias')); //Llama a la vista y le pasa las Cirugias obtenidas
     }
 

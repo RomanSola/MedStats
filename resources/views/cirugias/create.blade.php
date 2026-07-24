@@ -615,6 +615,39 @@ $(document).ready(function () {
             }
         }
     });
+
+    // Función para cambiar color de fondo si está completado
+    function actualizarColorFondo() {
+        const bgColor = '#e6f4f3';
+        const whiteColor = '#ffffff';
+
+        // Para inputs y selects normales
+        $('input, select, textarea').not('.select2-hidden-accessible, [type="checkbox"], [type="hidden"], [type="search"]').each(function() {
+            if ($(this).val() && $(this).val() !== '' && $(this).val() !== '0') {
+                $(this).css('background-color', bgColor);
+            } else {
+                $(this).css('background-color', whiteColor);
+            }
+        });
+
+        // Para select2
+        $('.select2-hidden-accessible').each(function() {
+            const select2Container = $(this).next('.select2-container').find('.select2-selection');
+            if ($(this).val() && $(this).val() !== '') {
+                select2Container.css('background-color', bgColor);
+            } else {
+                select2Container.css('background-color', whiteColor);
+            }
+        });
+    }
+
+    // Ejecutar al cargar la página (con un pequeño delay para select2 si es necesario, pero suele ser inmediato)
+    setTimeout(actualizarColorFondo, 100);
+
+    // Ejecutar al cambiar cualquier input/select/textarea
+    $(document).on('change input', 'input, select, textarea', function() {
+        actualizarColorFondo();
+    });
 });
 </script>
 @endpush
