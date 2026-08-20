@@ -350,17 +350,23 @@ class CirugiaController extends Controller
         $hasta = $validated['hasta'] ?? null;
         $especialidadId = $request->input('especialidad_id');
         $especialidades = \App\Models\Especialidad::orderBy('nombre')->get();
-        $aniosDisponibles = \App\Models\Cirugia::select(DB::raw('YEAR(created_at) as anio'))
+        $aniosDisponibles = \App\Models\Cirugia::select(DB::raw('YEAR(fecha_cirugia) as anio'))
             ->distinct()
             ->orderBy('anio', 'desc')
             ->pluck('anio');
 
+        $anio = $request->input('anio');
         $cirujanoId = $request->input('cirujano_id');
 
         // Base query reutilizable
         $baseQuery = \App\Models\Cirugia::query()
         ->when($desde && $hasta, function ($query) use ($desde, $hasta) {
-            return $query->whereBetween('created_at', [$desde, $hasta]);
+            return $query->whereBetween('fecha_cirugia', [$desde, $hasta]);
+        }, function ($query) use ($anio) {
+            if ($anio) {
+                return $query->whereYear('fecha_cirugia', $anio);
+            }
+            return $query;
         })
         ->when($especialidadId, function ($query, $especialidadId) {
             return $query->where('especialidad_id', $especialidadId);
@@ -412,16 +418,20 @@ class CirugiaController extends Controller
         ->get();
 
         $total = $baseQuery->count();
-        $meses = (clone $baseQuery)
-            ->select(DB::raw('MONTH(created_at) as mes'))
-            ->distinct()
-            ->count();
-        $semanas = (clone $baseQuery)
-            ->select(DB::raw('YEARWEEK(created_at, 1) as semana'))
-            ->distinct()
-            ->count();
-        $promedioMensual = $meses > 0 ? round($total / $meses, 2) : 0;
-        $promedioSemanal = $semanas > 0 ? round($total / $semanas, 2) : 0;
+
+        if ($desde && $hasta) {
+            $fechaInicio = \Carbon\Carbon::parse($desde)->startOfDay();
+            $fechaFin = \Carbon\Carbon::parse($hasta)->endOfDay();
+            $diasDiferencia = max(1, $fechaInicio->diffInDays($fechaFin) + 1);
+            $cantMeses = max(1, $diasDiferencia / 30.4375);
+            $cantSemanas = max(1, $diasDiferencia / 7);
+        } else {
+            $cantMeses = 12;
+            $cantSemanas = 52;
+        }
+
+        $promedioMensual = round($total / $cantMeses, 1);
+        $promedioSemanal = round($total / $cantSemanas, 1);
 
         // Cirugías por cirujano (incluyendo participación como ayudante 1, 2 o 3)
         $subQueryCirujano = (clone $baseQuery)->select('cirujano_id as cirujano_id')->whereNotNull('cirujano_id')
@@ -486,9 +496,9 @@ class CirugiaController extends Controller
 
         // Distribución por mes
         $porMes = (clone $baseQuery)
-            ->select(DB::raw('MONTH(created_at) as mes'), DB::raw('COUNT(*) as total'))
-            ->groupBy(DB::raw('MONTH(created_at)'))
-            ->orderBy(DB::raw('MONTH(created_at)'))
+            ->select(DB::raw('MONTH(fecha_cirugia) as mes'), DB::raw('COUNT(*) as total'))
+            ->groupBy(DB::raw('MONTH(fecha_cirugia)'))
+            ->orderBy(DB::raw('MONTH(fecha_cirugia)'))
             ->get();
 
         $porMes->transform(function ($item) {

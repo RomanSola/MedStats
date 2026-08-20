@@ -19,6 +19,7 @@
         {{-- Filtros --}}
         <form method="GET" action="{{ route('cirugias.estadisticas') }}" 
               class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 mb-5 transition-all hover:shadow-md">
+            @if(request('anio')) <input type="hidden" name="anio" value="{{ request('anio') }}"> @endif
             <div class="row g-4 align-items-end">
                 <div class="col-md-3">
                     <label for="desde" class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
@@ -112,7 +113,11 @@
                             <h5 class="font-bold text-gray-800 mb-1">Resumen General</h5>
                             <p class="text-sm text-gray-500 mb-0">Métricas de rendimiento anual</p>
                         </div>
-                        <form method="GET" action="/estadisticas">
+                        <form method="GET" action="{{ route('cirugias.estadisticas') }}">
+                            @if(request('desde')) <input type="hidden" name="desde" value="{{ request('desde') }}"> @endif
+                            @if(request('hasta')) <input type="hidden" name="hasta" value="{{ request('hasta') }}"> @endif
+                            @if(request('especialidad_id')) <input type="hidden" name="especialidad_id" value="{{ request('especialidad_id') }}"> @endif
+                            @if(request('cirujano_id')) <input type="hidden" name="cirujano_id" value="{{ request('cirujano_id') }}"> @endif
                             <select name="anio" id="anio"
                                 class="form-select form-select-sm bg-gray-50 border-gray-200 text-gray-600 font-medium rounded-lg"
                                 onchange="this.form.submit()">
