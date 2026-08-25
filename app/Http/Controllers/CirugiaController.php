@@ -72,6 +72,8 @@ class CirugiaController extends Controller
             'hora_cirugia' => 'required',
             'duracion_horas' => 'nullable|integer|min:0',
             'duracion_minutos' => 'nullable|integer|min:0|max:59',
+            'suspendida' => 'nullable|boolean',
+            'observacion_suspension' => 'nullable|string',
         ], [
             'paciente_id.required' => 'Seleccioná un paciente antes de continuar.',
             'paciente_id.exists' => 'El paciente seleccionado no existe en el sistema.',
@@ -193,6 +195,8 @@ class CirugiaController extends Controller
         } else {
             $cirugia->obito = false;
         }
+        $cirugia->suspendida = $request->has('suspendida');
+        $cirugia->observacion_suspension = $cirugia->suspendida ? $request->input('observacion_suspension') : null;
         // dd($cirugia);
         $cirugia->save(); //Guarda en la BD, si existe lo actualiza, sino crea
         if ($request->input('action') === 'cargar_medicamentos') {
@@ -228,6 +232,8 @@ class CirugiaController extends Controller
             'hora_cirugia' => 'required',
             'duracion_horas' => 'nullable|integer|min:0',
             'duracion_minutos' => 'nullable|integer|min:0|max:59',
+            'suspendida' => 'nullable|boolean',
+            'observacion_suspension' => 'nullable|string',
         ]);
 
         if ($request->input('ayudante_1_id') != null) {
@@ -319,6 +325,9 @@ class CirugiaController extends Controller
             $cirugia->obito = false;
         }
 
+        $cirugia->suspendida = $request->has('suspendida');
+        $cirugia->observacion_suspension = $cirugia->suspendida ? $request->input('observacion_suspension') : null;
+
         $cirugia->modificado_por = auth()->id();
 
         $cirugia->save();
@@ -358,8 +367,9 @@ class CirugiaController extends Controller
         $anio = $request->input('anio');
         $cirujanoId = $request->input('cirujano_id');
 
-        // Base query reutilizable
+        // Base query reutilizable (excluye cirugías suspendidas)
         $baseQuery = \App\Models\Cirugia::query()
+        ->where('suspendida', false)
         ->when($desde && $hasta, function ($query) use ($desde, $hasta) {
             return $query->whereBetween('fecha_cirugia', [$desde, $hasta]);
         }, function ($query) use ($anio) {
@@ -380,10 +390,11 @@ class CirugiaController extends Controller
             });
         });
 
-        // Obtener cirujanos disponibles para el filtro (cirujano o ayudante)
+        // Obtener cirujanos disponibles para el filtro (cirujano o ayudante, excluyendo suspendidas)
         $cirujanosDisponibles = \App\Models\Empleado::whereIn('id', function($query) use ($especialidadId) {
             $query->select('cirujano_id')
                   ->from('cirugias')
+                  ->where('suspendida', false)
                   ->when($especialidadId, function($q, $especialidadId) {
                       return $q->where('especialidad_id', $especialidadId);
                   })
@@ -391,6 +402,7 @@ class CirugiaController extends Controller
                   ->union(
                       DB::table('cirugias')
                         ->select('ayudante_1_id')
+                        ->where('suspendida', false)
                         ->when($especialidadId, function($q, $especialidadId) {
                             return $q->where('especialidad_id', $especialidadId);
                         })
@@ -399,6 +411,7 @@ class CirugiaController extends Controller
                   ->union(
                       DB::table('cirugias')
                         ->select('ayudante_2_id')
+                        ->where('suspendida', false)
                         ->when($especialidadId, function($q, $especialidadId) {
                             return $q->where('especialidad_id', $especialidadId);
                         })
@@ -407,6 +420,7 @@ class CirugiaController extends Controller
                   ->union(
                       DB::table('cirugias')
                         ->select('ayudante_3_id')
+                        ->where('suspendida', false)
                         ->when($especialidadId, function($q, $especialidadId) {
                             return $q->where('especialidad_id', $especialidadId);
                         })

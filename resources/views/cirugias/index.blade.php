@@ -94,8 +94,8 @@
                     </thead>
                     <tbody class="divide-y divide-gray-100">
                         @forelse($cirugias as $cirugia)
-                            <tr class="hover:bg-gray-50 transition-colors">
-                                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap" data-fecha="{{ $cirugia->fecha_cirugia }}">
+                            <tr class="{{ $cirugia->suspendida ? 'bg-gray-200 text-gray-500 hover:bg-gray-250 opacity-75' : 'hover:bg-gray-50 transition-colors' }}">
+                                <td class="px-6 py-4 font-medium {{ $cirugia->suspendida ? 'text-gray-600' : 'text-gray-900' }} whitespace-nowrap" data-fecha="{{ $cirugia->fecha_cirugia }}">
                                     {{ \Carbon\Carbon::parse($cirugia->fecha_cirugia)->format('d/m/Y') }}
                                 </td>
                                 <td class="px-6 py-4">{{ $cirugia->hora_cirugia ?? '' }}</td>
@@ -106,7 +106,7 @@
                                         : '—' }}
                                 </td>
                                 <td class="px-6 py-4 font-mono text-xs">{{ $cirugia->get_paciente->dni }}</td>
-                                <td class="px-6 py-4 font-medium text-[#1B7D8F]">{{ $cirugia->get_paciente->nombre }} {{ $cirugia->get_paciente->apellido }}</td>
+                                <td class="px-6 py-4 font-medium {{ $cirugia->suspendida ? 'text-gray-700' : 'text-[#1B7D8F]' }}">{{ $cirugia->get_paciente->nombre }} {{ $cirugia->get_paciente->apellido }}</td>
                                 <td class="px-6 py-4">{{ $cirugia->get_procedimiento->nombre_procedimiento }}</td>
                                 <td class="px-6 py-4">{{ $cirugia->get_cirujano->nombre }} {{ $cirugia->get_cirujano->apellido }}</td>
                                 <td class="px-6 py-4 no-print">{{ $cirugia->get_ayudante1->nombre ?? '-' }} {{ $cirugia->get_ayudante1->apellido ?? '' }}</td>
@@ -115,15 +115,15 @@
                                 <td class="px-6 py-4">{{ optional($cirugia->get_instrumentador)->nombre }} {{ optional($cirugia->get_instrumentador)->apellido }}</td>                                          
                                 <td class="px-6 py-4">{{ optional($cirugia->get_enfermero)->nombre }} {{ optional($cirugia->get_enfermero)->apellido }}</td> 
                                 <td class="px-6 py-4">
-                                    <span class="px-2 py-1 text-xs font-medium bg-blue-50 text-blue-600 rounded-full">
+                                    <span class="px-2 py-1 text-xs font-medium {{ $cirugia->suspendida ? 'bg-gray-300 text-gray-700' : 'bg-blue-50 text-blue-600' }} rounded-full">
                                         {{ optional($cirugia->get_tipo_anestesia)->nombre ?? '-' }}
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 no-print">
                                     @if($cirugia->urgencia)
-                                        <span class="px-2 py-1 text-xs font-medium bg-red-50 text-red-600 rounded-full">Sí</span>
+                                        <span class="px-2 py-1 text-xs font-medium {{ $cirugia->suspendida ? 'bg-gray-300 text-gray-700' : 'bg-red-50 text-red-600' }} rounded-full">Sí</span>
                                     @else
-                                        <span class="px-2 py-1 text-xs font-medium bg-green-50 text-green-600 rounded-full">No</span>
+                                        <span class="px-2 py-1 text-xs font-medium {{ $cirugia->suspendida ? 'bg-gray-300 text-gray-700' : 'bg-green-50 text-green-600' }} rounded-full">No</span>
                                     @endif
                                 </td>
                                 <td class="px-6 py-4 no-print">

@@ -361,29 +361,51 @@
                             @enderror
                         </div>
 
-                        <div class="col-md-4">
-                            <label class="form-label d-block">Urgencia</label>
-                            <label class="switch">
-                                <input type="checkbox" name="urgencia" id="urgencia" value="1"
-                                    {{ $cirugia->urgencia ? 'checked' : '' }}>
-                                <span class="slider round"></span>
-                            </label>
+                        {{-- Urgencia, Óbito y Suspendida juntos --}}
+                        <div class="col-md-6 d-flex align-items-center">
+                            <div class="me-4 text-center">
+                                <label class="form-label d-block mb-2">Urgencia</label>
+                                <label class="switch switch-urgencia">
+                                    <input type="checkbox" name="urgencia" id="urgencia" value="1"
+                                        {{ old('urgencia', $cirugia->urgencia) ? 'checked' : '' }}>
+                                    <span class="slider round"></span>
+                                </label>
+                                @error('urgencia')
+                                    <div><small class="text-danger">{{ $message }}</small></div>
+                                @enderror
+                            </div>
+                            <div class="me-4 text-center">
+                                <label class="form-label d-block mb-2">Óbito</label>
+                                <label class="switch switch-obito">
+                                    <input type="checkbox" name="obito" id="obito" value="1"
+                                        {{ old('obito', $cirugia->obito) ? 'checked' : '' }}>
+                                    <span class="slider round"></span>
+                                </label>
+                                @error('obito')
+                                    <div><small class="text-danger">{{ $message }}</small></div>
+                                @enderror
+                            </div>
+                            <div class="text-center me-4">
+                                <label class="form-label d-block mb-2">Suspendida</label>
+                                <label class="switch switch-suspendida">
+                                    <input type="checkbox" name="suspendida" id="suspendida" value="1"
+                                        {{ old('suspendida', $cirugia->suspendida) ? 'checked' : '' }}>
+                                    <span class="slider round"></span>
+                                </label>
+                                @error('suspendida')
+                                    <div><small class="text-danger">{{ $message }}</small></div>
+                                @enderror
+                            </div>
                         </div>
-                        @error('urgencia')
-                            <small class="text-danger"> {{ $message }} </small>
-                        @enderror
 
-                        <div class="col-md-4">
-                            <label class="form-label d-block">Óbito</label>
-                            <label class="switch">
-                                <input type="checkbox" name="obito" id="obito" value="1"
-                                    {{ $cirugia->obito ? 'checked' : '' }}>
-                                <span class="slider round"></span>
-                            </label>
+                        {{-- Observación por suspensión --}}
+                        <div class="col-md-6" id="contenedor_observacion_suspension" style="{{ old('suspendida', $cirugia->suspendida) ? '' : 'display: none;' }}">
+                            <label for="observacion_suspension" class="form-label fw-semibold text-danger">Motivo / Observación de suspensión</label>
+                            <textarea name="observacion_suspension" id="observacion_suspension" class="form-control" rows="2" placeholder="Ingrese el motivo por el cual se suspendió la cirugía">{{ old('observacion_suspension', $cirugia->observacion_suspension) }}</textarea>
+                            @error('observacion_suspension')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
                         </div>
-                        @error('obito')
-                            <small class="text-danger"> {{ $message }} </small>
-                        @enderror
                     </div>
 
                     <div class="flex justify-between pt-4 gap-2 flex-wrap">
@@ -450,15 +472,42 @@
             transition: .4s;
         }
 
-        input:checked+.slider {
-            background-color: #ffc107;
+        /* Default checked color (urgencia) */
+        .switch-urgencia input:checked+.slider {
+            background-color: #13850bff;
         }
 
-        input:focus+.slider {
-            box-shadow: 0 0 1px #ffc107;
+        .switch-urgencia input:focus+.slider {
+            box-shadow: 0 0 1px #13850bff;
         }
 
-        input:checked+.slider:before {
+        .switch-urgencia input:checked+.slider:before {
+            transform: translateX(26px);
+        }
+
+        /* Óbito: checked color black */
+        .switch-obito input:checked+.slider {
+            background-color: #000;
+        }
+
+        .switch-obito input:focus+.slider {
+            box-shadow: 0 0 1px #000;
+        }
+
+        .switch-obito input:checked+.slider:before {
+            transform: translateX(26px);
+        }
+
+        /* Suspendida: checked color red */
+        .switch-suspendida input:checked+.slider {
+            background-color: #dc3545;
+        }
+
+        .switch-suspendida input:focus+.slider {
+            box-shadow: 0 0 1px #dc3545;
+        }
+
+        .switch-suspendida input:checked+.slider:before {
             transform: translateX(26px);
         }
 
@@ -483,6 +532,16 @@
     <!-- Scripts para combos dinámicos -->
 <script>
     $(document).ready(function () {
+        // Toggle observacion_suspension
+        $('#suspendida').on('change', function () {
+            if ($(this).is(':checked')) {
+                $('#contenedor_observacion_suspension').slideDown();
+            } else {
+                $('#contenedor_observacion_suspension').slideUp();
+                $('#observacion_suspension').val('');
+            }
+        });
+
         // Inicializar Select2
         $('.select2').select2({
             placeholder: "Seleccione una opción",

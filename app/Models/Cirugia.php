@@ -26,6 +26,8 @@ class Cirugia extends Model
         'enfermero_2_id',
         'urgencia',
         'obito',
+        'suspendida',
+        'observacion_suspension',
         'duracion',
         'fecha_cirugia',
         'hora_cirugia',

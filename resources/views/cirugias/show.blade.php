@@ -185,6 +185,28 @@
                 </label>
             </div>
 
+            {{-- Suspendida como switch visual --}}
+            <div>
+                <p class="text-gray-500 uppercase text-sm mb-1">Suspendida</p>
+                <label class="inline-flex items-center cursor-default">
+                    <input type="checkbox" class="sr-only peer" disabled {{ $cirugia->suspendida ? 'checked' : '' }}>
+                    <div class="w-11 h-6 bg-gray-300 rounded-full peer-checked:bg-red-500 relative transition-all">
+                        <span
+                            class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition peer-checked:translate-x-5"></span>
+                    </div>
+                    <span class="ml-3 text-base font-medium {{ $cirugia->suspendida ? 'text-red-600 font-bold' : 'text-gray-800' }}">
+                        {{ $cirugia->suspendida ? 'Sí' : 'No' }}
+                    </span>
+                </label>
+            </div>
+
+            @if($cirugia->suspendida && $cirugia->observacion_suspension)
+                <div class="p-4 bg-red-50 border-l-4 border-red-500 rounded">
+                    <p class="text-red-700 font-semibold text-sm uppercase">Motivo / Observación de suspensión</p>
+                    <p class="text-red-900 mt-1">{{ $cirugia->observacion_suspension }}</p>
+                </div>
+            @endif
+
             {{-- Fecha y hora --}}
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
