@@ -104,6 +104,76 @@
             </div>
         @endif
 
+        {{-- ========================================== --}}
+        {{-- SECCIÓN: PROGRAMACIÓN DE CIRUGÍAS --}}
+        {{-- ========================================== --}}
+        <div class="card border-0 shadow-sm rounded-xl mb-5" data-aos="fade-up" data-aos-duration="800">
+            <div class="card-header bg-white border-0 pt-4 px-4 d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="font-bold text-gray-800 mb-1 flex items-center gap-2">
+                        <i class="bi bi-calendar2-week text-[#1B7D8F]"></i>
+                        Estadísticas de Programación de Cirugías
+                    </h5>
+                    <p class="text-sm text-gray-500 mb-0">Métricas del registro de cirugías programadas, realizadas y suspendidas</p>
+                </div>
+            </div>
+            <div class="card-body px-4">
+                {{-- Tarjetas KPI de Programación --}}
+                <div class="row g-3 mb-4">
+                    <div class="col-md-3 col-6">
+                        <div class="p-3 rounded-xl bg-sky-50 text-center h-100 border border-sky-100">
+                            <div class="text-xs font-bold text-sky-600 uppercase tracking-wider mb-1">Total Programadas</div>
+                            <div class="text-2xl font-bold text-gray-800">{{ $totalProgramadas }}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-6">
+                        <div class="p-3 rounded-xl bg-emerald-50 text-center h-100 border border-emerald-100">
+                            <div class="text-xs font-bold text-emerald-600 uppercase tracking-wider mb-1">Realizadas</div>
+                            <div class="text-2xl font-bold text-gray-800">{{ $programadasRealizadas }}</div>
+                            <div class="text-xs text-emerald-600 font-semibold mt-1">{{ $porcentajeRealizadasProg }}% del total</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-6">
+                        <div class="p-3 rounded-xl bg-rose-50 text-center h-100 border border-rose-100">
+                            <div class="text-xs font-bold text-rose-600 uppercase tracking-wider mb-1">Suspendidas</div>
+                            <div class="text-2xl font-bold text-gray-800">{{ $programadasSuspendidas }}</div>
+                            <div class="text-xs text-rose-600 font-semibold mt-1">{{ $porcentajeSuspendidasProg }}% del total</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-6">
+                        <div class="p-3 rounded-xl bg-amber-50 text-center h-100 border border-amber-100">
+                            <div class="text-xs font-bold text-amber-600 uppercase tracking-wider mb-1">Pendientes / En Espera</div>
+                            <div class="text-2xl font-bold text-gray-800">{{ $programadasPendientes }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Gráficos de Programación --}}
+                <div class="row g-4 align-items-center">
+                    <div class="col-lg-7">
+                        <h6 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Programadas por Calendario (Mensual)</h6>
+                        <div style="height: 240px;">
+                            <canvas id="graficoProgramadasPorMes"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-lg-5">
+                        <h6 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3 text-center">Estado de Programación</h6>
+                        <div class="d-flex justify-content-center">
+                            <div style="width: 220px; height: 220px;">
+                                @if($totalProgramadas > 0)
+                                    <canvas id="graficoEstadoProgramacion"></canvas>
+                                @else
+                                    <div class="d-flex align-items-center justify-content-center h-100 bg-gray-50 rounded-xl text-gray-400 text-xs">
+                                        Sin datos de programación
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="row g-4 mb-5">
             {{-- Columna izquierda: KPIs y Gráfico Mensual --}}
             <div class="col-lg-6" data-aos="fade-up" data-aos-duration="800">
@@ -668,6 +738,58 @@
                     cutout: '60%'
                 }
             });
+
+            // Programación por mes - Bar Chart
+            const elProgMes = document.getElementById('graficoProgramadasPorMes');
+            if (elProgMes) {
+                new Chart(elProgMes, {
+                    type: 'bar',
+                    data: {
+                        labels: {!! json_encode($progMesLabels) !!},
+                        datasets: [{
+                            label: 'Cirugías Programadas',
+                            data: {!! json_encode($progMesValores) !!},
+                            backgroundColor: '#0284c7',
+                            borderRadius: 6,
+                            barThickness: 20
+                        }]
+                    },
+                    options: {
+                        ...commonOptions,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                grid: { color: '#f1f5f9', drawBorder: false },
+                                ticks: { precision: 0 }
+                            },
+                            x: {
+                                grid: { display: false, drawBorder: false }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Estado de Programación - Doughnut Chart
+            const elEstadoProg = document.getElementById('graficoEstadoProgramacion');
+            if (elEstadoProg) {
+                new Chart(elEstadoProg, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Realizadas', 'Suspendidas', 'Pendientes'],
+                        datasets: [{
+                            data: [{{ $programadasRealizadas }}, {{ $programadasSuspendidas }}, {{ $programadasPendientes }}],
+                            backgroundColor: ['#10b981', '#ef4444', '#f59e0b'],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        ...commonOptions,
+                        cutout: '65%'
+                    }
+                });
+            }
         });
         AOS.init();
     </script>

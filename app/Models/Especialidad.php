@@ -20,4 +20,12 @@ public function procedimientos_secundarios()
 {
     return $this->hasMany(Procedimiento::class, 'especialidad_2_id');
 }
+public function procedimientos_terciarios()
+{
+    return $this->hasMany(Procedimiento::class, 'especialidad_3_id');
+}
+public function procedimientos_cuaternarios()
+{
+    return $this->hasMany(Procedimiento::class, 'especialidad_4_id');
+}
 }

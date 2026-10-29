@@ -37,7 +37,7 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="especialidad_id" class="form-label">Especialidad</label>
+                        <label for="especialidad_id" class="form-label">Especialidad Principal</label>
                         <select name="especialidad_id" id="especialidad_id" class="form-control">
                             <option value="">Seleccione una Especialidad</option>
                             @foreach ($especialidades as $especialidad)
@@ -53,7 +53,7 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="especialidad_2_id" class="form-label">Especialidad Adicional</label>
+                        <label for="especialidad_2_id" class="form-label">Especialidad Adicional 1</label>
                         <select name="especialidad_2_id" id="especialidad_2_id" class="form-control">
                             <option value="">Seleccione una Especialidad</option>
                             @foreach ($especialidades as $especialidad)
@@ -64,6 +64,38 @@
                             @endforeach
                         </select>
                         @error('especialidad_2_id')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="especialidad_3_id" class="form-label">Especialidad Adicional 2</label>
+                        <select name="especialidad_3_id" id="especialidad_3_id" class="form-control">
+                            <option value="">Seleccione una Especialidad</option>
+                            @foreach ($especialidades as $especialidad)
+                                <option value="{{ $especialidad->id }}"
+                                    {{ old('especialidad_3_id', $procedimiento->especialidad_3_id) == $especialidad->id ? 'selected' : '' }}>
+                                    {{ $especialidad->nombre }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('especialidad_3_id')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="especialidad_4_id" class="form-label">Especialidad Adicional 3</label>
+                        <select name="especialidad_4_id" id="especialidad_4_id" class="form-control">
+                            <option value="">Seleccione una Especialidad</option>
+                            @foreach ($especialidades as $especialidad)
+                                <option value="{{ $especialidad->id }}"
+                                    {{ old('especialidad_4_id', $procedimiento->especialidad_4_id) == $especialidad->id ? 'selected' : '' }}>
+                                    {{ $especialidad->nombre }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('especialidad_4_id')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>

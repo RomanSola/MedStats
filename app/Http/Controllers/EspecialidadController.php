@@ -62,8 +62,10 @@ public function destroy(Especialidad $especialidad)
 {
     $tienePrimarios = $especialidad->procedimientos()->exists();
     $tieneSecundarios = $especialidad->procedimientos_secundarios()->exists();
+    $tieneTerciarios = $especialidad->procedimientos_terciarios()->exists();
+    $tieneCuaternarios = $especialidad->procedimientos_cuaternarios()->exists();
 
-    if ($tienePrimarios || $tieneSecundarios) {
+    if ($tienePrimarios || $tieneSecundarios || $tieneTerciarios || $tieneCuaternarios) {
         return redirect()->route('especialidades.index')
             ->with('error', 'No se puede eliminar: esta especialidad está asociada a procedimientos.');
     }

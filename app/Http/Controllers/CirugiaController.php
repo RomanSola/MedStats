@@ -8,6 +8,8 @@ use App\Models\Especialidad;
 use App\Models\Procedimiento;
 use App\Models\Quirofano;
 use App\Models\Tipo_anestesia;
+use App\Models\Programacion;
+use App\Models\PlantillaProgramacion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -16,8 +18,73 @@ class CirugiaController extends Controller
 {
 
     //Muestra todos los datos
-    public function index() //Pagina inicial
+    public function index(Request $request) //Pagina inicial
     {
+        $fechaProgramacion = $request->get('fecha_programacion', $request->get('fecha', Carbon::today()->format('Y-m-d')));
+
+        // Precargar plantillas semanales si no existen para la fecha seleccionada
+        $diaSemanaNum = Carbon::parse($fechaProgramacion)->dayOfWeekIso; // 1 = Lunes, ..., 7 = Domingo
+        $plantillasDia = PlantillaProgramacion::where('dia_semana', $diaSemanaNum)
+            ->where('activo', true)
+            ->get();
+
+        if ($plantillasDia->isNotEmpty()) {
+            // Cargar todas las programaciones de la fecha una sola vez para la comprobación por quirófano
+            $programacionesExistent = Programacion::whereDate('fecha', $fechaProgramacion)->get();
+
+            foreach ($plantillasDia as $plantilla) {
+                // Deduplicación 1: verificar si esta plantilla ya generó un registro para esta fecha
+                $yaExistePorPlantillaId = Programacion::where('fecha', $fechaProgramacion)
+                    ->where('plantilla_programacion_id', $plantilla->id)
+                    ->exists();
+
+                if ($yaExistePorPlantillaId) {
+                    continue; // Ya fue generada, saltar
+                }
+
+                // Deduplicación 2: evitar crear una reserva automática si ya existe cualquier
+                // programación (manual o de plantilla) en el mismo quirófano y hora.
+                // Esto evita duplicar sobre programaciones manuales existentes.
+                $pHoraNorm = $plantilla->hora ? substr($plantilla->hora, 0, 5) : '';
+                $pQuirofanoNorm = mb_strtolower(trim($plantilla->quirofano ?? ''), 'UTF-8');
+
+                $yaExistePorQuirofano = $programacionesExistent->contains(function ($item) use ($pQuirofanoNorm, $pHoraNorm) {
+                    $itemQuirofanoNorm = mb_strtolower(trim($item->quirofano ?? ''), 'UTF-8');
+                    $itemHoraNorm     = $item->hora ? substr($item->hora, 0, 5) : '';
+
+                    if ($pQuirofanoNorm !== $itemQuirofanoNorm) {
+                        return false;
+                    }
+                    // Si ambos tienen hora definida y son distintas, no se considera conflicto
+                    if (!empty($pHoraNorm) && !empty($itemHoraNorm) && $pHoraNorm !== $itemHoraNorm) {
+                        return false;
+                    }
+                    return true;
+                });
+
+                if ($yaExistePorQuirofano) {
+                    continue; // Ya hay algo en ese slot, no agregar reserva automática encima
+                }
+
+                Programacion::create([
+                    'fecha'                     => $fechaProgramacion,
+                    'quirofano'                 => $plantilla->quirofano,
+                    'paciente'                  => null,
+                    'especialidad'              => $plantilla->especialidad,
+                    'procedimiento'             => $plantilla->procedimiento,
+                    'cirujano'                  => $plantilla->cirujano,
+                    'hora'                      => $plantilla->hora,
+                    'observaciones'             => $plantilla->observaciones
+                        ? 'Reservado de plantilla: ' . $plantilla->observaciones
+                        : 'Reserva automática de plantilla',
+                    'realizada'                 => false,
+                    'suspendida'                => false,
+                    'es_reserva'                => true,
+                    'plantilla_programacion_id' => $plantilla->id,
+                ]);
+            }
+        }
+
         $cirugias = Cirugia::with([
             'get_paciente',
             'get_especialidad',
@@ -35,8 +102,50 @@ class CirugiaController extends Controller
             'get_tipo_anestesia',
             'get_tipo_anestesia2',
             'modificador',
-        ])->orderBy('id', 'desc')->get();
-        return view('cirugias.index', compact('cirugias')); //Llama a la vista y le pasa las Cirugias obtenidas
+        ])->orderBy('fecha_cirugia', 'desc')
+          ->orderBy('hora_cirugia', 'desc')
+          ->orderBy('id', 'desc')
+          ->get();
+
+        $especialidades = Especialidad::orderBy('nombre')->get();
+        $procedimientos = Procedimiento::with('get_especialidad')->orderBy('nombre_procedimiento')->get();
+        $cirujanos = Empleado::orderBy('apellido')->orderBy('nombre')->get();
+        $pacientes = Paciente::orderBy('apellido')->orderBy('nombre')->get();
+
+        $programacionesList = Programacion::with('registradoPor', 'editadoPor')
+            ->whereDate('fecha', $fechaProgramacion)
+            ->orderBy('hora', 'asc')
+            ->orderBy('id', 'asc')
+            ->get();
+
+        $normalizar = function($str) {
+            $str = mb_strtolower(trim($str ?? ''), 'UTF-8');
+            $unwanted_array = [
+                'á'=>'a', 'é'=>'e', 'í'=>'i', 'ó'=>'o', 'ú'=>'u',
+                'Á'=>'a', 'É'=>'e', 'Í'=>'i', 'Ó'=>'o', 'Ú'=>'u'
+            ];
+            return strtr($str, $unwanted_array);
+        };
+
+        $programaciones = [
+            'quirofano 1' => $programacionesList->filter(fn($item) => str_contains($normalizar($item->quirofano), 'quirofano 1') || str_contains($normalizar($item->quirofano), 'quirofano1')),
+            'quirofano 2' => $programacionesList->filter(fn($item) => str_contains($normalizar($item->quirofano), 'quirofano 2') || str_contains($normalizar($item->quirofano), 'quirofano2')),
+            'quirofano 3' => $programacionesList->filter(fn($item) => str_contains($normalizar($item->quirofano), 'quirofano 3') || str_contains($normalizar($item->quirofano), 'quirofano3')),
+            'quirofano 4' => $programacionesList->filter(fn($item) => str_contains($normalizar($item->quirofano), 'quirofano 4') || str_contains($normalizar($item->quirofano), 'quirofano4')),
+        ];
+
+        $activeTab = $request->get('tab', 'historico');
+
+        return view('cirugias.index', compact(
+            'cirugias',
+            'especialidades',
+            'procedimientos',
+            'cirujanos',
+            'pacientes',
+            'programaciones',
+            'fechaProgramacion',
+            'activeTab'
+        ));
     }
 
     public function show(Cirugia $cirugia)
@@ -566,6 +675,46 @@ class CirugiaController extends Controller
             ->with('get_tipo_anestesia')
             ->get();
 
+        // ==============================================
+        // ESTADÍSTICAS DE PROGRAMACIÓN DE CIRUGÍAS
+        // ==============================================
+        $baseProgramacionQuery = \App\Models\Programacion::query()
+            ->when($desde && $hasta, function ($query) use ($desde, $hasta) {
+                return $query->whereBetween('fecha', [$desde, $hasta]);
+            }, function ($query) use ($anio) {
+                if ($anio) {
+                    return $query->whereYear('fecha', $anio);
+                }
+                return $query;
+            })
+            ->when($especialidadId, function ($query, $especialidadId) use ($especialidades) {
+                $esp = $especialidades->firstWhere('id', $especialidadId);
+                if ($esp) {
+                    return $query->where('especialidad', $esp->nombre);
+                }
+                return $query;
+            });
+
+        $totalProgramadas = (clone $baseProgramacionQuery)->count();
+        $programadasRealizadas = (clone $baseProgramacionQuery)->where('realizada', true)->count();
+        $programadasSuspendidas = (clone $baseProgramacionQuery)->where('suspendida', true)->count();
+        $programadasPendientes = max(0, $totalProgramadas - $programadasRealizadas - $programadasSuspendidas);
+
+        $porcentajeSuspendidasProg = $totalProgramadas > 0 ? round(($programadasSuspendidas / $totalProgramadas) * 100, 1) : 0;
+        $porcentajeRealizadasProg = $totalProgramadas > 0 ? round(($programadasRealizadas / $totalProgramadas) * 100, 1) : 0;
+
+        // Distribución mensual de cirugías programadas por calendario
+        $programadasPorMes = (clone $baseProgramacionQuery)
+            ->select(DB::raw('MONTH(fecha) as mes'), DB::raw('COUNT(*) as total'))
+            ->groupBy(DB::raw('MONTH(fecha)'))
+            ->orderBy(DB::raw('MONTH(fecha)'))
+            ->get();
+
+        $progMesLabels = $programadasPorMes->pluck('mes')->map(function ($m) {
+            return \Carbon\Carbon::create()->month($m)->translatedFormat('F');
+        });
+        $progMesValores = $programadasPorMes->pluck('total');
+
         $anioSeleccionado = request('anio') ?? \Carbon\Carbon::parse($desde)->year;
         return view('cirugias.estadisticas', compact(
             'porCirujano',
@@ -596,7 +745,15 @@ class CirugiaController extends Controller
             'especialidadId',
             'especialidades',
             'cirujanosDisponibles',
-            'cirujanoId'
+            'cirujanoId',
+            'totalProgramadas',
+            'programadasRealizadas',
+            'programadasSuspendidas',
+            'programadasPendientes',
+            'porcentajeSuspendidasProg',
+            'porcentajeRealizadasProg',
+            'progMesLabels',
+            'progMesValores'
         ));
     }
 

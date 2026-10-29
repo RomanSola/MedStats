@@ -21,6 +21,7 @@ use App\Http\Controllers\PersonaController;
 use App\Http\Controllers\EspecialidadController;
 use App\Http\Controllers\InicioController;
 use App\Http\Controllers\ServicioController;
+use App\Http\Controllers\ProgramacionController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/dashboard', function () {
@@ -129,13 +130,16 @@ Route::middleware(['auth', 'roles:pacientes'])->group(function () {
 
 //Procedimientos
 Route::middleware(['auth', 'roles:admin'])->group(function () {
-    Route::get('/procedimientos', [ProcedimientoController::class, 'index'])->name('procedimientos.index');
-    Route::get('/procedimientos/create', [ProcedimientoController::class, 'create'])->name('procedimientos.create');
-    Route::post('/procedimientos', [ProcedimientoController::class, 'store'])->name('procedimientos.store');
-    Route::get('/procedimientos/{procedimiento}/edit', [ProcedimientoController::class, 'edit'])->name('procedimientos.edit');
-    Route::get('/procedimientos/{procedimiento}/show', [ProcedimientoController::class, 'show'])->name('procedimientos.show');
-    Route::put('/procedimientos/{procedimiento}', [ProcedimientoController::class, 'update'])->name('procedimientos.update');
-    Route::delete('/procedimientos/{procedimiento}', [ProcedimientoController::class, 'destroy'])->name('procedimientos.destroy');
+    Route::get('/ajustes/procedimientos', [ProcedimientoController::class, 'index'])->name('procedimientos.index');
+    Route::get('/procedimientos', function () {
+        return redirect()->route('procedimientos.index');
+    });
+    Route::get('/ajustes/procedimientos/create', [ProcedimientoController::class, 'create'])->name('procedimientos.create');
+    Route::post('/ajustes/procedimientos', [ProcedimientoController::class, 'store'])->name('procedimientos.store');
+    Route::get('/ajustes/procedimientos/{procedimiento}/edit', [ProcedimientoController::class, 'edit'])->name('procedimientos.edit');
+    Route::get('/ajustes/procedimientos/{procedimiento}/show', [ProcedimientoController::class, 'show'])->name('procedimientos.show');
+    Route::put('/ajustes/procedimientos/{procedimiento}', [ProcedimientoController::class, 'update'])->name('procedimientos.update');
+    Route::delete('/ajustes/procedimientos/{procedimiento}', [ProcedimientoController::class, 'destroy'])->name('procedimientos.destroy');
     Route::post('/pacientes/{paciente}/asignar-directa', [PacienteController::class, 'asignarDirecta'])
         ->name('pacientes.asignar.directa');
 });
@@ -233,6 +237,19 @@ Route::middleware(['auth', 'roles:cirugias'])->group(function () {
     Route::get('/cirugias/{cirugia}/medicamentos', [CirugiaController::class, 'medicamentos'])->name('cirugias.medicamentos');
     Route::post('/cirugias/{cirugia}/medicamentos', [CirugiaController::class, 'guardarMedicamentos'])->name('cirugias.medicamentos.store');
     Route::delete('/cirugias/{cirugia}/medicamentos/{historial}', [CirugiaController::class, 'eliminarMedicamento'])->name('cirugias.medicamentos.destroy');
+
+    // Programación de cirugías
+    Route::post('/programacion', [ProgramacionController::class, 'store'])->name('programacion.store');
+    Route::put('/programacion/{programacion}', [ProgramacionController::class, 'update'])->name('programacion.update');
+    Route::patch('/programacion/{programacion}/toggle-estado', [ProgramacionController::class, 'toggleEstado'])->name('programacion.toggle-estado');
+    Route::patch('/programacion/{programacion}/observaciones', [ProgramacionController::class, 'updateObservaciones'])->name('programacion.update-observaciones');
+    Route::delete('/programacion/{programacion}', [ProgramacionController::class, 'destroy'])->name('programacion.destroy');
+
+    // Plantillas semanales de programación
+    Route::get('/plantillas-programacion', [\App\Http\Controllers\PlantillaProgramacionController::class, 'index'])->name('plantillas-programacion.index');
+    Route::post('/plantillas-programacion', [\App\Http\Controllers\PlantillaProgramacionController::class, 'store'])->name('plantillas-programacion.store');
+    Route::put('/plantillas-programacion/{id}', [\App\Http\Controllers\PlantillaProgramacionController::class, 'update'])->name('plantillas-programacion.update');
+    Route::delete('/plantillas-programacion/{id}', [\App\Http\Controllers\PlantillaProgramacionController::class, 'destroy'])->name('plantillas-programacion.destroy');
 });
 
 //Quirofanos

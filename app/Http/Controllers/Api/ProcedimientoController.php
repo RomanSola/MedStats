@@ -10,6 +10,11 @@ class ProcedimientoController extends Controller
 {
     public function porEspecialidad($especialidad_id)
     {
-        return Procedimiento::where('especialidad_id', $especialidad_id)->orWhere('especialidad_2_id', $especialidad_id)->orderBy('nombre_procedimiento')->get();
+        return Procedimiento::where('especialidad_id', $especialidad_id)
+            ->orWhere('especialidad_2_id', $especialidad_id)
+            ->orWhere('especialidad_3_id', $especialidad_id)
+            ->orWhere('especialidad_4_id', $especialidad_id)
+            ->orderBy('nombre_procedimiento')
+            ->get();
     }
 }

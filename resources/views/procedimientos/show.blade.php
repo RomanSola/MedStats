@@ -33,16 +33,30 @@
 
                     {{-- Campo Especialidad --}}
                     <div class="mb-4">
-                        <label class="form-label fw-semibold text-secondary">Especialidad</label>
+                        <label class="form-label fw-semibold text-secondary">Especialidad Principal</label>
                         <input type="text" class="form-control border border-gray-300 shadow-sm"
                                value="{{ $procedimiento->get_especialidad->nombre ?? '—' }}" readonly>
                     </div>
                     
-                    {{-- Campo Especialidad adicional --}}
+                    {{-- Campo Especialidad adicional 1 --}}
                     <div class="mb-4">
-                        <label class="form-label fw-semibold text-secondary">Especialidad Adicional</label>
+                        <label class="form-label fw-semibold text-secondary">Especialidad Adicional 1</label>
                         <input type="text" class="form-control border border-gray-300 shadow-sm"
                                value="{{ $procedimiento->get_especialidad_2->nombre ?? '—' }}" readonly>
+                    </div>
+
+                    {{-- Campo Especialidad adicional 2 --}}
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold text-secondary">Especialidad Adicional 2</label>
+                        <input type="text" class="form-control border border-gray-300 shadow-sm"
+                               value="{{ $procedimiento->get_especialidad_3->nombre ?? '—' }}" readonly>
+                    </div>
+
+                    {{-- Campo Especialidad adicional 3 --}}
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold text-secondary">Especialidad Adicional 3</label>
+                        <input type="text" class="form-control border border-gray-300 shadow-sm"
+                               value="{{ $procedimiento->get_especialidad_4->nombre ?? '—' }}" readonly>
                     </div>
                     {{-- Botón volver con el mismo estilo que empleados --}}
                     <div class="text-center mt-4">

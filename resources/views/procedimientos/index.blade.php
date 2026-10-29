@@ -41,8 +41,7 @@
                             <tr>
                                 <th>Procedimiento</th>
                                 <th>Descripción</th>
-                                <th>Especialidad</th>
-                                <th>Especialidad Adicional</th>
+                                <th>Especialidades</th>
                                 <th class="text-center">Acciones</th>
                             </tr>
                         </thead>
@@ -51,8 +50,25 @@
                                 <tr>
                                     <td>{{ $procedimiento->nombre_procedimiento }}</td>
                                     <td>{{ $procedimiento->descripcion }}</td>
-                                    <td>{{ $procedimiento->get_especialidad->nombre ?? '—' }}</td>
-                                    <td>{{ $procedimiento->get_especialidad_2->nombre ?? '—' }}</td>
+                                    <td>
+                                        @php
+                                            $esps = array_filter([
+                                                $procedimiento->get_especialidad->nombre ?? null,
+                                                $procedimiento->get_especialidad_2->nombre ?? null,
+                                                $procedimiento->get_especialidad_3->nombre ?? null,
+                                                $procedimiento->get_especialidad_4->nombre ?? null,
+                                            ]);
+                                        @endphp
+                                        @if(count($esps) > 0)
+                                            <div class="d-flex flex-wrap gap-1 justify-content-center">
+                                                @foreach($esps as $esp)
+                                                    <span class="badge bg-secondary text-white">{{ $esp }}</span>
+                                                @endforeach
+                                            </div>
+                                        @else
+                                            —
+                                        @endif
+                                    </td>
                                     <td class="text-center">
                                         <a href="{{ route('procedimientos.show', $procedimiento) }}"
                                             class="btn btn-outline-primary btn-sm me-1 btn-fixed-width">Ver</a>
@@ -82,7 +98,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="3" class="text-center text-muted">
+                                    <td colspan="4" class="text-center text-muted">
                                         No hay procedimientos registrados aún.
                                     </td>
                                 </tr>
@@ -110,7 +126,7 @@
                 info: true,
                 columnDefs: [{
                         orderable: false,
-                        targets: 4
+                        targets: -1
                     } // Desactiva orden en columna "Acciones"
                 ]
             });

@@ -10,7 +10,7 @@ class ProcedimientoController extends Controller
 {
     public function index() //Pagina inicial
     {
-        $procedimientos = Procedimiento::with(['get_especialidad', 'get_especialidad_2'])->get();; //Hace un select all a la tabla
+        $procedimientos = Procedimiento::with(['get_especialidad', 'get_especialidad_2', 'get_especialidad_3', 'get_especialidad_4'])->get(); //Hace un select all a la tabla
         //dd($procedimientos);
         return view('procedimientos.index', compact('procedimientos')); //Llama a la vista y le pasa los datos
     }
@@ -31,6 +31,9 @@ class ProcedimientoController extends Controller
         $request->validate([ //Si el titulo esta vacio no hace nada 
             'nombre_procedimiento' => 'required',
             'especialidad_id' => 'required|exists:especialidads,id',
+            'especialidad_2_id' => 'nullable|exists:especialidads,id',
+            'especialidad_3_id' => 'nullable|exists:especialidads,id',
+            'especialidad_4_id' => 'nullable|exists:especialidads,id',
         ]);
 
         $procedimiento = new Procedimiento();
@@ -38,6 +41,8 @@ class ProcedimientoController extends Controller
         $procedimiento->descripcion = $request->input('descripcion'); //Datos del POST se obtiene en request
         $procedimiento->especialidad_id = $request->input('especialidad_id'); //Datos del POST se obtiene en request
         $procedimiento->especialidad_2_id = $request->input('especialidad_2_id'); //Datos del POST se obtiene en request
+        $procedimiento->especialidad_3_id = $request->input('especialidad_3_id');
+        $procedimiento->especialidad_4_id = $request->input('especialidad_4_id');
 
         //dd($procedimientos);
         $procedimiento->save(); //Guarda en la BD, si existe lo actualiza, sino crea
@@ -56,6 +61,9 @@ class ProcedimientoController extends Controller
         $request->validate([ //Si esta vacio no hace nada 
             'nombre_procedimiento' => 'required',
             'especialidad_id' => 'required|exists:especialidads,id',
+            'especialidad_2_id' => 'nullable|exists:especialidads,id',
+            'especialidad_3_id' => 'nullable|exists:especialidads,id',
+            'especialidad_4_id' => 'nullable|exists:especialidads,id',
         ]);
         if ($request->input('nombre_procedimiento') != null) {
             $procedimiento->nombre_procedimiento = $request->input('nombre_procedimiento');
@@ -63,6 +71,8 @@ class ProcedimientoController extends Controller
         $procedimiento->descripcion = $request->input('descripcion');
         $procedimiento->especialidad_id = $request->input('especialidad_id');
         $procedimiento->especialidad_2_id = $request->input('especialidad_2_id');
+        $procedimiento->especialidad_3_id = $request->input('especialidad_3_id');
+        $procedimiento->especialidad_4_id = $request->input('especialidad_4_id');
         $procedimiento->save();
         return redirect()->route('procedimientos.index');
     }

@@ -116,6 +116,13 @@
                                 'access' => 'admin',
                             ],
                             [
+                                'title' => 'Plantillas de Programación',
+                                'text' => 'Configurar reservas de turnos semanales recurrentes por quirófano y especialidad.',
+                                'route' => route('plantillas-programacion.index'),
+                                'btn' => 'Gestionar Plantillas',
+                                'access' => ['admin', 'cirugias'],
+                            ],
+                            [
                                 'title' => 'Países',
                                 'text' => 'Administrar países del sistema.',
                                 'route' => route('paises.index'),
